@@ -8,7 +8,7 @@ In this repository:
 1. we have a bunch of bash/slurm code meant to script a bunch of resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
 2. we have a bunch of empty directories referencing data that is too big/too private to fit on github
 3. we have a few nuggets of source code nestled away in the mess; the most notable one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
-4. We also have Ripser[2-3] here, upon which all of the persistence analysis is *actually* built
+4. We also have Ripser[2,3] here, upon which all of the persistence analysis is *actually* built
 
 ## Preparations
 
