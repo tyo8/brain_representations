@@ -1,0 +1,34 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/metric_tests/naive_phoms.py", line 128, in <module>
+    PD_fnames[i],distnames[i] = naive_phom(distlist_fname, out_dir, dist_ord = pset[i])
+  File "/scratch/tyoeasley/brain_representations/metric_tests/naive_phoms.py", line 25, in naive_phom
+    PD_array = cph.compute_phom(dist_mtx_list, hom_dims=(0,1,2), benchmark=True)              # persistence diagrams
+  File "/scratch/tyoeasley/brain_representations/src_py/comp_phom.py", line 63, in compute_phom
+    persdiag = VR.fit_transform(dist_mtx_input)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/gtda/utils/_docs.py", line 106, in fit_transform_wrapper
+    return original_fit_transform(*args, **kwargs)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/sklearn/base.py", line 699, in fit_transform
+    return self.fit(X, **fit_params).transform(X)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/gtda/homology/simplicial.py", line 305, in transform
+    Xt = Parallel(n_jobs=self.n_jobs)(
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/parallel.py", line 1041, in __call__
+    if self.dispatch_one_batch(iterator):
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/parallel.py", line 859, in dispatch_one_batch
+    self._dispatch(tasks)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/parallel.py", line 777, in _dispatch
+    job = self._backend.apply_async(batch, callback=cb)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 208, in apply_async
+    result = ImmediateResult(func)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/_parallel_backends.py", line 572, in __init__
+    self.results = batch()
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/parallel.py", line 262, in __call__
+    return [func(*args, **kwargs)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/joblib/parallel.py", line 262, in <listcomp>
+    return [func(*args, **kwargs)
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/gtda/homology/simplicial.py", line 180, in _ripser_diagram
+    Xdgms = ripser(
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/gtda/externals/python/ripser_interface.py", line 493, in ripser
+    res = DRFDMSparse(np.asarray(row, dtype=np.int32, order="C"),
+  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/gtda/externals/python/ripser_interface.py", line 47, in DRFDMSparse
+    ret = gtda_ripser.rips_dm_sparse(I, J, V, I.size, N, coeff, maxHomDim,
+MemoryError: std::bad_alloc

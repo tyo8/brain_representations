@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Oct 24 16:31:34 CDT 2022 1666647094
+Job ID:		190523
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Oct 24 16:31:34 CDT 2022 1666647094
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Oct 25 16:26:46 CDT 2022 1666733206
+Name                : align
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : CANCELLED,TIMEOUT
+Submit              : 2022-10-24T16:31:34
+Start               : 2022-10-24T16:31:34
+End                 : 2022-10-25T16:26:43
+Reserved Walltime   : 23:55:00
+Used Walltime       : 23:55:09
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 20G
+Max Mem Used        : 223.88M (234749952.0)
+Max Disk Write      : 5.07G (5439938887.68)
+Max Disk Read       : 6.17G (6622302699.52)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Tue Oct 25 16:26:46 CDT 2022 1666733206
+--------------------------------------------------------------

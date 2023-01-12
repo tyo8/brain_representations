@@ -1,0 +1,480 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:48 CST 2023 1673214888
+Job ID:		417091
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:48 CST 2023 1673214888
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:21 CST 2023 1673214861
+Job ID:		417072
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:21 CST 2023 1673214861
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:55:01 CST 2023 1673214901
+Job ID:		417100
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:55:01 CST 2023 1673214901
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:26 CST 2023 1673214866
+Job ID:		417075
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:26 CST 2023 1673214866
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:57 CST 2023 1673214897
+Job ID:		417097
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:57 CST 2023 1673214897
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:52 CST 2023 1673214892
+Job ID:		417094
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:52 CST 2023 1673214892
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:36 CST 2023 1673214876
+Job ID:		417082
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:36 CST 2023 1673214876
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:43 CST 2023 1673214883
+Job ID:		417088
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:43 CST 2023 1673214883
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:04 CST 2023 1673214844
+Job ID:		417060
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:04 CST 2023 1673214844
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:39 CST 2023 1673214879
+Job ID:		417085
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:39 CST 2023 1673214879
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:31 CST 2023 1673214871
+Job ID:		417078
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:31 CST 2023 1673214871
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:09 CST 2023 1673214849
+Job ID:		417063
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:09 CST 2023 1673214849
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:13 CST 2023 1673214853
+Job ID:		417066
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:13 CST 2023 1673214853
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:00 CST 2023 1673214840
+Job ID:		417057
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:00 CST 2023 1673214840
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:54:17 CST 2023 1673214857
+Job ID:		417069
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:54:17 CST 2023 1673214857
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:07 CST 2023 1673215327
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:17
+Start               : 2023-01-08T15:54:17
+End                 : 2023-01-08T16:02:05
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:07:48
+Used CPU Time       : 00:07:46
+% User (Computation): 99.40%
+% System (I/O)      :  0.60%
+Mem Reserved        : 50G
+Max Mem Used        : 199.98M (209698816.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:02:07 CST 2023 1673215327
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:15 CST 2023 1673215335
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:53:59
+Start               : 2023-01-08T15:54:00
+End                 : 2023-01-08T16:02:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:13
+Used CPU Time       : 00:08:10
+% User (Computation): 99.37%
+% System (I/O)      :  0.63%
+Mem Reserved        : 50G
+Max Mem Used        : 220.52M (231227392.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Sun Jan  8 16:02:15 CST 2023 1673215335
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:24 CST 2023 1673215344
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:12
+Start               : 2023-01-08T15:54:13
+End                 : 2023-01-08T16:02:22
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:09
+Used CPU Time       : 00:08:07
+% User (Computation): 99.29%
+% System (I/O)      :  0.71%
+Mem Reserved        : 50G
+Max Mem Used        : 219.72M (230395904.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Sun Jan  8 16:02:24 CST 2023 1673215344
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:28 CST 2023 1673215348
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:08
+Start               : 2023-01-08T15:54:09
+End                 : 2023-01-08T16:02:26
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:17
+Used CPU Time       : 00:08:14
+% User (Computation): 99.31%
+% System (I/O)      :  0.69%
+Mem Reserved        : 50G
+Max Mem Used        : 224.79M (235712512.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Sun Jan  8 16:02:28 CST 2023 1673215348
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:29 CST 2023 1673215349
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:30
+Start               : 2023-01-08T15:54:31
+End                 : 2023-01-08T16:02:27
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:07:56
+Used CPU Time       : 00:07:54
+% User (Computation): 99.39%
+% System (I/O)      :  0.61%
+Mem Reserved        : 50G
+Max Mem Used        : 212.83M (223166464.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:02:29 CST 2023 1673215349
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:32 CST 2023 1673215352
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:38
+Start               : 2023-01-08T15:54:39
+End                 : 2023-01-08T16:02:30
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:07:51
+Used CPU Time       : 00:07:48
+% User (Computation): 99.36%
+% System (I/O)      :  0.64%
+Mem Reserved        : 50G
+Max Mem Used        : 209.58M (219758592.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Sun Jan  8 16:02:32 CST 2023 1673215352
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:34 CST 2023 1673215354
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:04
+Start               : 2023-01-08T15:54:04
+End                 : 2023-01-08T16:02:32
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:28
+Used CPU Time       : 00:08:20
+% User (Computation): 98.63%
+% System (I/O)      :  1.37%
+Mem Reserved        : 50G
+Max Mem Used        : 198.20M (207831040.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Sun Jan  8 16:02:34 CST 2023 1673215354
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:02:53 CST 2023 1673215373
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:43
+Start               : 2023-01-08T15:54:43
+End                 : 2023-01-08T16:02:51
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:08
+Used CPU Time       : 00:08:05
+% User (Computation): 99.38%
+% System (I/O)      :  0.62%
+Mem Reserved        : 50G
+Max Mem Used        : 214.47M (224890880.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Sun Jan  8 16:02:53 CST 2023 1673215373
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:03:33 CST 2023 1673215413
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:34
+Start               : 2023-01-08T15:54:36
+End                 : 2023-01-08T16:03:31
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:55
+Used CPU Time       : 00:08:53
+% User (Computation): 99.38%
+% System (I/O)      :  0.62%
+Mem Reserved        : 50G
+Max Mem Used        : 206.05M (216055808.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Sun Jan  8 16:03:33 CST 2023 1673215413
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:03:41 CST 2023 1673215421
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:52
+Start               : 2023-01-08T15:54:52
+End                 : 2023-01-08T16:03:39
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:47
+Used CPU Time       : 00:08:45
+% User (Computation): 99.37%
+% System (I/O)      :  0.63%
+Mem Reserved        : 50G
+Max Mem Used        : 226.35M (237346816.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Sun Jan  8 16:03:41 CST 2023 1673215421
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:04:00 CST 2023 1673215440
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:56
+Start               : 2023-01-08T15:54:57
+End                 : 2023-01-08T16:03:58
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:09:01
+Used CPU Time       : 00:08:59
+% User (Computation): 99.36%
+% System (I/O)      :  0.64%
+Mem Reserved        : 50G
+Max Mem Used        : 213.46M (223834112.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Sun Jan  8 16:04:00 CST 2023 1673215440
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:04:09 CST 2023 1673215449
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:26
+Start               : 2023-01-08T15:54:26
+End                 : 2023-01-08T16:04:07
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:09:41
+Used CPU Time       : 00:09:38
+% User (Computation): 99.23%
+% System (I/O)      :  0.77%
+Mem Reserved        : 50G
+Max Mem Used        : 223.10M (233934848.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:04:09 CST 2023 1673215449
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:04:10 CST 2023 1673215450
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:55:01
+Start               : 2023-01-08T15:55:01
+End                 : 2023-01-08T16:04:08
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:09:07
+Used CPU Time       : 00:09:04
+% User (Computation): 99.34%
+% System (I/O)      :  0.66%
+Mem Reserved        : 50G
+Max Mem Used        : 212.36M (222674944.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Sun Jan  8 16:04:10 CST 2023 1673215450
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:04:34 CST 2023 1673215474
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:21
+Start               : 2023-01-08T15:54:21
+End                 : 2023-01-08T16:04:32
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:10:11
+Used CPU Time       : 00:10:07
+% User (Computation): 99.19%
+% System (I/O)      :  0.81%
+Mem Reserved        : 50G
+Max Mem Used        : 227.78M (238841856.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:04:34 CST 2023 1673215474
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:05:19 CST 2023 1673215519
+Name                : ICA300_NMs_geodesic_dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:54:47
+Start               : 2023-01-08T15:54:48
+End                 : 2023-01-08T16:05:17
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:10:29
+Used CPU Time       : 00:10:27
+% User (Computation): 99.07%
+% System (I/O)      :  0.93%
+Mem Reserved        : 50G
+Max Mem Used        : 232.95M (244264960.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Sun Jan  8 16:05:19 CST 2023 1673215519
+--------------------------------------------------------------

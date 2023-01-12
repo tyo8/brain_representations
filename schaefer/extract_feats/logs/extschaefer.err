@@ -1,0 +1,4 @@
+/export/anaconda/anaconda3/anaconda3-2020.07/lib/python3.8/site-packages/numpy/lib/function_base.py:2534: RuntimeWarning: invalid value encountered in true_divide
+  c /= stddev[:, None]
+/export/anaconda/anaconda3/anaconda3-2020.07/lib/python3.8/site-packages/numpy/lib/function_base.py:2535: RuntimeWarning: invalid value encountered in true_divide
+  c /= stddev[None, :]

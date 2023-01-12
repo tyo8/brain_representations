@@ -1,0 +1,11 @@
+#!/bin/sh
+#SBATCH --job-name=pts_csv
+#SBATCH --output=/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/logs/pts_to_csv%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/logs/pts_to_csv%j.err
+#SBATCH --time=23:55:00
+#SBATCH --mem=8GB
+
+out_dir=/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/wb_cp
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python /scratch/tyoeasley/brain_representations/src_py/convert_to_csv.py ${out_dir} .ptseries.nii

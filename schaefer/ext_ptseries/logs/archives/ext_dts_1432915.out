@@ -1,0 +1,36 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Jun 15 17:25:05 CDT 2022 1655331905
+Job ID:		1432915
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Jun 15 17:25:05 CDT 2022 1655331905
+--------------------------------------------------------------
+Timeseries data extraction method: wb_cp
+Extracting to: /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d300
+extracting...
+done.
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Jun 15 17:26:41 CDT 2022 1655332001
+Name                : ext_dts
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-06-15T17:25:05
+Start               : 2022-06-15T17:25:05
+End                 : 2022-06-15T17:26:39
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:01:34
+Used CPU Time       : 00:01:11
+% User (Computation): 73.08%
+% System (I/O)      : 26.91%
+Mem Reserved        : 29G
+Max Mem Used        : 333.91M (350130176.0)
+Max Disk Write      : 132.45M (138883891.2)
+Max Disk Read       : 20.30G (21796245995.5)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Wed Jun 15 17:26:41 CDT 2022 1655332001
+--------------------------------------------------------------

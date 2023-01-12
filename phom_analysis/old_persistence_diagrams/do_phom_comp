@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#SBATCH --job-name=phom_comp
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/logs/phom_comp%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/logs/phom_comp%j.err
+#SBATCH --time=23:55:00
+#SBATCH --nodes=1 
+#SBATCH --tasks-per-node=1 
+#SBATCH --mem=750gb
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py
+dist_list=/scratch/tyoeasley/brain_representations/dist_mtx_list.csv
+phom_dgms=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/subj_subj_phoms_tst.npy
+phom_dist=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/phoms_dists_tst.npy
+betti_curves=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/Betti_curves_tst.npy
+perst_imgs=/scratch/tyoeasley/brain_representations/phom_analysis/old_persistence_diagrams/perst_imgs_tst.npy
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${dist_list} ${phom_dgms} ${phom_dist} ${betti_curves} ${perst_imgs}

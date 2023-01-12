@@ -1,0 +1,312 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Nov 28 19:40:40 CST 2021 1638150040
+Job ID:		610588
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Nov 28 19:40:40 CST 2021 1638150040
+--------------------------------------------------------------
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/CCA_vars
+['NM_PROFUMO_and_Maps_PROFUMO.CCA_res', 'NM_PROFUMO_and_Amps_PROFUMO.CCA_res', 'NM_PROFUMO_and_NM_MMP.CCA_res', 'NM_PROFUMO_and_Amps_ICA300.CCA_res', 'Maps_PROFUMO_and_Amps_PROFUMO.CCA_res', 'Maps_PROFUMO_and_NM_MMP.CCA_res', 'Maps_PROFUMO_and_Amps_ICA300.CCA_res', 'Amps_PROFUMO_and_NM_MMP.CCA_res', 'Amps_PROFUMO_and_Amps_ICA300.CCA_res', 'NM_MMP_and_Amps_ICA300.CCA_res']
+Stability iteration 0:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3671.0 sec.
+Stability iteration 1:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3669.0 sec.
+Stability iteration 2:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 3:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 4:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3681.0 sec.
+Stability iteration 5:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3682.0 sec.
+Stability iteration 6:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 7:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 8:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 9:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3679.0 sec.
+NM_PROFUMO_and_Maps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Maps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_NM_MMP.CCA_stbl
+NM_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_ICA300.CCA_stbl
+Maps_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+Maps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_NM_MMP.CCA_stbl
+Maps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_ICA300.CCA_stbl
+Amps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_NM_MMP.CCA_stbl
+Amps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_Amps_ICA300.CCA_stbl
+NM_MMP_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_MMP_and_Amps_ICA300.CCA_stbl
+Stability iteration 10:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3678.0 sec.
+Stability iteration 11:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3679.0 sec.
+Stability iteration 12:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3853.0 sec.
+Stability iteration 13:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3908.0 sec.
+Stability iteration 14:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 15:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3680.0 sec.
+Stability iteration 16:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3681.0 sec.
+Stability iteration 17:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3682.0 sec.
+Stability iteration 18:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3684.0 sec.
+Stability iteration 19:
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+not reading in data: using inputs.
+done in 3683.0 sec.
+NM_PROFUMO_and_Maps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Maps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_NM_MMP.CCA_stbl
+NM_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_ICA300.CCA_stbl
+Maps_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+Maps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_NM_MMP.CCA_stbl
+Maps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_ICA300.CCA_stbl
+Amps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_NM_MMP.CCA_stbl
+Amps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_Amps_ICA300.CCA_stbl
+NM_MMP_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_MMP_and_Amps_ICA300.CCA_stbl
+NM_PROFUMO_and_Maps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Maps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_NM_MMP.CCA_stbl
+NM_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_PROFUMO_and_Amps_ICA300.CCA_stbl
+Maps_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+Maps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_NM_MMP.CCA_stbl
+Maps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Maps_PROFUMO_and_Amps_ICA300.CCA_stbl
+Amps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_NM_MMP.CCA_stbl
+Amps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/Amps_PROFUMO_and_Amps_ICA300.CCA_stbl
+NM_MMP_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_3/NM_MMP_and_Amps_ICA300.CCA_stbl
+
+
+BENCHMARKING:
+Total within-iteration time: 73990.0 sec
+Average iteration length: 3699.5194798588755 sec
+Std. dev of iteration time: 60.99532410789223 sec
+Number of iterations: 20
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Nov 29 16:34:05 CST 2021 1638225245
+Name                : stbl_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-11-28T19:40:20
+Start               : 2021-11-28T19:40:37
+End                 : 2021-11-29T16:34:00
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   20:53:23
+Used CPU Time       :   20:42:59
+% User (Computation): 98.80%
+% System (I/O)      :  1.20%
+Mem Reserved        : 250G
+Max Mem Used        : 7.33G (7875162112.0)
+Max Disk Write      : 90.93G (97632900874.2)
+Max Disk Read       : 66.42G (71320102502.4)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Mon Nov 29 16:34:05 CST 2021 1638225245
+--------------------------------------------------------------

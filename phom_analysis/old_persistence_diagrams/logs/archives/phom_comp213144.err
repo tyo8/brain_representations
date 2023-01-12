@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_SSpHom.py", line 5, in <module>
+    SSH.compare_phom(sys.argv[2],sys.argv[3])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 64, in compare_phom
+    pf.export_dists(phom_dist_mtx,fig_dir)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/phom_figs.py", line 32, in export_dists
+    Dmtx = np.load(phom_dists_name)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/numpy/lib/npyio.py", line 428, in load
+    fid = open(os_fspath(file), "rb")
+TypeError: expected str, bytes or os.PathLike object, not numpy.ndarray

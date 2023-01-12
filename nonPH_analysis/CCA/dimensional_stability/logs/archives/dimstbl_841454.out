@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 11 19:42:00 CST 2022 1641951720
+Job ID:		841454
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Tue Jan 11 19:42:00 CST 2022 1641951720
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 5001 shufflings (permutations only).
+[['0.0001', '0.001', '0.01', '0.1', '1.0', '10.0', '100.0', '1000.0', '10000.0', '100000.0', '1000000.0']]
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Jan 13 12:46:15 CST 2022 1642099575
+Name                : dimstbl
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 20
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2022-01-11T19:42:00
+Start               : 2022-01-11T19:42:00
+End                 : 2022-01-13T12:46:10
+Reserved Walltime   : 6-23:55:00
+Used Walltime       : 1-17:04:10
+Used CPU Time       :   00:01:51
+% User (Computation): 82.61%
+% System (I/O)      : 17.39%
+Mem Reserved        : 60G
+Max Mem Used        : 5.16G (5540352000.0)
+Max Disk Write      : 18.65M (19555942.4)
+Max Disk Read       : 114.10M (119642521.6)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Thu Jan 13 12:46:15 CST 2022 1642099575
+--------------------------------------------------------------

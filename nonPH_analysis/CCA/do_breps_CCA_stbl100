@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#SBATCH --job-name=stbl100_cca
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/logs/stbl100_cca%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/logs/stbl100_cca%j.err
+#SBATCH --time=167:55:00
+#SBATCH --cpus-per-task=11
+#SBATCH --mem-per-cpu=5gb
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py
+
+dataset_list_name=/scratch/tyoeasley/brain_representations/list_of_datalists_U100.csv
+output_basedir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100
+namelist_path=/scratch/tyoeasley/brain_representations/BR_label_list.csv
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${dataset_list_name} ${output_basedir} ${namelist_path} CCA 11

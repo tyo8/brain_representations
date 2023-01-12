@@ -1,0 +1,47 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  3 12:36:55 CST 2022 1641235015
+Job ID:		811426
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan  3 12:36:55 CST 2022 1641235015
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 1001 shufflings (permutations only).
+[['NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'NM_PROFUMO_and_Amps_PROFUMO'], ['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0']]
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_Maps_PROFUMO.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_pt_17_2022Jan03 not found; new directory created.
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.0 for Maps_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 0.0 for Maps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.0 for Maps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.0 for Amps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.0 for Amps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.0 for NM_MMP_and_Amps_ICA300.
+Elapsed time over 20 workers and 1000 total permutations is 4851.148047924042 seconds.
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  3 13:58:22 CST 2022 1641239902
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node20
+Cores               : 10
+State               : COMPLETED
+Submit              : 2022-01-03T12:36:54
+Start               : 2022-01-03T12:36:55
+End                 : 2022-01-03T13:58:17
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   01:21:22
+Used CPU Time       :   13:26:24
+% User (Computation): 58.54%
+% System (I/O)      : 41.46%
+Mem Reserved        : 30G
+Max Mem Used        : 7.46G (8007372800.0)
+Max Disk Write      : 55.98M (58699284.48)
+Max Disk Read       : 98.33M (103106478.08)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Mon Jan  3 13:58:22 CST 2022 1641239902
+--------------------------------------------------------------

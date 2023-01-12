@@ -1,0 +1,6 @@
+{The logical indices in position 1 contain a true value outside of the array
+bounds.
+
+Error in ext_ptseries (line 68)
+				parcel_signals = D(P == n,:);
+} 

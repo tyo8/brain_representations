@@ -1,0 +1,104 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Tue Nov  9 20:39:29 CST 2021 1636511969
+Job ID:		575616
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Tue Nov  9 20:39:29 CST 2021 1636511969
+--------------------------------------------------------------
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/subj_list_Maps.csv
+Using SVD reduction. Maximum singular value = 44.90762372785068
+Using SVD reduction. Maximum singular value = 3542.2842228034137
+X data dimensions:(1003, 1225)
+Wx data dimensions:(1225, 1002)
+Y data dimensions:(1003, 91282)
+Wy data dimensions:(91282, 1002)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_list_Amps.csv
+Using SVD reduction. Maximum singular value = 44.90762372785068
+X data dimensions:(1003, 1225)
+Wx data dimensions:(1225, 199)
+Y data dimensions:(1003, 200)
+Wy data dimensions:(200, 199)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/glasser/NetMats/subj_list_NM.csv
+Using SVD reduction. Maximum singular value = 44.90762372785068
+Using SVD reduction. Maximum singular value = 1646.5772264517643
+X data dimensions:(1003, 1225)
+Wx data dimensions:(1225, 1002)
+Y data dimensions:(1003, 64620)
+Wy data dimensions:(64620, 1002)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/Amplitudes/subj_list_Amps.csv
+Using SVD reduction. Maximum singular value = 44.90762372785068
+X data dimensions:(1003, 1225)
+Wx data dimensions:(1225, 299)
+Y data dimensions:(1003, 300)
+Wy data dimensions:(300, 299)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/subj_list_Maps.csv
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_list_Amps.csv
+Using SVD reduction. Maximum singular value = 3542.2842228034137
+X data dimensions:(1003, 91282)
+Wx data dimensions:(91282, 199)
+Y data dimensions:(1003, 200)
+Wy data dimensions:(200, 199)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/subj_list_Maps.csv
+path to dataset: /scratch/tyoeasley/brain_representations/glasser/NetMats/subj_list_NM.csv
+Using SVD reduction. Maximum singular value = 3542.2842228034137
+Using SVD reduction. Maximum singular value = 1646.5772264517643
+X data dimensions:(1003, 91282)
+Wx data dimensions:(91282, 1002)
+Y data dimensions:(1003, 64620)
+Wy data dimensions:(64620, 1002)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/subj_list_Maps.csv
+path to dataset: /scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/Amplitudes/subj_list_Amps.csv
+Using SVD reduction. Maximum singular value = 3542.2842228034137
+X data dimensions:(1003, 91282)
+Wx data dimensions:(91282, 299)
+Y data dimensions:(1003, 300)
+Wy data dimensions:(300, 299)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_list_Amps.csv
+path to dataset: /scratch/tyoeasley/brain_representations/glasser/NetMats/subj_list_NM.csv
+Using SVD reduction. Maximum singular value = 1646.5772264517643
+X data dimensions:(1003, 200)
+Wx data dimensions:(200, 199)
+Y data dimensions:(1003, 64620)
+Wy data dimensions:(64620, 199)
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_list_Amps.csv
+path to dataset: /scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/Amplitudes/subj_list_Amps.csv
+X data dimensions:(1003, 200)
+Wx data dimensions:(200, 199)
+Y data dimensions:(1003, 300)
+Wy data dimensions:(300, 199)
+path to dataset: /scratch/tyoeasley/brain_representations/glasser/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/Amplitudes/subj_list_Amps.csv
+Using SVD reduction. Maximum singular value = 1646.5772264517643
+X data dimensions:(1003, 64620)
+Wx data dimensions:(64620, 299)
+Y data dimensions:(1003, 300)
+Wy data dimensions:(300, 299)
+--------------------------------------------------------------
+Begin SLURM Epilogue Tue Nov  9 22:53:26 CST 2021 1636520006
+Name                : breps_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-11-09T20:39:21
+Start               : 2021-11-09T20:39:29
+End                 : 2021-11-09T22:53:19
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   02:13:50
+Used CPU Time       :   01:56:03
+% User (Computation): 97.39%
+% System (I/O)      :  2.62%
+Mem Reserved        : 250G
+Max Mem Used        : 5.60G (6010339328.0)
+Max Disk Write      : 4.20G (4512022528.0)
+Max Disk Read       : 15.38G (16513121648.6)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End SLURM Epilogue Tue Nov  9 22:53:26 CST 2021 1636520006
+--------------------------------------------------------------

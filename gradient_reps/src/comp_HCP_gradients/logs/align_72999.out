@@ -1,0 +1,53 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Aug 30 22:51:44 CDT 2022 1661917904
+Job ID:		72999
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Aug 30 22:51:44 CDT 2022 1661917904
+--------------------------------------------------------------
+Disparity val. = 0.9955403257037264
+Saving results...
+exporting to CIFTI2 format...
+data size: (100, 91282)
+new cifti data size: (100, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/grad_maps/emb_subj-100206_aligned.dtseries.nii
+subj embedding 100206 successfully aligned and written.
+Disparity val. = 0.9924081449169829
+Saving results...
+exporting to CIFTI2 format...
+data size: (100, 91282)
+new cifti data size: (100, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/grad_maps/emb_subj-100307_aligned.dtseries.nii
+subj embedding 100307 successfully aligned and written.
+Disparity val. = 0.9965692688926127
+Saving results...
+exporting to CIFTI2 format...
+data size: (100, 91282)
+new cifti data size: (100, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/grad_maps/emb_subj-100408_aligned.dtseries.nii
+subj embedding 100408 successfully aligned and written.
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Aug 30 22:51:58 CDT 2022 1661917918
+Name                : align
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-08-30T22:51:44
+Start               : 2022-08-30T22:51:44
+End                 : 2022-08-30T22:51:56
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:12
+Used CPU Time       : 00:00:07
+% User (Computation): 87.97%
+% System (I/O)      : 12.02%
+Mem Reserved        : 20G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Aug 30 22:51:58 CDT 2022 1661917918
+--------------------------------------------------------------

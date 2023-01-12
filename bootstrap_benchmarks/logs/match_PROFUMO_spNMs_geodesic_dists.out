@@ -1,0 +1,57 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 21:12:29 CST 2023 1673406749
+Job ID:		485199
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 21:12:29 CST 2023 1673406749
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 21:12:29 CST 2023 1673406749
+Job ID:		485198
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 21:12:29 CST 2023 1673406749
+--------------------------------------------------------------
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/matching/matchedXY_dim1_7v7_t_89-__r9_O3_ev_vv_lf8_v__7vfu_3s9_7528_rftW1z_lf7_7f_9_ey-bPV9f_W9r-_-e7___iu__3_Vv3y7v3_9fO-_3XvfX_b_n__r9v-_t1_t7-_efvNd3_0_sf73-m_b__9v7uH_X953_2Xv84_73_8nb-x8D.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/matching/affinityXY_dim1_7v7_t_89-__r9_O3_ev_vv_lf8_v__7vfu_3s9_7528_rftW1z_lf7_7f_9_ey-bPV9f_W9r-_-e7___iu__3_Vv3y7v3_9fO-_3XvfX_b_n__r9v-_t1_t7-_efvNd3_0_sf73-m_b__9v7uH_X953_2Xv84_73_8nb-x8D.txt
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/matching/matchedXY_dim1_Xff4____9t1aNr-_z7_cvr7f3v97-93b5eb_qP_11m3_7X7u-53_7b6_uu_v9cr36tz_-97-f_O7f7_-37f79f_ff77-9_9y_f6_-92f3797-6__ri-9n_z89__3__9_Y97v_e_3v--__7Xv___b_t39b9v-_U7VG_777NUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/matching/affinityXY_dim1_Xff4____9t1aNr-_z7_cvr7f3v97-93b5eb_qP_11m3_7X7u-53_7b6_uu_v9cr36tz_-97-f_O7f7_-37f79f_ff77-9_9y_f6_-92f3797-6__ri-9n_z89__3__9_Y97v_e_3v--__7Xv___b_t39b9v-_U7VG_777NUH.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 21:12:31 CST 2023 1673406751
+Name                : PROFUMO_spNMs_geodesic_dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T21:12:29
+Start               : 2023-01-10T21:12:29
+End                 : 2023-01-10T21:12:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 10G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jan 10 21:12:31 CST 2023 1673406751
+--------------------------------------------------------------

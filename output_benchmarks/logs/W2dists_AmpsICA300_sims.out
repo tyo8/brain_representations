@@ -1,0 +1,33 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Nov 24 00:37:08 CST 2022 1669271828
+Job ID:		233828
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Thu Nov 24 00:37:08 CST 2022 1669271828
+--------------------------------------------------------------
+WARNING: created directory /scratch/tyoeasley/brain_representations/metric_tests/ICA300_Amps/phoms
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Nov 24 00:37:17 CST 2022 1669271837
+Name                : W2dists_AmpsICA300_sims
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : FAILED
+Submit              : 2022-11-24T00:36:57
+Start               : 2022-11-24T00:37:08
+End                 : 2022-11-24T00:37:15
+Reserved Walltime   : 03:55:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:01
+% User (Computation): 74.80%
+% System (I/O)      :  0.00%
+Mem Reserved        : 100G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Thu Nov 24 00:37:17 CST 2022 1669271837
+--------------------------------------------------------------

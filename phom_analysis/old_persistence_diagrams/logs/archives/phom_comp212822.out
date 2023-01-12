@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Mon Jul  5 22:24:37 CDT 2021 1625541877
+Job ID:		212822
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Mon Jul  5 22:24:37 CDT 2021 1625541877
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin SLURM Epilogue Mon Jul  5 23:52:17 CDT 2021 1625547137
+Name                : phom_comp
+User                : tyoeasley
+Partition           : medium
+Nodes               : node32
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2021-07-05T22:24:37
+Start               : 2021-07-05T22:24:37
+End                 : 2021-07-05T23:52:12
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   01:27:35
+Used CPU Time       :   01:27:11
+% User (Computation): 87.33%
+% System (I/O)      : 12.67%
+Mem Reserved        : 250G/node
+Max Mem Used        : 15.50G (16647606272.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 138.95M (145699635.2)
+Max-Mem-Used Node   : node32
+Max-Disk-Write Node : node32
+Max-Disk-Read Node  : node32
+End SLURM Epilogue Mon Jul  5 23:52:17 CDT 2021 1625547137
+--------------------------------------------------------------

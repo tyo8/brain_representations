@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_SSpHom.py", line 1, in <module>
+    import SubjSubjHomologies as SSH
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 11, in <module>
+    def comp_persdiag(dist_list_name,fname_out, normalize = false):
+NameError: name 'false' is not defined

@@ -1,0 +1,4 @@
+  File "/scratch/tyoeasley/brain_representations/src_py/run_MDS.py", line 24
+    for i in range(dist_mtx_array.shape[2]):
+                                           ^
+SyntaxError: invalid syntax

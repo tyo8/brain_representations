@@ -1,0 +1,46 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Dec  6 13:16:20 CST 2022 1670354180
+Job ID:		247477
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Tue Dec  6 13:16:20 CST 2022 1670354180
+--------------------------------------------------------------
+distance matrix shape (1003, 1003)
+distance matrix nanflag: False
+Computing persistence diagrams...
+dist_mtx_input has dimension 4x(1003, 1003)
+Computing persistence diagrams for dimensions (0, 1, 2)...
+Found a maximum of 4052 generators (in all computed dimensions) over 4 diagrams.
+Done. (0:07:08.835996 elapsed)
+
+Running with make_figs=True
+Exporting persistence diagrams...
+Done. (0:00:01.017386 elapsed)
+Exporting Betti curves...
+Done. (0:00:03.475027 elapsed)
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Dec  6 13:23:50 CST 2022 1670354630
+Name                : phoms_pNMsICA300_sims
+User                : tyoeasley
+Partition           : medium
+Nodes               : node01
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-12-06T13:16:20
+Start               : 2022-12-06T13:16:20
+End                 : 2022-12-06T13:23:47
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:07:27
+Used CPU Time       :   00:07:22
+% User (Computation): 99.48%
+% System (I/O)      :  0.52%
+Mem Reserved        : 50G
+Max Mem Used        : 246.48M (258457600.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node01
+Max-Disk-Write Node : node01
+Max-Disk-Read Node  : node01
+End Slurm Epilogue Tue Dec  6 13:23:50 CST 2022 1670354630
+--------------------------------------------------------------

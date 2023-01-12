@@ -1,0 +1,59 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jul 11 16:13:01 CDT 2022 1657573981
+Job ID:		1513710
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jul 11 16:13:01 CDT 2022 1657573981
+--------------------------------------------------------------
+Timeseries data extraction method: MATLAB
+Extracting from: /ceph/hcpdb/archive/HCP_1200/arc001/%s_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST%s_%s/rfMRI_REST%s_%s_Atlas_MSMAll_hp2000_clean.dtseries.nii
+Extracting to: /scratch/tyoeasley/brain_representations/yeo/ext_ptseries/MATLAB
+extracting...
+[Warning: Function isstring has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)
+In ext_ptseries (line 3)] 
+/scratch/tyoeasley/brain_representations/yeo/parcellation_defs/Yeo2011_17Networks_N1000.dlabel.nii
+Number of parcels in decomp: 17
+Pulling subject list from: /scratch/tyoeasley/brain_representations/HCP_IDs_all.csv
+Writing data to general path: /scratch/tyoeasley/brain_representations/yeo/ext_ptseries/MATLAB/%s_REST%s_%s.csv
+[Warning: file or directory
+"/ceph/hcpdb/archive/HCP_1200/arc001/100206_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST1_LR/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.nii
+" does not exist, could not determine fileformat] 
+ In '/mnt/beegfs/scratch/tyoeasley/brain_representations/src_MATLAB/fieldtrip/fileio/ft_filetype.m' at line 1578
+ In '/mnt/beegfs/scratch/tyoeasley/brain_representations/src_MATLAB/fieldtrip/fileio/ft_read_cifti.m' at line 68
+
+[Warning: file or directory
+"/ceph/hcpdb/archive/HCP_900/arc001/100206_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST1_LR/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.nii
+" does not exist, could not determine fileformat] 
+[Warning: file or directory
+"/ceph/hcpdb/archive/HCP_500/arc001/100206_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST1_LR/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.nii
+" does not exist, could not determine fileformat] 
+[Warning: Subject 100206 not found in ceph/hcpdb/archive/] 
+done.
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jul 11 16:13:18 CDT 2022 1657573998
+Name                : ext_pts_yeo
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-07-11T16:12:39
+Start               : 2022-07-11T16:13:01
+End                 : 2022-07-11T16:13:16
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:15
+Used CPU Time       : 00:00:07
+% User (Computation): 75.03%
+% System (I/O)      : 24.96%
+Mem Reserved        : 29G
+Max Mem Used        : 1.27M (1335296.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Mon Jul 11 16:13:18 CDT 2022 1657573998
+--------------------------------------------------------------

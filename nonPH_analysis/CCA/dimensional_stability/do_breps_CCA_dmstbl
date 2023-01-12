@@ -1,0 +1,33 @@
+#!/bin/sh
+
+#SBATCH --job-name=dimstbl
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/logs/dimstbl_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/logs/dimstbl_%j.err
+#SBATCH --time=167:55:00
+#SBATCH --cpus-per-task=20
+#SBATCH --mem-per-cpu=3gb
+
+n_workers=20
+
+EB_floc=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/subj1003_EBs.csv
+nperms=5000
+permlist_floc=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/tmp_permlist.csv
+
+MATLAB_src=/scratch/tyoeasley/brain_representations/src_MATLAB
+py_src=/scratch/tyoeasley/brain_representations/src_py
+cwd=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/lindecomp_dimstab.py
+
+dataset_fname=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/svd_reduced_subj_data.brep
+output_basedir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability
+namelist_path=/scratch/tyoeasley/brain_representations/BR_label_list.csv
+regval_listpath=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/regvals_2022Jan09.csv
+
+cd ${MATLAB_src}
+module load matlab
+matlab -nodisplay -nojvm -batch "quickperm_fn(\"${EB_floc}\",${nperms},\"${permlist_floc}\")"
+cd ${cwd}
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${dataset_fname} ${output_basedir} ${permlist_floc} ${namelist_path} ${regval_listpath} CCA ${n_workers} 

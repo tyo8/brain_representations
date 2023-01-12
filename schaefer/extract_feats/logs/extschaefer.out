@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Oct 18 15:37:53 CDT 2022 1666125473
+Job ID:		173895
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Tue Oct 18 15:37:53 CDT 2022 1666125473
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Oct 18 18:49:49 CDT 2022 1666136989
+Name                : feats_schaefer
+User                : tyoeasley
+Partition           : medium
+Nodes               : node01
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-10-18T15:37:52
+Start               : 2022-10-18T15:37:53
+End                 : 2022-10-18T18:49:47
+Reserved Walltime   : 3-23:55:00
+Used Walltime       :   03:11:54
+Used CPU Time       :   02:21:41
+% User (Computation): 94.54%
+% System (I/O)      :  5.47%
+Mem Reserved        : 50G
+Max Mem Used        : 288.96M (302997504.0)
+Max Disk Write      : 70.81G (76030882611.2)
+Max Disk Read       : 104.44G (1.12146272748e+11)
+Max-Mem-Used Node   : node01
+Max-Disk-Write Node : node01
+Max-Disk-Read Node  : node01
+End Slurm Epilogue Tue Oct 18 18:49:49 CDT 2022 1666136989
+--------------------------------------------------------------

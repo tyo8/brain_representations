@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
+#SBATCH --job-name=phoms_NMsICA300_sims
+#SBATCH --output=/scratch/tyoeasley/brain_representations/metric_tests/logs/phoms_NMsICA300_sims.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/metric_tests/logs/phoms_NMsICA300_sims.err
+#SBATCH --time=167:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50gb
+
+sim_list=/scratch/tyoeasley/brain_representations/metric_tests/ICA300_NMs/NMsICA300_sims.csv
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top
+python /scratch/tyoeasley/brain_representations/metric_tests/naive_phoms.py ${sim_list}
+

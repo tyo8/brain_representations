@@ -1,0 +1,160 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Oct 16 02:21:45 CDT 2022 1665904905
+Job ID:		158448
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Oct 16 02:21:45 CDT 2022 1665904905
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Oct 16 20:28:04 CDT 2022 1665970084
+Job ID:		158448
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Oct 16 20:28:04 CDT 2022 1665970084
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Oct 16 20:25:48 CDT 2022 1665969948
+Job ID:		158448
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Oct 16 20:25:48 CDT 2022 1665969948
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Oct 16 20:23:32 CDT 2022 1665969812
+Job ID:		158448
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Oct 16 20:23:32 CDT 2022 1665969812
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Oct 16 20:21:13 CDT 2022 1665969673
+Job ID:		158448
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Oct 16 20:21:13 CDT 2022 1665969673
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Oct 16 20:21:25 CDT 2022 1665969685
+Name                : subj_tpgrad
+User                : tyoeasley
+Partition           : medium
+Nodes               : node21
+Cores               : 1
+State               : NODE_FAIL
+Submit              : 2022-10-16T20:19:04
+Start               : 2022-10-16T20:21:13
+End                 : 2022-10-16T20:21:23
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:10
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 852.00K (872448.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Oct 16 20:21:25 CDT 2022 1665969685
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Oct 16 20:23:44 CDT 2022 1665969824
+Name                : subj_tpgrad
+User                : tyoeasley
+Partition           : medium
+Nodes               : node21
+Cores               : 1
+State               : NODE_FAIL
+Submit              : 2022-10-16T20:21:27
+Start               : 2022-10-16T20:23:32
+End                 : 2022-10-16T20:23:42
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:10
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 852.00K (872448.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Oct 16 20:23:44 CDT 2022 1665969824
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Oct 16 20:26:01 CDT 2022 1665969961
+Name                : subj_tpgrad
+User                : tyoeasley
+Partition           : medium
+Nodes               : node21
+Cores               : 1
+State               : NODE_FAIL
+Submit              : 2022-10-16T20:23:46
+Start               : 2022-10-16T20:25:48
+End                 : 2022-10-16T20:25:59
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:11
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 848.00K (868352.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Oct 16 20:26:01 CDT 2022 1665969961
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Oct 16 20:28:16 CDT 2022 1665970096
+Name                : subj_tpgrad
+User                : tyoeasley
+Partition           : medium
+Nodes               : node21
+Cores               : 1
+State               : NODE_FAIL
+Submit              : 2022-10-16T20:26:03
+Start               : 2022-10-16T20:28:04
+End                 : 2022-10-16T20:28:14
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:10
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 856.00K (876544.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Oct 16 20:28:16 CDT 2022 1665970096
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Oct 18 13:38:33 CDT 2022 1666118313
+Name                : subj_tpgrad
+User                : tyoeasley
+Partition           : medium
+Nodes               : None assigned
+Cores               : 1
+State               : PENDING (JobHoldMaxRequeue) ((null))
+Submit              : 2022-10-16T20:28:18
+Start               : --
+End                 : --
+Reserved Walltime   : 6-23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : 
+Max-Disk-Write Node : 
+Max-Disk-Read Node  : 
+End Slurm Epilogue Tue Oct 18 13:38:33 CDT 2022 1666118313
+--------------------------------------------------------------

@@ -1,0 +1,80 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:09:13 CST 2023 1673399353
+Job ID:		482500
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:09:13 CST 2023 1673399353
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:09:13 CST 2023 1673399353
+Job ID:		482499
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:09:13 CST 2023 1673399353
+--------------------------------------------------------------
+Found duplicate births in X
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+Found duplicate births in X
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+Found duplicate births in X
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+Found duplicate births in X
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/unisml_NMs/phom_data_unisml_NMs_Psim_ztrans_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:09:15 CST 2023 1673399355
+Name                : unisml_NMs_Psim_ztrans_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:09:11
+Start               : 2023-01-10T19:09:13
+End                 : 2023-01-10T19:09:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:09:15 CST 2023 1673399355
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:09:15 CST 2023 1673399355
+Name                : unisml_NMs_Psim_ztrans_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:09:10
+Start               : 2023-01-10T19:09:13
+End                 : 2023-01-10T19:09:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:09:15 CST 2023 1673399355
+--------------------------------------------------------------

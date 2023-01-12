@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Nov 24 09:41:40 CST 2022 1669304500
+Job ID:		233905
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Thu Nov 24 09:41:40 CST 2022 1669304500
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/subj_list_NMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/uniform_NMs_Psim_ztrans_sims.txt
+computing similarity according to Psim_ztrans
+Estimated data size is 44984550 elements or ~0.1728GB.
+Initial data has shape (n_subj, n_feats)=(1003, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Nov 24 09:45:33 CST 2022 1669304733
+Name                : uniformNMs_Psim_ztrans
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-24T09:41:27
+Start               : 2022-11-24T09:41:40
+End                 : 2022-11-24T09:45:31
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:03:51
+Used CPU Time       : 00:01:30
+% User (Computation): 94.79%
+% System (I/O)      :  5.21%
+Mem Reserved        : 50G
+Max Mem Used        : 293.87M (308146176.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Thu Nov 24 09:45:33 CST 2022 1669304733
+--------------------------------------------------------------

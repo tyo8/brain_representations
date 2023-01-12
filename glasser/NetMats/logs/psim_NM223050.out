@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Thu Jul  8 22:30:41 CDT 2021 1625801441
+Job ID:		223050
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Thu Jul  8 22:30:41 CDT 2021 1625801441
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin SLURM Epilogue Thu Jul  8 22:36:36 CDT 2021 1625801796
+Name                : psim_NM
+User                : tyoeasley
+Partition           : medium
+Nodes               : node27
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-07-08T22:30:31
+Start               : 2021-07-08T22:30:40
+End                 : 2021-07-08T22:36:03
+Reserved Walltime   : 6-03:55:00
+Used Walltime       :   00:05:23
+Used CPU Time       :   00:04:31
+% User (Computation): 99.19%
+% System (I/O)      :  0.81%
+Mem Reserved        : 50G/node
+Max Mem Used        : 565.37M (592834560.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 2.24G (2400232407.04)
+Max-Mem-Used Node   : node27
+Max-Disk-Write Node : node27
+Max-Disk-Read Node  : node27
+End SLURM Epilogue Thu Jul  8 22:36:36 CDT 2021 1625801796
+--------------------------------------------------------------

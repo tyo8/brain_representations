@@ -1,0 +1,48 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  3 12:28:55 CST 2022 1641234535
+Job ID:		811423
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan  3 12:28:55 CST 2022 1641234535
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 7 shufflings (permutations only).
+[['NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'NM_PROFUMO_and_Amps_PROFUMO'], ['1000000.0', '10.0', '1.0', '100.0', '0.1', '0.001', '10000.0', '10000.0', '0.01', '10.0']]
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_pt_1_2022Jan03 not found; new directory created.
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.01 for Maps_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.001 for Amps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+Elapsed time over 2 workers and 6 total permutations is 34.99355888366699 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_permtests_2022Jan03
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  3 12:30:00 CST 2022 1641234600
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node23
+Cores               : 10
+State               : COMPLETED
+Submit              : 2022-01-03T12:28:32
+Start               : 2022-01-03T12:28:55
+End                 : 2022-01-03T12:29:55
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:01:00
+Used CPU Time       :   00:04:04
+% User (Computation): 65.53%
+% System (I/O)      : 34.47%
+Mem Reserved        : 30G
+Max Mem Used        : 475.15M (498233344.0)
+Max Disk Write      : 194.56K (199229.44)
+Max Disk Read       : 86.97M (91194654.72)
+Max-Mem-Used Node   : node23
+Max-Disk-Write Node : node23
+Max-Disk-Read Node  : node23
+End Slurm Epilogue Mon Jan  3 12:30:00 CST 2022 1641234600
+--------------------------------------------------------------

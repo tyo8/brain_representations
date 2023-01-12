@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 41, in <module>
+    reps = dill.load(dataset_fname)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/dill/_dill.py", line 313, in load
+    return Unpickler(file, ignore=ignore, **kwds).load()
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/dill/_dill.py", line 520, in __init__
+    StockUnpickler.__init__(self, *args, **kwds)
+TypeError: file must have 'read' and 'readline' attributes

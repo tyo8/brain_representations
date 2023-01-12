@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_comp_Psim.py", line 4, in <module>
+    cpm.comp_dist_mtx(sys.argv[1],sys.argv[2])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 14, in comp_dist_mtx
+    Psim_mtx = comp_Psim_vals(subj_list)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 50, in comp_Psim_vals
+    print(str(len(data_list[-1]))
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 23, in comp_Psim
+    sim_mtx = np.corrcoef(data1,data2)
+  File "<__array_function__ internals>", line 6, in corrcoef
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/numpy/lib/function_base.py", line 2526, in corrcoef
+    c = cov(x, y, rowvar)
+  File "<__array_function__ internals>", line 6, in cov
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/numpy/lib/function_base.py", line 2390, in cov
+    X = np.concatenate((X, y), axis=0)
+  File "<__array_function__ internals>", line 6, in concatenate
+ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 1440000 and the array at index 1 has size 1004

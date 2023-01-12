@@ -1,0 +1,79 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Feb 11 16:25:34 CST 2022 1644618334
+Job ID:		921107
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Fri Feb 11 16:25:34 CST 2022 1644618334
+--------------------------------------------------------------
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+Uy dims: (1003, 1002)
+Wx dims:(1225, 1002)
+Uy dims: (1003, 1002)
+Wx dims:(91282, 1002)
+Uy dims: (1003, 199)
+Wx dims:(1225, 199)
+Uy dims: (1003, 199)
+Wx dims:(200, 199)
+Uy dims: (1003, 1002)
+Wx dims:(1225, 1002)
+Uy dims: (1003, 1002)
+Wx dims:(64620, 1002)
+Uy dims: (1003, 299)
+Wx dims:(1225, 299)
+Uy dims: (1003, 299)
+Wx dims:(300, 299)
+Uy dims: (1003, 199)
+Wx dims:(91282, 199)
+Uy dims: (1003, 199)
+Wx dims:(200, 199)
+Uy dims: (1003, 1002)
+Wx dims:(91282, 1002)
+Uy dims: (1003, 1002)
+Wx dims:(64620, 1002)
+Uy dims: (1003, 299)
+Wx dims:(91282, 299)
+Uy dims: (1003, 299)
+Wx dims:(300, 299)
+Uy dims: (1003, 199)
+Wx dims:(200, 199)
+Uy dims: (1003, 199)
+Wx dims:(64620, 199)
+Uy dims: (1003, 199)
+Wx dims:(200, 199)
+Uy dims: (1003, 199)
+Wx dims:(300, 199)
+Uy dims: (1003, 299)
+Wx dims:(64620, 299)
+Uy dims: (1003, 299)
+Wx dims:(300, 299)
+Uy dims: (1003, 5)
+Wx dims:(5, 1002)
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Feb 11 16:48:32 CST 2022 1644619712
+Name                : phomCCA
+User                : tyoeasley
+Partition           : small
+Nodes               : node03
+Cores               : 1
+State               : FAILED
+Submit              : 2022-02-11T16:25:34
+Start               : 2022-02-11T16:25:34
+End                 : 2022-02-11T16:48:30
+Reserved Walltime   : 07:55:00
+Used Walltime       : 00:22:56
+Used CPU Time       : 00:16:09
+% User (Computation): 96.14%
+% System (I/O)      :  3.86%
+Mem Reserved        : 750G
+Max Mem Used        : 7.06G (7575367680.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 3.76G (4035622993.92)
+Max-Mem-Used Node   : node03
+Max-Disk-Write Node : node03
+Max-Disk-Read Node  : node03
+End Slurm Epilogue Fri Feb 11 16:48:32 CST 2022 1644619712
+--------------------------------------------------------------

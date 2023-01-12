@@ -1,0 +1,139 @@
+/* 
+ PROFUMO
+ Framework for variational Bayesian inference of modes from fMRI data
+ 
+ - Sam Harrison 2018
+ A separate copy of the licence is also included within the repository.
+ 
+ profumo.css
+ HTML report style
+*/
+
+/* HTML */
+/* https://developer.mozilla.org/en-US/docs/Learn/HTML */
+/* https://developer.mozilla.org/en-US/docs/Web/HTML/Element */
+/* CSS */
+/* https://developer.mozilla.org/en-US/docs/Learn/CSS */
+/* https://developer.mozilla.org/en-US/docs/Learn/CSS/Styling_text/Fundamentals */
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* General styling */
+
+/* Reusable colours */
+:root {
+  --background-color:     hsl(45, 60%, 96%); /* Light orange */
+  --alt-background-color: hsl(0, 0%, 97%);
+  --text-color:           hsl(0, 0%, 25%);
+  --mid-text-color:       hsl(0, 0%, 50%);
+  --link-color:           hsl(225, 70%, 60%); /* blue; complementary to --background-color */
+  --light-text-color:     hsl(0, 0%, 75%);
+  --light-border-color:   hsl(0, 0%, 80%);
+  --dark-border-color:    hsl(0, 0%, 60%);
+}
+
+/* Element styles */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: serif;
+  font-size: 18px;
+  background-color: var(--background-color);
+}
+
+main {
+  max-width: 750px;
+  margin: 0px auto;
+  line-height: 1.2;
+  color: var(--text-color);
+  padding: 0px 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Gill Sans", "Geneva", sans-serif;
+  font-weight: normal;
+}
+
+nav {
+  font-family: "Gill Sans", "Geneva", sans-serif;
+  margin: 1em;
+  line-height: 1.5;
+}
+
+footer {
+  max-width: 500px;
+  margin: 0.5em auto;
+  padding: 0px 20px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--mid-text-color);
+}
+
+/* Figures */
+figure {
+  width: 90%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2px 2px 5px 2px;
+  background-color: var(--alt-background-color);
+  border: 2px solid var(--light-border-color);
+}
+
+img {
+  width: 100%;
+  height: auto;
+  min-width: 250px;
+  background-color: white;
+}
+
+figcaption {
+  font-family: "Gill Sans", "Geneva", sans-serif;
+  font-size: 120%;
+}
+
+/* Code blocks */
+code, pre {
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 90%;
+  color: var(--mid-text-color);
+}
+
+code.bash {
+  border           : 2px solid var(--light-border-color);
+  border-radius    : 4px;
+  background-color : hsl(15, 80%, 90%); /* Pale pink */
+  padding          : 2px;
+}
+code.bash::before {
+  content: "$ ";
+}
+
+/* Links */
+a:link {
+  color: var(--link-color);
+}
+a:visited {
+  color: Indigo;
+}
+a:hover, a:active, a:focus {
+  color: red;
+}
+
+hr {
+  clear: both;
+  border: 0;
+  height: 2px;
+  background-image: linear-gradient(to right, var(--light-border-color), var(--light-border-color), var(--light-border-color));
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/* A few useful classes */
+
+.center {
+  width: 70%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */

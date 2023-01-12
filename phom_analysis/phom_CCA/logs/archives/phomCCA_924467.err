@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 196, in <module>
+    main(sys.argv)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 43, in main
+    reglist=reglist, namelist=namelist, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 55, in make_bcurves_over_rank
+    all_bcurves, all_phoms, psim_grams = iter_comp_bcurves(approx_reps)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 142, in iter_comp_bcurves
+    long_phoms = np.stack(long_phoms, axis=0)
+  File "<__array_function__ internals>", line 6, in stack
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/numpy/core/shape_base.py", line 425, in stack
+    raise ValueError('all input arrays must have the same shape')
+ValueError: all input arrays must have the same shape

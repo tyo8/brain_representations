@@ -1,0 +1,34 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Dec 29 17:01:01 CST 2021 1640818861
+Job ID:		802044
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Wed Dec 29 17:01:01 CST 2021 1640818861
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 1001 shufflings (permutations only).
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Dec 29 17:01:58 CST 2021 1640818918
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node16
+Cores               : 5
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2021-12-29T17:00:26
+Start               : 2021-12-29T17:01:01
+End                 : 2021-12-29T17:01:53
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:52
+Used CPU Time       :   00:00:17
+% User (Computation): 94.11%
+% System (I/O)      :  5.89%
+Mem Reserved        : 15G
+Max Mem Used        : 3.19G (3427983360.0)
+Max Disk Write      : 11.39M (11943280.64)
+Max Disk Read       : 98.30M (103075020.8)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Wed Dec 29 17:01:59 CST 2021 1640818919
+--------------------------------------------------------------

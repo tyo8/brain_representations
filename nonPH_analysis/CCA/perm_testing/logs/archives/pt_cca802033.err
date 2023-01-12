@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 118, in <module>
+    run_parallel_permtests(output_basedir,n_workers)
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 103, in run_parallel_permtests
+    agg_data,fpairnames = ld_pt.aggregate_cancorrs(dirlocs)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_permtest.py", line 76, in aggregate_cancorrs
+    all_pair_data = np.concatenate(tuple(cancorrs),axis=1)
+  File "<__array_function__ internals>", line 6, in concatenate
+numpy.AxisError: axis 1 is out of bounds for array of dimension 1

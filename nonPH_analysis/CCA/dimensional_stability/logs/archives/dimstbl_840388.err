@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_dimstab.py", line 10, in <module>
+    import analyze_CCA_permtests as anl_pt
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/analyze_CCA_permtests.py", line 59
+    return fig, ax, n_sig
+         ^
+SyntaxError: invalid syntax

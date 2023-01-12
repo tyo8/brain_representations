@@ -1,0 +1,2 @@
+/var/spool/slurm/d/job1065178/slurm_script: line 16: 354598 Killed                  python ${script_loc} ${dataset_list_name} ${output_basedir} ${regval_listpath} CCA
+slurmstepd: error: Detected 1 oom-kill event(s) in StepId=1065178.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.

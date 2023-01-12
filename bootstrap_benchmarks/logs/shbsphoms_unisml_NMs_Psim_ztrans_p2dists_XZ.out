@@ -1,0 +1,352 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453484
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453474
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453477
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453481
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453488
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node31
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:40
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453470
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453467
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node31
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:40
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453481
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453488
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node31
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:40
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453470
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+Job ID:		453467
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:55:40 CST 2023 1673330140
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node31
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:40
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node29
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node29
+Max-Disk-Write Node : node29
+Max-Disk-Read Node  : node29
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node29
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node29
+Max-Disk-Write Node : node29
+Max-Disk-Read Node  : node29
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+Name                : unisml_NMs_Psim_ztrans_p2dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:55:41
+Start               : 2023-01-09T23:55:40
+End                 : 2023-01-09T23:55:41
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Mon Jan  9 23:55:43 CST 2023 1673330143
+--------------------------------------------------------------

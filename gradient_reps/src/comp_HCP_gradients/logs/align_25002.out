@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 17 20:24:37 CDT 2022 1660785877
+Job ID:		25002
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Aug 17 20:24:37 CDT 2022 1660785877
+--------------------------------------------------------------
+Disparity val. = 0.4868161933215489
+Step6: save out results
+2022-08-17 20:24:40.008015
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 17 20:24:42 CDT 2022 1660785882
+Name                : align
+User                : tyoeasley
+Partition           : small
+Nodes               : node32
+Cores               : 1
+State               : FAILED
+Submit              : 2022-08-17T20:24:36
+Start               : 2022-08-17T20:24:37
+End                 : 2022-08-17T20:24:40
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:03
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 20G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node32
+Max-Disk-Write Node : node32
+Max-Disk-Read Node  : node32
+End Slurm Epilogue Wed Aug 17 20:24:42 CDT 2022 1660785882
+--------------------------------------------------------------

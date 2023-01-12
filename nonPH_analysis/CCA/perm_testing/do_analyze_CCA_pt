@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#SBATCH --job-name=viz_CCApt
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/logs/anl_pt%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/logs/anl_pt%j.err
+#SBATCH --time=00:15:00
+#SBATCH --mem=8gb
+
+viz_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/cancorr_plots_2022Jan_medreg
+data_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/data_cancorrs_reg
+null_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_permtests_2022Jan_reg
+reglist_path=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02_med.csv
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/analyze_CCA_permtests.py
+
+python ${script_loc} ${viz_dir} ${data_dir} ${null_dir} ${reglist_path} 

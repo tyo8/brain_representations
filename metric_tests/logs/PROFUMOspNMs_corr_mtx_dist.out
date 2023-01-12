@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov  9 12:41:51 CST 2022 1668019311
+Job ID:		210608
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Nov  9 12:41:51 CST 2022 1668019311
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/PROFUMO_spNMs/subj_list_spNMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/PROFUMO_spNMs/PROFUMO_spNMs_corr_mtx_dist.txt
+computing similarity according to corr_mtx_dist
+Estimated data size is 1228675 elements or ~0.004719GB.
+Initial data has shape (n_subj, n_feats)=(1003, 1225)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov  9 12:45:15 CST 2022 1668019515
+Name                : PROFUMOspNMs_corr_mtx_dist
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-09T12:41:51
+Start               : 2022-11-09T12:41:51
+End                 : 2022-11-09T12:45:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:03:22
+Used CPU Time       : 00:03:18
+% User (Computation): 99.71%
+% System (I/O)      :  0.00%
+Mem Reserved        : 50G
+Max Mem Used        : 247.67M (259702784.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 82.12M (86109061.12)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Wed Nov  9 12:45:15 CST 2022 1668019515
+--------------------------------------------------------------

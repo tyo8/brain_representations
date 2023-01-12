@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
+#SBATCH --job-name=PROFUMOspNMs_geodesic
+#SBATCH --output=/scratch/tyoeasley/brain_representations/metric_tests/logs/PROFUMOspNMs_geodesic.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/metric_tests/logs/PROFUMOspNMs_geodesic.err
+#SBATCH --time=23:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50gb
+
+subj_list=/scratch/tyoeasley/brain_representations/metric_tests/PROFUMO_spNMs/subj_list_spNMs.csv
+subj_sim=/scratch/tyoeasley/brain_representations/metric_tests/PROFUMO_spNMs/PROFUMO_spNMs_geodesic_dists.txt
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate Stats
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_sim} geodesic
+if test -f 
+then
+	echo ${subj_sim} >> /scratch/tyoeasley/brain_representations/metric_tests/PROFUMO_spNMs/spNMsPROFUMO_sims.csv
+fi
+

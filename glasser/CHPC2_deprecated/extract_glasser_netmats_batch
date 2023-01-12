@@ -1,0 +1,6 @@
+#PBS -N extract_glasser -l nodes=1:ppn=4,walltime=8:00:00
+
+module load workbench
+
+cd /scratch/tyo8teasley/glasser
+sh ./extract_glasser_netmats.sh

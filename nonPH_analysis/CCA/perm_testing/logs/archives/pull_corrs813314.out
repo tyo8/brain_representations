@@ -1,0 +1,82 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  3 17:25:11 CST 2022 1641252311
+Job ID:		813314
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan  3 17:25:11 CST 2022 1641252311
+--------------------------------------------------------------
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+Maximum per-component standard deviation over same-reg realizations: 5.336645248632559e-14
+(175, 1002)
+(1002,)
+NM_PROFUMO_and_Maps_PROFUMO
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Maximum per-component standard deviation over same-reg realizations: 4.208657447226437e-14
+(560, 199)
+(199,)
+NM_PROFUMO_and_Amps_PROFUMO
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Maximum per-component standard deviation over same-reg realizations: 9.186856865134509e-15
+(208, 1002)
+(1002,)
+NM_PROFUMO_and_NM_MMP
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Maximum per-component standard deviation over same-reg realizations: 3.5374127475295507e-12
+(430, 299)
+(299,)
+NM_PROFUMO_and_Amps_ICA300
+Regularization hyperparameter = 10.0 for Maps_PROFUMO_and_Amps_PROFUMO.
+Maximum per-component standard deviation over same-reg realizations: 4.099106872797313e-15
+(164, 199)
+(199,)
+Maps_PROFUMO_and_Amps_PROFUMO
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Maximum per-component standard deviation over same-reg realizations: 8.622665817008425e-15
+(328, 1002)
+(1002,)
+Maps_PROFUMO_and_NM_MMP
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Maximum per-component standard deviation over same-reg realizations: 2.0153390217327485e-12
+(486, 299)
+(299,)
+Maps_PROFUMO_and_Amps_ICA300
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Maximum per-component standard deviation over same-reg realizations: 4.893455906002308e-15
+(195, 199)
+(199,)
+Amps_PROFUMO_and_NM_MMP
+Regularization hyperparameter = 10.0 for Amps_PROFUMO_and_Amps_ICA300.
+Maximum per-component standard deviation over same-reg realizations: 9.571663871012961e-13
+(127, 199)
+(199,)
+Amps_PROFUMO_and_Amps_ICA300
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+Maximum per-component standard deviation over same-reg realizations: 4.689850988613044e-13
+(183, 299)
+(299,)
+NM_MMP_and_Amps_ICA300
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  3 17:25:53 CST 2022 1641252353
+Name                : pull_corrs
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-01-03T17:24:59
+Start               : 2022-01-03T17:25:11
+End                 : 2022-01-03T17:25:48
+Reserved Walltime   : 1-23:55:00
+Used Walltime       :   00:00:37
+Used CPU Time       :   00:00:24
+% User (Computation): 36.21%
+% System (I/O)      : 63.79%
+Mem Reserved        : 80G
+Max Mem Used        : 3.40G (3653267456.0)
+Max Disk Write      : 81.92K (83886.08)
+Max Disk Read       : 37.22G (39961084559.4)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Mon Jan  3 17:25:53 CST 2022 1641252353
+--------------------------------------------------------------

@@ -1,0 +1,33 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Dec  9 20:50:22 CST 2021 1639104622
+Job ID:		678908
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Thu Dec  9 20:50:22 CST 2021 1639104622
+--------------------------------------------------------------
+0
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Dec  9 20:50:29 CST 2021 1639104629
+Name                : stbl_summ
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : FAILED
+Submit              : 2021-12-09T20:50:11
+Start               : 2021-12-09T20:50:12
+End                 : 2021-12-09T20:50:24
+Reserved Walltime   : 07:55:00
+Used Walltime       : 00:00:12
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 150G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Thu Dec  9 20:50:29 CST 2021 1639104629
+--------------------------------------------------------------

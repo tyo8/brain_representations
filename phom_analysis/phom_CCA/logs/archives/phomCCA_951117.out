@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Feb 24 09:38:42 CST 2022 1645717122
+Job ID:		951117
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Feb 24 09:38:42 CST 2022 1645717122
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Feb 24 12:21:49 CST 2022 1645726909
+Name                : phomCCA
+User                : tyoeasley
+Partition           : medium
+Nodes               : node10
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2022-02-24T09:38:41
+Start               : 2022-02-24T09:38:42
+End                 : 2022-02-24T12:21:44
+Reserved Walltime   : 3-23:55:00
+Used Walltime       :   02:43:02
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 750G
+Max Mem Used        : 25.87G (27778224128.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 3.76G (4035622993.92)
+Max-Mem-Used Node   : node10
+Max-Disk-Write Node : node10
+Max-Disk-Read Node  : node10
+End Slurm Epilogue Thu Feb 24 12:21:50 CST 2022 1645726910
+--------------------------------------------------------------

@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Sep 16 17:47:20 CDT 2022 1663368440
+Job ID:		109873
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Fri Sep 16 17:47:20 CDT 2022 1663368440
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Sep 16 18:29:09 CDT 2022 1663370949
+Name                : ext_ICA
+User                : tyoeasley
+Partition           : medium
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-09-16T17:47:19
+Start               : 2022-09-16T17:47:20
+End                 : 2022-09-16T18:29:07
+Reserved Walltime   : 3-23:55:00
+Used Walltime       :   00:41:47
+Used CPU Time       :   00:27:54
+% User (Computation): 95.38%
+% System (I/O)      :  4.62%
+Mem Reserved        : 50G
+Max Mem Used        : 125.38M (131465216.0)
+Max Disk Write      : 6.76G (7260801597.44)
+Max Disk Read       : 22.73G (24402680873.0)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Fri Sep 16 18:29:09 CDT 2022 1663370949
+--------------------------------------------------------------

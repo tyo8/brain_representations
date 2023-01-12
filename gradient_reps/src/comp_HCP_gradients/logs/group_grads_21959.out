@@ -1,0 +1,46 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 17 15:36:20 CDT 2022 1660768580
+Job ID:		21959
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Aug 17 15:36:20 CDT 2022 1660768580
+--------------------------------------------------------------
+Matrix size:59412
+Thresholding:0:00:38.070954
+Set below threshold values to be 00:00:43.972830
+Minimum value is -0.059354
+2022-08-17 15:39:40.929961Step3: remove negative
+Negative values occur in 24 rows
+Set negative values to be 0:0:00:11.638510
+2022-08-17 15:39:52.568522Step4: generate distance matrix
+Compute distance matrix:0:22:07.536918
+2022-08-17 16:02:00.289790Step5: perform diffusion embedding
+embedding done: 0:04:23.599754
+2022-08-17 16:06:23.889587Step6: save out results
+0:00:00.028853
+2022-08-17 16:06:23.918461DONE
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 17 16:06:26 CDT 2022 1660770386
+Name                : group_grads
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-08-17T15:36:19
+Start               : 2022-08-17T15:36:20
+End                 : 2022-08-17T16:06:24
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:30:04
+Used CPU Time       : 00:29:39
+% User (Computation): 97.62%
+% System (I/O)      :  2.38%
+Mem Reserved        : 150G
+Max Mem Used        : 56.40G (60557262848.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 31.06G (33347820585.0)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Wed Aug 17 16:06:26 CDT 2022 1660770386
+--------------------------------------------------------------

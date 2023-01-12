@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Dec  7 12:21:51 CST 2022 1670437311
+Job ID:		248169
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Dec  7 12:21:51 CST 2022 1670437311
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/unisml_NMs/subj_list_NMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/unisml_NMs/unisml_NMs_spd_cos_sims.txt
+computing similarity according to spd_cos
+Estimated data size is 4529850 elements or ~0.0174GB.
+Initial data has shape (n_subj, n_feats)=(101, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Dec  7 12:22:55 CST 2022 1670437375
+Name                : unismlNMs_spd_cos
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-12-07T12:21:50
+Start               : 2022-12-07T12:21:51
+End                 : 2022-12-07T12:22:53
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:01:02
+Used CPU Time       : 00:00:33
+% User (Computation): 94.24%
+% System (I/O)      :  5.76%
+Mem Reserved        : 50G
+Max Mem Used        : 204.38M (214310912.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Wed Dec  7 12:22:55 CST 2022 1670437375
+--------------------------------------------------------------

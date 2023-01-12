@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Fri Oct 14 13:23:46 CDT 2022 1665771826
+Job ID:		166953
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Fri Oct 14 13:23:46 CDT 2022 1665771826
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Oct 14 13:37:03 CDT 2022 1665772623
+Name                : pts_csv
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-10-14T13:23:46
+Start               : 2022-10-14T13:23:46
+End                 : 2022-10-14T13:37:01
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:13:15
+Used CPU Time       : 00:11:29
+% User (Computation): 98.27%
+% System (I/O)      :  1.73%
+Mem Reserved        : 8G
+Max Mem Used        : 59.25M (62124032.0)
+Max Disk Write      : 817.89M (857619824.64)
+Max Disk Read       : 3.12G (3346844876.8)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Fri Oct 14 13:37:03 CDT 2022 1665772623
+--------------------------------------------------------------

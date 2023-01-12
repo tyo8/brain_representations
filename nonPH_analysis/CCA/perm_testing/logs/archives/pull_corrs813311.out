@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  3 17:01:57 CST 2022 1641250917
+Job ID:		813311
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan  3 17:01:57 CST 2022 1641250917
+--------------------------------------------------------------
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_Maps_PROFUMO.
+Maximum per-component standard deviation over same-reg realizations: nan
+NM_PROFUMO_and_Maps_PROFUMO
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  3 17:02:19 CST 2022 1641250939
+Name                : pull_corrs
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 1
+State               : FAILED
+Submit              : 2022-01-03T17:01:41
+Start               : 2022-01-03T17:01:57
+End                 : 2022-01-03T17:02:14
+Reserved Walltime   : 1-23:55:00
+Used Walltime       :   00:00:17
+Used CPU Time       :   00:00:07
+% User (Computation): 29.60%
+% System (I/O)      : 70.40%
+Mem Reserved        : 80G
+Max Mem Used        : 1.26M (1323008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Mon Jan  3 17:02:19 CST 2022 1641250939
+--------------------------------------------------------------

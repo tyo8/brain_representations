@@ -1,0 +1,16 @@
+This document is a working log of planned changes to the code infrastructure in "src_py"
+
+
+Planned changes to "lindecomp" suite:
+*Organization*
+	1. create "chpc_utils" module (DONE)
+		a) add lindecomp_stability.load_reps
+		b) add lindecomp_brainrep.parse_*
+		c) consolidate "parse_neurodata" module or simply import and retain as separate module?
+			-- probably retain as separate module for technical debt reasons :( used heavily in other modules
+	2. comment code (IN PROGRESS)
+	3. convert source code to directory-based modules
+
+*Functionality*
+	1. implement permutation testing module
+	2. change CCA computation to take regularization as input; remove hardcoded assumption of internal train/test paradigm

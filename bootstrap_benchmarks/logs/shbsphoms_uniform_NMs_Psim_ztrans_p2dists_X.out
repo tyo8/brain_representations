@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 18:31:25 CST 2023 1673310685
+Job ID:		441163
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 18:31:25 CST 2023 1673310685
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 22:36:36 CST 2023 1673325396
+Name                : uniform_NMs_Psim_ztrans_p2dists_X_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2023-01-09T18:31:22
+Start               : 2023-01-09T18:31:25
+End                 : 2023-01-09T22:36:33
+Reserved Walltime   : 23:55:00
+Used Walltime       : 04:05:08
+Used CPU Time       : 04:01:58
+% User (Computation): 84.72%
+% System (I/O)      : 15.28%
+Mem Reserved        : 50G
+Max Mem Used        : 30.79G (33065717760.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Mon Jan  9 22:36:36 CST 2023 1673325396
+--------------------------------------------------------------

@@ -1,0 +1,90 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Aug 31 10:27:27 CDT 2022 1661959647
+Job ID:		73874
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Aug 31 10:27:27 CDT 2022 1661959647
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Aug 30 23:51:18 CDT 2022 1661921478
+Job ID:		73101
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Aug 30 23:51:18 CDT 2022 1661921478
+--------------------------------------------------------------
+
+Step 1: Load data and remove subcortical/cerebellar structrues
+2022-08-30 23:51:22.832067
+
+Step 2: compute correlation matrix
+Compute time for correlation matrix: 0:04:26.159752
+Dconn shape: (59412, 29706)
+subsampling factor = 0.5
+Thresholding (elapsed time): 0:00:33.771411
+Minimum value is -0.005712
+
+Step 3: remove negative
+Negative values occur in 12 rows
+
+Step 4: generate affinity matrix
+2022-08-30 23:56:34.715519
+Compute time of affinity matrix: 0:20:21.440507
+
+Step 5: perform diffusion embedding
+embedding done in: 0:12:46.312655
+
+Saving results...
+exporting to CIFTI2 format...
+cifti data shape: (100, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/grad_maps/emb_subj-100408.dtseries.nii
+DONE: 2022-08-31 00:29:43.894491
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 31 00:29:47 CDT 2022 1661923787
+Name                : subj_grad
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-08-30T23:51:18
+Start               : 2022-08-30T23:51:18
+End                 : 2022-08-31T00:29:44
+Reserved Walltime   : 01:55:00
+Used Walltime       : 00:38:26
+Used CPU Time       : 00:38:12
+% User (Computation): 96.23%
+% System (I/O)      :  3.77%
+Mem Reserved        : 300G
+Max Mem Used        : 84.89G (91145216000.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 52.41M (54955868.16)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Wed Aug 31 00:29:47 CDT 2022 1661923787
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Aug 31 10:28:29 CDT 2022 1661959709
+Name                : subj_grad
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : NODE_FAIL
+Submit              : 2022-08-31T10:27:26
+Start               : 2022-08-31T10:27:26
+End                 : 2022-08-31T10:28:27
+Reserved Walltime   : 01:55:00
+Used Walltime       : 00:01:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 300G
+Max Mem Used        : 952.00K (974848.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Wed Aug 31 10:28:29 CDT 2022 1661959709
+--------------------------------------------------------------

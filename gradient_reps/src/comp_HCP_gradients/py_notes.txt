@@ -1,0 +1,2 @@
+-- requires scikit-learn.manifold (which I think is version 1.1.2 or later?)
+-- mapalign.embed requires small inline change: "spectral_embedding_" --> "_spectral_embedding" in line 73

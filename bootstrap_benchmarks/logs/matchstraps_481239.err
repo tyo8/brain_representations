@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/xtr_script.py", line 67, in <module>
+    summarize_diagram(
+  File "/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/xtr_script.py", line 24, in summarize_diagram
+    bars, reps, tight_reps, indices = extract.xtr_bars_reps_indices(phom_str, do_hom0 = do_hom0, verbose = verbose)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/extract.py", line 97, in xtr_bars_reps_indices
+    bar, inf_flag = _get_bar(out[i])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/extract.py", line 257, in _get_bar
+    raise ValueError("no intervals found in output line " + line_out)
+ValueError: no intervals found in output line 

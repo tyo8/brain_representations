@@ -1,0 +1,37 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Jun 16 14:35:18 CDT 2022 1655408118
+Job ID:		1434824
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Thu Jun 16 14:35:18 CDT 2022 1655408118
+--------------------------------------------------------------
+Timeseries data extraction method: wb_cp
+Extracting from: /ceph/hcpdb/archive/HCP_900/arc001/%s_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST%s_%s/rfMRI_REST%s_%s_Atlas_MSMAll_hp2000_clean.dtseries.nii
+Extracting to: /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d1000
+extracting...
+done.
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Jun 16 15:14:37 CDT 2022 1655410477
+Name                : ext_dts
+User                : tyoeasley
+Partition           : small
+Nodes               : node14
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-06-16T14:35:15
+Start               : 2022-06-16T14:35:16
+End                 : 2022-06-16T15:14:35
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:39:19
+Used CPU Time       : 00:23:50
+% User (Computation): 70.64%
+% System (I/O)      : 29.36%
+Mem Reserved        : 29G
+Max Mem Used        : 366.76M (384577536.0)
+Max Disk Write      : 6.59G (7075077816.32)
+Max Disk Read       : 352.49G (3.78483182141e+11)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Thu Jun 16 15:14:37 CDT 2022 1655410477
+--------------------------------------------------------------

@@ -1,0 +1,48 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan  4 00:21:31 CST 2022 1641277291
+Job ID:		813441
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Tue Jan  4 00:21:31 CST 2022 1641277291
+--------------------------------------------------------------
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+[['Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'NM_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP'], ['0.1', '1000000.0', '10.0', '1.0', '10000.0', '10.0', '10000.0', '0.01', '100.0', '0.1']]
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.01 for Maps_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan  4 00:39:28 CST 2022 1641278368
+Name                : breps_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-01-04T00:21:18
+Start               : 2022-01-04T00:21:31
+End                 : 2022-01-04T00:39:23
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:17:52
+Used CPU Time       :   00:14:50
+% User (Computation): 95.97%
+% System (I/O)      :  4.03%
+Mem Reserved        : 250G
+Max Mem Used        : 3.28G (3520303104.0)
+Max Disk Write      : 2.85G (3064316559.36)
+Max Disk Read       : 3.75G (4027999846.4)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan  4 00:39:28 CST 2022 1641278368
+--------------------------------------------------------------

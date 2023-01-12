@@ -1,0 +1,157 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Dec  8 12:47:38 CST 2022 1670525258
+Job ID:		248910
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Dec  8 12:47:38 CST 2022 1670525258
+--------------------------------------------------------------
+Loading data from /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/uniform_NMs_geodesic_dists.txt
+Distance matrix has shape (1003, 1003)
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX.ldm
+
+Received from Ripser (30709 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 1007
+line of output corresponding to PH dim=2: 10298
+Matching X to X_0 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 3750
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_0.ldm
+
+Received from Ripser (33841 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 10175
+We will solve ambiguous deaths matching.
+Matching X to X_1 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4068
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_1.ldm
+
+Received from Ripser (34279 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 9842
+We will solve ambiguous deaths matching.
+Matching X to X_2 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 3892
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_2.ldm
+
+Received from Ripser (31450 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 9338
+We will solve ambiguous deaths matching.
+Matching X to X_3 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4024
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_3.ldm
+
+Received from Ripser (42757 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 10934
+We will solve ambiguous deaths matching.
+Matching X to X_4 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4017
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_4.ldm
+
+Received from Ripser (39259 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 10463
+We will solve ambiguous deaths matching.
+Matching X to X_5 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4908
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4103
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_5.ldm
+
+Received from Ripser (40468 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 10235
+We will solve ambiguous deaths matching.
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Dec  8 23:59:57 CST 2022 1670565597
+Name                : uniform_NMs_geodesic_dists_bsph
+User                : tyoeasley
+Partition           : medium
+Nodes               : node09
+Cores               : 1
+State               : OUT_OF_MEMORY
+Submit              : 2022-12-08T12:47:30
+Start               : 2022-12-08T12:47:38
+End                 : 2022-12-08T23:59:55
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   11:12:17
+Used CPU Time       :   11:09:21
+% User (Computation): 97.62%
+% System (I/O)      :  2.38%
+Mem Reserved        : 50G
+Max Mem Used        : 49.84G (53512826880.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Thu Dec  8 23:59:57 CST 2022 1670565597
+--------------------------------------------------------------

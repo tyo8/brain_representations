@@ -1,0 +1,59 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Sep  7 02:35:43 CDT 2022 1662536143
+Job ID:		85332
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Sep  7 02:35:43 CDT 2022 1662536143
+--------------------------------------------------------------
+
+Step 1: Load data and remove subcortical/cerebellar structrues
+2022-09-07 02:35:45.881854
+
+Step 2: compute correlation matrix
+Compute time for correlation matrix: 0:00:38.293335
+Dconn shape: (59412, 2970)
+subsampling factor = 0.04998990103009493
+Thresholding (elapsed time): 0:00:07.447539
+Minimum value is 0.000000
+
+Step 3: remove negative
+Negative values occur in 0 rows
+
+Step 4: generate affinity matrix
+2022-09-07 02:36:38.008685
+Compute time of affinity matrix: 0:02:56.309309
+
+Step 5: perform diffusion embedding
+n_components = 25
+embedding done in: 0:05:36.493502
+
+Saving results...
+exporting to CIFTI2 format...
+cifti data shape: (25, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/gradmaps_d25/emb_subj-100307.dtseries.nii
+DONE: 2022-09-07 02:45:12.158161
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Sep  7 02:45:14 CDT 2022 1662536714
+Name                : subj_grad
+User                : tyoeasley
+Partition           : small
+Nodes               : node30
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-09-06T22:01:59
+Start               : 2022-09-07T02:35:43
+End                 : 2022-09-07T02:45:12
+Reserved Walltime   : 01:55:00
+Used Walltime       : 00:09:29
+Used CPU Time       : 00:09:23
+% User (Computation): 87.48%
+% System (I/O)      : 12.52%
+Mem Reserved        : 100G
+Max Mem Used        : 69.31G (74425794560.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 52.41M (54955868.16)
+Max-Mem-Used Node   : node30
+Max-Disk-Write Node : node30
+Max-Disk-Read Node  : node30
+End Slurm Epilogue Wed Sep  7 02:45:14 CDT 2022 1662536714
+--------------------------------------------------------------

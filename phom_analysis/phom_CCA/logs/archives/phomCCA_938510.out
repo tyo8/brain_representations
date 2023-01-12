@@ -1,0 +1,44 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Feb 21 10:19:04 CST 2022 1645460344
+Job ID:		938510
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Feb 21 10:19:04 CST 2022 1645460344
+--------------------------------------------------------------
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+Computing initial CCA decompositions for all 5 methods...
+done.
+Computing cross-predictions from rank-5 CCA data...
+done.
+long_stack shape for NM_PROFUMO = 9x(1003, 1003)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Feb 24 00:02:42 CST 2022 1645682562
+Name                : phomCCA
+User                : tyoeasley
+Partition           : medium
+Nodes               : node31
+Cores               : 1
+State               : FAILED
+Submit              : 2022-02-21T10:19:04
+Start               : 2022-02-21T10:19:04
+End                 : 2022-02-24T00:02:40
+Reserved Walltime   : 3-23:55:00
+Used Walltime       : 2-13:43:36
+Used CPU Time       : 2-13:27:07
+% User (Computation): 83.11%
+% System (I/O)      : 16.89%
+Mem Reserved        : 350G
+Max Mem Used        : 135.72G (1.4572558336e+11)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 3.76G (4035622993.92)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Thu Feb 24 00:02:42 CST 2022 1645682562
+--------------------------------------------------------------

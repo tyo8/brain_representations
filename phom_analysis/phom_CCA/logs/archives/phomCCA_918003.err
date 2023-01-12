@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 192, in <module>
+    main(sys.argv)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 43, in main
+    reglist=reglist, namelist=namelist, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 48, in make_bcurves_over_rank
+    all_lindecomps = iter_lindecomp(reps, reglist=reglist, namelist=namelist, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 77, in iter_lindecomp
+    CCA_res = lindecomp(X, Y, param_search=False, reg_val = reg_val)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_brainrep.py", line 104, in comp_CCA
+    X_cp = cross_predict(CCA_res.comps[1],CCA_res.ws[0])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_brainrep.py", line 141, in cross_predict
+    X_cp = comps_Y @ np.transpose(Wx_inv)   # cross-predicted value of X, given by X_cp = Y @ Wy' @ (Wx^-1)' = Uy @ (Wx^-1)'
+ValueError: matmul: Input operand 1 has a mismatch in its core dimension 0, with gufunc signature (n?,k),(k,m?)->(n?,m?) (size 1225 is different from 1002)

@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 18:37:09 CST 2023 1673311029
+Job ID:		441915
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 18:37:09 CST 2023 1673311029
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 18:37:18 CST 2023 1673311038
+Name                : uniform_NMs_geodesic_dists_X_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node12
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-09T18:32:05
+Start               : 2023-01-09T18:37:09
+End                 : 2023-01-09T18:37:16
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:07
+Used CPU Time       : 00:00:02
+% User (Computation): 83.14%
+% System (I/O)      :  0.00%
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Mon Jan  9 18:37:18 CST 2023 1673311038
+--------------------------------------------------------------

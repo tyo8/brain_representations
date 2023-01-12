@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--
+ PROFUMO
+ Framework for variational Bayesian inference of modes from fMRI data
+ 
+ - Sam Harrison 2018
+ A separate copy of the licence is also included within the repository.
+ 
+ summary_stats.html
+ Jinja template for the cross-mode summary page of the web report
+ -->
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href=".profumo.css">
+    <title>PROFUMO Web Report | Summary Statistics | /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.pfm</title>
+  </head>
+  <body>
+    
+    <header class="center">
+      <h1>PROFUMO Web Report<br>Summary Statistics</h1>
+      
+      <!-- Navigation back to home page -->
+      <nav>
+        <a href="index.html">Home</a>
+        <br>
+        <a href="#maps">Spatial maps</a>
+        &mdash;
+        <a href="#amps">Amplitudes</a>
+        &mdash;
+        <a href="#tcs">Time courses</a>
+      </nav>
+    </header>
+    
+    <hr>
+    
+    <main>
+      
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      
+      <section id="maps">
+        <h2>Spatial maps</h2>
+        
+        <figure>
+          <img src="figures/summary_stats/group_maps.png" alt="Group maps">
+          <figcaption>Group maps</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/group_map_similarity.png" alt="Group map similarities">
+          <figcaption>Similarity between group maps</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/group_subject_map_consistency.png"
+               alt="Group-subject map consistency">
+          <figcaption>Similarity between the group and subject maps</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/subject_subject_map_consistency.png"
+               alt="Subject-subject map consistency">
+          <figcaption>Similarity between the subject maps, calculated for all
+          possible pairs of subjects
+          </figcaption>
+        </figure>
+      </section>
+      
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      <hr>
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      
+      <section id="amps">
+        <h2>Amplitudes</h2>
+        
+        <figure>
+          <img src="figures/summary_stats/amplitudes.png" alt="Amplitudes">
+          <figcaption>Mode amplitudes</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/amplitudes_partial_corrs.png" alt="Amplitude partial corrs">
+          <figcaption>Posterior partial correlations between mode amplitudes</figcaption>
+        </figure>
+      </section>
+      
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      <hr>
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      
+      <section id="tcs">
+        <h2>Time courses</h2>
+        
+        <figure>
+          <img src="figures/summary_stats/example_time_courses.png" alt="Example time courses">
+          <figcaption>All time courses from subject
+          <code>361234</code>, run <code>R2_LR</code>
+          </figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/group_netmat.png" alt="Group netmat">
+          <figcaption>Group temporal network matrix</figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/subject_netmat.png" alt="Subject netmat">
+          <figcaption>Example temporal network matrix (subject
+          <code>361234</code>, run <code>R2_LR</code>)
+          </figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/unwrapped_netmats.png" alt="Unwrapped netmats">
+          <figcaption>
+            Unwrapped temporal network matrices
+            <br>
+            <span style="font-size:75%">The group network matrix (or matrices)
+            is included as the first row.</span>
+          </figcaption>
+        </figure>
+        
+        <figure>
+          <img src="figures/summary_stats/netmat_consistency.png" alt="Unwrapped netmat consistency">
+          <figcaption>
+            Similarity between the unwrapped temporal network matrices
+            <br>
+            <span style="font-size:75%">As above, the group network matrix
+            (or matrices) is included as the first row/column.</span>
+          </figcaption>
+        </figure>
+      </section>
+      
+      <!--  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  -->
+      
+    </main>
+    
+    <hr>
+    
+    <footer>
+      Generated on 09 Jun 2021 at 17:16 CDT. For more information on PROFUMO see the
+      <a href="https://git.fmrib.ox.ac.uk/samh/profumo">GitLab page</a>.
+    </footer>
+    
+  </body>
+</html>

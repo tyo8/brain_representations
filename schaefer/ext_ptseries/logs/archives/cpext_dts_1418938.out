@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Jun  8 18:32:50 CDT 2022 1654731170
+Job ID:		1418938
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Jun  8 18:32:50 CDT 2022 1654731170
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Jun  8 18:34:04 CDT 2022 1654731244
+Name                : cpext_dts
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : FAILED
+Submit              : 2022-06-08T18:32:50
+Start               : 2022-06-08T18:32:50
+End                 : 2022-06-08T18:34:02
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:01:12
+Used CPU Time       : 00:00:41
+% User (Computation): 74.77%
+% System (I/O)      : 25.23%
+Mem Reserved        : 29G
+Max Mem Used        : 38.62M (40501248.0)
+Max Disk Write      : 552.96K (566231.04)
+Max Disk Read       : 53.12M (55700357.12)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Wed Jun  8 18:34:04 CDT 2022 1654731244
+--------------------------------------------------------------

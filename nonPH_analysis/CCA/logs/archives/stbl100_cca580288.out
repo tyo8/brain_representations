@@ -1,0 +1,49 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Tue Nov 16 15:12:53 CST 2021 1637097173
+Job ID:		580288
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Tue Nov 16 15:12:53 CST 2021 1637097173
+--------------------------------------------------------------
+['NM_PROFUMO_and_Maps_PROFUMO.CCA_res', 'NM_PROFUMO_and_Amps_PROFUMO.CCA_res', 'NM_PROFUMO_and_NM_MMP.CCA_res', 'NM_PROFUMO_and_Amps_ICA300.CCA_res', 'Maps_PROFUMO_and_Amps_PROFUMO.CCA_res', 'Maps_PROFUMO_and_NM_MMP.CCA_res', 'Maps_PROFUMO_and_Amps_ICA300.CCA_res', 'Amps_PROFUMO_and_NM_MMP.CCA_res', 'Amps_PROFUMO_and_Amps_ICA300.CCA_res', 'NM_MMP_and_Amps_ICA300.CCA_res']
+Stability iteration 0:
+done in 97.0 sec.
+Stability iteration 1:
+done in 91.0 sec.
+Stability iteration 2:
+done in 92.0 sec.
+NM_PROFUMO_and_Maps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Maps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_NM_MMP.CCA_stbl
+NM_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Amps_ICA300.CCA_stbl
+Maps_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+Maps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_NM_MMP.CCA_stbl
+Maps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_Amps_ICA300.CCA_stbl
+Amps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Amps_PROFUMO_and_NM_MMP.CCA_stbl
+Amps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Amps_PROFUMO_and_Amps_ICA300.CCA_stbl
+NM_MMP_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_MMP_and_Amps_ICA300.CCA_stbl
+--------------------------------------------------------------
+Begin SLURM Epilogue Tue Nov 16 15:19:07 CST 2021 1637097547
+Name                : stbl_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node20
+Cores               : 1
+State               : FAILED
+Submit              : 2021-11-16T15:12:53
+Start               : 2021-11-16T15:12:53
+End                 : 2021-11-16T15:19:02
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:06:09
+Used CPU Time       :   00:05:53
+% User (Computation): 96.99%
+% System (I/O)      :  3.01%
+Mem Reserved        : 250G
+Max Mem Used        : 1.19G (1278193664.0)
+Max Disk Write      : 2.25G (2412186173.44)
+Max Disk Read       : 2.32G (2494562304.0)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End SLURM Epilogue Tue Nov 16 15:19:07 CST 2021 1637097547
+--------------------------------------------------------------

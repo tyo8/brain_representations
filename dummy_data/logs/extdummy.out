@@ -1,0 +1,80 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov 23 21:36:04 CST 2022 1669260964
+Job ID:		233669
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Wed Nov 23 21:36:04 CST 2022 1669260964
+--------------------------------------------------------------
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d15_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d15/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d15_ts2_Z/node_timeseries/101006.txt
+
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d25_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d25/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d25_ts2_Z/node_timeseries/996782.txt
+
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d50_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d50/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d50_ts2_Z/node_timeseries/268749.txt
+
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d100_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d100/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d100_ts2_Z/node_timeseries/121618.txt
+
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d200_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d200/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d200_ts2_Z/node_timeseries/126426.txt
+
+Real data read from:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/node_timeseries
+Dummy data written to:
+/scratch/tyoeasley/brain_representations/dummy_data/ICA/d300/raw_data
+
+Last data path:
+/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d300_ts2_Z/node_timeseries/970764.txt
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov 23 22:43:36 CST 2022 1669265016
+Name                : ext_dummy
+User                : tyoeasley
+Partition           : medium
+Nodes               : node02
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-23T21:36:03
+Start               : 2022-11-23T21:36:04
+End                 : 2022-11-23T22:43:34
+Reserved Walltime   : 3-23:55:00
+Used Walltime       :   01:07:30
+Used CPU Time       :   00:56:42
+% User (Computation): 98.34%
+% System (I/O)      :  1.66%
+Mem Reserved        : 50G
+Max Mem Used        : 118.45M (124203008.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node02
+Max-Disk-Write Node : node02
+Max-Disk-Read Node  : node02
+End Slurm Epilogue Wed Nov 23 22:43:36 CST 2022 1669265016
+--------------------------------------------------------------

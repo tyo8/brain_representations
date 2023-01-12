@@ -1,0 +1,36 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Mar  8 11:38:06 CST 2022 1646761086
+Job ID:		988030
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Mar  8 11:38:06 CST 2022 1646761086
+--------------------------------------------------------------
+shape of dist_mtx:  (1003, 1003)
+Computing persistence diagrams for dimensions (0, 1, 2, 3)...
+dist_mtx_array has dimension (1, 1003, 1003)
+done.
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Mar  8 11:52:38 CST 2022 1646761958
+Name                : phom_tst
+User                : tyoeasley
+Partition           : small
+Nodes               : node14
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-03-08T11:38:05
+Start               : 2022-03-08T11:38:06
+End                 : 2022-03-08T11:52:36
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:14:30
+Used CPU Time       : 00:14:25
+% User (Computation): 97.64%
+% System (I/O)      :  2.36%
+Mem Reserved        : 750G
+Max Mem Used        : 66.44G (71339515904.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 27.26M (28584181.76)
+Max-Mem-Used Node   : node14
+Max-Disk-Write Node : node14
+Max-Disk-Read Node  : node14
+End Slurm Epilogue Tue Mar  8 11:52:38 CST 2022 1646761958
+--------------------------------------------------------------

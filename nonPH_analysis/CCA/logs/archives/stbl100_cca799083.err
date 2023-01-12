@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 49, in <module>
+    listpath=listpath, decomp_method=decomp_method)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 22, in stability_testing
+    summarize_iters(decomp_vals, output_basedir, decomp_method=decomp_method)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 101, in summarize_iters
+    stability_summary = summarizer(decomp_vals)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 172, in summ_CCA
+    n_pairs = len(CCA_stbl)
+TypeError: object of type 'NoneType' has no len()

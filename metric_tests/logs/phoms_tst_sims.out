@@ -1,0 +1,62 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Nov 14 19:38:37 CST 2022 1668476317
+Job ID:		218288
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Nov 14 19:38:37 CST 2022 1668476317
+--------------------------------------------------------------
+distance matrix shape (100, 100)
+distance matrix nanflag: False
+Computing persistence diagrams...
+dist_mtx_input has dimension 5x(100, 100)
+Computing persistence diagrams for dimensions (0, 1, 2)...
+Found a maximum of 168 generators (in all computed dimensions) over 5 diagrams.
+Done. (0:00:00.074519 elapsed)
+
+distance matrix shape (100, 100)
+distance matrix nanflag: False
+Computing persistence diagrams...
+dist_mtx_input has dimension 5x(100, 100)
+Computing persistence diagrams for dimensions (0, 1, 2)...
+Found a maximum of 168 generators (in all computed dimensions) over 5 diagrams.
+Done. (0:00:00.073435 elapsed)
+
+Exporting persistence diagrams...
+Done. (0:00:01.129453 elapsed)
+Exporting Wasserstein diagram distances...
+Done. (0:00:00.184904 elapsed)
+Exporting Betti curves...
+Done. (0:00:00.006741 elapsed)
+
+Exporting persistence diagrams...
+Done. (0:00:00.131048 elapsed)
+Exporting Wasserstein diagram distances...
+Done. (0:00:00.207339 elapsed)
+Exporting Betti curves...
+Done. (0:00:00.006886 elapsed)
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Nov 14 19:38:44 CST 2022 1668476324
+Name                : phoms_tst_sims
+User                : tyoeasley
+Partition           : small
+Nodes               : node05
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-14T19:38:36
+Start               : 2022-11-14T19:38:37
+End                 : 2022-11-14T19:38:42
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:05
+Used CPU Time       : 00:00:02
+% User (Computation): 82.00%
+% System (I/O)      :  0.00%
+Mem Reserved        : 500G
+Max Mem Used        : 1.27M (1327104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node05
+Max-Disk-Write Node : node05
+Max-Disk-Read Node  : node05
+End Slurm Epilogue Mon Nov 14 19:38:44 CST 2022 1668476324
+--------------------------------------------------------------

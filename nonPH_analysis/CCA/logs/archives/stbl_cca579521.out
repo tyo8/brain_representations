@@ -1,0 +1,34 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Mon Nov 15 19:53:50 CST 2021 1637027630
+Job ID:		579521
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Mon Nov 15 19:53:50 CST 2021 1637027630
+--------------------------------------------------------------
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/CCA_vars
+Unknown file extension: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/sub-.csv
+--------------------------------------------------------------
+Begin SLURM Epilogue Mon Nov 15 19:55:22 CST 2021 1637027722
+Name                : stbl_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node18
+Cores               : 1
+State               : FAILED
+Submit              : 2021-11-15T19:53:49
+Start               : 2021-11-15T19:53:50
+End                 : 2021-11-15T19:55:17
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:01:27
+Used CPU Time       :   00:01:11
+% User (Computation): 95.17%
+% System (I/O)      :  4.83%
+Mem Reserved        : 250G
+Max Mem Used        : 166.27M (174346240.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 122.66M (128618332.16)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End SLURM Epilogue Mon Nov 15 19:55:22 CST 2021 1637027722
+--------------------------------------------------------------

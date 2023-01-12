@@ -1,0 +1,38 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 192, in <module>
+    main(sys.argv)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 43, in main
+    reglist=reglist, namelist=namelist, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 55, in make_bcurves_over_rank
+    all_bcurves, all_phoms, psim_grams = iter_comp_bcurves(approx_reps)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 138, in iter_comp_bcurves
+    long_phoms = SSH.compute_phom(long_stack)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 45, in compute_phom
+    persdiag = VR.fit_transform(dist_mtx_array)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/gtda/utils/_docs.py", line 106, in fit_transform_wrapper
+    return original_fit_transform(*args, **kwargs)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/sklearn/base.py", line 699, in fit_transform
+    return self.fit(X, **fit_params).transform(X)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/gtda/homology/simplicial.py", line 306, in transform
+    delayed(self._ripser_diagram)(x) for x in X)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/parallel.py", line 1044, in __call__
+    while self.dispatch_one_batch(iterator):
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/parallel.py", line 859, in dispatch_one_batch
+    self._dispatch(tasks)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/parallel.py", line 777, in _dispatch
+    job = self._backend.apply_async(batch, callback=cb)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 208, in apply_async
+    result = ImmediateResult(func)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/_parallel_backends.py", line 572, in __init__
+    self.results = batch()
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/parallel.py", line 263, in __call__
+    for func, args, kwargs in self.items]
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/joblib/parallel.py", line 263, in <listcomp>
+    for func, args, kwargs in self.items]
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/gtda/homology/simplicial.py", line 184, in _ripser_diagram
+    collapse_edges=self.collapse_edges
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/gtda/externals/python/ripser_interface.py", line 499, in ripser
+    coeff)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/gtda/externals/python/ripser_interface.py", line 48, in DRFDMSparse
+    thresh, do_cocycles)
+MemoryError: std::bad_alloc

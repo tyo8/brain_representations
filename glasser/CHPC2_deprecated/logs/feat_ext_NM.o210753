@@ -1,0 +1,184 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Wed Jun 30 16:32:56 CDT 2021 1625088776
+Job ID:		210753
+Username:	tyoeasley
+Partition:	small
+End SLURM Prologue Wed Jun 30 16:32:56 CDT 2021 1625088776
+--------------------------------------------------------------
+
+                            < M A T L A B (R) >
+                  Copyright 1984-2021 The MathWorks, Inc.
+                  R2021a (9.10.0.1602886) 64-bit (glnxa64)
+                             February 17, 2021
+
+ 
+For online documentation, see https://www.mathworks.com/support
+For product information, visit www.mathworks.com.
+ 
+>> >> [Warning: Function iscolumn has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function ismatrix has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isrow has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function narginchk has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isequaln has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function flip has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function contains has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function endsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function newline has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function startsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isfile has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isfolder has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function contains has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function endsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isfile has the same name as a MATLAB builtin. We suggest you
+rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isfolder has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function startsWith has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+[Warning: Function isstring has the same name as a MATLAB builtin. We suggest
+you rename the function to avoid a potential name conflict.] 
+[> In path (line 109)
+In addpath (line 86)] 
+>> >> >> >> >> >> >> >> >> nets subject 1
+[Warning: removing
+"/mnt/beegfs/home/e.ty/Matlab_pkgs/fieldtrip/compat/matlablt2017b" from your
+path, see http://bit.ly/2SPPjUS] 
+[> In isfolder (line 31)
+In ft_filetype (line 164)
+In ft_read_cifti (line 68)] 
+[Warning: removing
+"/mnt/beegfs/home/e.ty/Matlab_pkgs/fieldtrip/compat/matlablt2016b" from your
+path, see http://bit.ly/2SPPjUS] 
+[> In contains (line 32)
+In ft_filetype (line 175)
+In ft_read_cifti (line 68)] 
+[Warning: removing "/mnt/beegfs/home/e.ty/Matlab_pkgs/fieldtrip/compat/octave"
+from your path, see http://bit.ly/2SPPjUS] 
+[> In isfolder (line 31)
+In ft_filetype (line 175)
+In ft_read_cifti (line 68)] 
+nets subject 2
+nets subject 3
+nets subject 4
+nets subject 5
+nets subject 6
+nets subject 7
+nets subject 8
+nets subject 9
+nets subject 10
+nets subject 11
+nets subject 12
+nets subject 13
+nets subject 14
+nets subject 15
+nets subject 16
+nets subject 17
+nets subject 18
+nets subject 19
+nets subject 20
+nets subject 21
+nets subject 22
+nets subject 23
+nets subject 24
+nets subject 25
+nets subject 26
+nets subject 27
+nets subject 28
+nets subject 29
+nets subject 30
+nets subject 31
+nets subject 32
+nets subject 33
+nets subject 34
+nets subject 35
+nets subject 36
+nets subject 37
+nets subject 38
+nets subject 39
+nets subject 40
+nets subject 41
+nets subject 42
+nets subject 43
+nets subject 44
+nets subject 45
+nets subject 46
+nets subject 47
+nets subject 48
+[Warning: file or directory "MMP_netmats/110411_REST2_LR.ptseries.nii" does not
+exist, could not determine fileformat] 
+ In '/mnt/beegfs/home/e.ty/Matlab_pkgs/fieldtrip/fileio/ft_filetype.m' at line 1556
+ In '/mnt/beegfs/home/e.ty/Matlab_pkgs/fieldtrip/fileio/ft_read_cifti.m' at line 68
+
+>> >> --------------------------------------------------------------
+Begin SLURM Epilogue Wed Jun 30 16:42:18 CDT 2021 1625089338
+Name                : feature_extraction_NM
+User                : tyoeasley
+Partition           : small
+Nodes               : node12
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-06-30T16:32:50
+Start               : 2021-06-30T16:32:56
+End                 : 2021-06-30T16:42:13
+Reserved Walltime   : 04:00:00
+Used Walltime       : 00:09:17
+Used CPU Time       : 00:04:11
+% User (Computation): 80.04%
+% System (I/O)      : 19.96%
+Mem Reserved        : 50G/node
+Max Mem Used        : 1.20G (1286377472.0)
+Max Disk Write      : 450.56K (461373.44)
+Max Disk Read       : 469.69M (492505661.44)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End SLURM Epilogue Wed Jun 30 16:42:18 CDT 2021 1625089338
+--------------------------------------------------------------

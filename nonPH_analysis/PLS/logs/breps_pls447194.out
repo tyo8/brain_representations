@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Mon Oct  4 14:31:39 CDT 2021 1633375899
+Job ID:		447194
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Mon Oct  4 14:31:39 CDT 2021 1633375899
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin SLURM Epilogue Mon Oct  4 16:05:31 CDT 2021 1633381531
+Name                : breps_pls
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-10-04T14:31:39
+Start               : 2021-10-04T14:31:39
+End                 : 2021-10-04T16:05:26
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   01:33:47
+Used CPU Time       :   01:15:30
+% User (Computation): 94.94%
+% System (I/O)      :  5.05%
+Mem Reserved        : 250G/node
+Max Mem Used        : 89.40G (95994224640.0)
+Max Disk Write      : 46.13G (49530777108.5)
+Max Disk Read       : 14.96G (16066900131.8)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End SLURM Epilogue Mon Oct  4 16:05:32 CDT 2021 1633381532
+--------------------------------------------------------------

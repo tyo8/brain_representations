@@ -1,0 +1,44 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov 23 23:17:06 CST 2022 1669267026
+Job ID:		233709
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Wed Nov 23 23:17:06 CST 2022 1669267026
+--------------------------------------------------------------
+PD_fnames:
+/scratch/tyoeasley/brain_representations/metric_tests/ICA300_NMs/phoms/p2dist_persistence_dgms.npy
+distnames:
+['ICA300_NMs_Psim_ztrans_p2dists', 'ICA300_NMs_corr_mtx_dist_p2dists', 'ICA300_NMs_geodesic_p2dists', 'ICA300_NMs_spd_cos_p2dists', 'ICA300_NMs_dcor_p2dists']
+Running with make_figs=True
+PD_array has shape: (5, 2184, 3)
+Computing Betti curves...
+Done. (0:00:00.017012 elapsed)
+
+Plotting Betti curves...
+Done. (0:00:03.430594 elapsed)
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov 23 23:17:14 CST 2022 1669267034
+Name                : bcurves_NMsICA300_sims
+User                : tyoeasley
+Partition           : medium
+Nodes               : node02
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-23T23:15:37
+Start               : 2022-11-23T23:17:06
+End                 : 2022-11-23T23:17:12
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:06
+Used CPU Time       :   00:00:03
+% User (Computation): 80.52%
+% System (I/O)      :  0.00%
+Mem Reserved        : 500G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node02
+Max-Disk-Write Node : node02
+Max-Disk-Read Node  : node02
+End Slurm Epilogue Wed Nov 23 23:17:14 CST 2022 1669267034
+--------------------------------------------------------------

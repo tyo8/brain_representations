@@ -1,0 +1,14 @@
+#!/bin/sh
+
+#SBATCH --job-name=stbl100_summ
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/logs/stbl100_summ%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/logs/stbl100_summ%j.err
+#SBATCH --time=47:55:00
+#SBATCH --mem=80gb
+
+src_dir=/scratch/tyoeasley/brain_representations/src_py
+agg_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/CCA_stbl_paragg_2021Dec28
+out_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python make_stbl_summary.py ${src_dir} ${agg_dir} ${out_dir}

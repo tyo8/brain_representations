@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp.py", line 4, in <module>
+    LDBR.pairwise_lin_decomp(sys.argv[1],sys.argv[2],listpath=sys.argv[3],decomp_method=sys.argv[4])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_brainrep.py", line 22, in pairwise_lin_decomp
+    linear_decomp = switch(decomp_method)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_brainrep.py", line 97, in switch
+    return parserCCA
+NameError: name 'parserCCA' is not defined

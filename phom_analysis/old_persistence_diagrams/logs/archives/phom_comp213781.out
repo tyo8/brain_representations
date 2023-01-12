@@ -1,0 +1,33 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Tue Jul  6 16:50:53 CDT 2021 1625608253
+Job ID:		213781
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Tue Jul  6 16:50:53 CDT 2021 1625608253
+--------------------------------------------------------------
+Persistence diagrams computed from /scratch/tyoeasley/brain_representations/persistence_diagrams/dist_mtx_list.csv and saved to /scratch/tyoeasley/brain_representations/persistence_diagrams/subj_subj_phoms.npy
+--------------------------------------------------------------
+Begin SLURM Epilogue Tue Jul  6 16:59:04 CDT 2021 1625608744
+Name                : phom_comp
+User                : tyoeasley
+Partition           : medium
+Nodes               : node09
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-07-06T16:50:52
+Start               : 2021-07-06T16:50:53
+End                 : 2021-07-06T16:58:59
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:08:06
+Used CPU Time       :   00:08:02
+% User (Computation): 96.01%
+% System (I/O)      :  3.99%
+Mem Reserved        : 250G/node
+Max Mem Used        : 10.32G (11079114752.0)
+Max Disk Write      : 17.93M (18800967.68)
+Max Disk Read       : 162.76M (170666229.76)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End SLURM Epilogue Tue Jul  6 16:59:04 CDT 2021 1625608744
+--------------------------------------------------------------

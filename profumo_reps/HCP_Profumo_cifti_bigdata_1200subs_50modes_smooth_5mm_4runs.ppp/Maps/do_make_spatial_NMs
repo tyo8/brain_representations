@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#SBATCH --job-name=spNM_profumo
+#SBATCH --output=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/logs/spNM_profumo.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/logs/spNM_profumo.err
+#SBATCH --time=00:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=5GB
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
+
+python /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/make_spNMs.py

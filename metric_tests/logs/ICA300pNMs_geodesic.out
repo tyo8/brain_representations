@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Jan  4 18:21:19 CST 2023 1672878079
+Job ID:		345092
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Jan  4 18:21:19 CST 2023 1672878079
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/subj_list_pNMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/ICA300_pNMs_geodesic_dists.txt
+computing similarity according to geodesic
+Estimated data size is 44984550 elements or ~0.1728GB.
+Initial data has shape (n_subj, n_feats)=(1003, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Jan  4 19:25:29 CST 2023 1672881929
+Name                : ICA300pNMs_geodesic
+User                : tyoeasley
+Partition           : small
+Nodes               : node19
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-04T18:21:13
+Start               : 2023-01-04T18:21:19
+End                 : 2023-01-04T19:25:27
+Reserved Walltime   : 23:55:00
+Used Walltime       : 01:04:08
+Used CPU Time       : 01:01:24
+% User (Computation): 99.86%
+% System (I/O)      :  0.13%
+Mem Reserved        : 50G
+Max Mem Used        : 696.18M (729997312.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Wed Jan  4 19:25:29 CST 2023 1672881929
+--------------------------------------------------------------

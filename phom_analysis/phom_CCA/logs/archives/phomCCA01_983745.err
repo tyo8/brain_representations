@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 8, in <module>
+    import comp_Psim_mtx as cPm
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 36
+    assert Psim_mtx.shape == (n_subj, n_subj)[,'Psim_mtx is not a symmetric n_subj x n_subj matrix.']
+                                              ^
+SyntaxError: invalid syntax

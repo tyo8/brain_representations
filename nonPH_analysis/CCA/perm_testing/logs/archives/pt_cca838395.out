@@ -1,0 +1,35 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  9 20:53:03 CST 2022 1641783183
+Job ID:		838395
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Sun Jan  9 20:53:03 CST 2022 1641783183
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 12001 shufflings (permutations only).
+[['Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'NM_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP'], ['0.1', '1000000.0', '10.0', '1.0', '10000.0', '10.0', '10000.0', '0.01', '100.0', '0.1']]
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  9 20:59:19 CST 2022 1641783559
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 10
+State               : FAILED
+Submit              : 2022-01-09T20:52:11
+Start               : 2022-01-09T20:52:19
+End                 : 2022-01-09T20:58:47
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:06:28
+Used CPU Time       :   00:06:19
+% User (Computation): 73.88%
+% System (I/O)      : 26.12%
+Mem Reserved        : 30G
+Max Mem Used        : 969.12M (1016197120.0)
+Max Disk Write      : 44.73M (46902804.48)
+Max Disk Read       : 60.65M (63596134.4)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Sun Jan  9 20:59:19 CST 2022 1641783559
+--------------------------------------------------------------

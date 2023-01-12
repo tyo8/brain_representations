@@ -1,0 +1,642 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Mar  5 12:42:40 CST 2022 1646505760
+Job ID:		985255
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sat Mar  5 12:42:40 CST 2022 1646505760
+--------------------------------------------------------------
+/scratch/tyoeasley/brain_representations/list_of_datalists_U100.csv
+(100, 1225)
+(100, 91282)
+(100, 200)
+(100, 64620)
+(100, 300)
+Computing initial CCA decompositions for all 5 methods...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/full_lindecomps.nlist...
+done.
+Computing cross-predictions from rank-1000 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 375, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 338, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 169, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 150, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 153, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-500 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 375, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 338, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 169, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 150, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 153, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_500/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-200 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 375, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 338, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 169, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 150, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 153, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_200/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-100 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 375, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 338, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 169, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 150, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 153, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_100/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-50 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 314, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 184, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 380, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 208, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 160, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_50/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-20 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 305, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 170, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 374, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 175, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 175, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_20/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-10 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 328, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 165, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 374, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 163, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 174, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_10/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Computing cross-predictions from rank-5 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 350, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 145, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 384, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 154, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 149, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/NM_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Maps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/Maps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/Amps_PROFUMO
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for NM_MMP saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/NM_MMP
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+Betti curves for Amps_ICA300 saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_5/Amps_ICA300
+shape of approximate Betti curveset:  (4, 2, 250)
+shape of complementary Betti curveset:  (4, 2, 250)
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Mar  5 12:49:04 CST 2022 1646506144
+Name                : phomCCA_u100
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-03-05T12:42:31
+Start               : 2022-03-05T12:42:40
+End                 : 2022-03-05T12:49:01
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:06:21
+Used CPU Time       : 00:05:22
+% User (Computation): 90.50%
+% System (I/O)      :  9.50%
+Mem Reserved        : 50G
+Max Mem Used        : 5.53G (5935476736.0)
+Max Disk Write      : 9.13G (9799131463.68)
+Max Disk Read       : 44.42G (47691585290.2)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Sat Mar  5 12:49:04 CST 2022 1646506144
+--------------------------------------------------------------

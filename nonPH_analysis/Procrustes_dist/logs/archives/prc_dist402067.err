@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_PRCd.py", line 4, in <module>
+    PRCd.iter_PRCd_list(sys.argv[1],sys.argv[2],listpath=sys.argv[3])
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_prc_dist.py", line 27, in iter_PRCd_list
+    X = np.genfromtext(xname)
+AttributeError: module 'numpy' has no attribute 'genfromtext'

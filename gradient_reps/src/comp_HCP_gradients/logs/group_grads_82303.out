@@ -1,0 +1,53 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Sep  6 21:47:48 CDT 2022 1662518868
+Job ID:		82303
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Sep  6 21:47:48 CDT 2022 1662518868
+--------------------------------------------------------------
+Dconn shape: (59412, 59412)
+subsampling factor = 1.0
+Thresholding (elapsed time): 0:01:26.393080
+Minimum value is 0.000000
+
+Step 3: remove negative
+Negative values occur in 0 rows
+
+Step 4: generate affinity matrix
+2022-09-06 21:50:23.974965
+Compute time of affinity matrix: 0:17:48.509429
+
+Step 5: perform diffusion embedding
+n_components = 50
+embedding done in: 0:02:24.324347
+
+Saving results...
+WARNING: created directory /scratch/tyoeasley/brain_representations/gradient_reps/gradmaps_d50
+exporting to CIFTI2 format...
+cifti data shape: (50, 91282)
+CIFTI2 data saved to /scratch/tyoeasley/brain_representations/gradient_reps/gradmaps_d50/emb_HCPavgS1200.dtseries.nii
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Sep  6 22:10:41 CDT 2022 1662520241
+Name                : group_grads
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-09-06T21:47:48
+Start               : 2022-09-06T21:47:48
+End                 : 2022-09-06T22:10:38
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:22:50
+Used CPU Time       : 00:22:41
+% User (Computation): 97.31%
+% System (I/O)      :  2.69%
+Mem Reserved        : 100G
+Max Mem Used        : 63.80G (68502437888.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 31.06G (33351532544.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Sep  6 22:10:41 CDT 2022 1662520241
+--------------------------------------------------------------

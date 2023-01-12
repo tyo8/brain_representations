@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  9 23:37:06 CST 2023 1673329026
+Job ID:		452610
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jan  9 23:37:06 CST 2023 1673329026
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  9 23:37:08 CST 2023 1673329028
+Name                : tst_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node28
+Cores               : 1
+State               : FAILED
+Submit              : 2023-01-09T22:54:50
+Start               : 2023-01-09T23:37:06
+End                 : 2023-01-09T23:37:06
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 50G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node28
+Max-Disk-Write Node : node28
+Max-Disk-Read Node  : node28
+End Slurm Epilogue Mon Jan  9 23:37:09 CST 2023 1673329029
+--------------------------------------------------------------

@@ -1,0 +1,37 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jul 11 14:45:18 CDT 2022 1657568718
+Job ID:		1513533
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Jul 11 14:45:18 CDT 2022 1657568718
+--------------------------------------------------------------
+Timeseries data extraction method: wb_cp
+Extracting from: /ceph/hcpdb/archive/HCP_1200/arc001/%s_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST%s_%s/rfMRI_REST%s_%s_Atlas_MSMAll_hp2000_clean.dtseries.nii
+Extracting to: /scratch/tyoeasley/brain_representations/yeo/ext_ptseries/wb_cp
+extracting...
+/ceph/hcpdb/archive/HCP_900/arc001/%s_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST%s_%s/rfMRI_REST%s_%s_Atlas_MSMAll_hp2000_clean.dtseries.nii
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jul 11 14:45:22 CDT 2022 1657568722
+Name                : ext_pts
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-07-11T14:45:17
+Start               : 2022-07-11T14:45:18
+End                 : 2022-07-11T14:45:20
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:02
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 29G
+Max Mem Used        : 1.27M (1335296.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Mon Jul 11 14:45:22 CDT 2022 1657568722
+--------------------------------------------------------------

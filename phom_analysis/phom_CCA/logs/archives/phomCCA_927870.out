@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Feb 16 14:09:24 CST 2022 1645042164
+Job ID:		927870
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Wed Feb 16 14:09:24 CST 2022 1645042164
+--------------------------------------------------------------
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+Warning: created directory /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves/rank_5
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Feb 18 11:31:01 CST 2022 1645205461
+Name                : phomCCA
+User                : tyoeasley
+Partition           : medium
+Nodes               : node05
+Cores               : 1
+State               : FAILED
+Submit              : 2022-02-16T14:09:24
+Start               : 2022-02-16T14:09:24
+End                 : 2022-02-18T11:30:59
+Reserved Walltime   : 3-23:55:00
+Used Walltime       : 1-21:21:35
+Used CPU Time       : 1-21:12:46
+% User (Computation): 84.18%
+% System (I/O)      : 15.82%
+Mem Reserved        : 750G
+Max Mem Used        : 275.08G (2.95360376832e+11)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 3.76G (4035622993.92)
+Max-Mem-Used Node   : node05
+Max-Disk-Write Node : node05
+Max-Disk-Read Node  : node05
+End Slurm Epilogue Fri Feb 18 11:31:01 CST 2022 1645205461
+--------------------------------------------------------------

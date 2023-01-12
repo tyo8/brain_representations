@@ -1,0 +1,34 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Tue Oct  5 17:48:41 CDT 2021 1633474121
+Job ID:		450305
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Tue Oct  5 17:48:41 CDT 2021 1633474121
+--------------------------------------------------------------
+['NM_PROFUMO', 'Maps_PROFUMO', 'Amps_PROFUMO', 'NM_MMP', 'Amps_ICA300']
+(5, 1003, 1003)
+--------------------------------------------------------------
+Begin SLURM Epilogue Tue Oct  5 17:50:30 CDT 2021 1633474230
+Name                : breps_mds
+User                : tyoeasley
+Partition           : medium
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-10-05T17:48:41
+Start               : 2021-10-05T17:48:41
+End                 : 2021-10-05T17:50:25
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:01:44
+Used CPU Time       :   00:01:41
+% User (Computation): 99.05%
+% System (I/O)      :  0.00%
+Mem Reserved        : 150G/node
+Max Mem Used        : 192.22M (201555968.0)
+Max Disk Write      : 23.74M (24893194.24)
+Max Disk Read       : 139.16M (145919836.16)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End SLURM Epilogue Tue Oct  5 17:50:30 CDT 2021 1633474230
+--------------------------------------------------------------

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 376, in <module>
+    main(sys.argv)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 55, in main
+    reglist=reglist, namelist=namelist, hom_dims=hom_dims, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 87, in make_bcurves_over_rank
+    pairwise_plot_all_bcurves(all_bcurves, output_basedir, rank_list=comp_rank)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 310, in pairwise_plot_all_bcurves
+    X_bcurveset = np.stack(X_bcurve, X_filts, axis=0)
+  File "<__array_function__ internals>", line 4, in stack
+TypeError: _stack_dispatcher() got multiple values for argument 'axis'

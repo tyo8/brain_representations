@@ -1,0 +1,21 @@
+#!/bin/sh
+
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
+#SBATCH --job-name=tsttst_spd_cos
+#SBATCH --output=/scratch/tyoeasley/brain_representations/metric_tests/logs/tsttst_spd_cos.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/metric_tests/logs/tsttst_spd_cos.err
+#SBATCH --time=23:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50gb
+
+subj_list=/scratch/tyoeasley/brain_representations/metric_tests/tst_tst/subj_list_tst.csv
+subj_sim=/scratch/tyoeasley/brain_representations/metric_tests/tst_tst/tst_tst_spd_cos_sims.txt
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate Stats
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_sim} spd_cos
+if test -f 
+then
+	echo ${subj_sim} >> /scratch/tyoeasley/brain_representations/metric_tests/tst_tst/tsttst_sims.csv
+fi
+

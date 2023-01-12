@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Nov 28 12:44:22 CST 2022 1669661062
+Job ID:		235017
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Nov 28 12:44:22 CST 2022 1669661062
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/subj_list_NMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/uniform_NMs_dcor_sims.txt
+computing similarity according to dcor
+Estimated data size is 44984550 elements or ~0.1728GB.
+Initial data has shape (n_subj, n_feats)=(1003, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Nov 29 14:37:42 CST 2022 1669754262
+Name                : uniformNMs_dcor
+User                : tyoeasley
+Partition           : medium
+Nodes               : node01
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-28T12:44:21
+Start               : 2022-11-28T12:44:21
+End                 : 2022-11-29T14:37:40
+Reserved Walltime   : 6-23:55:00
+Used Walltime       : 1-01:53:19
+Used CPU Time       : 1-01:47:49
+% User (Computation): 100.00%
+% System (I/O)      :  0.00%
+Mem Reserved        : 50G
+Max Mem Used        : 681.93M (715059200.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node01
+Max-Disk-Write Node : node01
+Max-Disk-Read Node  : node01
+End Slurm Epilogue Tue Nov 29 14:37:43 CST 2022 1669754263
+--------------------------------------------------------------

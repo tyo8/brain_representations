@@ -1,0 +1,8 @@
+#!/bin/sh
+#SBATCH --job-name=cleanup_amps
+#SBATCH --output=/scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/logs/cleanup_amps%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/logs/cleanup_amps%j.err
+#SBATCH --time=23:55:00
+#SBATCH --mem=29GB
+
+bash /scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/cat_ts_amps.sh MATLAB

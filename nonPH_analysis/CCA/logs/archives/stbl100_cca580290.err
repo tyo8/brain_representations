@@ -1,0 +1,2 @@
+/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py:222: RuntimeWarning: invalid value encountered in log
+  cancorr_mean[i] = np.exp(np.mean(np.log(cancorrs[i])))  # geometric mean of canonical correlations

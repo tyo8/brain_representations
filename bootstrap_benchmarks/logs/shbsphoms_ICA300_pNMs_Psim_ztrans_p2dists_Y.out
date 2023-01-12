@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 15:57:28 CST 2023 1673215048
+Job ID:		417191
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 15:57:28 CST 2023 1673215048
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 15:57:33 CST 2023 1673215053
+Name                : ICA300_pNMs_Psim_ztrans_p2dists_Y_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node07
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:57:28
+Start               : 2023-01-08T15:57:28
+End                 : 2023-01-08T15:57:31
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:03
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 700G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node07
+Max-Disk-Write Node : node07
+Max-Disk-Read Node  : node07
+End Slurm Epilogue Sun Jan  8 15:57:33 CST 2023 1673215053
+--------------------------------------------------------------

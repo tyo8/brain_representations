@@ -1,0 +1,93 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Wed Nov 17 17:17:39 CST 2021 1637191059
+Job ID:		582789
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Wed Nov 17 17:17:39 CST 2021 1637191059
+--------------------------------------------------------------
+['NM_PROFUMO_and_Maps_PROFUMO.CCA_res', 'NM_PROFUMO_and_Amps_PROFUMO.CCA_res', 'NM_PROFUMO_and_NM_MMP.CCA_res', 'NM_PROFUMO_and_Amps_ICA300.CCA_res', 'Maps_PROFUMO_and_Amps_PROFUMO.CCA_res', 'Maps_PROFUMO_and_NM_MMP.CCA_res', 'Maps_PROFUMO_and_Amps_ICA300.CCA_res', 'Amps_PROFUMO_and_NM_MMP.CCA_res', 'Amps_PROFUMO_and_Amps_ICA300.CCA_res', 'NM_MMP_and_Amps_ICA300.CCA_res']
+Stability iteration 0:
+done in 95.0 sec.
+Stability iteration 1:
+done in 87.0 sec.
+Stability iteration 2:
+done in 87.0 sec.
+Stability iteration 3:
+done in 87.0 sec.
+Stability iteration 4:
+done in 87.0 sec.
+Stability iteration 5:
+done in 87.0 sec.
+Stability iteration 6:
+done in 87.0 sec.
+Stability iteration 7:
+done in 87.0 sec.
+Stability iteration 8:
+done in 87.0 sec.
+Stability iteration 9:
+done in 87.0 sec.
+Stability iteration 10:
+done in 87.0 sec.
+Stability iteration 11:
+done in 87.0 sec.
+Stability iteration 12:
+done in 87.0 sec.
+Stability iteration 13:
+done in 87.0 sec.
+Stability iteration 14:
+done in 87.0 sec.
+Stability iteration 15:
+done in 87.0 sec.
+Stability iteration 16:
+done in 87.0 sec.
+Stability iteration 17:
+done in 87.0 sec.
+Stability iteration 18:
+done in 87.0 sec.
+Stability iteration 19:
+done in 87.0 sec.
+Stability iteration 20:
+done in 87.0 sec.
+Stability iteration 21:
+done in 87.0 sec.
+Stability iteration 22:
+done in 87.0 sec.
+Stability iteration 23:
+done in 87.0 sec.
+Stability iteration 24:
+done in 87.0 sec.
+NM_PROFUMO_and_Maps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Maps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+NM_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_NM_MMP.CCA_stbl
+NM_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_PROFUMO_and_Amps_ICA300.CCA_stbl
+Maps_PROFUMO_and_Amps_PROFUMO stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_Amps_PROFUMO.CCA_stbl
+Maps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_NM_MMP.CCA_stbl
+Maps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Maps_PROFUMO_and_Amps_ICA300.CCA_stbl
+Amps_PROFUMO_and_NM_MMP stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Amps_PROFUMO_and_NM_MMP.CCA_stbl
+Amps_PROFUMO_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/Amps_PROFUMO_and_Amps_ICA300.CCA_stbl
+NM_MMP_and_Amps_ICA300 stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing_U100/NM_MMP_and_Amps_ICA300.CCA_stbl
+--------------------------------------------------------------
+Begin SLURM Epilogue Wed Nov 17 17:56:13 CST 2021 1637193373
+Name                : stbl100_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node25
+Cores               : 1
+State               : FAILED
+Submit              : 2021-11-17T17:17:32
+Start               : 2021-11-17T17:17:39
+End                 : 2021-11-17T17:56:08
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:38:29
+Used CPU Time       :   00:37:28
+% User (Computation): 97.82%
+% System (I/O)      :  2.18%
+Mem Reserved        : 250G
+Max Mem Used        : 1.31G (1407066112.0)
+Max Disk Write      : 19.09G (20502911385.6)
+Max Disk Read       : 19.30G (20718739783.7)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End SLURM Epilogue Wed Nov 17 17:56:13 CST 2021 1637193373
+--------------------------------------------------------------

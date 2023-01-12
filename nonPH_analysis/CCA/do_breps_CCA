@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#SBATCH --job-name=breps_cca
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/logs/breps_cca%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/logs/breps_cca%j.err
+#SBATCH --time=167:55:00
+#SBATCH --nodes=1 
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=250gb
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/lindecomp_brainrep.py
+
+dataset_list_name=/scratch/tyoeasley/brain_representations/list_of_datalists.csv
+output_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/breps_CCA
+namelist_path=/scratch/tyoeasley/brain_representations/BR_label_list.csv
+reglist_path=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02_med.csv
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${dataset_list_name} ${output_dir} ${namelist_path} ${reglist_path} CCA

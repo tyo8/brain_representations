@@ -1,0 +1,34 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Nov 18 16:57:05 CST 2021 1637276225
+Job ID:		585654
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Nov 18 16:57:05 CST 2021 1637276225
+--------------------------------------------------------------
+['NM_PROFUMO_and_Maps_PROFUMO.CCA_res', 'NM_PROFUMO_and_Amps_PROFUMO.CCA_res', 'NM_PROFUMO_and_NM_MMP.CCA_res', 'NM_PROFUMO_and_Amps_ICA300.CCA_res', 'Maps_PROFUMO_and_Amps_PROFUMO.CCA_res', 'Maps_PROFUMO_and_NM_MMP.CCA_res', 'Maps_PROFUMO_and_Amps_ICA300.CCA_res', 'Amps_PROFUMO_and_NM_MMP.CCA_res', 'Amps_PROFUMO_and_Amps_ICA300.CCA_res', 'NM_MMP_and_Amps_ICA300.CCA_res']
+Stability iteration 0:
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Nov 18 17:10:51 CST 2021 1637277051
+Name                : stbl100_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node18
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2021-11-18T16:56:56
+Start               : 2021-11-18T16:57:05
+End                 : 2021-11-18T17:10:46
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:13:41
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 250G
+Max Mem Used        : 1.19G (1272815616.0)
+Max Disk Write      : 5.34G (5731463987.2)
+Max Disk Read       : 5.42G (5816084070.4)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Thu Nov 18 17:10:51 CST 2021 1637277051
+--------------------------------------------------------------

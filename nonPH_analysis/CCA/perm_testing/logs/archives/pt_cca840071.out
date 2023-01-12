@@ -1,0 +1,59 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan 10 14:30:33 CST 2022 1641846633
+Job ID:		840071
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan 10 14:30:33 CST 2022 1641846633
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 101 shufflings (permutations only).
+[['Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'NM_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP'], ['0.1', '1000000.0', '10.0', '1.0', '10000.0', '10.0', '10000.0', '0.01', '100.0', '0.1']]
+Elapsed time over 10 workers and 100 total permutations is 525.7884156703949 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_permtests_2022Jan10
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_pt_1_2022Jan10 not found; new directory created.
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.01 for Maps_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_pt_8_2022Jan10 not found; new directory created.
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.01 for Maps_PROFUMO_and_Amps_PROFUMO.
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_Amps_ICA300.
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan 10 14:39:39 CST 2022 1641847179
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node18
+Cores               : 10
+State               : COMPLETED
+Submit              : 2022-01-10T14:30:26
+Start               : 2022-01-10T14:30:33
+End                 : 2022-01-10T14:39:34
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:09:01
+Used CPU Time       :   01:27:19
+% User (Computation): 55.04%
+% System (I/O)      : 44.97%
+Mem Reserved        : 30G
+Max Mem Used        : 4.02G (4318695424.0)
+Max Disk Write      : 277.46M (290937896.96)
+Max Disk Read       : 356.88M (374215802.88)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Mon Jan 10 14:39:39 CST 2022 1641847179
+--------------------------------------------------------------

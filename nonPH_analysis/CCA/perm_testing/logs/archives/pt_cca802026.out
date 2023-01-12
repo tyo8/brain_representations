@@ -1,0 +1,146 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Dec 29 15:00:26 CST 2021 1640811626
+Job ID:		802026
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Wed Dec 29 15:00:26 CST 2021 1640811626
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 51 shufflings (permutations only).
+Regularization hyperparameter = 1000000.0 for NM_PROFUMO_and_Maps_PROFUMO.
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+Training CCA, kernel = None, regularization = 1000000.0000, 1002 components
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/CCA_pt_1_2021Dec29 not found; new directory created.
+Regularization hyperparameter = 10.0 for NM_PROFUMO_and_Amps_PROFUMO.
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Training CCA, kernel = None, regularization = 10.0000, 199 components
+Regularization hyperparameter = 10000.0 for NM_PROFUMO_and_NM_MMP.
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Training CCA, kernel = None, regularization = 10000.0000, 1002 components
+Regularization hyperparameter = 1.0 for NM_PROFUMO_and_Amps_ICA300.
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Training CCA, kernel = None, regularization = 1.0000, 299 components
+Regularization hyperparameter = 0.01 for Maps_PROFUMO_and_Amps_PROFUMO.
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Training CCA, kernel = None, regularization = 0.0100, 199 components
+Regularization hyperparameter = 100.0 for Maps_PROFUMO_and_NM_MMP.
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Training CCA, kernel = None, regularization = 100.0000, 1002 components
+Regularization hyperparameter = 10000.0 for Maps_PROFUMO_and_Amps_ICA300.
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Training CCA, kernel = None, regularization = 10000.0000, 299 components
+Regularization hyperparameter = 0.1 for Amps_PROFUMO_and_NM_MMP.
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Training CCA, kernel = None, regularization = 0.1000, 199 components
+Regularization hyperparameter = 0.001 for Amps_PROFUMO_and_Amps_ICA300.
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Training CCA, kernel = None, regularization = 0.0010, 199 components
+Regularization hyperparameter = 10.0 for NM_MMP_and_Amps_ICA300.
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Training CCA, kernel = None, regularization = 10.0000, 299 components
+Elapsed time over 10 workers and 50 total permutations is 500.47165751457214seconds.
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Dec 29 15:09:07 CST 2021 1640812147
+Name                : pt_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node16
+Cores               : 10
+State               : FAILED
+Submit              : 2021-12-29T15:00:25
+Start               : 2021-12-29T15:00:26
+End                 : 2021-12-29T15:09:02
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:08:36
+Used CPU Time       :   01:22:56
+% User (Computation): 56.80%
+% System (I/O)      : 43.20%
+Mem Reserved        : 120G
+Max Mem Used        : 3.59G (3850977280.0)
+Max Disk Write      : 13.09M (13725859.84)
+Max Disk Read       : 87.84M (92106915.84)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Wed Dec 29 15:09:07 CST 2021 1640812147
+--------------------------------------------------------------

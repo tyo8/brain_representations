@@ -1,0 +1,39 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Jan  3 19:38:00 CST 2022 1641260280
+Job ID:		813324
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Mon Jan  3 19:38:00 CST 2022 1641260280
+--------------------------------------------------------------
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+[['NM_PROFUMO_and_Maps_PROFUMO', 'NM_MMP_and_Amps_ICA300', 'NM_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_NM_MMP', 'Amps_PROFUMO_and_Amps_ICA300', 'NM_PROFUMO_and_NM_MMP', 'Maps_PROFUMO_and_Amps_ICA300', 'Maps_PROFUMO_and_Amps_PROFUMO', 'NM_PROFUMO_and_Amps_PROFUMO'], ['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0']]
+Regularization hyperparameter = 0.0 for NM_PROFUMO_and_Maps_PROFUMO.
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Jan  3 19:56:16 CST 2022 1641261376
+Name                : breps_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node22
+Cores               : 1
+State               : FAILED
+Submit              : 2022-01-03T19:37:52
+Start               : 2022-01-03T19:37:59
+End                 : 2022-01-03T19:56:11
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:18:12
+Used CPU Time       :   00:12:53
+% User (Computation): 95.79%
+% System (I/O)      :  4.21%
+Mem Reserved        : 250G
+Max Mem Used        : 2.00G (2143277056.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 3.75G (4028010332.16)
+Max-Mem-Used Node   : node22
+Max-Disk-Write Node : node22
+Max-Disk-Read Node  : node22
+End Slurm Epilogue Mon Jan  3 19:56:16 CST 2022 1641261376
+--------------------------------------------------------------

@@ -1,0 +1,103 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sat Mar  5 13:51:00 CST 2022 1646509860
+Job ID:		985259
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sat Mar  5 13:51:00 CST 2022 1646509860
+--------------------------------------------------------------
+/scratch/tyoeasley/brain_representations/list_of_datalists_U100.csv
+(100, 1225)
+(100, 91282)
+(100, 200)
+(100, 64620)
+(100, 300)
+Computing initial CCA decompositions for all 5 methods...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/full_lindecomps.nlist...
+done.
+Computing cross-predictions from rank-1000 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 375, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_PROFUMO = (10, 2, 250)
+long_stack shape for Maps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Maps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Maps_PROFUMO = (9, 338, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Maps_PROFUMO = (10, 2, 250)
+long_stack shape for Amps_PROFUMO = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_PROFUMO = (9, 169, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_PROFUMO = (10, 2, 250)
+long_stack shape for NM_MMP = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of NM_MMP...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for NM_MMP = (9, 150, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for NM_MMP = (10, 2, 250)
+long_stack shape for Amps_ICA300 = 9x(100, 100)
+Computing persistence diagrams for all 9 kernelizations of Amps_ICA300...
+Computing persistence diagrams for dimensions (0, 1)...
+dist_mtx_array has dimension 9x(100, 100)
+done.
+done.
+long_phoms shape for Amps_ICA300 = (9, 153, 3)
+Computing Betti curves for all 9 persistence diagrams...
+done.
+long_bcurves shape for Amps_ICA300 = (10, 2, 250)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/phom_data.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/bcurves_data.nlist...
+done.
+Betti curves for NM_PROFUMO saved to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves_u100/rank_1000/NM_PROFUMO
+--------------------------------------------------------------
+Begin Slurm Epilogue Sat Mar  5 13:53:28 CST 2022 1646510008
+Name                : phomCCA_u100
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : FAILED
+Submit              : 2022-03-05T13:51:00
+Start               : 2022-03-05T13:51:00
+End                 : 2022-03-05T13:53:26
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:02:26
+Used CPU Time       : 00:02:07
+% User (Computation): 94.78%
+% System (I/O)      :  5.22%
+Mem Reserved        : 50G
+Max Mem Used        : 905.55M (949534720.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 406.74M (426497802.24)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Sat Mar  5 13:53:28 CST 2022 1646510008
+--------------------------------------------------------------

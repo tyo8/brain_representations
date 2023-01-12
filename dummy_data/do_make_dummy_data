@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#SBATCH --job-name=ext_dummy
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07,node21
+#SBATCH --output=/scratch/tyoeasley/brain_representations/dummy_data/logs/extdummy.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/dummy_data/logs/extdummy.err
+#SBATCH --time=95:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50GB
+
+python /scratch/tyoeasley/brain_representations/dummy_data/make_dummy_data.py
+

@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jul  5 11:29:40 CDT 2022 1657038580
+Job ID:		1504718
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jul  5 11:29:40 CDT 2022 1657038580
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jul  5 11:49:03 CDT 2022 1657039743
+Name                : cleanup_amps
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2022-07-05T11:29:40
+Start               : 2022-07-05T11:29:40
+End                 : 2022-07-05T11:49:00
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:19:20
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 29G
+Max Mem Used        : 8.46M (8876032.0)
+Max Disk Write      : 58.01G (62289734533.1)
+Max Disk Read       : 58.04G (62314690641.9)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jul  5 11:49:03 CDT 2022 1657039743
+--------------------------------------------------------------

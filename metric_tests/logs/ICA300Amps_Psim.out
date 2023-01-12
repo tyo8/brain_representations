@@ -1,0 +1,38 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Jan  4 18:20:19 CST 2023 1672878019
+Job ID:		345088
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Jan  4 18:20:19 CST 2023 1672878019
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/ICA300_Amps/subj_list_Amps.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/ICA300_Amps/ICA300_Amps_Psim_sims.txt
+computing similarity according to Psim
+Estimated data size is 300900 elements or ~0.001156GB.
+Initial data has shape (n_subj, n_feats)=(1003, 300)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Jan  4 18:21:02 CST 2023 1672878062
+Name                : ICA300Amps_Psim
+User                : tyoeasley
+Partition           : small
+Nodes               : node19
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-04T18:20:08
+Start               : 2023-01-04T18:20:19
+End                 : 2023-01-04T18:21:00
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:41
+Used CPU Time       : 00:00:05
+% User (Computation): 92.81%
+% System (I/O)      :  0.00%
+Mem Reserved        : 50G
+Max Mem Used        : 137.36M (144031744.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Wed Jan  4 18:21:02 CST 2023 1672878062
+--------------------------------------------------------------

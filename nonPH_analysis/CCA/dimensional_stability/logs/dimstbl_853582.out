@@ -1,0 +1,685 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Jan 13 20:30:16 CST 2022 1642127416
+Job ID:		853582
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Jan 13 20:30:16 CST 2022 1642127416
+--------------------------------------------------------------
+Number of possible permutations is exp(1591.03).
+Generating 26 shufflings (permutations only).
+Loaded brain reps data from filepath:
+/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/svd_reduced_subj_data.brep
+Accepted output base directory:
+/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability
+Read in permutation set: showing 25 entries.
+Namelist read:
+['NM_PROFUMO', 'Maps_PROFUMO', 'Amps_PROFUMO', 'NM_MMP', 'Amps_ICA300']
+Regularization values accepted:
+[1.e-04 1.e-03 1.e-02 1.e-01 1.e+00 1.e+01 1.e+02 1.e+03 1.e+04 1.e+05
+ 1.e+06]
+Decomp method:
+CCA
+Number of parallel workers:
+5
+Elapsed time over 5 workers and 25 total permutations is 179.21768307685852 seconds.
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-12.788455799885893
+number of significant shared dimensions: 54
+Pair no. 1:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06101620828557511
+number of significant shared dimensions: 176
+Pair no. 2:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+Extreme values found: max_med = 1e-6.190402790441024
+number of significant shared dimensions: 25
+Pair no. 3:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-12.692851222838465
+number of significant shared dimensions: 61
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+Extreme values found: max_med = 1e-12.723630214442434
+number of significant shared dimensions: 8
+Pair no. 5:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+Extreme values found: max_med = 1e-13.137024400631223
+number of significant shared dimensions: 53
+Pair no. 6:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+Extreme values found: max_med = 1e-12.679278415649192
+number of significant shared dimensions: 113
+Pair no. 7:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-12.762022316854457
+number of significant shared dimensions: 15
+Pair no. 8:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+Extreme values found: max_med = 1e-6.08926090743395
+number of significant shared dimensions: 17
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+Extreme values found: max_med = 1e-12.658583100877332
+number of significant shared dimensions: 14
+Elapsed time over 5 workers and 25 total permutations is 153.45791292190552 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-4.205446456525114
+number of significant shared dimensions: 28
+Pair no. 1:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-10.7631974481354
+number of significant shared dimensions: 16
+Pair no. 2:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.061016208872795206
+number of significant shared dimensions: 176
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-10.789099126767017
+number of significant shared dimensions: 55
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-10.692694363179196
+number of significant shared dimensions: 79
+Pair no. 5:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+Extreme values found: max_med = 1e-10.723500098691606
+number of significant shared dimensions: 10
+Pair no. 6:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+Extreme values found: max_med = 1e-10.679824795234167
+number of significant shared dimensions: 115
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+Extreme values found: max_med = 1e-11.139171425238649
+number of significant shared dimensions: 47
+Pair no. 8:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+Extreme values found: max_med = 1e-10.657639530654365
+number of significant shared dimensions: 14
+Pair no. 9:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-4.105408526548186
+number of significant shared dimensions: 17
+Elapsed time over 5 workers and 25 total permutations is 148.3882908821106 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+Extreme values found: max_med = 1e-8.657721430274698
+number of significant shared dimensions: 15
+Pair no. 1:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+Extreme values found: max_med = 1e-8.679873680134635
+number of significant shared dimensions: 115
+Pair no. 2:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-8.789156449838298
+number of significant shared dimensions: 55
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-2.2519469866172996
+number of significant shared dimensions: 25
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+Extreme values found: max_med = 1e-8.723681097751985
+number of significant shared dimensions: 10
+Pair no. 5:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-8.76326861633384
+number of significant shared dimensions: 16
+Pair no. 6:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+Extreme values found: max_med = 1e-9.139449458434285
+number of significant shared dimensions: 47
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-2.3558823814119063
+number of significant shared dimensions: 22
+Pair no. 8:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06101622310409937
+number of significant shared dimensions: 176
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-8.692793629748309
+number of significant shared dimensions: 78
+Elapsed time over 5 workers and 25 total permutations is 190.7237515449524 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-6.7639887691116245
+number of significant shared dimensions: 16
+Pair no. 1:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06101719093560114
+number of significant shared dimensions: 176
+Pair no. 2:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+Extreme values found: max_med = 1e-7.142077661116877
+number of significant shared dimensions: 49
+Pair no. 3:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+Extreme values found: max_med = 1e-6.680371089078267
+number of significant shared dimensions: 115
+Pair no. 4:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-1.0501600182949669
+number of significant shared dimensions: 22
+Pair no. 5:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-6.693742178319695
+number of significant shared dimensions: 78
+Pair no. 6:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+Extreme values found: max_med = 1e-6.789656564058451
+number of significant shared dimensions: 52
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-1.16995652479812
+number of significant shared dimensions: 35
+Pair no. 8:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+Extreme values found: max_med = 1e-6.725438710174684
+number of significant shared dimensions: 10
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+Extreme values found: max_med = 1e-6.6586904211195606
+number of significant shared dimensions: 15
+Elapsed time over 5 workers and 25 total permutations is 179.53059840202332 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-4.742783877891361
+number of significant shared dimensions: 11
+Pair no. 1:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-4.7036977175930765
+number of significant shared dimensions: 80
+Pair no. 2:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06128623409556657
+number of significant shared dimensions: 167
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.6620439371908323
+number of significant shared dimensions: 91
+Pair no. 4:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-4.685320347103567
+number of significant shared dimensions: 118
+Pair no. 5:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-5.167677231683002
+number of significant shared dimensions: 46
+Pair no. 6:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-4.771050500441534
+number of significant shared dimensions: 16
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.5884085826155836
+number of significant shared dimensions: 40
+Pair no. 8:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-4.797462507366291
+number of significant shared dimensions: 57
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-4.668337526789258
+number of significant shared dimensions: 15
+Elapsed time over 5 workers and 25 total permutations is 135.48456406593323 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-3.3240964453555195
+number of significant shared dimensions: 41
+Pair no. 1:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-2.8375567462759403
+number of significant shared dimensions: 15
+Pair no. 2:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06838306377738146
+number of significant shared dimensions: 105
+Pair no. 3:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-2.7324981845353102
+number of significant shared dimensions: 128
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-2.7955174674640664
+number of significant shared dimensions: 79
+Pair no. 5:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-2.7607584193781576
+number of significant shared dimensions: 15
+Pair no. 6:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-2.8713652384104114
+number of significant shared dimensions: 12
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.26556910984932697
+number of significant shared dimensions: 103
+Pair no. 8:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.37827305088458785
+number of significant shared dimensions: 61
+Pair no. 9:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-2.858246497425248
+number of significant shared dimensions: 53
+Elapsed time over 5 workers and 25 total permutations is 127.55360507965088 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.08424221322181827
+number of significant shared dimensions: 84
+Pair no. 1:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-1.3697701201548957
+number of significant shared dimensions: 18
+Pair no. 2:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.31340222493699704
+number of significant shared dimensions: 53
+Pair no. 3:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-1.2456505461405138
+number of significant shared dimensions: 12
+Pair no. 4:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-1.4224398670642728
+number of significant shared dimensions: 23
+Pair no. 5:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06654778175749287
+number of significant shared dimensions: 55
+Pair no. 6:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-1.3071179905398238
+number of significant shared dimensions: 67
+Pair no. 7:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-1.5409745734651883
+number of significant shared dimensions: 16
+Pair no. 8:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-1.3564616427865281
+number of significant shared dimensions: 92
+Pair no. 9:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-1.07393889957632
+number of significant shared dimensions: 165
+Elapsed time over 5 workers and 25 total permutations is 142.7917218208313 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.30862415929938974
+number of significant shared dimensions: 12
+Pair no. 1:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-0.7309830786496403
+number of significant shared dimensions: 27
+Pair no. 2:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.6841710461347432
+number of significant shared dimensions: 28
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.5022601766371038
+number of significant shared dimensions: 104
+Pair no. 4:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.01991981558413132
+number of significant shared dimensions: 89
+Pair no. 5:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.06834329823314467
+number of significant shared dimensions: 43
+Pair no. 6:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.3366994802880315
+number of significant shared dimensions: 212
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.304574327019141
+number of significant shared dimensions: 49
+Pair no. 8:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.5036153550520357
+number of significant shared dimensions: 140
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.6280489810648116
+number of significant shared dimensions: 10
+Elapsed time over 5 workers and 25 total permutations is 197.44166922569275 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.02856217662154068
+number of significant shared dimensions: 31
+Pair no. 1:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.28967168960583195
+number of significant shared dimensions: 54
+Pair no. 2:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.0006821127705267568
+number of significant shared dimensions: 89
+Pair no. 3:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.0676298180344884
+number of significant shared dimensions: 35
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.13471235480439375
+number of significant shared dimensions: 20
+Pair no. 5:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.0623417327384843
+number of significant shared dimensions: 128
+Pair no. 6:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.11210367312683718
+number of significant shared dimensions: 175
+Pair no. 7:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.20660988061193317
+number of significant shared dimensions: 237
+Pair no. 8:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-0.2600141278543137
+number of significant shared dimensions: 35
+Pair no. 9:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.23463134843909636
+number of significant shared dimensions: 40
+Elapsed time over 5 workers and 25 total permutations is 204.4517741203308 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.08190757759723664
+number of significant shared dimensions: 55
+Pair no. 1:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e0.0018330554563123
+number of significant shared dimensions: 90
+Pair no. 2:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.11337617236869689
+number of significant shared dimensions: 262
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.0024650176454721812
+number of significant shared dimensions: 124
+Pair no. 4:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.02715941261368725
+number of significant shared dimensions: 169
+Pair no. 5:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.024081003151936956
+number of significant shared dimensions: 30
+Pair no. 6:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.16218615449004162
+number of significant shared dimensions: 58
+Pair no. 7:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e0.0030930953250026595
+number of significant shared dimensions: 34
+Pair no. 8:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.060237656547977185
+number of significant shared dimensions: 45
+Pair no. 9:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e-0.02825787299803522
+number of significant shared dimensions: 38
+Elapsed time over 5 workers and 25 total permutations is 169.40360617637634 seconds.
+WARNING: Created directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_permtests_2022Jan13
+Final results saved to directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_permtests_2022Jan13
+Pair no. 0:
+pairname_data = Maps_PROFUMO_and_Amps_PROFUMO
+pairname_null = Maps_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e-0.007764180302316132
+number of significant shared dimensions: 33
+Pair no. 1:
+pairname_data = NM_MMP_and_Amps_ICA300
+pairname_null = NM_MMP_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.043788731124873144
+number of significant shared dimensions: 257
+Pair no. 2:
+pairname_data = Amps_PROFUMO_and_NM_MMP
+pairname_null = Amps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e0.006791651945258883
+number of significant shared dimensions: 35
+Pair no. 3:
+pairname_data = NM_PROFUMO_and_Maps_PROFUMO
+pairname_null = NM_PROFUMO_and_Maps_PROFUMO
+No extreme values found: max_dist = 1e0.010855953084641047
+number of significant shared dimensions: 39
+Pair no. 4:
+pairname_data = Amps_PROFUMO_and_Amps_ICA300
+pairname_null = Amps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.023482403284473985
+number of significant shared dimensions: 41
+Pair no. 5:
+pairname_data = NM_PROFUMO_and_Amps_ICA300
+pairname_null = NM_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.040945341279071096
+number of significant shared dimensions: 61
+Pair no. 6:
+pairname_data = Maps_PROFUMO_and_Amps_ICA300
+pairname_null = Maps_PROFUMO_and_Amps_ICA300
+No extreme values found: max_dist = 1e-0.02199230489359324
+number of significant shared dimensions: 46
+Pair no. 7:
+pairname_data = NM_PROFUMO_and_Amps_PROFUMO
+pairname_null = NM_PROFUMO_and_Amps_PROFUMO
+No extreme values found: max_dist = 1e0.0020935865198331094
+number of significant shared dimensions: 90
+Pair no. 8:
+pairname_data = Maps_PROFUMO_and_NM_MMP
+pairname_null = Maps_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e-0.011720030479537267
+number of significant shared dimensions: 174
+Pair no. 9:
+pairname_data = NM_PROFUMO_and_NM_MMP
+pairname_null = NM_PROFUMO_and_NM_MMP
+No extreme values found: max_dist = 1e0.005947581108316096
+number of significant shared dimensions: 126
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-4/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-3/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-2/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e-1/CCA_pt_3_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e0/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e1/CCA_pt_2_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e2/CCA_pt_4_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e3/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e4/CCA_pt_1_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e5/CCA_pt_0_2022Jan13 not found; new directory created.
+WARNING: directory /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/dimensional_stability/null_dists/lambda_reg_1e6/CCA_pt_0_2022Jan13 not found; new directory created.
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Jan 13 21:06:19 CST 2022 1642129579
+Name                : dimstbl
+User                : tyoeasley
+Partition           : medium
+Nodes               : node20
+Cores               : 5
+State               : FAILED
+Submit              : 2022-01-13T20:29:58
+Start               : 2022-01-13T20:30:16
+End                 : 2022-01-13T21:06:14
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:35:58
+Used CPU Time       :   02:38:39
+% User (Computation): 69.69%
+% System (I/O)      : 30.31%
+Mem Reserved        : 15G
+Max Mem Used        : 6.71G (7202451456.0)
+Max Disk Write      : 2.96G (3181432012.8)
+Max Disk Read       : 58.39G (62699465605.1)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Thu Jan 13 21:06:19 CST 2022 1642129579
+--------------------------------------------------------------

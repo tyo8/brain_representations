@@ -1,0 +1,120 @@
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/105923/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/105923_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/105923/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/114823/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/114823_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/114823/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/125525/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/125525_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/125525/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/130518/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/130518_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/130518/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/137128/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/137128_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/137128/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/144226/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/144226_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/144226/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/146129/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/146129_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/146129/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/158035/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/158035_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/158035/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/169343/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/169343_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/169343/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/177746/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/177746_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/177746/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/185442/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/185442_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/185442/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/192439/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/192439_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/192439/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/195041/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/195041_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/195041/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/200614/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/200614_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/200614/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/204521/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/204521_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/204521/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/562345/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/562345_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/562345/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/601127/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/601127_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/601127/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/783462/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/783462_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/783462/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/859671/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/859671_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/859671/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+
+
+While running:
+/export/workbench/workbench-1.5.0_take2/bin_rh_linux64/../exe_rh_linux64/wb_command -cifti-parcellate /scratch/janine.bijsterbosch/HCP/861456/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii /scratch/tyoeasley/brain_representations/schaefer/parcellation_defs/HCP/fslr32k-cifti/Schaefer2018_200Parcels_17Networks_order.dlabel.nii COLUMN /scratch/tyoeasley/brain_representations/schaefer/ext_dtseries/wb_cp/d200/861456_REST1_RL.ptseries.nii
+
+ERROR: failed to open file '/scratch/janine.bijsterbosch/HCP/861456/3T/rfMRI_REST1_LR_Atlas_MSMAll_hp2000_clean.dtseries.niidtseries.nii', file does not exist, or folder permissions prevent seeing it
+

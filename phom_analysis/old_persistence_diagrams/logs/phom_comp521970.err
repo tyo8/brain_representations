@@ -1,0 +1,2 @@
+/var/spool/slurm/d/job521970/slurm_script: line 19: 1146800 Killed                  python ${script_loc} ${dist_list} ${phom_dgms} ${phom_dist} ${betti_curves} ${perst_imgs}
+slurmstepd: error: Detected 1 oom-kill event(s) in step 521970.batch cgroup. Some of your processes may have been killed by the cgroup out-of-memory handler.

@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Dec  2 13:30:18 CST 2021 1638473418
+Job ID:		628723
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Dec  2 13:30:18 CST 2021 1638473418
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Thu Dec  2 14:41:29 CST 2021 1638477689
+Name                : stbl_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node19
+Cores               : 12
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2021-12-02T13:29:57
+Start               : 2021-12-02T13:30:18
+End                 : 2021-12-02T14:41:23
+Reserved Walltime   : 6-13:55:00
+Used Walltime       :   01:11:05
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 30G
+Max Mem Used        : 24.14G (25916276736.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 39.66G (42584149852.2)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Thu Dec  2 14:41:29 CST 2021 1638477689
+--------------------------------------------------------------

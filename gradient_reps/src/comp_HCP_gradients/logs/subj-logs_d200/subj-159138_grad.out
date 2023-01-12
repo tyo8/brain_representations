@@ -1,0 +1,56 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Sep  7 18:57:15 CDT 2022 1662595035
+Job ID:		86095
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Sep  7 18:57:15 CDT 2022 1662595035
+--------------------------------------------------------------
+
+Step 1: Load data and remove subcortical/cerebellar structrues
+2022-09-07 18:57:19.130526
+
+Step 2: compute correlation matrix
+Compute time for correlation matrix: 0:00:33.322895
+Dconn shape: (59412, 2970)
+subsampling factor = 0.04998990103009493
+Thresholding (elapsed time): 0:00:07.878459
+Minimum value is -0.002163
+
+Step 3: remove negative
+Negative values occur in 1 rows
+
+Step 4: generate affinity matrix
+2022-09-07 18:58:08.859737
+Compute time of affinity matrix: 0:02:47.495056
+
+Step 5: perform diffusion embedding
+n_components = 200
+embedding done in: 0:32:58.603694
+
+Saving results...
+DONE: 2022-09-07 19:33:55.224934
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Sep  7 19:33:57 CDT 2022 1662597237
+Name                : subj_grad
+User                : tyoeasley
+Partition           : small
+Nodes               : node07
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-09-07T17:51:16
+Start               : 2022-09-07T18:57:15
+End                 : 2022-09-07T19:33:55
+Reserved Walltime   : 01:55:00
+Used Walltime       : 00:36:40
+Used CPU Time       : 00:36:24
+% User (Computation): 97.68%
+% System (I/O)      :  2.32%
+Mem Reserved        : 100G
+Max Mem Used        : 78.17G (83933171712.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 52.40M (54945382.4)
+Max-Mem-Used Node   : node07
+Max-Disk-Write Node : node07
+Max-Disk-Read Node  : node07
+End Slurm Epilogue Wed Sep  7 19:33:57 CDT 2022 1662597237
+--------------------------------------------------------------

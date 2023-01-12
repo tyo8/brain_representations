@@ -1,0 +1,107 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Mon Dec 19 11:44:05 CST 2022 1671471845
+Job ID:		296401
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Mon Dec 19 11:44:05 CST 2022 1671471845
+--------------------------------------------------------------
+Running data marked with start-time stamp: 2022Dec19_11_44_07
+Loading data from /scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/tst_geodesic_dists.txt
+Distance matrix has shape (100, 100)
+Verbose output set to: False
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_X.txt
+
+Matching X to X_0_453672 ...
+Ripser-image (X-->Z) in iteration 0 completed.
+Total elapsed time to point: 0:05:43.235251
+Absolute memory usage: 23.492096 GB
+
+Extraction of Ripser-image (X-->Z) in iteration 0 completed.
+Total elapsed time to point: 0:05:43.235494
+Absolute memory usage: 23.492096 GB
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_XZ_0_453672.txt
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_YZ_0_453672.txt
+
+Last Ripser (Y) in iteration 0 completed.
+Total elapsed time to point: 0:08:42.037509
+Absolute memory usage: 23.412113408 GB
+
+Extraction of last Ripser (Y) in iteration 0 completed.
+Total elapsed time to point: 0:08:42.038456
+Absolute memory usage: 23.412113408 GB
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_Y_0_453672.txt
+
+Cycle matching in iteration 0 completed.
+Total elapsed time to point: 0:08:42.040003
+Absolute memory usage: 23.412113408 GB
+
+Iteration 0 completed. Garbage (ostensibly) collected.
+Total elapsed time to point: 0:08:42.046225
+Absolute memory usage: 23.412113408 GB
+
+
+
+
+Matching X to X_1_433582 ...
+Ripser-image (X-->Z) in iteration 1 completed.
+Total elapsed time to point: 0:10:43.985696
+Absolute memory usage: 23.42711296 GB
+
+Extraction of Ripser-image (X-->Z) in iteration 1 completed.
+Total elapsed time to point: 0:10:43.985931
+Absolute memory usage: 23.42711296 GB
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_XZ_1_433582.txt
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_YZ_1_433582.txt
+
+Last Ripser (Y) in iteration 1 completed.
+Total elapsed time to point: 0:11:53.798737
+Absolute memory usage: 23.457062912 GB
+
+Extraction of last Ripser (Y) in iteration 1 completed.
+Total elapsed time to point: 0:11:53.799424
+Absolute memory usage: 23.457062912 GB
+
+Saving Ripser output to: /mnt/beegfs/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/tst/phoms_tst_geodesic_dists/dist_mtxs/phom_Y_1_433582.txt
+
+Cycle matching in iteration 1 completed.
+Total elapsed time to point: 0:11:53.800850
+Absolute memory usage: 23.457062912 GB
+
+Iteration 1 completed. Garbage (ostensibly) collected.
+Total elapsed time to point: 0:11:53.807024
+Absolute memory usage: 23.457062912 GB
+
+
+
+
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Dec 19 11:56:03 CST 2022 1671472563
+Name                : tst_geodesic_dists_bsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-12-19T11:44:04
+Start               : 2022-12-19T11:44:05
+End                 : 2022-12-19T11:56:01
+Reserved Walltime   : 07:55:00
+Used Walltime       : 00:11:56
+Used CPU Time       : 00:11:51
+% User (Computation): 99.75%
+% System (I/O)      :  0.25%
+Mem Reserved        : 25G
+Max Mem Used        : 394.18M (413327360.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Mon Dec 19 11:56:03 CST 2022 1671472563
+--------------------------------------------------------------

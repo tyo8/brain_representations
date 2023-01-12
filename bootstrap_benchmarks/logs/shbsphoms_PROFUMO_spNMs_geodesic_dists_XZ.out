@@ -1,0 +1,384 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:36:00 CST 2023 1673217360
+Job ID:		417405
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:36:00 CST 2023 1673217360
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+Job ID:		417402
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+Job ID:		417393
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+Job ID:		417399
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:35:30 CST 2023 1673217330
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:33:30 CST 2023 1673217210
+Job ID:		417384
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:33:30 CST 2023 1673217210
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:36:30 CST 2023 1673217390
+Job ID:		417411
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:36:30 CST 2023 1673217390
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:36:30 CST 2023 1673217390
+Job ID:		417414
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:36:30 CST 2023 1673217390
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:36:00 CST 2023 1673217360
+Job ID:		417408
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:36:00 CST 2023 1673217360
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:35:00 CST 2023 1673217300
+Job ID:		417396
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:35:00 CST 2023 1673217300
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:33:30 CST 2023 1673217210
+Job ID:		417390
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:33:30 CST 2023 1673217210
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:34:00 CST 2023 1673217240
+Job ID:		417387
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:34:00 CST 2023 1673217240
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:33:00 CST 2023 1673217180
+Job ID:		417381
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:33:00 CST 2023 1673217180
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:37:15 CST 2023 1673217435
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:02:45
+Start               : 2023-01-08T16:33:00
+End                 : 2023-01-08T16:37:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:13
+Used CPU Time       : 00:04:11
+% User (Computation): 95.96%
+% System (I/O)      :  4.04%
+Mem Reserved        : 50G
+Max Mem Used        : 816.18M (855830528.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Sun Jan  8 16:37:15 CST 2023 1673217435
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:37:55 CST 2023 1673217475
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:02:54
+Start               : 2023-01-08T16:34:00
+End                 : 2023-01-08T16:37:53
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:03:53
+Used CPU Time       : 00:03:51
+% User (Computation): 95.93%
+% System (I/O)      :  4.07%
+Mem Reserved        : 50G
+Max Mem Used        : 439.82M (461185024.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:37:55 CST 2023 1673217475
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:38:29 CST 2023 1673217509
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node19
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:02:58
+Start               : 2023-01-08T16:33:30
+End                 : 2023-01-08T16:38:27
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:57
+Used CPU Time       : 00:04:56
+% User (Computation): 95.78%
+% System (I/O)      :  4.22%
+Mem Reserved        : 50G
+Max Mem Used        : 2.20G (2359582720.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node19
+Max-Disk-Write Node : node19
+Max-Disk-Read Node  : node19
+End Slurm Epilogue Sun Jan  8 16:38:29 CST 2023 1673217509
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:39:30 CST 2023 1673217570
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:08
+Start               : 2023-01-08T16:35:00
+End                 : 2023-01-08T16:39:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:28
+Used CPU Time       : 00:04:27
+% User (Computation): 95.90%
+% System (I/O)      :  4.10%
+Mem Reserved        : 50G
+Max Mem Used        : 1.96G (2107244544.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Sun Jan  8 16:39:30 CST 2023 1673217570
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:40:05 CST 2023 1673217605
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:27
+Start               : 2023-01-08T16:36:00
+End                 : 2023-01-08T16:40:03
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:03
+Used CPU Time       : 00:04:01
+% User (Computation): 95.82%
+% System (I/O)      :  4.18%
+Mem Reserved        : 50G
+Max Mem Used        : 1.00G (1076264960.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Jan  8 16:40:05 CST 2023 1673217605
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:40:42 CST 2023 1673217642
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:36
+Start               : 2023-01-08T16:36:30
+End                 : 2023-01-08T16:40:40
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:10
+Used CPU Time       : 00:04:09
+% User (Computation): 95.76%
+% System (I/O)      :  4.24%
+Mem Reserved        : 50G
+Max Mem Used        : 552.96M (579817472.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Sun Jan  8 16:40:42 CST 2023 1673217642
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:40:45 CST 2023 1673217645
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node26
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:31
+Start               : 2023-01-08T16:36:30
+End                 : 2023-01-08T16:40:42
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:12
+Used CPU Time       : 00:04:11
+% User (Computation): 95.85%
+% System (I/O)      :  4.15%
+Mem Reserved        : 50G
+Max Mem Used        : 583.54M (611889152.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node26
+Max-Disk-Write Node : node26
+Max-Disk-Read Node  : node26
+End Slurm Epilogue Sun Jan  8 16:40:45 CST 2023 1673217645
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:42:46 CST 2023 1673217766
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:02:49
+Start               : 2023-01-08T16:33:30
+End                 : 2023-01-08T16:42:43
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:09:13
+Used CPU Time       : 00:09:11
+% User (Computation): 96.39%
+% System (I/O)      :  3.61%
+Mem Reserved        : 50G
+Max Mem Used        : 3.80G (4082581504.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Sun Jan  8 16:42:46 CST 2023 1673217766
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:44:26 CST 2023 1673217866
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node24
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:12
+Start               : 2023-01-08T16:35:30
+End                 : 2023-01-08T16:44:24
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:08:54
+Used CPU Time       : 00:08:51
+% User (Computation): 96.23%
+% System (I/O)      :  3.77%
+Mem Reserved        : 50G
+Max Mem Used        : 3.37G (3619348480.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node24
+Max-Disk-Write Node : node24
+Max-Disk-Read Node  : node24
+End Slurm Epilogue Sun Jan  8 16:44:26 CST 2023 1673217866
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:44:51 CST 2023 1673217891
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node31
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:03
+Start               : 2023-01-08T16:35:30
+End                 : 2023-01-08T16:44:49
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:09:19
+Used CPU Time       : 00:09:16
+% User (Computation): 96.33%
+% System (I/O)      :  3.67%
+Mem Reserved        : 50G
+Max Mem Used        : 3.70G (3970461696.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node31
+Max-Disk-Write Node : node31
+Max-Disk-Read Node  : node31
+End Slurm Epilogue Sun Jan  8 16:44:51 CST 2023 1673217891
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:45:40 CST 2023 1673217940
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:17
+Start               : 2023-01-08T16:35:30
+End                 : 2023-01-08T16:45:38
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:10:08
+Used CPU Time       : 00:10:05
+% User (Computation): 96.43%
+% System (I/O)      :  3.57%
+Mem Reserved        : 50G
+Max Mem Used        : 4.30G (4620476416.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Sun Jan  8 16:45:40 CST 2023 1673217940
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:46:05 CST 2023 1673217965
+Name                : PROFUMO_spNMs_geodesic_dists_XZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node28
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T16:03:22
+Start               : 2023-01-08T16:36:00
+End                 : 2023-01-08T16:46:03
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:10:03
+Used CPU Time       : 00:10:00
+% User (Computation): 96.20%
+% System (I/O)      :  3.80%
+Mem Reserved        : 50G
+Max Mem Used        : 4.46G (4787093504.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node28
+Max-Disk-Write Node : node28
+Max-Disk-Read Node  : node28
+End Slurm Epilogue Sun Jan  8 16:46:05 CST 2023 1673217965
+--------------------------------------------------------------

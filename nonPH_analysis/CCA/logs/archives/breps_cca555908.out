@@ -1,0 +1,34 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Wed Nov  3 17:10:01 CDT 2021 1635977401
+Job ID:		555908
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Wed Nov  3 17:10:01 CDT 2021 1635977401
+--------------------------------------------------------------
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/NetMats/subj_list_NM.csv
+path to dataset: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Maps/subj_list_Maps.csv
+--------------------------------------------------------------
+Begin SLURM Epilogue Wed Nov  3 17:33:58 CDT 2021 1635978838
+Name                : breps_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node25
+Cores               : 1
+State               : FAILED
+Submit              : 2021-11-03T17:09:46
+Start               : 2021-11-03T17:10:01
+End                 : 2021-11-03T17:33:53
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:23:52
+Used CPU Time       :   00:14:06
+% User (Computation): 94.84%
+% System (I/O)      :  5.16%
+Mem Reserved        : 250G
+Max Mem Used        : 2.53G (2716909568.0)
+Max Disk Write      : 122.90M (128869990.4)
+Max Disk Read       : 1.55G (1663429509.12)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End SLURM Epilogue Wed Nov  3 17:33:58 CDT 2021 1635978838
+--------------------------------------------------------------

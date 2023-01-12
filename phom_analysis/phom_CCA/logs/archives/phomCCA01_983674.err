@@ -1,0 +1,2 @@
+/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py:36: SyntaxWarning: assertion is always true, perhaps remove parentheses?
+  assert(Psim_mtx.shape == (n_subj, n_subj),'Psim_mtx is not a symmetric n_subj x n_subj matrix.')

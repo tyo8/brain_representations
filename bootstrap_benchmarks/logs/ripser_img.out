@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Jan  4 18:03:36 CST 2023 1672877016
+Job ID:		345065
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Jan  4 18:03:36 CST 2023 1672877016
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Jan  4 18:04:32 CST 2023 1672877072
+Name                : ripser_img
+User                : tyoeasley
+Partition           : small
+Nodes               : node09
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2023-01-04T18:01:10
+Start               : 2023-01-04T18:03:36
+End                 : 2023-01-04T18:04:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:53
+Used CPU Time       : 00:00:51
+% User (Computation): 96.07%
+% System (I/O)      :  3.93%
+Mem Reserved        : 700G
+Max Mem Used        : 271.93M (285134848.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Wed Jan  4 18:04:32 CST 2023 1672877072
+--------------------------------------------------------------

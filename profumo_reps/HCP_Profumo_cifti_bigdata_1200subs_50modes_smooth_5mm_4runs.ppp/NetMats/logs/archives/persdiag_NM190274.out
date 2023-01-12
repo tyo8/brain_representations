@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Sat Jun 12 12:53:32 CDT 2021 1623520412
+Job ID:		190274
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Sat Jun 12 12:53:32 CDT 2021 1623520412
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin SLURM Epilogue Sat Jun 12 13:32:00 CDT 2021 1623522720
+Name                : persdiag_NM
+User                : tyoeasley
+Partition           : medium
+Nodes               : node17
+Cores               : 1
+State               : FAILED
+Submit              : 2021-06-12T12:53:32
+Start               : 2021-06-12T12:53:32
+End                 : 2021-06-12T13:31:55
+Reserved Walltime   : 1-23:55:00
+Used Walltime       :   00:38:23
+Used CPU Time       :   00:25:47
+% User (Computation): 93.71%
+% System (I/O)      :  6.29%
+Mem Reserved        : 100G/node
+Max Mem Used        : 35.36M (37072896.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 30.11G (32335735029.8)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End SLURM Epilogue Sat Jun 12 13:32:00 CDT 2021 1623522720
+--------------------------------------------------------------

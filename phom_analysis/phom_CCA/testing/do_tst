@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#SBATCH --job-name=phom_tst
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/logs/phomtst_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/logs/phomtst_%j.err
+#SBATCH --time=23:55:00
+#SBATCH --mem=750GB
+
+script_loc=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/testing/script_tst.py
+data_loc=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/testing/mtx_tst.npy
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${data_loc} 

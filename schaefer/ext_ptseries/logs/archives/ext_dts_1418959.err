@@ -1,0 +1,8 @@
+/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/site-packages/nilearn/input_data/__init__.py:27: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  warnings.warn(message, FutureWarning)
+Traceback (most recent call last):
+  File "ext_nilearn_schaeffer.py", line 41, in <module>
+    main(sys.argv)
+  File "ext_nilearn_schaeffer.py", line 20, in main
+    if len(argvals > 4):
+TypeError: '>' not supported between instances of 'list' and 'int'

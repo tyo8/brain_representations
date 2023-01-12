@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+#SBATCH --job-name=feature_extraction_NM
+#SBATCH --output=/scratch/tyoeasley/brain_representations/glasser/logs/feat_ext_NM.o%j
+#SBATCH --error=/scratch/tyoeasley/brain_representations/glasser/logs/feat_ext_NM.e%j
+#SBATCH --time=04:00:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50gb
+
+module load matlab
+
+cd /scratch/tyoeasley/brain_representations/glasser/2021_R01_population
+matlab -nojvm -nosplash -nodisplay \< Feature_extraction_NM.m

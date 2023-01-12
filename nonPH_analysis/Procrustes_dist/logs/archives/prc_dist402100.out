@@ -1,0 +1,72 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Tue Sep 14 22:33:11 CDT 2021 1631676791
+Job ID:		402100
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Tue Sep 14 22:33:11 CDT 2021 1631676791
+--------------------------------------------------------------
+NM_PROFUMO
+Maps_PROFUMO
+NM_PROFUMO_and_Maps_PROFUMO.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/NM_PROFUMO_and_Maps_PROFUMO.prc
+NM_PROFUMO
+Amps_PROFUMO
+NM_PROFUMO_and_Amps_PROFUMO.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/NM_PROFUMO_and_Amps_PROFUMO.prc
+NM_PROFUMO
+NM_MMP
+NM_PROFUMO_and_NM_MMP.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/NM_PROFUMO_and_NM_MMP.prc
+NM_PROFUMO
+Amps_ICA300
+NM_PROFUMO_and_Amps_ICA300.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/NM_PROFUMO_and_Amps_ICA300.prc
+Maps_PROFUMO
+Amps_PROFUMO
+Maps_PROFUMO_and_Amps_PROFUMO.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/Maps_PROFUMO_and_Amps_PROFUMO.prc
+Maps_PROFUMO
+NM_MMP
+Maps_PROFUMO_and_NM_MMP.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/Maps_PROFUMO_and_NM_MMP.prc
+Maps_PROFUMO
+Amps_ICA300
+Maps_PROFUMO_and_Amps_ICA300.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/Maps_PROFUMO_and_Amps_ICA300.prc
+Amps_PROFUMO
+NM_MMP
+Amps_PROFUMO_and_NM_MMP.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/Amps_PROFUMO_and_NM_MMP.prc
+Amps_PROFUMO
+Amps_ICA300
+Amps_PROFUMO_and_Amps_ICA300.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/Amps_PROFUMO_and_Amps_ICA300.prc
+NM_MMP
+Amps_ICA300
+NM_MMP_and_Amps_ICA300.prc
+/scratch/tyoeasley/brain_representations/nonPH_analysis/Procrustes_dist/NM_MMP_and_Amps_ICA300.prc
+--------------------------------------------------------------
+Begin SLURM Epilogue Tue Sep 14 22:33:40 CDT 2021 1631676820
+Name                : procrustes_anls
+User                : tyoeasley
+Partition           : medium
+Nodes               : node20
+Cores               : 1
+State               : COMPLETED
+Submit              : 2021-09-14T22:32:49
+Start               : 2021-09-14T22:33:11
+End                 : 2021-09-14T22:33:35
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:00:24
+Used CPU Time       :   00:00:22
+% User (Computation): 93.74%
+% System (I/O)      :  6.26%
+Mem Reserved        : 25G/node
+Max Mem Used        : 1.25M (1306624.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End SLURM Epilogue Tue Sep 14 22:33:40 CDT 2021 1631676820
+--------------------------------------------------------------

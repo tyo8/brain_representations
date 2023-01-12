@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "make_stbl_summary.py", line 16, in <module>
+    print(len(decomp_vals[0]))
+IndexError: list index out of range

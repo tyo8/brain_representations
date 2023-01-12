@@ -1,0 +1,62 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Dec  8 12:47:38 CST 2022 1670525258
+Job ID:		248911
+Username:	tyoeasley
+Partition:	medium
+End Slurm Prologue Thu Dec  8 12:47:38 CST 2022 1670525258
+--------------------------------------------------------------
+Loading data from /scratch/tyoeasley/brain_representations/metric_tests/uniform_NMs/uniform_NMs_dcor_p2dists.txt
+Distance matrix has shape (1003, 1003)
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX.ldm
+
+Received from Ripser (1007 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 1008
+line of output corresponding to PH dim=2: 1007
+Matching X to X_0 ...
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 12371
+
+In: extract_bars_indices
+line of output corresponding to PH dim=1: 1811
+line of output corresponding to PH dim=2: 4898
+Command: /scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives --dim 2 dX_0.ldm
+
+Received from Ripser (15759 lines of output):
+
+
+
+In: extract_bars_reps_indices
+line of output corresponding to PH dim=1: 806
+line of output corresponding to PH dim=2: 15759
+We will solve ambiguous deaths matching.
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Dec  9 04:11:09 CST 2022 1670580669
+Name                : uniform_NMs_dcor_p2dists_bsph
+User                : tyoeasley
+Partition           : medium
+Nodes               : node09
+Cores               : 1
+State               : OUT_OF_MEMORY
+Submit              : 2022-12-08T12:47:30
+Start               : 2022-12-08T12:47:38
+End                 : 2022-12-09T04:11:07
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   15:23:29
+Used CPU Time       :   15:14:27
+% User (Computation): 87.15%
+% System (I/O)      : 12.85%
+Mem Reserved        : 50G
+Max Mem Used        : 32.23G (34604535808.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 1.92M (2013265.92)
+Max-Mem-Used Node   : node09
+Max-Disk-Write Node : node09
+Max-Disk-Read Node  : node09
+End Slurm Epilogue Fri Dec  9 04:11:10 CST 2022 1670580670
+--------------------------------------------------------------

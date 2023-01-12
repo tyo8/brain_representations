@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 114, in <module>
+    run_permutation_testing(reps, output_basedir, permset, namelist, reglist, decomp_method, n_workers)
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 66, in run_permutation_testing
+    run_parallel_permtests(output_basedir,n_workers)
+  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 46, in run_parallel_permtests
+    P.map(par_pt_iters,worker_spec)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/multiprocessing/pool.py", line 268, in map
+    return self._map_async(func, iterable, mapstar, chunksize).get()
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/multiprocessing/pool.py", line 657, in get
+    raise self._value
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/multiprocessing/pool.py", line 431, in _handle_tasks
+    put(task)
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/multiprocessing/connection.py", line 206, in send
+    self._send_bytes(_ForkingPickler.dumps(obj))
+  File "/home/e.ty/.conda/envs/alg_top_neuro/lib/python3.7/multiprocessing/reduction.py", line 51, in dumps
+    cls(buf, protocol).dump(obj)
+AttributeError: Can't pickle local object 'run_permutation_testing.<locals>.par_pt_iters'

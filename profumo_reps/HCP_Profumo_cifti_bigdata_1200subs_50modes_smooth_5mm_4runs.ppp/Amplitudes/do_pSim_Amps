@@ -1,0 +1,20 @@
+#!/bin/sh
+
+#SBATCH --job-name=psimPROFUMO_Amps
+#SBATCH --output=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/logs/psim_Amps%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/logs/psim_Amps%j.err
+#SBATCH --time=147:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=50gb
+
+
+subj_list=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_list_Amps.csv
+subj_dist=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes/subj_dists_Amps_PROFUMO.csv
+
+cd /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp/Amplitudes
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python /scratch/tyoeasley/brain_representations/src_py/run_comp_Psim.py ${subj_list} ${subj_dist}
+/scratch/tyoeasley/brain_representations/add_to_dists.sh ${subj_dist}
+

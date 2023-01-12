@@ -1,0 +1,852 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+Job ID:		484274
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+Job ID:		484275
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+Job ID:		484273
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+Job ID:		484272
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+Job ID:		484271
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484268
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484270
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484269
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484266
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found duplicate births in Y
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:27
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484268
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484270
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484269
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484266
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found duplicate births in Y
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:27
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:29
+Start               : 2023-01-10T19:22:29
+End                 : 2023-01-10T19:22:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:29
+End                 : 2023-01-10T19:22:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:32 CST 2023 1673400152
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node27
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:29
+Start               : 2023-01-10T19:22:30
+End                 : 2023-01-10T19:22:30
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node27
+Max-Disk-Write Node : node27
+Max-Disk-Read Node  : node27
+End Slurm Epilogue Tue Jan 10 19:22:32 CST 2023 1673400152
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+Job ID:		484273
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:30 CST 2023 1673400150
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+Job ID:		484272
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+Job ID:		484271
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:29 CST 2023 1673400149
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484268
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484270
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484269
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484266
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found duplicate births in Y
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:27
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484268
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484270
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484269
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+Job ID:		484266
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Tue Jan 10 19:22:28 CST 2023 1673400148
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found duplicate births in Y
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+Found duplicate deaths in X_Z
+Found duplicate deaths in Y_Z
+Found duplicate births in X
+Found common duplicate deaths in X_Z and Y_Z!!!
+Found duplicate death in X_Z common with Y_Z
+Found duplicate death in Y_Z common with X_Z
+We will solve ambiguous deaths matching.
+Saving matching data to: 
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/matchedXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_dcor_p2dists/matching/affinityXY_dim1_v3v_P_x_j3v_77_9_r5__-d_79nzt-___8_-_l_b7N_3f3_3_660v929-ezf_e_9-e_n5x3v8f7_Rr97ed_7__39_93vZ7__-r6Pz3f_Xdl_327vQfm-75fvnv-9-zb3897__v__9_XnXb_95z47n_9tX_s3_Z_717_97d8H.txt
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:26
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:30 CST 2023 1673400150
+Name                : allocation
+User                : tyoeasley
+Partition           : 
+Nodes               : node21
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:27
+Start               : 2023-01-10T19:22:28
+End                 : 2023-01-10T19:22:28
+Reserved Walltime   : --
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 16?
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node21
+Max-Disk-Write Node : node21
+Max-Disk-Read Node  : node21
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:29
+Start               : 2023-01-10T19:22:29
+End                 : 2023-01-10T19:22:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node16
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:28
+Start               : 2023-01-10T19:22:29
+End                 : 2023-01-10T19:22:29
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End Slurm Epilogue Tue Jan 10 19:22:31 CST 2023 1673400151
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:32 CST 2023 1673400152
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node27
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:29
+Start               : 2023-01-10T19:22:30
+End                 : 2023-01-10T19:22:30
+Reserved Walltime   : 23:55:00
+Used Walltime       : --
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node27
+Max-Disk-Write Node : node27
+Max-Disk-Read Node  : node27
+End Slurm Epilogue Tue Jan 10 19:22:32 CST 2023 1673400152
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:33 CST 2023 1673400153
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node11
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:29
+Start               : 2023-01-10T19:22:30
+End                 : 2023-01-10T19:22:31
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node11
+Max-Disk-Write Node : node11
+Max-Disk-Read Node  : node11
+End Slurm Epilogue Tue Jan 10 19:22:33 CST 2023 1673400153
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Tue Jan 10 19:22:33 CST 2023 1673400153
+Name                : ICA300_Amps_dcor_p2dists_match
+User                : tyoeasley
+Partition           : small
+Nodes               : node11
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-10T19:22:30
+Start               : 2023-01-10T19:22:30
+End                 : 2023-01-10T19:22:31
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:00:01
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 25G
+Max Mem Used        : 0.00  (0.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 0.00  (0.0)
+Max-Mem-Used Node   : node11
+Max-Disk-Write Node : node11
+Max-Disk-Read Node  : node11
+End Slurm Epilogue Tue Jan 10 19:22:33 CST 2023 1673400153
+--------------------------------------------------------------

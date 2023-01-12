@@ -1,0 +1,59 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Mon May 24 13:04:07 CDT 2021 1621879447
+Job ID:		165579
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Mon May 24 13:04:07 CDT 2021 1621879447
+--------------------------------------------------------------
+Initialising postprocessing directory...
+Postprocessing directory: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.ppp
+Done.
+
+Initialising PFM results...
+PFM directory: /scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs.pfm
+Parsing config file...
+Parsing data locations file...
+Generating subject lists...
+1003 subjects identified, verifying directories...
+Generating run lists...
+4012 runs identified, verifying directories...
+Done.
+
+Saving metadata to postprocessing directory...
+Done.
+
+Saving maps...
+Group
+Traceback (most recent call last):
+  File "/opt/profumo/Python/postprocess_results.py", line 96, in <module>
+    pp.save_maps(args.reference_image_filename)
+  File "/opt/profumo/Python/profumo/postprocessing.py", line 195, in save_maps
+    reference_image, mask_inds=mask_inds, dtype=numpy.float32)
+  File "/opt/profumo/Python/profumo/io.py", line 257, in save_image
+    image_data = data.reshape(image_shape, order='C')
+ValueError: cannot reshape array of size 4564100 into shape (91,109,91,50)
+--------------------------------------------------------------
+Begin SLURM Epilogue Mon May 24 13:07:42 CDT 2021 1621879662
+Name                : UKB_profumo
+User                : tyoeasley
+Partition           : medium
+Nodes               : node25
+Cores               : 24
+State               : FAILED
+Submit              : 2021-05-24T13:04:05
+Start               : 2021-05-24T13:04:06
+End                 : 2021-05-24T13:07:36
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   00:03:30
+Used CPU Time       :   00:00:10
+% User (Computation): 79.48%
+% System (I/O)      : 20.51%
+Mem Reserved        : 250G/node
+Max Mem Used        : 44.74M (46915584.0)
+Max Disk Write      : 10.24K (10485.76)
+Max Disk Read       : 8.11M (8503951.36)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End SLURM Epilogue Mon May 24 13:07:42 CDT 2021 1621879662
+--------------------------------------------------------------

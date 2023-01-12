@@ -1,0 +1,32 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Mar  6 20:40:03 CST 2022 1646620803
+Job ID:		985494
+Username:	tyoeasley
+Partition:	highmem
+End Slurm Prologue Sun Mar  6 20:40:03 CST 2022 1646620803
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Mon Mar  7 07:46:41 CST 2022 1646660801
+Name                : phomCCAhm
+User                : tyoeasley
+Partition           : highmem
+Nodes               : highmem01
+Cores               : 1
+State               : CANCELLED,CANCELLED by 1965228
+Submit              : 2022-03-06T20:40:03
+Start               : 2022-03-06T20:40:03
+End                 : 2022-03-07T07:46:30
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   11:06:27
+Used CPU Time       : --
+% User (Computation): --
+% System (I/O)      : --
+Mem Reserved        : 2500G
+Max Mem Used        : 2.32T (2.54931111526e+12)
+Max Disk Write      : 15.12G (16234525491.2)
+Max Disk Read       : 3.76G (4035675422.72)
+Max-Mem-Used Node   : highmem01
+Max-Disk-Write Node : highmem01
+Max-Disk-Read Node  : highmem01
+End Slurm Epilogue Mon Mar  7 07:46:41 CST 2022 1646660801
+--------------------------------------------------------------

@@ -1,0 +1,40 @@
+--------------------------------------------------------------
+Begin SLURM Prologue Mon Nov 15 10:41:13 CST 2021 1636994473
+Job ID:		579283
+Username:	tyoeasley
+Partition:	medium
+End SLURM Prologue Mon Nov 15 10:41:13 CST 2021 1636994473
+--------------------------------------------------------------
+['NM_PROFUMO_and_Maps_PROFUMO.CCA_res', 'NM_PROFUMO_and_Amps_PROFUMO.CCA_res', 'NM_PROFUMO_and_NM_MMP.CCA_res', 'NM_PROFUMO_and_Amps_ICA300.CCA_res', 'Maps_PROFUMO_and_Amps_PROFUMO.CCA_res', 'Maps_PROFUMO_and_NM_MMP.CCA_res', 'Maps_PROFUMO_and_Amps_ICA300.CCA_res', 'Amps_PROFUMO_and_NM_MMP.CCA_res', 'Amps_PROFUMO_and_Amps_ICA300.CCA_res', 'NM_MMP_and_Amps_ICA300.CCA_res']
+Stability iteration 0:
+done in 3824.0 sec.
+Stability iteration 1:
+done in 3937.0 sec.
+Stability iteration 2:
+done in 4011.0 sec.
+NM_PROFUMO_and_Maps_PROFUMO.CCA_res stability variables saved to /scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/breps_CCA/stability_testing/NM_PROFUMO_and_Maps_PROFUMO.CCA_res.CCA_stbl
+--------------------------------------------------------------
+Begin SLURM Epilogue Mon Nov 15 14:14:31 CST 2021 1637007271
+Name                : stbl_cca
+User                : tyoeasley
+Partition           : medium
+Nodes               : node16
+Cores               : 1
+State               : FAILED
+Submit              : 2021-11-15T10:41:12
+Start               : 2021-11-15T10:41:13
+End                 : 2021-11-15T14:14:26
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   03:33:13
+Used CPU Time       :   03:26:15
+% User (Computation): 98.71%
+% System (I/O)      :  1.29%
+Mem Reserved        : 250G
+Max Mem Used        : 5.85G (6276521984.0)
+Max Disk Write      : 12.95G (13908154777.6)
+Max Disk Read       : 10.13G (10877350707.2)
+Max-Mem-Used Node   : node16
+Max-Disk-Write Node : node16
+Max-Disk-Read Node  : node16
+End SLURM Epilogue Mon Nov 15 14:14:31 CST 2021 1637007271
+--------------------------------------------------------------

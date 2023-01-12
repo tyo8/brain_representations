@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#SBATCH --job-name=phomCCAhm
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/logs/phomCCAhm_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/logs/phomCCAhm_%j.err
+#SBATCH --time=167:55:00
+#SBATCH --partition=highmem
+#SBATCH --mem=2500GB
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py
+
+dataset_list_name=/scratch/tyoeasley/brain_representations/list_of_datalists.csv
+output_basedir=/scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves
+regval_listpath=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02_med.csv
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${dataset_list_name} ${output_basedir} ${regval_listpath} CCA 

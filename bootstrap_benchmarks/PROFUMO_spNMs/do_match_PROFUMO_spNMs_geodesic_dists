@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#SBATCH --job-name=PROFUMO_spNMs_geodesic_dists_match
+#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/match_PROFUMO_spNMs_geodesic_dists.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/match_PROFUMO_spNMs_geodesic_dists.err
+#SBATCH --time=23:55:00
+#SBATCH --partition=small
+#SBATCH --mem=10gb
+
+match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py
+
+phomX_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_X.txt
+phomY_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_out/phomY_Xff4____9t1aNr-_z7_cvr7f3v97-93b5eb_qP_11m3_7X7u-53_7b6_uu_v9cr36tz_-97-f_O7f7_-37f79f_ff77-9_9y_f6_-92f3797-6__ri-9n_z89__3__9_Y97v_e_3v--__7Xv___b_t39b9v-_U7VG_777NUH.txt
+dim=1
+
+
+python ${match_script} -x ${phomX_fpath} -y ${phomY_fpath} --dim ${dim} -M -d
+

@@ -1,0 +1,480 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:07:59 CST 2023 1673215679
+Job ID:		417268
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:07:59 CST 2023 1673215679
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+Job ID:		417265
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+Job ID:		417250
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+Job ID:		417259
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:08:29 CST 2023 1673215709
+Job ID:		417271
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:08:29 CST 2023 1673215709
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:09:59 CST 2023 1673215799
+Job ID:		417280
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:09:59 CST 2023 1673215799
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:09:29 CST 2023 1673215769
+Job ID:		417277
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:09:29 CST 2023 1673215769
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:08:59 CST 2023 1673215739
+Job ID:		417274
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:08:59 CST 2023 1673215739
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+Job ID:		417262
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:07:29 CST 2023 1673215649
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+Job ID:		417256
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+Job ID:		417253
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:59 CST 2023 1673215619
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+Job ID:		417247
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+Job ID:		417238
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+Job ID:		417241
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+Job ID:		417244
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Sun Jan  8 16:06:29 CST 2023 1673215589
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:34 CST 2023 1673215894
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:58:56
+Start               : 2023-01-08T16:06:29
+End                 : 2023-01-08T16:11:32
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:03
+Used CPU Time       : 00:05:01
+% User (Computation): 99.51%
+% System (I/O)      :  0.49%
+Mem Reserved        : 50G
+Max Mem Used        : 208.82M (218968064.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Sun Jan  8 16:11:34 CST 2023 1673215894
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:37 CST 2023 1673215897
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:58:50
+Start               : 2023-01-08T16:06:29
+End                 : 2023-01-08T16:11:34
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:05
+Used CPU Time       : 00:05:03
+% User (Computation): 99.48%
+% System (I/O)      :  0.52%
+Mem Reserved        : 50G
+Max Mem Used        : 202.22M (212045824.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Sun Jan  8 16:11:37 CST 2023 1673215897
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:42 CST 2023 1673215902
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:58:45
+Start               : 2023-01-08T16:06:29
+End                 : 2023-01-08T16:11:40
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:11
+Used CPU Time       : 00:05:08
+% User (Computation): 99.49%
+% System (I/O)      :  0.51%
+Mem Reserved        : 50G
+Max Mem Used        : 187.29M (196382720.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Sun Jan  8 16:11:42 CST 2023 1673215902
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:44 CST 2023 1673215904
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node20
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:01
+Start               : 2023-01-08T16:06:29
+End                 : 2023-01-08T16:11:42
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:13
+Used CPU Time       : 00:05:10
+% User (Computation): 99.51%
+% System (I/O)      :  0.49%
+Mem Reserved        : 50G
+Max Mem Used        : 197.62M (207216640.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node20
+Max-Disk-Write Node : node20
+Max-Disk-Read Node  : node20
+End Slurm Epilogue Sun Jan  8 16:11:44 CST 2023 1673215904
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:51 CST 2023 1673215911
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node22
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:11
+Start               : 2023-01-08T16:06:59
+End                 : 2023-01-08T16:11:49
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:50
+Used CPU Time       : 00:04:47
+% User (Computation): 99.56%
+% System (I/O)      :  0.44%
+Mem Reserved        : 50G
+Max Mem Used        : 202.93M (212783104.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node22
+Max-Disk-Write Node : node22
+Max-Disk-Read Node  : node22
+End Slurm Epilogue Sun Jan  8 16:11:51 CST 2023 1673215911
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:11:57 CST 2023 1673215917
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node22
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:16
+Start               : 2023-01-08T16:06:59
+End                 : 2023-01-08T16:11:55
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:04:56
+Used CPU Time       : 00:04:53
+% User (Computation): 99.56%
+% System (I/O)      :  0.44%
+Mem Reserved        : 50G
+Max Mem Used        : 188.96M (198144000.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node22
+Max-Disk-Write Node : node22
+Max-Disk-Read Node  : node22
+End Slurm Epilogue Sun Jan  8 16:11:57 CST 2023 1673215917
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:12:36 CST 2023 1673215956
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:26
+Start               : 2023-01-08T16:07:29
+End                 : 2023-01-08T16:12:34
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:05
+Used CPU Time       : 00:05:03
+% User (Computation): 99.50%
+% System (I/O)      :  0.50%
+Mem Reserved        : 50G
+Max Mem Used        : 186.34M (195387392.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Sun Jan  8 16:12:36 CST 2023 1673215956
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:14:20 CST 2023 1673216060
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node15
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:46
+Start               : 2023-01-08T16:08:59
+End                 : 2023-01-08T16:14:18
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:19
+Used CPU Time       : 00:05:16
+% User (Computation): 99.49%
+% System (I/O)      :  0.51%
+Mem Reserved        : 50G
+Max Mem Used        : 204.72M (214667264.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node15
+Max-Disk-Write Node : node15
+Max-Disk-Read Node  : node15
+End Slurm Epilogue Sun Jan  8 16:14:20 CST 2023 1673216060
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:14:40 CST 2023 1673216080
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:51
+Start               : 2023-01-08T16:09:29
+End                 : 2023-01-08T16:14:38
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:09
+Used CPU Time       : 00:05:06
+% User (Computation): 99.53%
+% System (I/O)      :  0.47%
+Mem Reserved        : 50G
+Max Mem Used        : 186.90M (195981312.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Sun Jan  8 16:14:40 CST 2023 1673216080
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:15:13 CST 2023 1673216113
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node23
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:55
+Start               : 2023-01-08T16:09:59
+End                 : 2023-01-08T16:15:11
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:05:12
+Used CPU Time       : 00:05:10
+% User (Computation): 99.56%
+% System (I/O)      :  0.44%
+Mem Reserved        : 50G
+Max Mem Used        : 188.74M (197910528.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node23
+Max-Disk-Write Node : node23
+Max-Disk-Read Node  : node23
+End Slurm Epilogue Sun Jan  8 16:15:14 CST 2023 1673216114
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:28:05 CST 2023 1673216885
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node17
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:41
+Start               : 2023-01-08T16:08:29
+End                 : 2023-01-08T16:28:03
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:19:34
+Used CPU Time       : 00:19:29
+% User (Computation): 99.27%
+% System (I/O)      :  0.73%
+Mem Reserved        : 50G
+Max Mem Used        : 257.71M (270233600.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node17
+Max-Disk-Write Node : node17
+Max-Disk-Read Node  : node17
+End Slurm Epilogue Sun Jan  8 16:28:05 CST 2023 1673216885
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:29:07 CST 2023 1673216947
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node05
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:21
+Start               : 2023-01-08T16:06:59
+End                 : 2023-01-08T16:29:05
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:22:06
+Used CPU Time       : 00:22:00
+% User (Computation): 99.19%
+% System (I/O)      :  0.81%
+Mem Reserved        : 50G
+Max Mem Used        : 262.44M (275185664.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node05
+Max-Disk-Write Node : node05
+Max-Disk-Read Node  : node05
+End Slurm Epilogue Sun Jan  8 16:29:07 CST 2023 1673216947
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:29:30 CST 2023 1673216970
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node25
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:06
+Start               : 2023-01-08T16:07:29
+End                 : 2023-01-08T16:29:28
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:21:59
+Used CPU Time       : 00:21:53
+% User (Computation): 99.11%
+% System (I/O)      :  0.89%
+Mem Reserved        : 50G
+Max Mem Used        : 261.98M (274706432.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node25
+Max-Disk-Write Node : node25
+Max-Disk-Read Node  : node25
+End Slurm Epilogue Sun Jan  8 16:29:30 CST 2023 1673216970
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:29:53 CST 2023 1673216993
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node05
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:31
+Start               : 2023-01-08T16:07:29
+End                 : 2023-01-08T16:29:51
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:22:22
+Used CPU Time       : 00:22:16
+% User (Computation): 99.19%
+% System (I/O)      :  0.81%
+Mem Reserved        : 50G
+Max Mem Used        : 263.86M (276676608.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node05
+Max-Disk-Write Node : node05
+Max-Disk-Read Node  : node05
+End Slurm Epilogue Sun Jan  8 16:29:53 CST 2023 1673216993
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Epilogue Sun Jan  8 16:30:28 CST 2023 1673217028
+Name                : ICA300_Amps_Psim_p2dists_YZ_shbsph
+User                : tyoeasley
+Partition           : small
+Nodes               : node05
+Cores               : 1
+State               : COMPLETED
+Submit              : 2023-01-08T15:59:36
+Start               : 2023-01-08T16:07:59
+End                 : 2023-01-08T16:30:26
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:22:27
+Used CPU Time       : 00:22:21
+% User (Computation): 99.18%
+% System (I/O)      :  0.82%
+Mem Reserved        : 50G
+Max Mem Used        : 281.80M (295489536.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 10.24K (10485.76)
+Max-Mem-Used Node   : node05
+Max-Disk-Write Node : node05
+Max-Disk-Read Node  : node05
+End Slurm Epilogue Sun Jan  8 16:30:28 CST 2023 1673217028
+--------------------------------------------------------------

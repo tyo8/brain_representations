@@ -1,0 +1,58 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Thu Mar  3 21:43:42 CST 2022 1646365422
+Job ID:		984009
+Username:	tyoeasley
+Partition:	highmem
+End Slurm Prologue Thu Mar  3 21:43:42 CST 2022 1646365422
+--------------------------------------------------------------
+/scratch/tyoeasley/brain_representations/list_of_datalists.csv
+(1003, 1225)
+(1003, 91282)
+(1003, 200)
+(1003, 64620)
+(1003, 300)
+Computing initial CCA decompositions for all 5 methods...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves/full_lindecomps.nlist...
+done.
+Computing cross-predictions from rank-1000 CCA data...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves/rank_1000/approx_reps.nlist...
+done.
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves/rank_1000/psim_grams.nlist...
+done.
+long_stack shape for NM_PROFUMO = 9x(1003, 1003)
+Computing persistence diagrams for all 9 kernelizations of NM_PROFUMO...
+Computing persistence diagrams for dimensions (0, 1, 2)...
+dist_mtx_array has dimension 9x(1003, 1003)
+done.
+done.
+long_phoms shape for NM_PROFUMO = (9, 49784, 3)
+saving intermediate data to /scratch/tyoeasley/brain_representations/phom_analysis/phom_CCA/CCA_Betti_curves/rank_1000/phom_data.nlist...
+done.
+Computing Betti curves for all 9 persistence diagrams...
+--------------------------------------------------------------
+Begin Slurm Epilogue Fri Mar  4 01:49:16 CST 2022 1646380156
+Name                : phomCCAhm
+User                : tyoeasley
+Partition           : highmem
+Nodes               : highmem01
+Cores               : 1
+State               : FAILED
+Submit              : 2022-03-03T21:43:38
+Start               : 2022-03-03T21:43:42
+End                 : 2022-03-04T01:49:14
+Reserved Walltime   : 6-23:55:00
+Used Walltime       :   04:05:32
+Used CPU Time       :   03:55:55
+% User (Computation): 99.26%
+% System (I/O)      :  0.74%
+Mem Reserved        : 2500G
+Max Mem Used        : 26.22G (28149133312.0)
+Max Disk Write      : 15.13G (16244088504.3)
+Max Disk Read       : 3.76G (4035696394.24)
+Max-Mem-Used Node   : highmem01
+Max-Disk-Write Node : highmem01
+Max-Disk-Read Node  : highmem01
+End Slurm Epilogue Fri Mar  4 01:49:16 CST 2022 1646380156
+--------------------------------------------------------------

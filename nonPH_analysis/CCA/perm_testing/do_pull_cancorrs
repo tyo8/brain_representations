@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#SBATCH --job-name=pull_corrs
+#SBATCH --output=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/logs/pull_corrs%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/logs/pull_corrs%j.err
+#SBATCH --time=47:55:00
+#SBATCH --mem=80gb
+
+agg_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/stability_testing/CCA_stbl_paragg_2022Jan02
+out_dir=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/perm_testing/data_cancorrs_reg
+namelist_path=/scratch/tyoeasley/brain_representations/BR_label_list.csv
+reglist_path=/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02.csv
+
+script_loc=/scratch/tyoeasley/brain_representations/src_py/pull_cancorrs.py
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate alg_top_neuro
+python ${script_loc} ${agg_dir} ${out_dir} ${namelist_path} ${reglist_path} 

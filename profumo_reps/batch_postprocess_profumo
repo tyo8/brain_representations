@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#SBATCH --job-name=hcp_profumo_postproc
+#SBATCH --time=167:55:00
+#SBATCH --nodes=1 
+#SBATCH --tasks-per-node=24
+#SBATCH --mem=250gb
+
+module load singularity/3.5.2
+
+container=/home/e.ty/profumo.sif
+
+dirloc=/scratch/tyoeasley/brain_representations/profumo_reps/HCP_Profumo_cifti_bigdata_1200subs_50modes_smooth_5mm_4runs
+
+ref_img=/scratch/tyoeasley/profumo_anls/rfMRI_REST1_LR_Atlas_hp2000_clean.dtseries.nii
+
+singularity exec -B /scratch:/scratch ${container} /opt/profumo/Python/postprocess_results.py ${dirloc}.pfm ${dirloc}.ppp ${ref_img} --web-report

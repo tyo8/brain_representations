@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#SBATCH --job-name=problems/ICA300_Amps_Psim_p2dists_%j_match
+#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/match_problems/ICA300_Amps_Psim_p2dists_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/match_problems/ICA300_Amps_Psim_p2dists_%j.err
+#SBATCH --time=23:55:00
+#SBATCH --partition=small
+#SBATCH --mem=10gb
+
+match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py
+
+phomX_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_Psim_p2dists/phom_X.txt
+phomY_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/ICA300_Amps/phom_data_ICA300_Amps_Psim_p2dists/phom_out/phomY___-fz_f-Hf_Xvt3vs3r1793n3_Pv-_b-33zevX_a3_4__99a-X5Lu_fe7P8_r-_fv_7y-_vo__3f9f79f_sfb_ri93_9-3___X___vtfvz2tW_-07999_3vybf_--dv3___dX2-77qy4-38-f_f_-z-ff____tf3rK9-N78H.txt
+dim=1
+
+
+python ${match_script} -x ${phomX_fpath} -y ${phomY_fpath} --dim ${dim} -M -d
+

@@ -1,0 +1,76 @@
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov  9 12:00:06 CST 2022 1668016806
+Job ID:		209095
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Nov  9 12:00:06 CST 2022 1668016806
+--------------------------------------------------------------
+--------------------------------------------------------------
+Begin Slurm Prologue Wed Nov  9 11:58:15 CST 2022 1668016695
+Job ID:		208981
+Username:	tyoeasley
+Partition:	small
+End Slurm Prologue Wed Nov  9 11:58:15 CST 2022 1668016695
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/subj_list_pNMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/ICA300_pNMs_corr_mtx_dist.txt
+computing similarity according to corr_mtx_dist
+Estimated data size is 44984550 elements or ~0.1728GB.
+Initial data has shape (n_subj, n_feats)=(1003, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov  9 12:31:50 CST 2022 1668018710
+Name                : ICA300pNMs_corr_mtx_dist
+User                : tyoeasley
+Partition           : small
+Nodes               : node18
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-09T11:58:14
+Start               : 2022-11-09T11:58:15
+End                 : 2022-11-09T12:31:47
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:33:32
+Used CPU Time       : 00:33:11
+% User (Computation): 99.75%
+% System (I/O)      :  0.25%
+Mem Reserved        : 50G
+Max Mem Used        : 771.79M (809279488.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 2.17G (2324860764.16)
+Max-Mem-Used Node   : node18
+Max-Disk-Write Node : node18
+Max-Disk-Read Node  : node18
+End Slurm Epilogue Wed Nov  9 12:31:50 CST 2022 1668018710
+--------------------------------------------------------------
+reading data from /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/subj_list_pNMs.csv
+sending data to /scratch/tyoeasley/brain_representations/metric_tests/ICA300_pNMs/ICA300_pNMs_corr_mtx_dist.txt
+computing similarity according to corr_mtx_dist
+Estimated data size is 44984550 elements or ~0.1728GB.
+Initial data has shape (n_subj, n_feats)=(1003, 44850)
+NaN values found: False
+--------------------------------------------------------------
+Begin Slurm Epilogue Wed Nov  9 12:36:15 CST 2022 1668018975
+Name                : ICA300pNMs_corr_mtx_dist
+User                : tyoeasley
+Partition           : small
+Nodes               : node12
+Cores               : 1
+State               : COMPLETED
+Submit              : 2022-11-09T12:00:05
+Start               : 2022-11-09T12:00:06
+End                 : 2022-11-09T12:36:13
+Reserved Walltime   : 23:55:00
+Used Walltime       : 00:36:07
+Used CPU Time       : 00:35:49
+% User (Computation): 99.85%
+% System (I/O)      :  0.15%
+Mem Reserved        : 50G
+Max Mem Used        : 767.62M (804904960.0)
+Max Disk Write      : 0.00  (0.0)
+Max Disk Read       : 2.17G (2324860764.16)
+Max-Mem-Used Node   : node12
+Max-Disk-Write Node : node12
+Max-Disk-Read Node  : node12
+End Slurm Epilogue Wed Nov  9 12:36:15 CST 2022 1668018975
+--------------------------------------------------------------

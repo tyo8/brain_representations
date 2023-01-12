@@ -1,0 +1,3 @@
+[submodule "src_py/interval-matching-precomp_metric"]
+	path = src_py/interval-matching-precomp_metric
+	url = https://github.com/tyo8/interval-matching-precomp_metric

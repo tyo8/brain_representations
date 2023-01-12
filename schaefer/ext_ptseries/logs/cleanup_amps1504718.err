@@ -1,0 +1,7 @@
+mkdir: cannot create directory ‘/scratch/tyoeasley/brain_representations/schaefer/timeseries/wb_cp/d100’: File exists
+ls: cannot access '/scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/wb_cp/d100/*138332*.csv': No such file or directory
+mkdir: cannot create directory ‘/scratch/tyoeasley/brain_representations/schaefer/timeseries/wb_cp/d1000’: File exists
+ls: cannot access '/scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/wb_cp/d1000/*138332*.csv': No such file or directory
+mkdir: cannot create directory ‘/scratch/tyoeasley/brain_representations/schaefer/timeseries/wb_cp/d200’: File exists
+ls: cannot access '/scratch/tyoeasley/brain_representations/schaefer/ext_ptseries/wb_cp/d200/*138332*.csv': No such file or directory
+slurmstepd: error: *** JOB 1504718 ON node16 CANCELLED AT 2022-07-05T11:48:59 ***

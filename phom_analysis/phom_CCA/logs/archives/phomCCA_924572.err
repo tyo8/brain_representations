@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 192, in <module>
+    main(sys.argv)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 43, in main
+    reglist=reglist, namelist=namelist, decomp_method=decomp_method)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 55, in make_bcurves_over_rank
+    all_bcurves, all_phoms, psim_grams = iter_comp_bcurves(approx_reps)
+  File "/scratch/tyoeasley/brain_representations/src_py/lindecomp_phom.py", line 138, in iter_comp_bcurves
+    long_phoms = SSH.compute_phom(long_stack)
+  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 38, in compute_phom
+    if dist_mtx_array.ndim <= 2:
+AttributeError: 'list' object has no attribute 'ndim'
