@@ -1,7 +1,8 @@
 __pycache__/
-# plaintext data 
+# possible subject data (not allowed)
 *.csv
 *.txt
+*.html
 
 # neuroimaging datatypes
 *.hd5
