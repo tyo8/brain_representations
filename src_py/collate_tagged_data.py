@@ -2,19 +2,16 @@ import os
 import sys
 import ast
 import argparse
+import numpy as np
 
-def collate_data(filename_type, taglist, outdir=''):
+
+# Assumes data to be aggregated has simple list structure; concatenates across all files
+def collate_list_data(filename_type, taglist, outdir=''):
     n_data = len(taglist)
     note = "n"+str(n_data)
+    outpath,outdir = _get_outpath(outdir, filename_type)
 
     all_data = []
-
-    if outdir:
-        outpath = os.path.join(outdir, 
-                os.path.basename(filename_type).replace('[tagspot]', note))
-    else:
-        outdir = os.path.dirname(filename_type)
-        outpath = filename_type.replace('[tagspot]', note)
 
     for tag in taglist:
         filename = filename_type.replace('[tagspot]', tag)
@@ -29,6 +26,52 @@ def collate_data(filename_type, taglist, outdir=''):
             print('')
 
     return all_data, outpath
+
+# Assumes data to be collated has structure of a list of dictionaries; concatenates over all files within each dict key
+def collate_dictlist_data(filename_type, taglist, outdir='', no_agg_list=["barX", "dim"]):
+    n_data = len(taglist)
+    note = "n"+str(n_data)
+    outpath, outdir = _get_outpath(outdir, filename_type)
+
+    with open(filename_type.replace('[tagspot]', taglist[0]),'r') as fin:
+        base_dictlist = ast.literal_eval(fin.read())
+
+    agg_namekeys = list(base_dictlist[0].keys())
+    for name in no_agg_list:
+        agg_namekeys.remove(name)
+
+    for tag in taglist[1:]:
+        filename = filename_type.replace('[tagspot]', tag)
+        try:
+            with open(filename,'r') as fin:
+                new_dictlist = ast.literal(fin.read())
+
+            for idx, entry in enumerate(base_dictlist):
+                new_entry = new_dictlist[idx]
+
+                for name in no_agg_list:
+                    assert entry[name] == new_entry[name], f"Base dictlist and dictlist {idx} fail to agree on entries in key {name} -- maybe an indexing problem? \nError in {filename}"
+
+                for name in agg_namekeys:
+                    if new_entry[name] == [0]:
+                        entry[name].append(0)
+                    else:
+                        entry[name].append(new_entry[name])
+
+        except FileNotFoundError:
+            _handle_FNFerr(filename, tag)
+            print('')
+
+    return base_dictlist
+
+
+def _get_outpath(outdir, filename_type):
+    if outdir:
+        outpath = os.path.join(outdir, 
+                os.path.basename(filename_type).replace('[tagspot]', note))
+    else:
+        outdir = os.path.dirname(filename_type)
+        outpath = filename_type.replace('[tagspot]', note)
 
 
 def _handle_FNFerr(filename, tag):
