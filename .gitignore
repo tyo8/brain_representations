@@ -14,3 +14,7 @@ __pycache__/
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
+
+# sensitive or cluttered introspection info
+*.html
+logs
