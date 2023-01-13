@@ -6,10 +6,10 @@ import numpy as np
 
 
 # Assumes data to be aggregated has simple list structure; concatenates across all files
-def collate_list_data(filename_type, taglist, outdir=''):
+def collate_simplist_data(filename_type, taglist, outdir=''):
     n_data = len(taglist)
     note = "n"+str(n_data)
-    outpath,outdir = _get_outpath(outdir, filename_type)
+    outpath,outdir = _get_outpath(outdir, filename_type, note)
 
     all_data = []
 
@@ -31,7 +31,7 @@ def collate_list_data(filename_type, taglist, outdir=''):
 def collate_dictlist_data(filename_type, taglist, outdir='', no_agg_list=["barX", "dim"]):
     n_data = len(taglist)
     note = "n"+str(n_data)
-    outpath, outdir = _get_outpath(outdir, filename_type)
+    outpath, outdir = _get_outpath(outdir, filename_type, note)
 
     with open(filename_type.replace('[tagspot]', taglist[0]),'r') as fin:
         base_dictlist = ast.literal_eval(fin.read())
@@ -44,7 +44,7 @@ def collate_dictlist_data(filename_type, taglist, outdir='', no_agg_list=["barX"
         filename = filename_type.replace('[tagspot]', tag)
         try:
             with open(filename,'r') as fin:
-                new_dictlist = ast.literal(fin.read())
+                new_dictlist = ast.literal_eval(fin.read())
 
             for idx, entry in enumerate(base_dictlist):
                 new_entry = new_dictlist[idx]
@@ -53,8 +53,8 @@ def collate_dictlist_data(filename_type, taglist, outdir='', no_agg_list=["barX"
                     assert entry[name] == new_entry[name], f"Base dictlist and dictlist {idx} fail to agree on entries in key {name} -- maybe an indexing problem? \nError in {filename}"
 
                 for name in agg_namekeys:
-                    if new_entry[name] == [0]:
-                        entry[name].append(0)
+                    if name == "affinity":
+                        entry[name].append(new_entry[name][0])
                     else:
                         entry[name].append(new_entry[name])
 
@@ -62,16 +62,18 @@ def collate_dictlist_data(filename_type, taglist, outdir='', no_agg_list=["barX"
             _handle_FNFerr(filename, tag)
             print('')
 
-    return base_dictlist
+    return base_dictlist, outpath
 
 
-def _get_outpath(outdir, filename_type):
+def _get_outpath(outdir, filename_type, note):
     if outdir:
         outpath = os.path.join(outdir, 
                 os.path.basename(filename_type).replace('[tagspot]', note))
     else:
         outdir = os.path.dirname(filename_type)
         outpath = filename_type.replace('[tagspot]', note)
+
+    return outpath, outdir
 
 
 def _handle_FNFerr(filename, tag):
@@ -158,10 +160,16 @@ if __name__ == "__main__":
     parser.add_argument(
         "-v", "--verbose", default=True, action='store_false', help="verbose output flag"
     )
+    parser.add_argument(
+        "-d", "--datatype", type=str, default="dictlist", help="data structure to be collated"
+    )
     args = parser.parse_args()
 
     taglist=_pull_taglist(args.tagfile, args.count)
-    all_data, outpath = collate_data(args.filename_type, taglist, args.outdir)
+    if args.datatype == "dictlist":
+        all_data, outpath = collate_dictlist_data(args.filename_type, taglist, args.outdir)
+    elif args.datatype == "simplist":
+        all_data, outpath = collate_simplist_data(args.filename_type, taglist, args.outdir)
 
     if args.verbose:
         print('Sending collated data to:')

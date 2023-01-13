@@ -66,13 +66,11 @@ do
 		outdir=$(dirname ${distname})"/phom_data_${data_label}"
 		match_dir="${outdir}/matching"
 
-		match_nametype="${match_dir}/matchedXY_dim${match_homdim}_[tagspot].txt"
-		affinity_nametype="${match_dir}/affinityXY_dim${match_homdim}_[tagspot].txt"
+		vmatch_nametype="${match_dir}/verbose_match_dim${match_homdim}_[tagspot].txt"
 	
 		# collate outputs across group of tags
 		###############
-		python ${coll_script} -f ${match_nametype} -t ${tagfile} -c ${samps} 
-		python ${coll_script} -f ${affinity_nametype} -t ${tagfile} -c ${samps}
+		python ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} 
 		###############
 	done
 done

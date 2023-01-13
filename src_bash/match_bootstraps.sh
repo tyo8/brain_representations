@@ -77,7 +77,9 @@ do
 		# Create bookkeeping directories
 		outdir=$(dirname ${distname})"/phom_data_${data_label}"
 		phomdir="${outdir}/phom_out"
+		matchdir="${outdir}/matching"
 		mkdir -p $phomdir
+		mkdir -p $matchdir
 
 		phomX_fpath="${outdir}/phom_X.txt"
 		# submit persistence job for dX
