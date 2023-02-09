@@ -42,11 +42,6 @@ done
 ### paths to code ###
 prev_scr="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/prevalence_scores.py"
 
-### node exclude list: maybe do not include for parallel case? ###
-#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
-
-############################### Write the input and the script ##############################
-
 distlists=$(cat ${distlists_fpath})
 
 for distlist in ${distlists}

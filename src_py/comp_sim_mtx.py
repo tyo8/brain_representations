@@ -10,7 +10,7 @@ from sklearn.metrics import pairwise_distances
 
 # receives path to .csv file containing list of subject data file names
 # outputs a subject-by-subject matrix of Pearson correlation coefficients
-def comp_sim_mtx(fname_in, fname_out, method='Psim'):
+def comp_sim_mtx(fname_in, fname_out, method='Psim', return_dist=False):
     with open(fname_in,newline='') as fin:
         subj_lists = list(csv.reader(fin))          # list of lists of subject filenames
         subj_list = list(map(''.join,subj_lists))   # list of strings of subject filenames
@@ -30,13 +30,19 @@ def comp_sim_mtx(fname_in, fname_out, method='Psim'):
 
     if method=='geodesic':
         np.fill_diagonal(sim_mtx, 0)
+        dist_mtx = sim_mtx
     else:
         np.fill_diagonal(sim_mtx, 1)
+        dist_mtx = sdm.p_simdist(sim_mtx, p=2)
 
-    np.savetxt(fname_out,sim_mtx)
-    return sim_mtx
+    if return_dist:
+        np.savetxt(fname_out.replace('_sims.txt','_dists.txt'), dist_mtx)
+        return dist_mtx
+    else:
+        np.savetxt(fname_out, sim_mtx)
+        return sim_mtx
 
-
+# estimate if dataset is too large to fit in memory
 def _check_datasize(subj_list):
     n_subj = len(subj_list)
     samp_data = hutils._parse_fname(subj_list[0])
@@ -57,6 +63,7 @@ def _check_datasize(subj_list):
     return too_big
 
 
+# computes similarity (or geodesic distance) between pairwise-loaded subject data (according to specified method)
 def comp_simval(data1,data2,method='Psim'):
     if method=='Psim':
         simval = np.corrcoef(data1,data2)
@@ -73,6 +80,7 @@ def comp_simval(data1,data2,method='Psim'):
     return simval
 
 
+# computes pairwise similarity (or geodesic distance) between group-loaded subject data (according to specified method)
 def comp_sim_from_mtx(data_mtx, method='Psim', p=2):
     n_subj = data_mtx.shape[0]
     if method=='Psim':
@@ -138,11 +146,21 @@ def _validate_data(data):
 ############################### debug function ###############################  
 
 
+# input parsing and verbose options output for logs
 if __name__=="__main__":
     subj_datalist_fname = sys.argv[1]
     fname_out = sys.argv[2]
     method = sys.argv[3]
+    if len(sys.argv > 4):
+        return_dists = sys.argv[4]
+    else:
+        return_dists = False
+
+    if return_dists:
+        fname_out = fname_out.replace('_sims.txt', '_dists.txt')
+
     print("reading data from " + str(subj_datalist_fname))
     print("sending data to " + str(fname_out))
     print("computing similarity according to " + method)
-    comp_sim_mtx(subj_datalist_fname, fname_out, method=method)
+    print("computing/saving/returning \"distance\" instead of similarity matrices? " + return_dists)
+    comp_sim_mtx(subj_datalist_fname, fname_out, method=method, return_dists=return_dists)

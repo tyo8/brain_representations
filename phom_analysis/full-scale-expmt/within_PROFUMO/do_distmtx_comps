@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#SBATCH --job-name=submit_dist_jobs
+#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/subdists_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/subdists_%j.err
+#SBATCH --time=00:05:00
+#SBATCH --partition=small
+#SBATCH --mem=5gb
+
+runfile="/scratch/tyoeasley/brain_representations/src_bash/calc_dists.sh"
+
+### bookkeeping paths ###
+base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO"
+
+### input datasets ###
+distlists_fpath="${subbase_dir}/distlists.csv"
+
+${runfile} -b ${base_dir} -s ${subbase_dir} -f ${distlists_fpath}

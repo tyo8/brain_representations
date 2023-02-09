@@ -2,15 +2,15 @@
 
 set -o nounset
 
-ldmZ_fpath=""
-data_label="test"
+dim=2
 do_img=1
 mem_gb=700
+ldmZ_fpath=""
 partition="small"
+data_label="test"
 maxtime_str="23:55:00"
-dim=2
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
 script_dir="/scratch/tyoeasley/brain_representations/bootstrap_benchmarks"
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 while getopts ":x:z:f:o:d:i:m:p:t:D:r:s:" opt; do
   case $opt in

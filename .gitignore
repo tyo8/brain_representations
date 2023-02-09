@@ -15,7 +15,7 @@ __pycache__/
 [._]ss[a-gi-z]
 [._]sw[a-p]
 
-# sensitive or cluttered introspection info
+# cluttered or potentially sensitive introspection info
 *.html
 logs
 

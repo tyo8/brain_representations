@@ -10,6 +10,31 @@ In this repository:
 3. we have a few nuggets of source code nestled away in the mess; the most notable one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
 4. We also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
 
+## Structure of the repository
+
+This repository is organised as follows.
+
+Source Code
+- 'src_py': python code (this does most of the repo's work)
+- 'src_bash': bash scripts
+- 'src_MATLAB': mostly here to borrow functions from [PALM](https://github.com/andersonwinkler/PALM), which we need to do permutation testing in the CCA analysis on Human Connectome Project data
+
+Experiments
+- 'datalists': lists of data files corresponding that help set conditions for specific experiments
+- 'phom_analysis': all persistent homology-based analyses in this project (with the exception of 'metric_tests' and 'bootstrap_benchmarks')
+- 'nonPH_analysis': most notably contains output of CCA analysis of shared information between pairs of brain representations
+- 'metric_tests': **preliminary** testing of the impact of metric choice on persistence data
+- 'bootstrap_benchmarks': benchmarking the cycle registration bootstrapping scheme to test scalability
+- 'output_benchmarks': becnhmarking the computation(al scaling) of Betti curves, Wasserstein distances, and other derivatives of persistence diagrams
+
+Brain Representation Computation/Extraction
+Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
+- profumo_reps: code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps)
+- gradient_reps: code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
+- ICA_reps: code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
+- glasser: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated data
+- schaefer: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated data
+
 ## Preparations
 
 ### Compiling the C++ programs (required for cycle registration)
@@ -38,25 +63,6 @@ Background
 - [scikit-learn](https://scikit-learn.org/stable/)
 - [matplotlib](https://matplotlib.org/stable/index.html)
 
-## Structure of the repository
-
-This repository is organised as follows.
-
-Source Code
-- 'src_py': python code (this does most of the repo's work)
-- 'src_bash': bash scripts
-- 'src_MATLAB': mostly here to borrow functions from [PALM](https://github.com/andersonwinkler/PALM), which we need to do permutation testing in the CCA analysis on Human Connectome Project data
-
-Experiments
-- 'datalists': lists of data files corresponding that help set conditions for specific experiments
-- 'metric_tests': **preliminary** testing of the impact of metric choice on persistence data
-- 'bootstrap_benchmarks': benchmarking the cycle registration bootstrapping scheme to test scalability
-- 'phom_analysis': all persistent homology-based analyses in this project (with the exception of 'metric_tests' and 'bootstrap_benchmarks')
-- 'nonPH_analysis': most notably contains output of CCA analysis of shared information between pairs of brain representations
-
-Brain Representation Data/Extraction
-- a bunch of other stuff (for adding later)
-
 ## Academic use
 
 This code is available and is fully adaptable for individual user customization. If you use the our methods, please cite as the following:
@@ -69,7 +75,7 @@ This code is available and is fully adaptable for individual user customization.
 	month = ??,
 	year = {2023/4},
 	note = {arXiv:####.<subj> [tag1, tag2]},
-	keywords = {topological data analysis, neuroscience, computational topology, persistent homology, functional connectivity},
+	keywords = {topological data analysis, neuroscience, computational topology, persistent homology, functional connectivity, dimension reduction},
 }
 ```
 
