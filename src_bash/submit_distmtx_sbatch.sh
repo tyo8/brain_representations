@@ -59,8 +59,8 @@ do
 #!/bin/sh
 
 #SBATCH --job-name=${modality}${feature}_${method}
-#SBATCH --output=${script_dir}/logs/${modality}${feature}_${method}.out
-#SBATCH --error=${script_dir}/logs/${modality}${feature}_${method}.err
+#SBATCH --output=${base_dir}/logs/${modality}${feature}_${method}.out
+#SBATCH --error=${base_dir}/logs/${modality}${feature}_${method}.err
 #SBATCH --partition=${partition}
 #SBATCH --time=${maxtime_str}
 #SBATCH --nodes=1
