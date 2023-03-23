@@ -18,7 +18,12 @@ __pycache__/
 
 # program files
 __pycache__
-pull_from_cluster.sh
+*pull_from_cluster*
+
+# testing and benchmarking intermediates
+*benchmark*
+*test*
+*tst*
 
 # cluttered or potentially sensitive info
 *.html
