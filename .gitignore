@@ -24,6 +24,7 @@ pull_from_cluster.sh
 *.html
 RESTRICTED*
 logs
+*do_*
 
 # image files
 *.png

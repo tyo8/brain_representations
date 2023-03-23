@@ -1,8 +1,0 @@
-#!/bin/sh
-#SBATCH --job-name=ext_pts_yeo
-#SBATCH --output=/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/logs/ext_pts_%j.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/logs/ext_pts_%j.err
-#SBATCH --time=23:55:00
-#SBATCH --mem=8GB
-
-bash /scratch/tyoeasley/brain_representations/yeo/ext_ptseries/ext_yeo_pts.sh wb_cp
