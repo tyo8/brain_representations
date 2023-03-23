@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#SBATCH --job-name=Schaefer200Amps_Psim
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer200Amps_Psim.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer200Amps_Psim.err
+#SBATCH --partition=medium
+#SBATCH --time=167:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=500gb
+
+subj_list=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer200_Amps/subj_list_Amps.csv
+subj_dist=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer200_Amps/Schaefer200_Amps_Psim_dists.txt
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_dist} Psim True
+
+echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer200_Amps/AmpsSchaefer200_dists.csv
+

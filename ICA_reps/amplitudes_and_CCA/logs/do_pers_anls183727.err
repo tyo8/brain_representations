@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/DistMatrixFiltration.py", line 27, in <module>
-    DistMatrixFiltration(sys.argv[1],sys.argv[2])
-  File "/scratch/tyoeasley/brain_representations/DistMatrixFiltration.py", line 23, in DistMatrixFiltration
-    np.savetxt(fname_out,persdiag,delimiter=',')
-  File "<__array_function__ internals>", line 5, in savetxt
-  File "/home/e.ty/.conda/envs/alg_top/lib/python3.9/site-packages/numpy/lib/npyio.py", line 1380, in savetxt
-    raise ValueError(
-ValueError: Expected 1D or 2D array, got 3D array instead

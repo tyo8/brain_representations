@@ -16,7 +16,7 @@ subbase_dir="${base_dir}/phom_analysis/full-scale-expmt/pipeline_tst"
 tagfile="${base_dir}/taglist.txt"
 
 ### input datasets ###
-distlists_fpath="${subbase_dir}/real_distlists.csv"
+distlists_fpath="${subbase_dir}/all_distlists.csv"
 
 ### run parameters ###
 samps=250

@@ -4,8 +4,8 @@
 n_comps=50
 
 # Filepath to list of subject ID numbers
-subjID_fpath="/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/subj_IDs_remaining.csv"
-# subjID_fpath="/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv"
+# subjID_fpath="/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/subj_IDs_remaining.csv"
+subjID_fpath="/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv"
 # subjID_fpath="/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_tst.csv"
 subjID_list=$(cat ${subjID_fpath})
 

@@ -3,7 +3,7 @@
 #SBATCH --job-name=feats_schaefer
 #SBATCH --output=/scratch/tyoeasley/brain_representations/schaefer/extract_feats/logs/extschaefer.out
 #SBATCH --error=/scratch/tyoeasley/brain_representations/schaefer/extract_feats/logs/extschaefer.err
-#SBATCH --time=95:55:00
+#SBATCH --time=23:55:00
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --mem=50GB

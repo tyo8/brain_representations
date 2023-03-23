@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#SBATCH --job-name=grad25Maps_Psim
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/logs/grad25Maps_Psim.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/logs/grad25Maps_Psim.err
+#SBATCH --partition=medium
+#SBATCH --time=167:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=500gb
+
+subj_list=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/grad25_Maps/subj_list_Maps.csv
+subj_dist=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/grad25_Maps/grad25_Maps_Psim_dists.txt
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_dist} Psim True
+
+echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/grad25_Maps/Mapsgrad25_dists.csv
+

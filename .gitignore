@@ -6,6 +6,7 @@ __pycache__/
 # neuroimaging datatypes
 *.hd5
 *.nii*
+*parcellation*
 
 # swap
 [._]*.s[a-v][a-z]
@@ -14,6 +15,10 @@ __pycache__/
 [._]s[a-rt-v][a-z]
 [._]ss[a-gi-z]
 [._]sw[a-p]
+
+# program files
+__pycache__
+pull_from_cluster.sh
 
 # cluttered or potentially sensitive introspection info
 *.html

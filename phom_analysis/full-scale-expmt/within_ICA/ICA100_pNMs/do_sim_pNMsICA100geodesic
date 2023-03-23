@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#SBATCH --job-name=ICA100pNMs_geodesic
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/logs/ICA100pNMs_geodesic.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/logs/ICA100pNMs_geodesic.err
+#SBATCH --partition=small
+#SBATCH --time=23:55:00
+#SBATCH --nodes=1
+#SBATCH --tasks-per-node=1
+#SBATCH --mem=500gb
+
+subj_list=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/ICA100_pNMs/subj_list_pNMs.csv
+subj_dist=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/ICA100_pNMs/ICA100_pNMs_geodesic_dists.txt
+
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_dist} geodesic True
+
+echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/ICA100_pNMs/pNMsICA100_dists.csv
+

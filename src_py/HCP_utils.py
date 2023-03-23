@@ -79,10 +79,18 @@ def _switch(argument):
     _switcher = {
         ".csv": _load_csv,
         ".txt": _load_txt,
-        ".npy": _load_npy
+        ".npy": _load_npy,
+        ".nii": _load_scan,
+        ".gz": _load_scan
      }
     _parser = _switcher.get(argument, lambda argument: print("Unknown file extension: "+argument))
     return _parser
+
+def _load_scan(fname):
+    import nibabel as nib
+    sdata = nib.load(fname)
+    data = np.asarray(sdata.get_fdata()).flatten()
+    return data
 
 def _load_csv(fname):
     # data = np.genfromtxt(fname,delimiter=",")
@@ -99,8 +107,11 @@ def _load_npy(fname):
 
 def _shaper(data):
     if len(data.shape) == 2:
-        if np.allclose(data, data.T):
-            data = triu_vals(data) # assumes that symmetric matrices have noninformative diagonals
+        if data.shape[0]==data.shape[1]:
+            if np.allclose(data, data.T):
+                data = triu_vals(data) # assumes that symmetric matrices have noninformative diagonals
+            else:
+                data=data.flatten()
         else:
             data = data.flatten()
     return data

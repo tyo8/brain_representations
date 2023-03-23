@@ -2,8 +2,8 @@
 
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
 #SBATCH --job-name=match_collate
-#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/collate_%j.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/collate_%j.err
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/collate_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/collate_%j.err
 #SBATCH --time=7:55:00
 #SBATCH --partition=small
 #SBATCH --mem=50gb
@@ -12,11 +12,11 @@ runfile="/scratch/tyoeasley/brain_representations/src_bash/collate_matches.sh"
 
 ### bookkeeping paths ###
 base_dir="/scratch/tyoeasley/brain_representations"
-subbase_dir="${base_dir}/bootstrap_benchmarks"
+subbase_dir="${base_dir}/phom_analysis/full-scale-expmt/within_PROFUMO"
 tagfile="${base_dir}/taglist.txt"
 
 ### input datasets ###
-distlists_fpath="${subbase_dir}/real_distlists.csv"
+distlists_fpath="${subbase_dir}/all_distlists.csv"
 
 ### run parameters ###
 samps=250

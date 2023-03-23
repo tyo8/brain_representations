@@ -2,8 +2,8 @@
 
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
 #SBATCH --job-name=match_bootstraps
-#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/matchstraps_%j.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/matchstraps_%j.err
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/matchstraps_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/matchstraps_%j.err
 #SBATCH --time=7:55:00
 #SBATCH --partition=small
 #SBATCH --mem=10gb
@@ -12,7 +12,7 @@ runfile="/scratch/tyoeasley/brain_representations/src_bash/match_bootstraps.sh"
 
 ### bookkeeping paths ###
 base_dir="/scratch/tyoeasley/brain_representations"
-subbase_dir="${base_dir}/bootstrap_benchmarks"
+subbase_dir="${base_dir}/phom_analysis/full-scale-expmt/within_PROFUMO"
 tagfile="${base_dir}/taglist.txt"
 
 ### input datasets ###

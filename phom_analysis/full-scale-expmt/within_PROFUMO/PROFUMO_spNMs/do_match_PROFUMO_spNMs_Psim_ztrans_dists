@@ -1,0 +1,18 @@
+#!/bin/sh
+
+#SBATCH --job-name=PROFUMO_spNMs_Psim_ztrans_dists_match
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/match_PROFUMO_spNMs_Psim_ztrans_dists.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/match_PROFUMO_spNMs_Psim_ztrans_dists.err
+#SBATCH --time=23:55:00
+#SBATCH --partition=small
+#SBATCH --mem=25gb
+
+match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py
+
+phomX_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/phom_X.txt
+phomY_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/phom_out/phomY_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
+dim=1
+
+
+python ${match_script} -x ${phomX_fpath} -y ${phomY_fpath} --dim ${dim} -M -d
+

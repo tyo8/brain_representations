@@ -6,8 +6,8 @@ set -o nounset
 base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-PROFUMO"
 
 # file containing a list of BR (modality/dimension, feature) specifications.
-# see comments below (??-??) for some context on formatting expectations.
-spec_list_fpath="${base_dir}/spec_list.txt"	
+# see comments below (lines 54-56) for some context on formatting expectations.
+spec_list_fname="spec_list.txt"
 
 mem_gb=500
 partition="medium"
@@ -17,7 +17,7 @@ while getopts ":b:s:g:p:t:" opt; do
   case $opt in
     b) base_dir=${OPTARG}
     ;;
-    s) spec_list=${OPTARG}
+    s) spec_list_fname=${OPTARG}
     ;;
     g) mem_gp=${OPTARG}
     ;;
@@ -36,6 +36,10 @@ while getopts ":b:s:g:p:t:" opt; do
     ;;
   esac
 done
+
+# file containing a list of BR (modality/dimension, feature) specifications.
+# see comments below (lines 54-56) for some context on formatting expectations.
+spec_list_fpath="${base_dir}/${spec_list_fname}"	
 
 # path to batch-writing bash script (should be fixed, so is given as a constant)
 sbatch_fpath="/scratch/tyoeasley/brain_representations/src_bash/submit_distmtx_sbatch.sh"

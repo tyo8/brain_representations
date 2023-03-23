@@ -1,0 +1,26 @@
+#!/bin/sh
+
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
+#SBATCH --job-name=match_bootstraps
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/logs/matchstraps_%j.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/logs/matchstraps_%j.err
+#SBATCH --time=7:55:00
+#SBATCH --partition=small
+#SBATCH --mem=10gb
+
+runfile="/scratch/tyoeasley/brain_representations/src_bash/match_bootstraps.sh"
+
+### bookkeeping paths ###
+base_dir="/scratch/tyoeasley/brain_representations"
+subbase_dir="${base_dir}/phom_analysis/full-scale-expmt/within_ICA"
+tagfile="${base_dir}/taglist.txt"
+
+### input datasets ###
+distlists_fpath="${subbase_dir}/all_distlists.csv"
+
+### run parameters ###
+samps=250
+match_homdim=1
+mem_gb=25
+
+${runfile} -b ${base_dir} -s ${subbase_dir} -t ${tagfile} -f ${distlists_fpath} -n ${samps} -D ${match_homdim} -m ${mem_gb}

@@ -28,23 +28,19 @@ def feats_from_dtseries(fpath, outpath_type, do_partial=True):
 
     amps = np.std(ts_data, axis=1)
     netmats = np.corrcoef(ts_data)
+    np.fill_diagonal(netmats,1)
 
     if do_partial:
-        partial_netmats = _comp_partial_netmats(ts_data)
         # compute partial correlation matrix of ts_data
+        invcorr = np.linalg.pinv(netmats, hermitian=True)
+        norms = np.diag(np.power(np.diag(invcorr), -1/2))
+        partial_netmats = norms @ invcorr @ norms
 
     write_out(outpath_type % 'Amplitudes', amps)
     write_out(outpath_type % 'NetMats', netmats)
     if do_partial:
         partial_netmats
         write_out(outpath_type % 'partial_NMs', partial_netmats)
-
-
-def _comp_partial_netmats(data):
-    C = np.cov(data)
-    pcorr = np.linalg.pinv(C, hermitian=True)
-    return pcorr
-
 
 
 def write_out(outpath, data):

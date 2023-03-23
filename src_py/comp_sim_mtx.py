@@ -1,7 +1,6 @@
 import os
 import sys
 import csv
-import dcor
 import numpy as np
 import HCP_utils as hutils
 import subj_data_metrics as sdm
@@ -34,6 +33,12 @@ def comp_sim_mtx(fname_in, fname_out, method='Psim', return_dist=False):
     else:
         np.fill_diagonal(sim_mtx, 1)
         dist_mtx = sdm.p_simdist(sim_mtx, p=2)
+        np.fill_diagonal(dist_mtx, 0)
+    
+    ### debug code ###
+    _validate_distmtx(dist_mtx)
+    ### debug code ###
+
 
     if return_dist:
         np.savetxt(fname_out.replace('_sims.txt','_dists.txt'), dist_mtx)
@@ -55,7 +60,7 @@ def _check_datasize(subj_list):
     
     print("Estimated data size is " + str(n_subj*data_size) + " elements or ~" + str(GBmem) + "GB.") 
 
-    too_big = (numel > 10**11) | (n_subj > 10**5) | (data_size > 10**6)
+    too_big = (GBmem > 100)
 
     if too_big:
         print("Data may be too large to fit in memory; opting for sequential data loading (slow).")
@@ -66,14 +71,16 @@ def _check_datasize(subj_list):
 # computes similarity (or geodesic distance) between pairwise-loaded subject data (according to specified method)
 def comp_simval(data1,data2,method='Psim'):
     if method=='Psim':
-        simval = np.corrcoef(data1,data2)
+        sim_mtx = np.corrcoef(data1,data2)
         simval = np.abs(sim_mtx[0,1])
-    elif method=='dcor':
-        simval = dcor.distance_correlation(data1, data2)
+#   elif method=='dcor':
+#       simval = dcor.distance_correlation(data1, data2)
     elif method=='Psim_ztrans':
         simval = sdm._ztrans(data1, data2)
     elif method=='spd_cos':
         simval = sdm.spd_cos(data1, data2)
+    elif method=='inner':
+        simval = sdm.inner(data1, data2)
     elif method=='geodesic':
         simval = sdm.geodesic(data1, data2)
 
@@ -85,12 +92,15 @@ def comp_sim_from_mtx(data_mtx, method='Psim', p=2):
     n_subj = data_mtx.shape[0]
     if method=='Psim':
         sim_mtx = np.corrcoef(data_mtx)
-    elif method=='dcor':
-        sim_mtx = pairwise_distances(data_mtx, metric=dcor.distance_correlation)
+#    elif method=='dcor':
+#        sim_mtx = pairwise_distances(data_mtx, metric=dcor.distance_correlation)
     elif method=='Psim_ztrans':
         sim_mtx = np.corrcoef(sdm._ztrans(data_mtx))
     elif method=='spd_cos':
         sim_mtx = pairwise_distances(data_mtx, metric=sdm.spd_cos)
+    elif method=='inner':
+        sim_mtx = pairwise_distances(data_mtx, metric=sdm.inner)
+        sim_mtx = sim_mtx/sim_mtx.max()
     elif method=='geodesic':
         sim_mtx = pairwise_distances(data_mtx, metric=sdm.geodesic)
         sim_mtx = sim_mtx/sim_mtx.max()
@@ -140,9 +150,25 @@ def _validate_data(data):
     print("NaN values found: " + str(nanflag))
     if nanflag:
         print("Number of NaN elements: " + str(nan_els))
-        print("Number of subjects with NaN data: " + str(nan_els))
+        print("Number of subjects with NaN data: " + str(nan_subjs))
         print("Number of NaN features per subject with NaN data: ")
         print(np.histogram(nan_feats))
+############################### debug function ###############################  
+
+
+############################### debug function ###############################  
+def _validate_distmtx(dmtx):
+    n_subj = dmtx.shape[0]
+    nan_data = np.isnan(dmtx)
+    nanflag = nan_data.any()
+
+    subj_vals = dmtx[np.triu_indices(n_subj,1)]
+    if nanflag:
+        nan_els = np.count_nonzero(subj_vals)
+
+    print("NaN values found in dist_mtx: " + str(nanflag))
+    if nanflag:
+        print("Number of NaN elements: " + str(nan_els), f"({nan_els/len(subj_vals)*100}%)")
 ############################### debug function ###############################  
 
 
@@ -151,16 +177,16 @@ if __name__=="__main__":
     subj_datalist_fname = sys.argv[1]
     fname_out = sys.argv[2]
     method = sys.argv[3]
-    if len(sys.argv > 4):
-        return_dists = sys.argv[4]
+    if len(sys.argv) > 4:
+        return_dist = sys.argv[4]
     else:
-        return_dists = False
+        return_dist = False
 
-    if return_dists:
+    if return_dist:
         fname_out = fname_out.replace('_sims.txt', '_dists.txt')
 
     print("reading data from " + str(subj_datalist_fname))
     print("sending data to " + str(fname_out))
     print("computing similarity according to " + method)
-    print("computing/saving/returning \"distance\" instead of similarity matrices? " + return_dists)
-    comp_sim_mtx(subj_datalist_fname, fname_out, method=method, return_dists=return_dists)
+    print("computing/saving/returning \"distance\" instead of similarity matrices? " + return_dist)
+    comp_sim_mtx(subj_datalist_fname, fname_out, method=method, return_dist=return_dist)

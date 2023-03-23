@@ -70,7 +70,7 @@ do
 subj_list=${script_dir}/subj_list_${feature}.csv
 subj_dist=${script_dir}/${modality}_${feature}_${method}_${label}.txt
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate Stats
+source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
 python ${pysrc_fpath} \${subj_list} \${subj_dist} ${method} True
 
 echo \${subj_dist} >> ${script_dir}/${feature}${modality}_${label}.csv

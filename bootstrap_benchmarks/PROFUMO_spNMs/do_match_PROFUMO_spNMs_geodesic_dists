@@ -5,12 +5,12 @@
 #SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/match_PROFUMO_spNMs_geodesic_dists.err
 #SBATCH --time=23:55:00
 #SBATCH --partition=small
-#SBATCH --mem=10gb
+#SBATCH --mem=25gb
 
 match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py
 
 phomX_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_X.txt
-phomY_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_out/phomY_Xff4____9t1aNr-_z7_cvr7f3v97-93b5eb_qP_11m3_7X7u-53_7b6_uu_v9cr36tz_-97-f_O7f7_-37f79f_ff77-9_9y_f6_-92f3797-6__ri-9n_z89__3__9_Y97v_e_3v--__7Xv___b_t39b9v-_U7VG_777NUH.txt
+phomY_fpath=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_out/phomY_p_9p__Cz93-3__-9m_0vn95Z1_7f_7-_v-7_3737__v-9__97___59v-Puq_sP-__7f_kvzy9e3fb5-P7z37927_99a_rv_5637fv3-_v2_t77_-v23zPndXvrf-_7Xfzf_O-Xt_v95wv89_73-___69c9b73X-9e__f9fUH.txt
 dim=1
 
 

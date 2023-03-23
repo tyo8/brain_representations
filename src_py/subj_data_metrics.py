@@ -11,20 +11,35 @@ def p_simdist(R, p=2):
 
 
 ############################################################################################################################################
-# implements the (normalized) self-dualizing innper product on the vector space S+ (symmetric positive semidefinite matrices),
-# which is given by <A,B> = Tr(AB), 
+# implements the (normalized) self-dualizing inner product on the vector space S+ (symmetric positive semidefinite matrices),
+# which is given by <A,B> = Tr(A^T B) = Tr(AB), where last equality holds because A is symmetric, 
 # giving its unit normalization (i.e., cosine similarity) as <A,B>_cos = Tr(AB)/sqrt[Tr(A^2)*Tr(B^2)]
-def spd_cos(X,Y):
+def spd_cos(X,Y, sym=True, normed=True):
     check.shape(X,Y)
-    X = symmetrize(X)
-    Y = symmetrize(Y)
 
-    check.unit_sup(X)
-    check.unit_sup(Y)
+    if sym:
+        X = symmetrize(X)
+        Y = symmetrize(Y)
 
-    spd_cos = np.trace(X @ Y) / np.sqrt( np.sum(np.abs(X)**2) * np.sum(np.abs(Y)**2)  )
+    # note that we are overloading the signifier "normed" and using it in two distinct senses here: one refers to the magnitude of entries
+    # in X and Y, and the other refers to our decision on whether or not to normalize by product of sqrt(var).
+    if normed:
+        check.unit_sup(X)
+        check.unit_sup(Y)
+        spd_cos = np.trace(X.T @ Y) / np.sqrt( np.sum(np.abs(X)**2) * np.sum(np.abs(Y)**2)  )
+    else:
+        if len(X.shape) > 1:
+            spd_cos = np.trace(X.T @ Y)
+        else:
+            spd_cos = X.T @ Y
 
-    return spd_cos 
+    return spd_cos
+
+def inner(X,Y):
+    x = X.flatten()
+    y = Y.flatten()
+    inner = spd_cos(x,y, sym=False, normed=False)
+    return inner
 ############################################################################################################################################
 
 
@@ -49,8 +64,11 @@ def ztrans_psim(X,Y):
     return corr_sim
 
 # Fisher's z-transformation
-def _ztrans(X, noise_term=1e-12):
-    Xz = np.arctanh(X - noise_term)
+def _ztrans(X):
+    try:
+        Xz = np.arctanh(X)
+    except:
+        print(X)
     return Xz
 ############################################################################################################################################
 
@@ -85,11 +103,12 @@ def _symmtx(V, diag_val=1):
     k = len(V)
     n = 1/2 * np.sqrt(8*k + 1) + 1/2        # computes n satisfying k = (n choose 2)
     check.whole(n)
-    n = round(n)
+    n = int(n)
 
     M = np.zeros((n,n))
     M[np.triu_indices(n,1)] = V
-    M = M + M.T + diag_val*np.eye(n)
+    M = M + M.T
+    np.fill_diagonal(M, diag_val)
 
     return M
 ############################################################################################################################################

@@ -6,7 +6,7 @@
 #SBATCH --mem=20GB
 
 src_path=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/align_subj_gradients.py
-n_comps=300
+n_comps=100
 
 subjID_fpath=/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv
 group_embedding_fpath=/scratch/tyoeasley/brain_representations/gradient_reps/gradmaps_d${n_comps}/emb_HCPavgS1200.npy
