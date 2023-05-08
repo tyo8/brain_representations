@@ -127,8 +127,9 @@ def _redo_match(phomY_fpath, dim, scripter=default_scripter):
 
     submit_data_label = os.path.join('','problems', data_label + '_%j')
 
-    cmd_string = scripter + ' -x ' + phomX_fpath + ' -y ' + phomY_fpath + ' -D ' + dim \
-            + ' -f ' + sbatch_fpath + ' -d ' + submit_data_label
+    # cmd_string = scripter + ' -x ' + phomX_fpath + ' -y ' + phomY_fpath + ' -D ' + dim \
+    #         + ' -f ' + sbatch_fpath + ' -d ' + submit_data_label + ' -s ' + datadir
+    cmd_string = f"{scripter} -x {phomX_fpath} -y {phomY_fpath} -D {dim} -f {sbatch_fpath} -d {submit_data_label} -s {datadir}"
     print(os.popen(cmd_string).read())
 
 

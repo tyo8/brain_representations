@@ -1,19 +1,20 @@
 #!/bin/sh
 
-#SBATCH --job-name=PROFUMO_Maps_inner_dists_Y_shbsph
-#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/shbsphoms_PROFUMO_Maps_inner_dists_Y.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/shbsphoms_PROFUMO_Maps_inner_dists_Y.err
+#SBATCH --exclude=node15,node23,node21,node25,node27
+#SBATCH --job-name=shbsphoms_PROFUMO_Maps_inner_dists_Y
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/logs/shbsphoms_PROFUMO_Maps_inner_dists_Y.out%j
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/logs/shbsphoms_PROFUMO_Maps_inner_dists_Y.err%j
 #SBATCH --time=23:55:00
 #SBATCH --partition=small
-#SBATCH --mem=700gb
+#SBATCH --mem=7gb
 
 dim=1
-ripser_fpath=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
 
-ldmX_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/phom_data_PROFUMO_Maps_inner_dists/dist_mtxs/dY_7zv-3-____8____97_Dd28zXf33-Xf_p36s7u9_71b_s_p-f-69s_a1ff__vP-vv_ufZn3-_jc3vr-_1z_5f__9-98-r7e3-5-_9b_3v-f-r_73_fvb-7_tf_4O__9X3__F9_89vf2_vf39-nr3Zvvv29d-f7-9u_2W93f8H.ldm
-ldmZ_fpath=
+ldmX_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/phom_data_PROFUMO_Maps_inner_dists/dist_mtxs/dY___7_f7___795___7n____15__-_931v_f3__31_b_l__9v_9_d9__f__7_73--7vu-3_39f_977__v_3v_71_9__vx9-mv__J9_8-_37___u_3_-b5v__7v_f9__3_0___Dnt9_e___8397_76f_3__fb-___6__9__-_v8H.ldm"
+ldmZ_fpath=""
 
-outpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/phom_data_PROFUMO_Maps_inner_dists/phom_out/phomY_7zv-3-____8____97_Dd28zXf33-Xf_p36s7u9_71b_s_p-f-69s_a1ff__vP-vv_ufZn3-_jc3vr-_1z_5f__9-98-r7e3-5-_9b_3v-f-r_73_fvb-7_tf_4O__9X3__F9_89vf2_vf39-nr3Zvvv29d-f7-9u_2W93f8H.txt
+outpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/phom_data_PROFUMO_Maps_inner_dists/phom_out/phomY___7_f7___795___7n____15__-_931v_f3__31_b_l__9v_9_d9__f__7_73--7vu-3_39f_977__v_3v_71_9__vx9-mv__J9_8-_37___u_3_-b5v__7v_f9__3_0___Dnt9_e___8397_76f_3__fb-___6__9__-_v8H.txt"
 
 
 ${ripser_fpath} --dim ${dim} ${ldmX_fpath} >> ${outpath}

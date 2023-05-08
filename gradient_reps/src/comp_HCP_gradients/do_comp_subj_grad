@@ -1,8 +1,8 @@
 #!/bin/sh
 #SBATCH --job-name=subj_grad
-#SBATCH --output=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/logs/subj-logs_d50/subj-138332_grad.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/logs/subj-logs_d50/subj-138332_grad.err
-#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
+#SBATCH --output=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/logs/subj-logs_d1/subj-352738_grad.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/logs/subj-logs_d1/subj-352738_grad.err
+#SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07,node21
 #SBATCH --time=1:55:00
 #SBATCH --mem=100GB
 
@@ -13,5 +13,5 @@
 src_path=/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/compute_subj_gradients.py
 
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
-python ${src_path} 138332 --par -n 50
+python ${src_path} 352738 --par -n 1
 

@@ -65,21 +65,22 @@ ldm_script="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/l
 echo "Running bash-anarchic benchmarking on: "${distlists_fpath}
 distlists=$(cat ${distlists_fpath})
 
-echo "Running ${samps} bootstraps at a sampling proportion of ${bootstrap_prop} and maximum homology dimension ${maxhomdim}."
-echo "Do X phom? (numeric) t/f: ${do_X_phom}"
-printf '\n\n'
-
 ndims=1003
-if [ -f $tagpath ]
+if compgen -G $tagpath >> /dev/null
 then
+	echo "Running ${samps} bootstraps from taglist \"${tagpath}\" with maximum homology dimension ${maxhomdim}."
 	tags=$( cat ${tagpath} | head -$samps )
 else
+	echo "Running ${samps} bootstraps at a sampling proportion of ${bootstrap_prop} with maximum homology dimension ${maxhomdim}."
 	tags=$(python ${gentags_script} --count ${samps} --dims ${ndims} --proportion ${bootstrap_prop})
 	for tag in $tags
 	do
 		echo $tag >> $tagpath
 	done
 fi
+
+echo "Do X phom? (numeric) t/f: ${do_X_phom}"
+printf '\n\n'
 
 for distlist in ${distlists}
 do
@@ -119,9 +120,9 @@ do
 			dXZ_fpath=${scratchdir}"/dXZ_${tag}.ldm"
 			dYZ_fpath=${scratchdir}"/dYZ_${tag}.ldm"
 			dZ_fpath=${scratchdir}"/dZ_${tag}.ldm"
-			if ! [ -f $dZ_fpath ]
+			if ! test -f $dZ_fpath
 			then
-				python ${ldm_script} -x ${dX_fpath} -t ${tag} -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
+				python ${ldm_script} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
 					printf "Failed to parse arguments to ldm_script (likely unreadable tag): \n${tag}\n\n"
 			fi
 

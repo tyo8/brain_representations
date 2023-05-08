@@ -18,7 +18,7 @@ __pycache__/
 
 # program files
 __pycache__
-*pull_from_cluster*
+pull_*.sh
 
 # testing and benchmarking intermediates
 *benchmark*

@@ -19,16 +19,13 @@ def iter_extract_dummy(genpath = Template('/scratch/tyoeasley/brain_representati
 
         for sID in subjID_list:
             fpath = data_dir + sID + '.txt'
+            ts_data = _load_data(fpath, dimval=dim)
             outpath_type = Template(genpath.substitute(emulator=emulator, dim=dim, 
                 rel_path='${feat_type}/dummy_sub-' + sID + '.txt'))
-            feats_from_dtseries(emulator, fpath, outpath_type, do_partial=True)
+            feats_from_dtseries(emulator, ts_data, outpath_type, do_partial=True)
 
 
-def feats_from_dtseries(emulator, fpath, outpath_type, do_partial=True):
-    ts_data = np.loadtxt(fpath)
-
-    if ts_data.shape[0] > ts_data.shape[1]:
-        ts_data = ts_data.T
+def feats_from_dtseries(emulator, ts_data, outpath_type, do_partial=True):
 
     amps = np.std(ts_data, axis=1)
     netmats = np.corrcoef(ts_data)
@@ -49,6 +46,14 @@ def _comp_partial_netmats(data):
     pcorr = np.linalg.pinv(C, hermitian=True)
     return pcorr
 
+def _load_data(fpath, dimval=1000):
+    ts_data = np.genfromtxt(fpath)
+    if ts_data.shape[0] != dimval:
+        ts_data = ts_data.T
+
+    assert ts_data.shape[0]==dimval, f"Data shape {ts_data.shape} does not match expected dimension value ({dimval})"
+
+    return ts_data
 
 
 def write_out(outpath, data):

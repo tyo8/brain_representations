@@ -21,7 +21,7 @@ def iter_extract_ICA(genpath = '/scratch/tyoeasley/brain_representations/schaefe
             for i in range(len(label_list)):
                 try:
                     fpath = data_dir + sID + '_'  + label_list[i] + '.csv'
-                    runs_data[i] = _load_data(fpath)
+                    runs_data[i] = _load_data(fpath, dimval=dim)
                 except IOError:
                     err_log = open('missing_subj_data.csv','a')
                     err_log.write(fpath+'\n')
@@ -52,10 +52,12 @@ def feats_from_dtseries(ts_data, outpath_type, do_partial=True):
         write_out(outpath_type % 'partial_NMs', partial_netmats)
 
 
-def _load_data(fpath):
+def _load_data(fpath, dimval=1000):
     ts_data = np.genfromtxt(fpath)
-    if ts_data.shape[0] > ts_data.shape[1]:
+    if ts_data.shape[0] != dimval:
         ts_data = ts_data.T
+
+    assert ts_data.shape[0]==dimval, f"Data shape {ts_data.shape} does not match expected dimension value ({dimval})"
 
     return ts_data
 

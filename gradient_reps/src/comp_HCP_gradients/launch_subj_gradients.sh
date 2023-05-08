@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # number of components (coordinate dimensions) in gradient embedding
-n_comps=50
+n_comps=1
 
 # Filepath to list of subject ID numbers
 # subjID_fpath="/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/subj_IDs_remaining.csv"

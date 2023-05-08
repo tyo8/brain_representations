@@ -1,19 +1,20 @@
 #!/bin/sh
 
-#SBATCH --job-name=PROFUMO_spNMs_Psim_ztrans_dists_YZ_shbsph
-#SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/shbsphoms_PROFUMO_spNMs_Psim_ztrans_dists_YZ.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/shbsphoms_PROFUMO_spNMs_Psim_ztrans_dists_YZ.err
+#SBATCH --exclude=node15,node23,node21,node25,node27
+#SBATCH --job-name=shbsphoms_PROFUMO_spNMs_Psim_ztrans_dists_XZ
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/logs/shbsphoms_PROFUMO_spNMs_Psim_ztrans_dists_XZ.out%j
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/logs/shbsphoms_PROFUMO_spNMs_Psim_ztrans_dists_XZ.err%j
 #SBATCH --time=23:55:00
 #SBATCH --partition=small
 #SBATCH --mem=50gb
 
 dim=1
-ripser_fpath=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
-ldmX_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dYZ_7zv-3-____8____97_Dd28zXf33-Xf_p36s7u9_71b_s_p-f-69s_a1ff__vP-vv_ufZn3-_jc3vr-_1z_5f__9-98-r7e3-5-_9b_3v-f-r_73_fvb-7_tf_4O__9X3__F9_89vf2_vf39-nr3Zvvv29d-f7-9u_2W93f8H.ldm
-ldmZ_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dZ_7zv-3-____8____97_Dd28zXf33-Xf_p36s7u9_71b_s_p-f-69s_a1ff__vP-vv_ufZn3-_jc3vr-_1z_5f__9-98-r7e3-5-_9b_3v-f-r_73_fvb-7_tf_4O__9X3__F9_89vf2_vf39-nr3Zvvv29d-f7-9u_2W93f8H.ldm
+ldmX_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dXZ_P9__3_7n31_-_f_7zfv____9_n_e_9-b__7__vv_______v9_7fL_v__3__rb_7tv__9-r_st_1vd1-_99O5_fd_-t______r-______v_-7f93_b__73-X_____7vzu_37fv_37_9r___-vp9vc-_7___8_q_7_3_9X__8H.ldm"
+ldmZ_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dZ_P9__3_7n31_-_f_7zfv____9_n_e_9-b__7__vv_______v9_7fL_v__3__rb_7tv__9-r_st_1vd1-_99O5_fd_-t______r-______v_-7f93_b__73-X_____7vzu_37fv_37_9r___-vp9vc-_7___8_q_7_3_9X__8H.ldm"
 
-outpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/phom_out/phomYZ_7zv-3-____8____97_Dd28zXf33-Xf_p36s7u9_71b_s_p-f-69s_a1ff__vP-vv_ufZn3-_jc3vr-_1z_5f__9-98-r7e3-5-_9b_3v-f-r_73_fvb-7_tf_4O__9X3__F9_89vf2_vf39-nr3Zvvv29d-f7-9u_2W93f8H.txt
+outpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/phom_out/phomXZ_P9__3_7n31_-_f_7zfv____9_n_e_9-b__7__vv_______v9_7fL_v__3__rb_7tv__9-r_st_1vd1-_99O5_fd_-t______r-______v_-7f93_b__73-X_____7vzu_37fv_37_9r___-vp9vc-_7___8_q_7_3_9X__8H.txt"
 
 
 ${ripser_fpath} --dim ${dim} --subfiltration ${ldmX_fpath} ${ldmZ_fpath} >> ${outpath}

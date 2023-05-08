@@ -36,8 +36,10 @@ def feats_from_dtseries(ts_data, outpath_type, do_partial=True):
     netmats = np.corrcoef(ts_data)
 
     if do_partial:
-        partial_netmats = _comp_partial_netmats(ts_data)
         # compute partial correlation matrix of ts_data
+        invcorr = np.linalg.pinv(netmats, hermitian=True)
+        norms = np.diag(np.power(np.diag(invcorr), -1/2))
+        partial_netmats = norms @ invcorr @ norms
 
     write_out(outpath_type % 'Amplitudes', amps)
     write_out(outpath_type % 'NetMats', netmats)
@@ -45,17 +47,12 @@ def feats_from_dtseries(ts_data, outpath_type, do_partial=True):
         partial_netmats
         write_out(outpath_type % 'partial_NMs', partial_netmats)
 
-
-def _comp_partial_netmats(data):
-    C = np.cov(data)
-    pcorr = np.linalg.pinv(C, hermitian=True)
-    return pcorr
-
-
-def _load_data(fpath):
+def _load_data(fpath, dimval=17):
     ts_data = np.genfromtxt(fpath)
-    if ts_data.shape[0] > ts_data.shape[1]:
+    if ts_data.shape[0] != dimval:
         ts_data = ts_data.T
+
+    assert ts_data.shape[0]==dimval, f"Data shape {ts_data.shape} does not match expected dimension value ({dimval})"
 
     return ts_data
 

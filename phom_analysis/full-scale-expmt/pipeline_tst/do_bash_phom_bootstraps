@@ -13,16 +13,16 @@ runfile="/scratch/tyoeasley/brain_representations/src_bash/phom_bootstraps.sh"
 ### bookkeeping paths ###
 base_dir="/scratch/tyoeasley/brain_representations"
 subbase_dir="${base_dir}/phom_analysis/full-scale-expmt/pipeline_tst"
-tagfile="${base_dir}/taglist.txt"
+tagfile="${base_dir}/subsampling/taglist100k_90p_famstruct.txt"
 
 ### input datasets ###
 distlists_fpath="${subbase_dir}/all_distlists.csv"
 
 ### run parameters ###
 samps=250
-bootstrap_prop=0.8
+
 maxhomdim=1
 do_X_phom=1
 mem_gb=50
 
-${runfile} -b ${base_dir} -s ${subbase_dir} -t ${tagfile} -f ${distlists_fpath} -n ${samps} -p ${bootstrap_prop} -D ${maxhomdim} -x ${do_X_phom} -m ${mem_gb}
+${runfile} -b ${base_dir} -s ${subbase_dir} -t ${tagfile} -f ${distlists_fpath} -n ${samps} -D ${maxhomdim} -x ${do_X_phom} -m ${mem_gb}
