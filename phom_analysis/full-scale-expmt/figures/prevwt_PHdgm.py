@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 
 def weighted_PD(
-        bars, weights, outpath=None, showfig=True,
+        bars, weights, outpath=None, showfig=True, color_weighted=True,
         minsz=5, maxsz=50, alpha=0.66, title=None):
     assert minsz <= maxsz, "Maximum point size of scatter points cannot be smaller than minimum point size"
     
@@ -19,12 +19,13 @@ def weighted_PD(
     xlims = [min(births)*0.95, max(births)*1.05]
     ylims = [min(deaths)*0.95, max(deaths)*1.05]
 
+    if color_weighted:
+        plt.scatter(births, deaths, alpha=alpha, color=weights)
+    else:
+        size_vec = minsz + weights*(maxsz - minsz)
+        plt.scatter(births, deaths, s=size_vec, alpha=alpha, color='m')
 
-    size_vec = minsz + weights*(maxsz - minsz)
-
-
-    plt.scatter(births, deaths, s=size_vec, alpha=alpha, color='m')
-    
+        
     if not title:
         title = "Persistence in H1\n(prevalence-weighted)"
     plt.title(title)

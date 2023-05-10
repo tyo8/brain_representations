@@ -1,7 +1,7 @@
 base_dir=${1:-"."}
 src_path=${2:-"./make_fig.py"}
 
-parent_dirs=$( ls ${base_dir}/*_*/phom_data* -d )
+parent_dirs=$( ls ${base_dir}/within_*/*/phom_data* -d )
 
 for parent_dir in ${parent_dirs}
 do
