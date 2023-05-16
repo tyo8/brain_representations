@@ -16,11 +16,17 @@ def weighted_PD(
     bars_uz = list(zip(*bars))
     births = bars_uz[0]
     deaths = bars_uz[1]
+    nbars = len(bars)
     xlims = [min(births)*0.95, max(births)*1.05]
     ylims = [min(deaths)*0.95, max(deaths)*1.05]
 
     if color_weighted:
-        plt.scatter(births, deaths, alpha=alpha, color=weights)
+        print(f"num bars: {nbars}")
+        print(f"num weights: {weights.size}")
+        sizeval = int(100/(1 + np.log(nbars)))
+        plt.scatter(births, deaths, alpha=alpha, c=weights, cmap='viridis', s=sizeval, edgecolors='none')
+        cb = plt.colorbar()
+        cb.set_label("prevalence")
     else:
         size_vec = minsz + weights*(maxsz - minsz)
         plt.scatter(births, deaths, s=size_vec, alpha=alpha, color='m')
@@ -35,6 +41,7 @@ def weighted_PD(
     plt.ylim(ylims[0], ylims[1])
 
     if outpath:
+        print(f"figure saved to: {outpath}")
         plt.savefig(outpath, dpi=600)
     else:
         showfig=True
@@ -92,7 +99,7 @@ if __name__=="__main__":
     weighted_PD(barsX[1], prevscores, outpath = args.figure_fpath, showfig=args.showfig, title=title)
 
     if args.figure_fpath:
-        hist_fpath = args.figure_fpath.replace('weighted_persistence_dgm','prevalence_hist')
+        hist_fpath = args.figure_fpath.replace(os.path.basename(args.figure_fpath),f"prevhist_{args.label}.png")
     else:
         hist_fpath=None
 

@@ -27,14 +27,16 @@ def color_swarmplots(pathlist, stat_type="prevalence", write_mode=True):
     print(stat_df)
     ### debug code ###
 
-    # fig1 = _single_swarmplot(stat_df, stat_type, x="rank", hue="metric", write_mode=write_mode)
-    # fig2 = _single_swarmplot(stat_df, stat_type, x="rank", hue="method", write_mode=write_mode)
-    fig3 = _single_swarmplot(stat_df, stat_type, x="method", hue="feature", write_mode=write_mode)
-    fig4 = _single_swarmplot(stat_df, stat_type, x="feature", hue="metric", write_mode=write_mode)
+    # fig1 = _single_swarmplot(stat_df, stat_type, x="log10(rank)", hue="metric", write_mode=write_mode)
+    # fig2 = _single_swarmplot(stat_df, stat_type, x="log10(rank)", hue="method", write_mode=write_mode)
+    # fig3 = _single_swarmplot(stat_df, stat_type, x="method", hue="feature", write_mode=write_mode)
+    # fig4 = _single_swarmplot(stat_df, stat_type, x="feature", hue="metric", write_mode=write_mode)
 
 
-    _do_catplot(stat_df, stat_type, x="rank", hue="method", coltype="metric", rowtype="feature")
-    _do_catplot(stat_df, stat_type, x="method", hue="feature", coltype="metric")
+    #_do_catplot(stat_df, stat_type, x="log10(rank)", hue="method", coltype="metric", rowtype="feature")
+    _do_catplot(stat_df, stat_type, x="log10(rank)", hue="method", coltype="metric")
+    _do_catplot(stat_df, stat_type, x="log10(feat_num)", hue="method", coltype="metric")
+    _do_catplot(stat_df, stat_type, x="method", hue="metric", coltype="feature")
 
     if not write_mode:
         plt.show()
@@ -46,7 +48,7 @@ def _single_swarmplot(dataframe, stat_type, x=None, hue=None,
     print(f"swarmplot of {stat_type} values with categorical variable {x}, color-coded by {hue}...")
     
     fig, ax = plt.subplots()
-    if x=="rank":
+    if x=="log10(rank)":
         sns.swarmplot(data=dataframe, x=x, y=stat_type, hue=hue, dodge=True, legend=True, ax=ax, native_scale=True, size=1)
     else:
         sns.swarmplot(data=dataframe, x=x, y=stat_type, hue=hue, dodge=True, legend=True, ax=ax, size=1)
@@ -75,32 +77,36 @@ def _do_catplot(dataframe, stat_type, x=None, hue=None, coltype=None, rowtype=No
     print(f"facet column: {coltype}")
     print(f"facet row: {rowtype}")
 
-    if x=="rank":
+    if "log10" in x:
         scale=True
+        dodge=True
     else:
         scale=False
+        dodge=False
 
     if rowtype:
         fg = sns.catplot(
                 data = dataframe, x=x, y=stat_type, hue=hue,
-                kind="swarm", size=1, dodge=True,
+                kind="swarm", size=1, dodge=dodge,
                 row=rowtype, col=coltype, native_scale=scale, legend=True,
                 )
     else:
         fg = sns.catplot(
                 data = dataframe, x=x, y=stat_type, hue=hue,
-                kind="swarm", size=1, dodge=True,
+                kind="swarm", size=1, dodge=dodge,
                 col=coltype, col_wrap=2, native_scale=scale, legend=True,
                 )
 
     if stat_type=="prevalence":
         fg.set(ylim = (-0.05,1.05))
 
-    fg.set_axis_labels("",stat_type)
+    fg.set_axis_labels(x_var=x, y_var=stat_type)
     fg.set_titles("{col_name} {col_var}")
     fg.tight_layout()
+    
+
     if write_mode:
-        savepath = os.path.join(outdir, "swarmplots", f"catplot_{stat_type}_{x}_{hue}-{coltype}-{rowtype}.png")
+        savepath = os.path.join(outdir, "swarmplots", f"catplot_{stat_type}_{x}_{hue}_{coltype}-{rowtype}.png")
         fg.height = 16
         fg.aspect = 1
         fg.savefig(savepath, dpi=600)
@@ -114,16 +120,18 @@ def _pathlist_to_df(pathlist):
     labels = [name.split('_') for name in namelist]
     methods, ranks = _pull_methods_ranks([label[0] for label in labels])
     features = [label[1] for label in labels]
+    feat_nums = [_pull_feat_num(ranks[i], feat) for i, feat in enumerate(features)]
     metrics = ['-'.join(label[2:]).replace('-dists','') for label in labels]
     distribution_list = [np.genfromtxt(fpath) for fpath in pathlist]
 
     statvals, uf_methods    = _unfold(distribution_list, methods)
     statvals, uf_ranks      = _unfold(distribution_list, ranks)
+    statvals, uf_featnums   = _unfold(distribution_list, feat_nums)
     statvals, uf_features   = _unfold(distribution_list, features)
     statvals, uf_metrics    = _unfold(distribution_list, metrics)
 
-    col_names = ["statvals", "method", "rank", "feature", "metric"]
-    input_lists = [statvals, uf_methods, uf_ranks, uf_features, uf_metrics]
+    col_names = ["statvals", "method", "log10(rank)", "log10(feat_num)", "feature", "metric"]
+    input_lists = [statvals, uf_methods, uf_ranks, uf_featnums, uf_features, uf_metrics]
     df = pd.DataFrame(index=col_names, data=input_lists).T
 
     return df
@@ -145,7 +153,20 @@ def _pull_rank(long_method):
         rank_pattern = re.compile('\d{1,4}')
         rank = re.search(r'\d{1,4}', long_method).group()
         method = long_method.replace(rank,'')
-    return method, int(rank)
+    return method, np.log10(float(rank))
+
+def _pull_feat_num(rank, feature):
+    rank = int(10**rank)
+    if 'NM' in feature:
+        feat_num = rank * (rank - 1) / 2
+    elif 'Map' in feature:
+        feat_num = rank * 91282
+    elif 'Amps' in feature:
+        feat_num = rank
+    else:
+        raise Exception("Unrecognized feature type")
+    return np.log10(float(int(feat_num)))
+
 
 def _unfold(distribution_list, metadata):
     statvals = [val for dist in distribution_list if dist.size > 1 for val in dist] + [np.float64(dist)
@@ -157,7 +178,7 @@ def _unfold(distribution_list, metadata):
 
 
 #######################################################################################################################
-def show_all_histograms(pathlist, write_mode=False):
+def show_all_histograms(pathlist):
     prev_scores = [np.array(np.genfromtxt(fpath)) for fpath in pathlist if "prevalence" in fpath]
     B1match_num = [np.array(np.genfromtxt(fpath)) for fpath in pathlist if "B1match" in fpath]
     namelist = [os.path.basename(os.path.dirname(fpath)).replace('phom_data_','') for fpath in pathlist if "prevalence" in fpath]
@@ -247,7 +268,7 @@ if __name__=="__main__":
     pathlist = _get_pathlist(args.pathlist_fpath)
 
     if args.all_histograms:
-        show_all_histograms(pathlist, write_mode=args.write)
+        show_all_histograms(pathlist)
 
     if args.swarmplot:
         all_swarmplots(pathlist, write_mode=args.write)
