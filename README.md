@@ -1,14 +1,15 @@
 # Brain Representations
-A (partial) repository for my thesis project
+A repository for topological comparisons of dimension reduction algorithms applied to resting-state fMRI data.
 
-## Outline 
+## Rough Overview
 This repository contains code for/commemorates the directory tree structure of the repository underlying the analyses in <at least one untitled future paper.>
 
 In this repository:
-1. we have a bunch of bash/slurm code meant to script a bunch of resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
-2. we have a few nuggets of source code nestled away in the mess; the most notable one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
+1. we have several different repositories of source code; the most populated one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
+2. we have lots of bash/slurm code meant to script resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
 3. we have brain representation extraction code and figure-making code in relevant directories: code is only included in "src_\*" if it is intentionally multipurpose
-4. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
+4. we have directories corresponding to the computation, outputs, and feature extraction of the brain representation/dimension reduction methods we consider
+5. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
 
 ## Structure of the repository
 
@@ -22,6 +23,7 @@ Source Code
 Experiments
 - 'datalists': lists of data files corresponding that help set conditions for specific experiments
 - 'phom_analysis': all persistent homology-based analyses in this project (with the exception of 'metric_tests' and 'bootstrap_benchmarks')
+- 'phom_analysis/full-scale-expmt': scripts, code, and tree structure corresponding to investigation in [*paper*] and corresponding figures
 - 'nonPH_analysis': most notably contains output of CCA analysis of shared information between pairs of brain representations
 - 'metric_tests': **preliminary** testing of the impact of metric choice on persistence data
 - 'bootstrap_benchmarks': benchmarking the cycle registration bootstrapping scheme to test scalability
@@ -34,6 +36,7 @@ Note that no subject data of any kind is included in this public repository! Ins
 - ICA_reps: code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
 - glasser: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated data
 - schaefer: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated data
+- yeo: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Yeo-parcellated data
 
 ## Preparations
 
