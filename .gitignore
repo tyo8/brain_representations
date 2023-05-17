@@ -30,6 +30,7 @@ pull_*.sh
 RESTRICTED*
 logs
 *do_*
+*MCCN*
 
 # image files
 *.png
