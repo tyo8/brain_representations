@@ -6,9 +6,9 @@ This repository contains code for/commemorates the directory tree structure of t
 
 In this repository:
 1. we have a bunch of bash/slurm code meant to script a bunch of resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
-2. we have a bunch of empty directories referencing data that is too big/too private to fit on github
-3. we have a few nuggets of source code nestled away in the mess; the most notable one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
-4. We also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
+2. we have a few nuggets of source code nestled away in the mess; the most notable one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
+3. we have brain representation extraction code and figure-making code in relevant directories: code is only included in "src_\*" if it is intentionally multipurpose
+4. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
 
 ## Structure of the repository
 
@@ -17,7 +17,7 @@ This repository is organised as follows.
 Source Code
 - 'src_py': python code (this does most of the repo's work)
 - 'src_bash': bash scripts
-- 'src_MATLAB': mostly here to borrow functions from [PALM](https://github.com/andersonwinkler/PALM), which we need to do permutation testing in the CCA analysis on Human Connectome Project data
+- 'src_MATLAB': mostly here to borrow functions from [PALM](https://github.com/andersonwinkler/PALM), which we need to satisfy exchangeability criteria with respect to the family structure in Human Connectome Project (Young Adult) data
 
 Experiments
 - 'datalists': lists of data files corresponding that help set conditions for specific experiments
@@ -57,21 +57,28 @@ Persistent Homology
 - [interval-matching](https://github.com/tyo8/interval-matching) [4]
 - [giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) [5]
 	
+Figures and Statistics
+- [python optimal transport library](https://pythonot.github.io/index.html)
+	
 Background
 - [numpy](https://numpy.org/)
 - [scipy](https://scipy.org/)
-- [scikit-learn](https://scikit-learn.org/stable/)
+- [pandas](https://pandas.pydata.org/)
+- [seaborn](https://seaborn.pydata.org/)
 - [matplotlib](https://matplotlib.org/stable/index.html)
+- [scikit-learn](https://scikit-learn.org/stable/)
 
 ## Academic use
 
 This code is available and is fully adaptable for individual user customization. If you use the our methods, please cite as the following:
 
+
+
 ```tex
-@misc{ty-o_untitled,
+@misc{' ',
 	title = {Unknown},
 	publisher = {publisher?},
-	author = {Easley, Ty, Munch, Elizabeth, Freese, Kelsey, and Bijsterbosch, Janine},
+	author = ###############
 	month = ??,
 	year = {2023/4},
 	note = {arXiv:####.<subj> [tag1, tag2]},
