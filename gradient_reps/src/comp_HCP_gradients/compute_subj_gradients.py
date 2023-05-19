@@ -1,18 +1,6 @@
 """
 Created on Fri Oct  5 15:48:51 2018
 """
-## Future edit list:
-##      a) modularize existing code into
-#            0) iterator/tracker (? maybe just write to submit as batch job instead?)
-#            1) path-writer for input file, censor file, and output file
-#            2) load, censor, and clean data (i.e., remove medial wall)
-#            3) compute correlation mtx (flag for undersampling)
-#            4) average correlation matrices across (4) subject runs (in tangent space? /flag)
-#            5) threshold and re-symmetrize avg corr mtx
-#            6) compute diffusion embedding and result (? don't know what that is)
-#            7) save per-subject output
-#       b) update corr mtx averaging to implement tangent-space projection
-#       c) verbose output flag?
 
 import os
 import sys
