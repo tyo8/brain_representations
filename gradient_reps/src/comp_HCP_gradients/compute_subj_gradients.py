@@ -1,7 +1,3 @@
-"""
-Created on Fri Oct  5 15:48:51 2018
-"""
-
 import os
 import sys
 import csv
