@@ -6,7 +6,7 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
-
+from PD_weighted_Wasserstein import weighted_Wasserstein_loss as Wp_wt
 
 
 def summarize_topostats(prevpath_list_fpath, outdir):
@@ -157,7 +157,7 @@ def comp_Wp_dist(dist1, dist2, w1=None, w2=None, n_proj=500, p=2):
 
     if len(dist1.shape) > 1:     # assumes dist1 and dist2 are instances of np.array
         dim1, dim2 = dist1.shape[1], dist2.shape[1]
-        assert dim1==dim2, "(sliced) Wasserstein distance is only valid between distributions of same dimension."
+        assert np.array_equal([dim1, dim2], [2, 2]), "This computation of Wasserstein distance assumes persistence diagrams (in R2) as input."
     else:
         dim1 = 1
 
@@ -170,8 +170,11 @@ def comp_Wp_dist(dist1, dist2, w1=None, w2=None, n_proj=500, p=2):
 
     try:
         if dim1 > 1:
-            Wp_dist = ot.sliced_wasserstein_distance(dist1, dist2, a=w1, b=w2, p=p,
-                    n_projections=n_proj, seed=0)
+            Wp_dist = Wp_wt(
+                    dist1, dist2, 
+                    w1=w1, w2=w2, p=p,
+                    wtfn_type="diff", ot_imp="POT"
+                    )
         else:
             # does not implement weighting for the 1-dimensional case
             Wp_dist = np.power(ot.wasserstein_1d(dist1, dist2, p=p), 1/p)
