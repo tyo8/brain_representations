@@ -27,21 +27,21 @@ def summarize_topostats(prevpath_list_fpath, outdir):
     savepath = os.path.join(outdir,f"prevwt_PD_Wpclustermap_{list_fpath_nametype}.png")
     make_Wp_clustermap(bars_list, name_list, weights_list=prevs_list, cm_title=prev_title, write_mode=True, savepath=savepath)
 
-    B1match_title = "Wasserstein Dist. from\n" + "Matched Cycles per Bootstrap"
-    savepath = os.path.join(outdir,f"B1match_Wpclustermap_{list_fpath_nametype}.png")
-    B1_Wp = make_Wp_clustermap(B1matches_list, name_list, cm_title=B1match_title, write_mode=True, savepath=savepath)
-
-    B1match_pvals_title = "Significant Differences in\n" + "Matched Cycles per Bootstrap\n" + "log10(p) from T-test"
-    savepath = os.path.join(outdir,f"B1match_pval_heatmap_{list_fpath_nametype}.png")
-    B1_pvals = make_pvals_heatmap(B1matches_list, name_list, cm_title=B1match_pvals_title, write_mode=True, savepath=savepath)
-    np.savetxt(os.path.join(outdir,f"B1match_pvals_{list_fpath_nametype}.txt"), B1_pvals)
-
-    plt.scatter( np.log10(np.abs(B1_pvals.flatten())), B1_Wp.flatten())
-    plt.title("Wasserstein distance vs. T-test log10(p-value)")
-    plt.xlabel("log10(p)")
-    plt.ylabel("Wasserstein distance")
-    savepath = os.path.join(outdir,f"B1match_Wp_vs_pval_{list_fpath_nametype}.png")
-    plt.savefig(savepath, dpi=600)
+#    B1match_title = "Wasserstein Dist. from\n" + "Matched Cycles per Bootstrap"
+#    savepath = os.path.join(outdir,f"B1match_Wpclustermap_{list_fpath_nametype}.png")
+#    B1_Wp = make_Wp_clustermap(B1matches_list, name_list, cm_title=B1match_title, write_mode=True, savepath=savepath)
+# 
+#    B1match_pvals_title = "Significant Differences in\n" + "Matched Cycles per Bootstrap\n" + "log10(p) from T-test"
+#    savepath = os.path.join(outdir,f"B1match_pval_heatmap_{list_fpath_nametype}.png")
+#    B1_pvals = make_pvals_heatmap(B1matches_list, name_list, cm_title=B1match_pvals_title, write_mode=True, savepath=savepath)
+#    np.savetxt(os.path.join(outdir,f"B1match_pvals_{list_fpath_nametype}.txt"), B1_pvals)
+# 
+#    plt.scatter( np.log10(np.abs(B1_pvals.flatten())), B1_Wp.flatten())
+#    plt.title("Wasserstein distance vs. T-test log10(p-value)")
+#    plt.xlabel("log10(p)")
+#    plt.ylabel("Wasserstein distance")
+#    savepath = os.path.join(outdir,f"B1match_Wp_vs_pval_{list_fpath_nametype}.png")
+#    plt.savefig(savepath, dpi=600)
 
     prevalence_vs_persistence(
             prevs_list, 
@@ -70,14 +70,18 @@ def make_Wp_clustermap(distribution_list, name_list, weights_list=None,
                     Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j, w1=weights_list[i], w2=weights_list[j])
                 else:
                     Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j)
-            except:
+            except Exception as err:
                 Wp_clustermap[i,j] = np.nan
                 print(f"comparison between {name_list[i]} and {name_list[j]} failed.")
+                print(f"    error msg: {err}")
                 if not weights_list is None:
                     print(type(weights_list[i]), type(weights_list[j]))
 
-    Wp_clustermap = Wp_clustermap + Wp_clustermap.T
-    _plot_clustermap(Wp_clustermap, cm_title=cm_title, name_list=name_list, write_mode=write_mode, savepath=savepath)
+    # Wp_clustermap = Wp_clustermap + Wp_clustermap.T
+    np.savetxt(savepath.replace('.png','.txt'), Wp_clustermap)
+    _plot_clustermap(
+            Wp_clustermap, symmetrize=True,
+            cm_title=cm_title, name_list=name_list, write_mode=write_mode, savepath=savepath)
     return Wp_clustermap
 
 
@@ -114,9 +118,11 @@ def _t_test(dist1, dist2, student=False, permutations=None):
     return pval
 
 
-def _plot_clustermap(values, cm_title="Heatmap", name_list=None, write_mode=True, savepath="", cluster=True):
+def _plot_clustermap(values, symmetrize=False, cm_title="Heatmap", name_list=None, write_mode=True, savepath="", cluster=True):
     fig_sz = (12, 12)
 
+    if symmetrize:
+        values = (values + values.T)/2
     if cluster:
         import scipy.cluster.hierarchy as hc
         import scipy.spatial as sp
@@ -178,7 +184,8 @@ def comp_Wp_dist(dist1, dist2, w1=None, w2=None, n_proj=500, p=2):
         else:
             # does not implement weighting for the 1-dimensional case
             Wp_dist = np.power(ot.wasserstein_1d(dist1, dist2, p=p), 1/p)
-    except:
+    except Exception as err:
+        print(f"         Wp_dist computation failed: {err}")
         if not w1 is None:
             if w1.size==1:
                 print(f"dist1: {dist1}")
