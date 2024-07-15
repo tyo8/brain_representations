@@ -10,7 +10,7 @@ base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expm
 spec_list_fname="spec_list.txt"
 
 mem_gb=500
-partition="medium"
+partition="tier2_cpu"
 maxtime_str="167:55:00"
 
 while getopts ":b:s:g:p:t:" opt; do

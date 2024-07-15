@@ -4,7 +4,8 @@
 #SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/subdists_%j.out
 #SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/subdists_%j.err
 #SBATCH --time=00:05:00
-#SBATCH --partition=small
+#SBATCH --partition=tier2_cpu
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=5gb
 
 runfile="/scratch/tyoeasley/brain_representations/src_bash/calc_dists.sh"
@@ -17,7 +18,7 @@ spec_list_fname="spec_list.txt"
 
 ### runtime parameters ###
 mem_gb=500
-partition="medium"
+partition="tier2_cpu"
 maxtime_str="167:55:00"
 
 ${runfile} -b ${base_dir} -s ${spec_list_fname} -g ${mem_gb} -p ${partition} -t ${maxtime_str}

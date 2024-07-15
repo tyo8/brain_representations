@@ -9,7 +9,7 @@ modality=ICA
 feature=Amps
 
 mem_gb=500
-partition="medium"
+partition="tier2_cpu"
 maxtime_str="167:55:00"
 
 while getopts ":b:m:f:g:p:t:" opt; do

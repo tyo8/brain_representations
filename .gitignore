@@ -34,3 +34,6 @@ logs
 
 # image files
 *.png
+
+# writeup and publishing data
+null_models

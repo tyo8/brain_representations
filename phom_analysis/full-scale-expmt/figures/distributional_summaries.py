@@ -13,25 +13,76 @@ def _get_pathlist(pathlist_fpath):
     return pathlist
 
 #######################################################################################################################
-def all_swarmplots(pathlist, stat_types=["prevalence", "B1match"], write_mode=True):
+def all_dist_plots(pathlist, stat_types=["prevalence", "B1match"], write_mode=True):
     for stat_type in stat_types:
         reduced_pathlist = [path for path in pathlist if stat_type in path]
-        color_swarmplots(reduced_pathlist, stat_type, write_mode=write_mode)
+        
+        stat_df = _pathlist_to_df(pathlist)
+        stat_df.rename(columns={"statvals": stat_type}, inplace=True)
+        ### debug code ###
+        print(stat_df)
+        if write_mode:
+            stat_df.to_csv(f"{stat_type}_df.csv")
+        ### debug code ###
+
+        summ_lineplots(stat_df, stat_type, write_mode=write_mode)
+        # color_dist_plots(stat_df, stat_type, write_mode=write_mode)
 
 
-def color_swarmplots(pathlist, stat_type="prevalence", write_mode=True):
-    stat_df = _pathlist_to_df(pathlist)
-    stat_df.rename(columns={"statvals": stat_type}, inplace=True)
-    
-    ### debug code ###
-    print(stat_df)
-    ### debug code ###
+def summ_lineplots(stat_df, stat_type, dim_type="feat_num", write_mode=True, outdir=os.getcwd()):
+    sns.set(rc={'text.usetex': True})
 
+    stat_rename = {
+            'B1match': "\#(Cycles Matched)",
+            'prevalence': "Prevalence"
+            }
+    newname_cols = {
+            'method': "Brain Rep.",
+            'metric': "Dissim. Func.",
+            'feat_num': "Ambient dimension",
+            'rank': "Decomp. rank"
+            }
+    newname_metrics = {
+            'inner': '$\delta_{v_1}$', 
+            'Psim': '$\delta_{v_2}$', 
+            'geodesic': '$\delta_{pd_1}$', 
+            'Psim-ztrans': '$\delta_{pd_2}$'
+            }
+    stat_df['metric'].replace(to_replace = newname_metrics, inplace=True)
+    stat_df['method'].replace(to_replace = {"grad": "Diff. Grad."}, inplace=True)
+
+    stat_df.rename(columns = stat_rename, inplace=True)
+    stat_df.rename(columns = newname_cols, inplace=True)
+
+    fig, ax = plt.subplots()
+
+    print(stat_df.columns)
+
+    g=sns.lineplot(
+            data=stat_df, x=newname_cols[dim_type], y=stat_rename[stat_type],
+            estimator=np.mean, errorbar=("sd",1), err_style="band", 
+            hue=newname_cols['method'], style=newname_cols['metric'], sort=True, 
+            dashes=False, markers=True, linestyle='')
+    g.set(xscale="log")
+    g.set(title=f"{stat_rename[stat_type]} vs. {newname_cols[dim_type]}\n" + "varying brain rep. and dissimilarity function")
+
+    if write_mode:
+        savepath = os.path.join(outdir, "dist_plots", f"lineplot_{stat_type}_{dim_type}_brainrep_metric.png")
+        fig.set_size_inches((8,8), forward=False)
+        fig.savefig(savepath, dpi=600)
+        print(f"saved to {savepath}")
+    else:
+        plt.show()
+
+
+def color_dist_plots(stat_df, stat_type="prevalence", write_mode=True):
     # fig1 = _single_swarmplot(stat_df, stat_type, x="log10(rank)", hue="metric", write_mode=write_mode)
     # fig2 = _single_swarmplot(stat_df, stat_type, x="log10(rank)", hue="method", write_mode=write_mode)
     # fig3 = _single_swarmplot(stat_df, stat_type, x="method", hue="feature", write_mode=write_mode)
     # fig4 = _single_swarmplot(stat_df, stat_type, x="feature", hue="metric", write_mode=write_mode)
 
+    stat_df["log10(feat_num)"] = np.log10(stat_df["feat_num"].astype(float))
+    stat_df["log10(rank)"] = np.log10(stat_df["rank"].astype(float))
 
     #_do_catplot(stat_df, stat_type, x="log10(rank)", hue="method", coltype="metric", rowtype="feature")
     _do_catplot(stat_df, stat_type, x="log10(rank)", hue="method", coltype="metric")
@@ -63,7 +114,7 @@ def _single_swarmplot(dataframe, stat_type, x=None, hue=None,
     plt.axis('equal') #make it square
     plt.tight_layout()  # neccessary to get the x-axis labels to fit
     if write_mode:
-        savepath = os.path.join(outdir, "swarmplots", f"swarmplot_{stat_type}_{x}_{hue}.png")
+        savepath = os.path.join(outdir, "dist_plots", f"swarmplot_{stat_type}_{x}_{hue}.png")
         fig.set_size_inches((8,8), forward=False)
         fig.savefig(savepath, dpi=600)
         print(f"saved to {savepath}")
@@ -106,7 +157,7 @@ def _do_catplot(dataframe, stat_type, x=None, hue=None, coltype=None, rowtype=No
     
 
     if write_mode:
-        savepath = os.path.join(outdir, "swarmplots", f"catplot_{stat_type}_{x}_{hue}_{coltype}-{rowtype}.png")
+        savepath = os.path.join(outdir, "dist_plots", f"catplot_{stat_type}_{x}_{hue}_{coltype}-{rowtype}.png")
         fg.height = 16
         fg.aspect = 1
         fg.savefig(savepath, dpi=600)
@@ -115,7 +166,7 @@ def _do_catplot(dataframe, stat_type, x=None, hue=None, coltype=None, rowtype=No
     return fg
 
 
-def _pathlist_to_df(pathlist):
+def _pathlist_to_df(pathlist, intm_out=True):
     namelist = [os.path.basename(os.path.dirname(fpath)).replace('phom_data_','') for fpath in pathlist]
     labels = [name.split('_') for name in namelist]
     methods, ranks = _pull_methods_ranks([label[0] for label in labels])
@@ -130,7 +181,7 @@ def _pathlist_to_df(pathlist):
     statvals, uf_features   = _unfold(distribution_list, features)
     statvals, uf_metrics    = _unfold(distribution_list, metrics)
 
-    col_names = ["statvals", "method", "log10(rank)", "log10(feat_num)", "feature", "metric"]
+    col_names = ["statvals", "method", "rank", "feat_num", "feature", "metric"]
     input_lists = [statvals, uf_methods, uf_ranks, uf_featnums, uf_features, uf_metrics]
     df = pd.DataFrame(index=col_names, data=input_lists).T
 
@@ -153,10 +204,12 @@ def _pull_rank(long_method):
         rank_pattern = re.compile('\d{1,4}')
         rank = re.search(r'\d{1,4}', long_method).group()
         method = long_method.replace(rank,'')
-    return method, np.log10(float(rank))
+    return method, int(rank)
 
 def _pull_feat_num(rank, feature):
-    rank = int(10**rank)
+    if isinstance(rank, float):
+        rank = int(10**rank)
+
     if 'NM' in feature:
         feat_num = rank * (rank - 1) / 2
     elif 'Map' in feature:
@@ -165,7 +218,7 @@ def _pull_feat_num(rank, feature):
         feat_num = rank
     else:
         raise Exception("Unrecognized feature type")
-    return np.log10(float(int(feat_num)))
+    return int(feat_num)
 
 
 def _unfold(distribution_list, metadata):
@@ -271,4 +324,4 @@ if __name__=="__main__":
         show_all_histograms(pathlist)
 
     if args.swarmplot:
-        all_swarmplots(pathlist, write_mode=args.write)
+        all_dist_plots(pathlist, write_mode=args.write)

@@ -5,7 +5,8 @@
 #SBATCH --output=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/matchstraps_%j.out
 #SBATCH --error=/scratch/tyoeasley/brain_representations/bootstrap_benchmarks/logs/matchstraps_%j.err
 #SBATCH --time=7:55:00
-#SBATCH --partition=small
+#SBATCH --partition=tier2_cpu
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=10gb
 
 runfile="/scratch/tyoeasley/brain_representations/src_bash/match_bootstraps.sh"

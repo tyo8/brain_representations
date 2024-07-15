@@ -12,7 +12,7 @@ match_homdim=1
 sbatch_fpath=""
 data_label=""
 mem_gb=10
-partition="small"
+partition="tier2_cpu"
 maxtime_str="23:55:00"
 
 while getopts ":x:y:D:f:d:m:p:t:s:" opt; do
