@@ -1,3 +1,9 @@
 [submodule "src_py/interval-matching-precomp_metric"]
 	path = src_py/interval-matching-precomp_metric
 	url = https://github.com/tyo8/interval-matching-precomp_metric
+[submodule "src_ph/scikit-palm"]
+	path = src_ph/scikit-palm
+	url = https://github.com/jameschapman19/scikit-palm.git
+[submodule "src_py/scikit-palm"]
+	path = src_py/scikit-palm
+	url = https://github.com/jameschapman19/scikit-palm.git
