@@ -28,7 +28,7 @@ def load_cifti(fname):
     return data
 
 def load_csv(fname):
-    data0 = np.genfromtxt(fname,delimiter=",")
+    data0 = np.loadtxt(fname,delimiter=",")
     if len(data0.shape) == 2:
         if data0.shape[0] == data0.shape[1]:
             # assumes that square .csv matrices are symmetric and have uninformative diagonals
@@ -41,7 +41,7 @@ def load_csv(fname):
     return data
 
 def load_txt(fname):
-    data0 = np.genfromtxt(fname)
+    data0 = np.loadtxt(fname)
     data = data0.flatten()
     return data
 

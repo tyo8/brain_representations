@@ -93,12 +93,12 @@ def _load_scan(fname):
     return data
 
 def _load_csv(fname):
-    # data = np.genfromtxt(fname,delimiter=",")
-    data = np.genfromtxt(fname)
+    # data = np.loadtxt(fname,delimiter=",")
+    data = np.loadtxt(fname)
     return data
 
 def _load_txt(fname):
-    data = np.genfromtxt(fname)
+    data = np.loadtxt(fname)
     return data
 
 def _load_npy(fname):

@@ -6,7 +6,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
-from PD_weighted_Wasserstein import weighted_Wasserstein_loss as Wp_wt
+from diagram_distances import weighted_Wasserstein_dist as Wp_wt
+from diagram_distances import _get_bars 
 
 
 def summarize_topostats(prevpath_list_fpath, outdir):
@@ -14,8 +15,8 @@ def summarize_topostats(prevpath_list_fpath, outdir):
     prevpath_list, B1path_list, barsXpaths_list = _get_pathlists(prevpath_list_fpath)
     list_fpath_nametype = os.path.basename(prevpath_list_fpath).split('.')[0]
 
-    prevs_list = [ np.genfromtxt(fpath) for fpath in prevpath_list ]
-    B1matches_list = [ np.genfromtxt(fpath) for fpath in B1path_list ]
+    prevs_list = [ np.loadtxt(fpath) for fpath in prevpath_list ]
+    B1matches_list = [ np.loadtxt(fpath) for fpath in B1path_list ]
     bars_list = [ _get_bars(fpath) for fpath in barsXpaths_list ]
     name_list = [ _get_name(fpath) for fpath in barsXpaths_list ]
 
@@ -55,7 +56,7 @@ def summarize_topostats(prevpath_list_fpath, outdir):
             )
 
 
-def make_Wp_clustermap(distribution_list, name_list, weights_list=None, 
+def make_Wp_clustermap(distribution_list, name_list, weights_list=None, wtfn_type=None, 
         cm_title="Wasserstein Distances", write_mode=True, savepath="Wp_clustermap.png"):
     N = len(distribution_list)
 
@@ -67,9 +68,9 @@ def make_Wp_clustermap(distribution_list, name_list, weights_list=None,
             
             try:
                 if weights_list:
-                    Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j, w1=weights_list[i], w2=weights_list[j])
+                    Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j, wtfn_type=wtfn_type, w1=weights_list[i], w2=weights_list[j])
                 else:
-                    Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j)
+                    Wp_clustermap[i,j] = comp_Wp_dist(dist_i, dist_j, wtfn_type=None)
             except Exception as err:
                 Wp_clustermap[i,j] = np.nan
                 print(f"comparison between {name_list[i]} and {name_list[j]} failed.")
@@ -112,8 +113,8 @@ def _specify_prob(method='welch_T'):
     prob_type = prob_methods.get(method, lambda arg: print(f"Unknown probability test type: {arg}"))
     return prob_type
 
-def _t_test(dist1, dist2, student=False, permutations=None):
-    tstat, pval = stats.ttest_ind(dist1, dist2, 
+def _t_test(barsX, barsY, student=False, permutations=None):
+    tstat, pval = stats.ttest_ind(barsX, barsY, 
             equal_var=student, permutations=permutations, nan_policy="raise")
     return pval
 
@@ -157,12 +158,12 @@ def _plot_clustermap(values, symmetrize=False, cm_title="Heatmap", name_list=Non
         return fig
 
 # computes (potentially sliced) Wasserstein distance between two distributions
-### dist1 and dist2 are instances of np.array
+### barsX and barsY are instances of np.array
 ### w1 and w2 should be 1d vectors with len(wN)=distN.shape[0]
-def comp_Wp_dist(dist1, dist2, w1=None, w2=None, n_proj=500, p=2):
+def comp_Wp_dist(barsX, barsY, wtfn_type=None, w1=None, w2=None, n_proj=500, p=2):
 
-    if len(dist1.shape) > 1:     # assumes dist1 and dist2 are instances of np.array
-        dim1, dim2 = dist1.shape[1], dist2.shape[1]
+    if len(barsX.shape) > 1:     # assumes barsX and barsY are instances of np.array
+        dim1, dim2 = barsX.shape[1], barsY.shape[1]
         assert np.array_equal([dim1, dim2], [2, 2]), "This computation of Wasserstein distance assumes persistence diagrams (in R2) as input."
     else:
         dim1 = 1
@@ -177,22 +178,22 @@ def comp_Wp_dist(dist1, dist2, w1=None, w2=None, n_proj=500, p=2):
     try:
         if dim1 > 1:
             Wp_dist = Wp_wt(
-                    dist1, dist2, 
+                    barsX, barsY, 
                     w1=w1, w2=w2, p=p,
-                    wtfn_type="diff", ot_imp="POT"
+                    wtfn_type=wtfn_type, ot_imp="POT"
                     )
         else:
             # does not implement weighting for the 1-dimensional case
-            Wp_dist = np.power(ot.wasserstein_1d(dist1, dist2, p=p), 1/p)
+            Wp_dist = np.power(ot.wasserstein_1d(barsX, barsY, p=p), 1/p)
     except Exception as err:
         print(f"         Wp_dist computation failed: {err}")
         if not w1 is None:
             if w1.size==1:
-                print(f"dist1: {dist1}")
+                print(f"barsX: {barsX}")
                 print(f"w1: {w1}")
         if not w2 is None:
             if w2.size==1:
-                print(f"dist2: {dist2}")
+                print(f"barsY: {barsY}")
                 print(f"w2: {w2}")
 
     return Wp_dist
@@ -242,12 +243,6 @@ def _get_pathlists(prevpath_list_fpath):
     ### debug code ###
     return prevpath_list, B1path_list, barsXpaths_list
 
-def _get_bars(bars_fname, homdim=1):
-    with open(bars_fname, 'r') as fin:
-        all_bars = ast.literal_eval(fin.read())
-        bars = all_bars[homdim]  # "bars" dictionary is indexed by homology dimension
-    return np.array(bars)
-
 def _get_name(fpath):
     dname = os.path.basename(os.path.dirname(fpath))
     name = dname.replace('phom_data_','').replace('_dists','').replace('_ztrans','-ztrans').replace('_',' ')
@@ -255,7 +250,7 @@ def _get_name(fpath):
 
 
 ################################################################################################################
-# parses input, streams output
+# parses input, saves output
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
         description="Show distributions of outputs from topological bootstrap"

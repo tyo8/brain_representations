@@ -27,7 +27,7 @@ def main(argvals):
     # path to saved, precomputed list of (allowed) permuations
     permpath=argvals[3]
     # read in set of heteroscedastic permutations; convert to int type for indexing; subtract 1 for index differences with matlab
-    permset = np.genfromtxt(permpath,delimiter=",").astype(int) - 1
+    permset = np.loadtxt(permpath,delimiter=",").astype(int) - 1
 
 
     # path to list of brain representation names (same order as datasets are listed in dataset_fname)
@@ -212,7 +212,7 @@ def aggregate_cancorrs(dirlocs, del_dir = True):
             cancorrs += data
 
         # collect canonical correlations in array (and ensure that values are numerical)
-        cancorrs_array = np.asarray([np.genfromtxt(i) for i in cancorrs])
+        cancorrs_array = np.asarray([np.loadtxt(i) for i in cancorrs])
 
         # collect i-th array of canonical correlations
         agg_data[i] = cancorrs_array

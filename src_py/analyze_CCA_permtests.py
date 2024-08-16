@@ -66,7 +66,7 @@ def plot_cancorrs(floc_data, floc_null, reglist, prctile_range = (1,99),
     
     fig,ax,extreme_vals = plot_null_cancorrs(floc_null,prctile_range=prctile_range)
     
-    data = np.genfromtxt(floc_data,delimiter=",")
+    data = np.loadtxt(floc_data,delimiter=",")
     #debug code:
     print(type(data))
     print(data.shape)
@@ -149,7 +149,7 @@ def null_cancorrs_from_csv(floc):
     with open(floc,'r') as fin:
         text_list = list(csv.reader(fin))
 
-    cancorr_mtx = np.asarray([np.genfromtxt(R) for R in text_list])
+    cancorr_mtx = np.asarray([np.loadtxt(R) for R in text_list])
     return cancorr_mtx
 
 def check_for_extremes(null_med,null_bounds,thresh=-6):
@@ -171,7 +171,7 @@ def check_for_extremes(null_med,null_bounds,thresh=-6):
 
 def find_sigcomps(floc_data,floc_null):
     null_dist = null_cancorrs_from_csv(floc_null)
-    data_cancorrs = np.genfromtxt(floc_data,delimiter=",")
+    data_cancorrs = np.loadtxt(floc_data,delimiter=",")
     unc_pvals = np.sum(null_dist > data_cancorrs, axis=0) #+ 0.5/len(data_cancorrs)
     unc_pvals[unc_pvals > 1] = 1
     is_sig, fdr_pvals = fdrcorrection(unc_pvals, alpha=0.05)

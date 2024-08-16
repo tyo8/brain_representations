@@ -36,7 +36,7 @@ def main(argvals):
     # path to saved, precomputed list of (allowed) permuations
     permpath=argvals[3]
     # read in set of heteroscedastic permutations; convert to int type for indexing; subtract 1 for index differences with matlab
-    permset = np.genfromtxt(permpath,delimiter=",").astype(int) - 1
+    permset = np.loadtxt(permpath,delimiter=",").astype(int) - 1
     ## debug code
     print("Read in permutation set: showing " + str(permset.shape[1]) + " entries.")
 
@@ -51,7 +51,7 @@ def main(argvals):
     # path to list of paired [pairname, optimal_regularization] values
     regpath=argvals[5]
     # read in array of regularization values to test
-    regval_list=np.genfromtxt(regpath,delimiter=",")
+    regval_list=np.loadtxt(regpath,delimiter=",")
     ## debug code
     print("Regularization values accepted:")
     print(regval_list)

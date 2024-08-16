@@ -32,7 +32,7 @@ def _load_data(fpath):
         import nibabel as nib
         data = nib.load(fpath).get_fdata()
     else:
-        data = np.genfromtxt(fpath)
+        data = np.loadtxt(fpath)
 
     return data
 

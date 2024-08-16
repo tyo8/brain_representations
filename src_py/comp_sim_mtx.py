@@ -1,6 +1,8 @@
 import os
-import sys
 import csv
+import ast
+import argparse
+import permuteHCP
 import numpy as np
 import HCP_utils as hutils
 import subj_data_metrics as sdm
@@ -9,21 +11,38 @@ from sklearn.metrics import pairwise_distances
 
 # receives path to .csv file containing list of subject data file names
 # outputs a subject-by-subject matrix of Pearson correlation coefficients
-def comp_sim_mtx(fname_in, fname_out, method='Psim', return_dist=False):
+def comp_sim_mtx(
+        fname_in, 
+        fname_out, 
+        method='Psim', 
+        return_dist=False,
+        permute=False,
+        perm_type="subject",
+        perm_set=None,
+        rng_seed=0
+        ):
     with open(fname_in,newline='') as fin:
-        subj_lists = list(csv.reader(fin))          # list of lists of subject filenames
-        subj_list = list(map(''.join,subj_lists))   # list of strings of subject filenames
+        subj_list = fin.read().split()   # list of strings of subject filenames
     
     too_big = _check_datasize(subj_list)
 
     if too_big:
-        sim_mtx = comp_sim_from_list(subj_list, method=method)
+        sim_mtx = comp_sim_from_list(subj_list, method=method, perm_pars=[permute, perm_type, None, rng_seed])
     else:
         data_mtx = np.asarray([hutils._parse_fname(i) for i in subj_list])
 
-        ### debug code ###
+        ### debugging code ###
         _validate_data(data_mtx)
-        ### debug code ###
+        ### debugging code ###
+
+        if permute:
+            ### debugging code ###
+            print(f"original data: \n{data_mtx}")
+            ### debugging code ###
+            data_mtx = permuteHCP.permute(data_mtx, perm_type=perm_type, perm_set=perm_set, rng_seed=rng_seed)
+            ### debugging code ###
+            print(f"permuted data: \n{data_mtx}")
+            ### debugging code ###
 
         sim_mtx = comp_sim_from_mtx(np.double(data_mtx), method=method)
 
@@ -35,9 +54,9 @@ def comp_sim_mtx(fname_in, fname_out, method='Psim', return_dist=False):
         dist_mtx = sdm.p_simdist(sim_mtx, p=2)
         np.fill_diagonal(dist_mtx, 0)
     
-    ### debug code ###
+    ### debugging code ###
     _validate_distmtx(dist_mtx)
-    ### debug code ###
+    ### debugging code ###
 
 
     if return_dist:
@@ -50,15 +69,12 @@ def comp_sim_mtx(fname_in, fname_out, method='Psim', return_dist=False):
 # estimate if dataset is too large to fit in memory
 def _check_datasize(subj_list):
     n_subj = len(subj_list)
-    samp_data = hutils._parse_fname(subj_list[0])
-    data_size = samp_data.size
+    numel = n_subj*hutils._parse_fname(subj_list[0]).size
 
-    numel = n_subj*data_size
-
-    GBmem = numel * 32/91282**2
+    GBmem = numel * 4/2**30     # assumes data is a float array
     GBmem = round(GBmem, -int(np.floor(np.log10(GBmem))) + 3)
     
-    print("Estimated data size is " + str(n_subj*data_size) + " elements or ~" + str(GBmem) + "GB.") 
+    print(f"Estimated dataset size is {numel} elements or ~{GBmem}GB.") 
 
     too_big = (GBmem > 100)
 
@@ -112,9 +128,17 @@ def comp_sim_from_mtx(data_mtx, method='Psim', p=2):
 
 # sequentially loads data in pairs; very slow, but can handle jobs that are too large to fit in memory
 ## NOTE: can this be re-written to be more efficient? we may need in the case of the dense connectome -- can we try to "traverse" the upper triangle in a more efficient way?
-def comp_sim_from_list(subj_list, method='Psim'):
+def comp_sim_from_list(subj_list, method='Psim', perm_pars=[None]):
     n_subj = len(subj_list)
     sim_mtx = np.zeros((n_subj,n_subj))
+
+    if perm_pars[0]:
+        if perm_pars[1]=="subject":
+            raise Exception("Full dataset is too large for subject-type permutations. Exiting.")
+        elif perm_pars[1]=="feature":
+            rng = np.random.default_rng(perm_pars[2])
+        else:
+            raise ValueError(f"Unrecognized permutation type \"{perm_pars[1]}\".")
 
     for i in range(n_subj):
         subj1_fname = subj_list[i]
@@ -122,6 +146,9 @@ def comp_sim_from_list(subj_list, method='Psim'):
         for j in range(i+1,n_subj):
             subj2_fname = subj_list[j]
             data2 = hutils._parse_fname(subj2_fname)
+            if perm_pars[0]:
+                if perm_pars[1]=="feature":
+                    data2 = rng.permutation(data2)
             simval = comp_simval(data1,data2, method=method)
             sim_mtx[i,j] = simval
 
@@ -132,7 +159,7 @@ def comp_sim_from_list(subj_list, method='Psim'):
 
     return sim_mtx
 
-############################### debug function ###############################  
+############################### debugging function ###############################  
 def _validate_data(data):
     print("Initial data has shape (n_subj, n_feats)=" + str(data.shape))
     n_subj = data.shape[0]
@@ -153,10 +180,10 @@ def _validate_data(data):
         print("Number of subjects with NaN data: " + str(nan_subjs))
         print("Number of NaN features per subject with NaN data: ")
         print(np.histogram(nan_feats))
-############################### debug function ###############################  
+############################### debugging function ###############################  
 
 
-############################### debug function ###############################  
+############################### debugging function ###############################  
 def _validate_distmtx(dmtx):
     n_subj = dmtx.shape[0]
     nan_data = np.isnan(dmtx)
@@ -169,24 +196,64 @@ def _validate_distmtx(dmtx):
     print("NaN values found in dist_mtx: " + str(nanflag))
     if nanflag:
         print("Number of NaN elements: " + str(nan_els), f"({nan_els/len(subj_vals)*100}%)")
-############################### debug function ###############################  
+############################### debugging function ###############################  
 
 
 # input parsing and verbose options output for logs
 if __name__=="__main__":
-    subj_datalist_fname = sys.argv[1]
-    fname_out = sys.argv[2]
-    method = sys.argv[3]
-    if len(sys.argv) > 4:
-        return_dist = sys.argv[4]
-    else:
-        return_dist = False
+    parser = argparse.ArgumentParser(
+        description="Generate family structure-respecting permutations of HCP data"
+    )
+    parser.add_argument(
+        "-i", "--subj_datalist_fname", type=str, help="input filepath to saved exchangeability blocks"
+    )
+    parser.add_argument(
+        "-o", "--fname_out", type=str, help="output directory for permutation sets"
+    )
+    parser.add_argument(
+        "-m", "--method", type=str, help="output directory for permutation sets"
+    )
+    parser.add_argument(
+        "-D", "--return_dist", default=False, action="store_true", help="if flag given, then output distance (rather than similarity) matrix"
+    )
+    parser.add_argument(
+        "-P", "--permute", default=False, action="store_true", help="if flag given, then output distance (rather than similarity) matrix"
+    )
+    parser.add_argument(
+        "-t", "--perm_type", default="subject", type=str, help="permutation type: \"subject\" or  \"feature\" (the distribution of values is preserved across the unchosen)"
+    )
+    parser.add_argument(
+        "-s", "--perm_set", default=None, help="Array of permutations or path to an array of permutations"
+    )
+    parser.add_argument(
+        "-r", "--rng_seed", default=0, type=int, help="RNG seed (not used for \'subject\'-type permutations)"
+    )
+    args = parser.parse_args()
 
-    if return_dist:
-        fname_out = fname_out.replace('_sims.txt', '_dists.txt')
+    if args.return_dist:
+        args.fname_out = args.fname_out.replace('_sims.txt', '_dists.txt')
 
-    print("reading data from " + str(subj_datalist_fname))
-    print("sending data to " + str(fname_out))
-    print("computing similarity according to " + method)
-    print("computing/saving/returning \"distance\" instead of similarity matrices? " + return_dist)
-    comp_sim_mtx(subj_datalist_fname, fname_out, method=method, return_dist=return_dist)
+    print(f"reading data from {str(args.subj_datalist_fname)}")
+    print(f"sending data to {str(args.fname_out)}")
+    print(f"computing similarity according to {args.method}")
+    print("computing/saving/returning \"distance\" instead of similarity matrices? ",  args.return_dist)
+    print("conducting permutation testing?", args.permute)
+    if args.permute:
+        if args.perm_type=="feature":
+            args.perm_set = ast.literal_eval(args.perm_set)     # interpret read-in as integer for feature-type permutations
+        print("")
+        print(f"Permutation type: {args.perm_type}")
+        print(f"Permutation set specified: {args.perm_set} (of type {type(args.perm_set)})")
+        print(f"Permutation random generator seed (not relevant to subject-type permutations): {args.rng_seed}")
+        print("")
+
+    comp_sim_mtx(
+            args.subj_datalist_fname, 
+            args.fname_out, 
+            method = args.method, 
+            return_dist = args.return_dist,
+            permute = args.permute,
+            perm_type = args.perm_type,
+            perm_set = args.perm_set,
+            rng_seed = args.rng_seed
+            )

@@ -173,7 +173,7 @@ def _pathlist_to_df(pathlist, intm_out=True):
     features = [label[1] for label in labels]
     feat_nums = [_pull_feat_num(ranks[i], feat) for i, feat in enumerate(features)]
     metrics = ['-'.join(label[2:]).replace('-dists','') for label in labels]
-    distribution_list = [np.genfromtxt(fpath) for fpath in pathlist]
+    distribution_list = [np.loadtxt(fpath) for fpath in pathlist]
 
     statvals, uf_methods    = _unfold(distribution_list, methods)
     statvals, uf_ranks      = _unfold(distribution_list, ranks)
@@ -232,8 +232,8 @@ def _unfold(distribution_list, metadata):
 
 #######################################################################################################################
 def show_all_histograms(pathlist):
-    prev_scores = [np.array(np.genfromtxt(fpath)) for fpath in pathlist if "prevalence" in fpath]
-    B1match_num = [np.array(np.genfromtxt(fpath)) for fpath in pathlist if "B1match" in fpath]
+    prev_scores = [np.array(np.loadtxt(fpath)) for fpath in pathlist if "prevalence" in fpath]
+    B1match_num = [np.array(np.loadtxt(fpath)) for fpath in pathlist if "B1match" in fpath]
     namelist = [os.path.basename(os.path.dirname(fpath)).replace('phom_data_','') for fpath in pathlist if "prevalence" in fpath]
 
     nrows, ncols = _factor_pair(len(namelist))
@@ -282,7 +282,7 @@ def _check(N, pos_fac):
 
 
 ################################################################################################################
-# parses input, streams output
+# parses input, saves output
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
         description="Show distributions of outputs from topological bootstrap"

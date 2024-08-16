@@ -27,7 +27,7 @@ def comp_persdiag(dist_flist_name,fname_out, normalize = True):
         dist_flists = list(csv.reader(fin))
         dist_flist = list(map(''.join,dist_flists))
 
-    dist_mtx_input = [np.genfromtxt(i, delimiter=",") for i in dist_flist]
+    dist_mtx_input = [np.loadtxt(i, delimiter=",") for i in dist_flist]
     persdiag = compute_phom(dist_mtx_input, normalize=normalize)
 
     np.save(fname_out,persdiag)

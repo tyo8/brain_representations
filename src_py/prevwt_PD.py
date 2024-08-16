@@ -95,7 +95,7 @@ if __name__=="__main__":
         barsX = ast.literal_eval(fin.read())
 
     title = "Prevalence-weighted Persistence in H1\n" + args.label
-    prevscores = np.genfromtxt(args.prevscores_fname)
+    prevscores = np.loadtxt(args.prevscores_fname)
     weighted_PD(barsX[1], prevscores, outpath = args.figure_fpath, showfig=args.showfig, title=title)
 
     if args.figure_fpath:

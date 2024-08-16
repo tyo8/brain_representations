@@ -26,8 +26,8 @@ def iter_PRCd_list(dataset_list_name,output_dir,listpath=list_path):
         for j in range(i+1,n_reps):
             xname = dataset_list[i]
             yname = dataset_list[j]
-            X = np.genfromtxt(xname, delimiter=",")
-            Y = np.genfromtxt(yname, delimiter=",")
+            X = np.loadtxt(xname, delimiter=",")
+            Y = np.loadtxt(yname, delimiter=",")
             
             results = comp_PRCd(X,Y)
 
