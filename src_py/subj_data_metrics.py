@@ -81,7 +81,10 @@ def geodesic(X,Y):
     Y = symmetrize(Y)
 
     from pyriemann.utils.distance import distance_riemann
-    spd_dist = distance_riemann(X,Y)
+    try:
+        spd_dist = distance_riemann(X,Y)
+    except np.linalg.LinAlgError:
+        spd_dist = distance_riemann(_regularize_sym(X), _regularize_sym(Y))
     return spd_dist
 ############################################################################################################################################
 
@@ -111,4 +114,14 @@ def _symmtx(V, diag_val=1):
     np.fill_diagonal(M, diag_val)
 
     return M
+
+def _regularize_sym(X, eps=1e-6):
+    check.symmetric(X)
+    n = X.shape[0]
+
+    spectrum = np.linalg.eigvals(X)
+    max_l = max(abs(spectrum))
+
+    X = X + max_l*eps*np.eye(n)
+    return X
 ############################################################################################################################################

@@ -21,28 +21,28 @@ def summarize_topostats(prevpath_list_fpath, outdir):
     name_list = [ _get_name(fpath) for fpath in barsXpaths_list ]
 
     uw_title = "Wasserstein Dist. from\n" + "H1 persistence diagrams"
-    savepath = os.path.join(outdir,f"PD_Wpclustermap_{list_fpath_nametype}.png")
-    make_Wp_clustermap(bars_list, name_list, cm_title=uw_title, write_mode=True, savepath=savepath)
+    outpath = os.path.join(outdir,f"PD_Wpclustermap_{list_fpath_nametype}.png")
+    make_Wp_clustermap(bars_list, name_list, cm_title=uw_title, write_mode=True, outpath=outpath)
     
     prev_title = "Wasserstein Dist. from\n" + "H1 persistence diagrams\n" + "(prevalence-weighted)"
-    savepath = os.path.join(outdir,f"prevwt_PD_Wpclustermap_{list_fpath_nametype}.png")
-    make_Wp_clustermap(bars_list, name_list, weights_list=prevs_list, cm_title=prev_title, write_mode=True, savepath=savepath)
+    outpath = os.path.join(outdir,f"prevwt_PD_Wpclustermap_{list_fpath_nametype}.png")
+    make_Wp_clustermap(bars_list, name_list, weights_list=prevs_list, cm_title=prev_title, write_mode=True, outpath=outpath)
 
 #    B1match_title = "Wasserstein Dist. from\n" + "Matched Cycles per Bootstrap"
-#    savepath = os.path.join(outdir,f"B1match_Wpclustermap_{list_fpath_nametype}.png")
-#    B1_Wp = make_Wp_clustermap(B1matches_list, name_list, cm_title=B1match_title, write_mode=True, savepath=savepath)
+#    outpath = os.path.join(outdir,f"B1match_Wpclustermap_{list_fpath_nametype}.png")
+#    B1_Wp = make_Wp_clustermap(B1matches_list, name_list, cm_title=B1match_title, write_mode=True, outpath=outpath)
 # 
 #    B1match_pvals_title = "Significant Differences in\n" + "Matched Cycles per Bootstrap\n" + "log10(p) from T-test"
-#    savepath = os.path.join(outdir,f"B1match_pval_heatmap_{list_fpath_nametype}.png")
-#    B1_pvals = make_pvals_heatmap(B1matches_list, name_list, cm_title=B1match_pvals_title, write_mode=True, savepath=savepath)
+#    outpath = os.path.join(outdir,f"B1match_pval_heatmap_{list_fpath_nametype}.png")
+#    B1_pvals = make_pvals_heatmap(B1matches_list, name_list, cm_title=B1match_pvals_title, write_mode=True, outpath=outpath)
 #    np.savetxt(os.path.join(outdir,f"B1match_pvals_{list_fpath_nametype}.txt"), B1_pvals)
 # 
 #    plt.scatter( np.log10(np.abs(B1_pvals.flatten())), B1_Wp.flatten())
 #    plt.title("Wasserstein distance vs. T-test log10(p-value)")
 #    plt.xlabel("log10(p)")
 #    plt.ylabel("Wasserstein distance")
-#    savepath = os.path.join(outdir,f"B1match_Wp_vs_pval_{list_fpath_nametype}.png")
-#    plt.savefig(savepath, dpi=600)
+#    outpath = os.path.join(outdir,f"B1match_Wp_vs_pval_{list_fpath_nametype}.png")
+#    plt.savefig(outpath, dpi=600)
 
     prevalence_vs_persistence(
             prevs_list, 
@@ -51,13 +51,13 @@ def summarize_topostats(prevpath_list_fpath, outdir):
             x_label = "Prevalence Score",
             # y_label = "Persistence (death/birth)",
             y_label = "Persistence (death - birth)",
-            # savepath= os.path.join(outdir,f"ratio_persistence_vs_prev_{list_fpath_nametype}.png")
-            savepath= os.path.join(outdir,f"persistence_vs_prev_{list_fpath_nametype}.png")
+            # outpath= os.path.join(outdir,f"ratio_persistence_vs_prev_{list_fpath_nametype}.png")
+            outpath= os.path.join(outdir,f"persistence_vs_prev_{list_fpath_nametype}.png")
             )
 
 
 def make_Wp_clustermap(distribution_list, name_list, weights_list=None, wtfn_type=None, 
-        cm_title="Wasserstein Distances", write_mode=True, savepath="Wp_clustermap.png"):
+        cm_title="Wasserstein Distances", write_mode=True, outpath="Wp_clustermap.png"):
     N = len(distribution_list)
 
     Wp_clustermap = np.zeros((N,N))
@@ -79,15 +79,15 @@ def make_Wp_clustermap(distribution_list, name_list, weights_list=None, wtfn_typ
                     print(type(weights_list[i]), type(weights_list[j]))
 
     # Wp_clustermap = Wp_clustermap + Wp_clustermap.T
-    np.savetxt(savepath.replace('.png','.txt'), Wp_clustermap)
+    np.savetxt(outpath.replace('.png','.txt'), Wp_clustermap)
     _plot_clustermap(
             Wp_clustermap, symmetrize=True,
-            cm_title=cm_title, name_list=name_list, write_mode=write_mode, savepath=savepath)
+            cm_title=cm_title, name_list=name_list, write_mode=write_mode, outpath=outpath)
     return Wp_clustermap
 
 
 def make_pvals_heatmap(distribution_list, name_list, pvals_type="welch_T",
-        cm_title="p-Values", write_mode=True, savepath="pval_clustermap.png"):
+        cm_title="p-Values", write_mode=True, outpath="pval_clustermap.png"):
     prob_type = _specify_prob(pvals_type)
     N = len(distribution_list)
 
@@ -101,7 +101,7 @@ def make_pvals_heatmap(distribution_list, name_list, pvals_type="welch_T",
 
     np.fill_diagonal(pval_clustermap, 1)
 
-    _plot_clustermap(np.log10(np.abs(pval_clustermap)), cm_title=cm_title, name_list=name_list, write_mode=write_mode, cluster=False, savepath=savepath)
+    _plot_clustermap(np.log10(np.abs(pval_clustermap)), cm_title=cm_title, name_list=name_list, write_mode=write_mode, cluster=False, outpath=outpath)
     return pval_clustermap
 
 
@@ -119,43 +119,87 @@ def _t_test(barsX, barsY, student=False, permutations=None):
     return pval
 
 
-def _plot_clustermap(values, symmetrize=False, cm_title="Heatmap", name_list=None, write_mode=True, savepath="", cluster=True):
-    fig_sz = (12, 12)
+def _plot_clustermap(
+        values, 
+        cluster=True, 
+        cluster_method="ward",
+        symmetrize=False, 
+        cm_title="Heatmap", 
+        cmap="Blues",
+        xticklabels=None, 
+        yticklabels=None,
+        xlinkage=None, 
+        ylinkage=None,
+        name_list=None, 
+        fig_size=(12, 12), 
+        outpath="", 
+        write_mode=True,
+        debug=True
+        ):
 
     if symmetrize:
         values = (values + values.T)/2
-    if cluster:
-        import scipy.cluster.hierarchy as hc
-        import scipy.spatial as sp
-        linkage = hc.linkage(sp.distance.squareform(values), method="ward", optimal_ordering=True)
+        
+    if xticklabels is None and yticklabels is None and name_list is not None:
+        xticklabels = name_list
+        yticklabels = name_list
 
-        kws = dict(cbar_kws=dict(orientation='vertical'), figsize=fig_sz)
+    if cluster:
+        if xlinkage is None and ylinkage is None:
+            import scipy.cluster.hierarchy as hc
+            import scipy.spatial as sp
+            if np.count_nonzero(values < 0) > 0:
+                linkage_vals = np.max([0,2*np.max(values)]) - values
+            else:
+                linkage_vals = values
+
+            linkage = hc.linkage(sp.distance.squareform(linkage_vals, checks=False), method=cluster_method, optimal_ordering=True)
+            xlinkage=linkage
+            ylinkage=linkage
+
+        kws = dict(cbar_kws=dict(orientation='vertical'), figsize=fig_size)
         dgram_ratio = 0.1618
 
-        g = sns.clustermap(values, row_linkage=linkage, col_linkage=linkage, cmap = "Blues",
-                xticklabels=name_list, yticklabels=name_list, dendrogram_ratio=dgram_ratio, **kws)
+        g = sns.clustermap(
+                values, 
+                row_linkage=xlinkage, 
+                col_linkage=ylinkage, 
+                cmap = cmap,
+                xticklabels=xticklabels, 
+                yticklabels=yticklabels, 
+                dendrogram_ratio=dgram_ratio, 
+                **kws
+                )
+
         g.fig.suptitle(cm_title, fontsize="xx-large")
-        g.fig.set_size_inches(fig_sz, forward=False)
-        g.ax_cbar.set_position([g.cbar_pos[0], 1-dgram_ratio/10, dgram_ratio/10, g.ax_row_dendrogram.get_position().width])
-        g.ax_cbar.tick_params(labelrotation=0)
+        g.fig.set_size_inches(fig_size, forward=False)
+        # g.ax_cbar.set_position([g.cbar_pos[0], 1-dgram_ratio/10, dgram_ratio/10, g.ax_row_dendrogram.get_position().width])
+        # g.ax_cbar.tick_params(labelrotation=0)
         g.ax_col_dendrogram.set_visible(False)          #suppress column dendrogram
     else:
         g, ax = plt.subplots()
-        sns.heatmap(values, square = True, cbar = True, ax=ax, cmap = "Blues",
-                xticklabels=name_list, yticklabels=name_list)
+        sns.heatmap(
+                values, 
+                square = True, 
+                cbar = True, 
+                ax=ax, 
+                cmap = "Blues",
+                xticklabels=xticklabels, 
+                yticklabels=yticklabels
+                )
         ax.xaxis.tick_top()
         plt.title(cm_title)
         plt.tight_layout()  # neccessary to get the x-axis labels to fit
-        g.set_size_inches(fig_sz, forward=False)
+        g.set_size_inches(fig_size, forward=False)
 
     plt.xticks(fontsize=6,rotation=90)
     plt.yticks(fontsize=6) #rotate the tick labels
     if write_mode:
-        g.savefig(savepath, dpi=600)
-        print(f"saved to {savepath}")
+        g.savefig(outpath, dpi=600)
+        print(f"saved to {outpath}")
         plt.close()
     else:
-        return fig
+        return g
 
 # computes (potentially sliced) Wasserstein distance between two distributions
 ### barsX and barsY are instances of np.array
@@ -200,7 +244,7 @@ def comp_Wp_dist(barsX, barsY, wtfn_type=None, w1=None, w2=None, n_proj=500, p=2
 
 
 def prevalence_vs_persistence(prevs_list, bars_list, 
-        title="", x_label="", y_label="", savepath=""):
+        title="", x_label="", y_label="", outpath=""):
     prevalence_scores = np.concatenate([prev.flatten() for prev in prevs_list])
     # persistence_list = [np.exp(np.diff(np.log(bars))) for bars in bars_list]
     persistence_list = [np.diff(bars) for bars in bars_list]
@@ -222,8 +266,8 @@ def prevalence_vs_persistence(prevs_list, bars_list,
     plt.ylabel(y_label)
     plt.xlim(xlims[0], xlims[1])
     plt.ylim(ylims[0], ylims[1])
-    fig.savefig(savepath, dpi=600)
-    print(f"Prevalence vs. Persistence plot saved to {savepath}")
+    fig.savefig(outpath, dpi=600)
+    print(f"Prevalence vs. Persistence plot saved to {outpath}")
 
 
 def _get_pathlists(prevpath_list_fpath):

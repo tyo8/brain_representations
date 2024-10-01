@@ -17,13 +17,15 @@ def_knownmodels=[
         "T2"
         ]
 
-def vary_dim_SNR(model_type="S2uR", N=250, p=2, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
+def vary_dim_SNR(model_type="S2uR", N=250, p=2, normalize=True, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
     snr_sweep = np.logspace(-3, -1/2, num=6)
     for snr in snr_sweep:
         vary_embed_dim(
+                model_type=model_type,
                 N=N,
                 noise_prop=snr,
                 p=p,
+                normalize=normalize,
                 stochastic=stochastic,
                 add_origin=add_origin,
                 plot=plot,
@@ -32,16 +34,18 @@ def vary_dim_SNR(model_type="S2uR", N=250, p=2, stochastic=False, add_origin=Fal
                 )
 
 
-def vary_SNR(model_type="S2uR", N=250, embedding_dim=3, p=2, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
+def vary_SNR(model_type="S2uR", N=250, embedding_dim=3, p=2, normalize=True, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
     dim = embedding_dim
     snr_sweep = np.logspace(-3, -1/2, num=6)
     for snr in snr_sweep:
-        outpath_i = outpath.replace(f'L{p}dists', f'd{dim}_snr10e{np.log10(snr)}_L{p}dists'.replace('.0','').replace('.',','))
+        outpath_i = get_outpath_i(outpath, p, dim, snr)
         run_model(
+                model_type=model_type,
                 N=N,
                 noise_prop=snr,
                 embedding_dim=embedding_dim,
                 p=p,
+                normalize=normalize,
                 stochastic=stochastic,
                 add_origin=add_origin,
                 outpath=outpath_i,
@@ -50,22 +54,39 @@ def vary_SNR(model_type="S2uR", N=250, embedding_dim=3, p=2, stochastic=False, a
                 )
 
 
-def vary_embed_dim(model_type="S2uR", N=250, noise_prop=1/10, p=2, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
+def vary_embed_dim(model_type="S2uR", N=250, noise_prop=1/10, p=2, normalize=True, stochastic=False, add_origin=False, plot=False, outpath=None, verbose=False):
     dim_sweep = [int(i) for i in np.logspace(1/2, 3, num=6)]
     snr = noise_prop
     for dim in dim_sweep:
-        outpath_i = outpath.replace(f'L{p}dists', f'd{dim}_snr10e{np.log10(snr)}_L{p}dists'.replace('.0','').replace('.',','))
+        outpath_i = get_outpath_i(outpath, p, dim, snr)
         run_model(
+                model_type=model_type,
                 N=N,
                 noise_prop=snr,
                 embedding_dim=dim,
                 p=p,
+                normalize=normalize,
                 stochastic=stochastic,
                 add_origin=add_origin,
                 outpath=outpath_i,
                 plot=plot,
                 verbose=verbose
                 )
+
+
+
+def get_outpath_i(outpath, p, dim, snr):
+    if snr > 0:
+        outpath_i = outpath.replace(f'L{p}', f'd{dim}_snr10e{np.log10(snr)}_L{p}')
+    elif snr==0:
+        outpath_i = outpath.replace(f'L{p}', f'd{dim}_noiseless_L{p}')
+    else:
+        raise Exception("signal-to-raise ratio (specified as noise proportion) cannot be a negative number")
+
+    outpath_i, ext = os.path.splitext(outpath_i)
+    outpath_i = outpath_i.replace('.0','').replace('.',',')
+    outpath_i = outpath_i + ext
+    return outpath_i
 
 def run_model(
         model_type="S2uR", 
@@ -73,18 +94,20 @@ def run_model(
         noise_prop=0.1,
         embedding_dim=3,
         p=2,
+        normalize=True,
         stochastic=False,
         add_origin=False,
         plot=False,
         outpath=None,
         verbose=True
         ):
-    print(f"Running toy model \"{model_type}\"...")
+    print(f"\nRunning toy model \"{model_type}\"...")
     if verbose:
         print("Model parameters:")
         print(f"N = {N}")
         print(f"noise_proportion = {noise_prop}")
         print(f"embedding_dimension = {embedding_dim}")
+        print(f"distance normalization = {normalize}")
         print(f"stochastic = {stochastic}")
         print(f"add_origin = {add_origin}")
         print(f"p = {p}")
@@ -97,15 +120,22 @@ def run_model(
             add_origin=add_origin
             )
 
-    ptcloud_embd = affine_embed_ptcloud(ptcloud, embedding_dim)
-    ptcloud_noise = add_noise(ptcloud_embd, noise_prop, p=p)
+    if normalize:
+        ptcloud = add_noise(ptcloud, noise_prop, p=p)
+        ptcloud = affine_embed_ptcloud(ptcloud, embedding_dim)
+    else:
+        ptcloud = affine_embed_ptcloud(ptcloud, embedding_dim)
+        ptcloud = add_noise(ptcloud, noise_prop, p=p)
+
 
     # computes the pairwise Euclidean p-distance from a point cloud list
-    dX = scipy.spatial.distance.squareform(scipy.spatial.distance.pdist(ptcloud_noise.T, metric='minkowski', p=p))
+    dX = scipy.spatial.distance.squareform(scipy.spatial.distance.pdist(ptcloud.T, metric='minkowski', p=p))
+    if normalize:
+        dX = dX / np.max(dX)
 
     # write out distance matrix if possible; return as output if not
     if outpath:
-        print(f"\nSaving model distance matrix to: \n{outpath}")
+        print(f"Saving model distance matrix to: \n{outpath}\n")
         np.savetxt(outpath, dX)
         if plot:
             plot_3d(ptcloud[0], ptcloud[1], ptcloud[2], plot=False, savename=outpath.replace('.txt','_plt3d.png'))
@@ -130,7 +160,7 @@ def affine_embed_ptcloud(ptcloud, embed_dim):
     source_dim = ptcloud.shape[0]
     mult = 1+int(embed_dim/source_dim)
     T_aff = np.concatenate([np.eye(source_dim)]*mult)[:embed_dim, :]
-    ptcloud_embd = T_aff @ ptcloud
+    ptcloud_embd = 1/mult * T_aff @ ptcloud 
     return ptcloud_embd
 
 def get_model_fn(model_type):
@@ -193,9 +223,9 @@ def con_circles(N=250, radius=1, ab_ratio=1, warped=False, stochastic=False, add
         circle_fn=circle
 
     xy_in = circle_fn(N=(N-Nc), radius=radius, stochastic=stochastic, add_origin=add_origin)
-    xy_out = circle_fn(N=Nc, radius=(1+ab_ratio), stochastic=stochastic, add_origin=False)
+    xy_out = circle_fn(N=Nc, radius=radius*(1+ab_ratio), stochastic=stochastic, add_origin=False)
     xy = np.concatenate([xy_in, xy_out], axis=1)
-    return radius*np.array([x, y])
+    return xy
 
 ## SPHERE UNION DIAMETER
 def sphere_w_chord(N=250, radius=1, chord_ratio=1/10, stochastic=False, add_origin=True):
@@ -268,7 +298,7 @@ if __name__=="__main__":
         "--model_type",
         type=str,
         default="T2",
-        help=f"specifies toy model used to generate data -- chose from the following: {def_knownmodels}"
+        help=f"specifies toy model used to generate data -- choose from the following: {def_knownmodels}"
     )
     parser.add_argument(
         "-n",
@@ -320,6 +350,20 @@ if __name__=="__main__":
         help="option to run given model over varied embedding dimensions"
     )
     parser.add_argument(
+        "-N",
+        "--normalize",
+        default=False,
+        action="store_true",
+        help="option to normalize distance matrices by dividing all distances by maximum value"
+    )
+    parser.add_argument(
+        "-F",
+        "--add_noiseless",
+        default=False,
+        action="store_true",
+        help="option to run a set of noiseless embeddings at varying dimensions"
+    )
+    parser.add_argument(
         "-v",
         "--verbose",
         default=False,
@@ -328,12 +372,17 @@ if __name__=="__main__":
     )
     args = parser.parse_args()
 
+    if "u0" in args.model_type:
+        args.model_type = args.model_type.replace("u0","")
+        args.add_origin = True
+
     if args.vary_SNR and args.vary_embed_dim:
         vary_dim_SNR(
                 model_type=args.model_type,
                 N=args.sample_points,
                 outpath=args.outpath,
                 p=args.p,
+                normalize=args.normalize,
                 stochastic=args.stochastic,
                 add_origin=args.add_origin,
                 verbose=args.verbose
@@ -344,6 +393,7 @@ if __name__=="__main__":
                 N=args.sample_points,
                 outpath=args.outpath,
                 p=args.p,
+                normalize=args.normalize,
                 stochastic=args.stochastic,
                 add_origin=args.add_origin,
                 verbose=args.verbose
@@ -354,6 +404,7 @@ if __name__=="__main__":
                 N=args.sample_points,
                 outpath=args.outpath,
                 p=args.p,
+                normalize=args.normalize,
                 stochastic=args.stochastic,
                 add_origin=args.add_origin,
                 verbose=args.verbose
@@ -364,8 +415,22 @@ if __name__=="__main__":
                 N=args.sample_points,
                 outpath=args.outpath,
                 p=args.p,
+                normalize=args.normalize,
                 stochastic=args.stochastic,
                 add_origin=args.add_origin,
                 plot=True,
+                verbose=args.verbose
+                )
+
+    if args.add_noiseless:
+        vary_embed_dim(
+                model_type=args.model_type,
+                N=args.sample_points,
+                outpath=args.outpath,
+                noise_prop=0,
+                p=args.p,
+                normalize=args.normalize,
+                stochastic=args.stochastic,
+                add_origin=args.add_origin,
                 verbose=args.verbose
                 )

@@ -93,12 +93,17 @@ def _load_scan(fname):
     return data
 
 def _load_csv(fname):
-    # data = np.loadtxt(fname,delimiter=",")
-    data = np.loadtxt(fname)
+    try:
+        data = np.loadtxt(fname)
+    except ValueError:
+        data = np.loadtxt(fname, delimiter=",")
     return data
 
 def _load_txt(fname):
-    data = np.loadtxt(fname)
+    try:
+        data = np.loadtxt(fname)
+    except ValueError:
+        data = np.loadtxt(fname, delimiter=",")
     return data
 
 def _load_npy(fname):
@@ -109,7 +114,7 @@ def _shaper(data):
     if len(data.shape) == 2:
         if data.shape[0]==data.shape[1]:
             if np.allclose(data, data.T):
-                data = triu_vals(data) # assumes that symmetric matrices have noninformative diagonals
+                data = triu_vals(data)       # assumes that symmetric matrices have noninformative diagonals
             else:
                 data=data.flatten()
         else:

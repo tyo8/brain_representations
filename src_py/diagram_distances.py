@@ -33,8 +33,8 @@ def module_distance(verbose_match, use_affinity=True,
 
 def weighted_Wasserstein_dist(
         X1, X2, w1=None, w2=None, 
-        wtfn_type='diff', q=2, p=2, ot_bknd="POT",
-        verbose=False, debug=False):
+        wtfn_type='prevalence', q=2, p=2, ot_bknd="POT",
+        verbose=False, debug=True):
 
     X1 = _validate_input(X1)
     X2 = _validate_input(X2)
@@ -63,7 +63,7 @@ def weighted_Wasserstein_dist(
         # default to assuming perfectly prevalent generators when weights are unspecified or all 0
         w2 = np.ones(X2.shape[0],)
 
-    wt_types = [None, "diff", "shrink", "measure", "coord"]
+    wt_types = [None, "prevalence", "diff", "shrink", "measure", "coord"]
     if wtfn_type in wt_types:
         # compute transport cost matrix (given PD coordinates, p-norm power, and weight application function)
         cost_mtx = weighted_cost_mtx(X1, X2, w1, w2, wtfn_type=wtfn_type, p=q)
@@ -95,18 +95,25 @@ def weighted_Wasserstein_dist(
 # diagrams have discrite uniform measures D1=\mu' and D2=\nu'.
 # diagram transport problem is on measures \mu=\mu'+R\nu' and \nu=\nu'+R\mu',
 # where R is the "projection measure" of an arbitrary PD measure to the diagonal.
-def _get_signatures(w1, w2, wtfn_type=None, debug=False):
+def _get_signatures(w1, w2, wtfn_type=None, debug=True):
 
-    renorm = sum(w1) + sum(w2)
+    if not wtfn_type=="measure":
+        sig1 = np.ones(w1.shape)
+        sig2 = np.ones(w2.shape)
+    else:
+        sig1 = w1
+        sig2 = w2
+
+    renorm = sum(sig1) + sum(sig2)
 
     if not renorm > 0:
         print(f"weight function type: {wtfn_type}")
-        print(f"given set w1: {w1}")
-        print(f"given set w2: {w2}")
+        print(f"non-noramlized metric signature 1: {sig1}")
+        print(f"non-noramlized metric signature 2: {sig2}")
         raise IOError("Cannot compute \'measure\'-type Wasserstein distance with sets of measure 0!")
 
-    signature_1 = np.append(w1, sum(w2))/renorm
-    signature_2 = np.append(w2, sum(w1))/renorm
+    signature_1 = np.append(sig1, sum(sig2))/renorm
+    signature_2 = np.append(sig2, sum(sig1))/renorm
 
     if debug:
         ### debug code ###
@@ -120,6 +127,7 @@ def _get_emd(
         cost_mtx, signature_1, signature_2,
         ot_bknd="POT", p=2, verbose=True
         ):
+
     cost_mtx = np.power(cost_mtx, p)
 
     # checks which optimal transport library user specifies for computation backend
@@ -155,7 +163,7 @@ def _get_emd(
     return Wp_dist
 
 
-def weighted_cost_mtx(X1, X2, w1, w2, p=2, wtfn_type='diff', debug=False):
+def weighted_cost_mtx(X1, X2, w1, w2, p=2, wtfn_type='diff', debug=True):
     proj_cost1 = _get_proj_cost(X1, w1, p=p)
     proj_cost2 = _get_proj_cost(X2, w2, p=p)
 
@@ -171,10 +179,8 @@ def weighted_cost_mtx(X1, X2, w1, w2, p=2, wtfn_type='diff', debug=False):
     return cost_mtx
 
 def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
-    naive_inner_cost = X1[:, None, :] - X2[None, :, :]
-
     # Assumes that X1.shape=(n1, d) and X2.shape=(n2, d)
-    naive_inner_cost = _pnorm(naive_inner_cost, axis=-1, p=p)
+    naive_inner_cost = _pnorm(X1[:, None, :] - X2[None, :, :], axis=-1, p=p)
 
     # Assumes that X1.shape=(n1, d) and X2.shape=(n2, d)
     # assumes w1, w2 are either None or vectors/lists of scalars
@@ -183,6 +189,11 @@ def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
         if wtfn_type=='shrink':
             X1 = np.multiply(X1, w1)
             X2 = np.multiply(X2, w2)
+    elif wtfn_type=='prevalence':
+        weight_mtx = np.add.outer(w1, w2) / 2.
+        conj_proj_1 = _get_proj_cost(X1, 1 - w1, p=p).reshape(w1.shape)
+        conj_proj_2 = _get_proj_cost(X2, 1 - w2, p=p).reshape(w2.shape)
+        conj_proj = np.add.outer( np.power(conj_proj_1, p), np.power(conj_proj_2, p) )
     elif wtfn_type=='diff':
         weight_mtx = 1 + np.abs(np.subtract.outer(w1, w2))
     elif wtfn_type=='coord':
@@ -191,10 +202,13 @@ def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
         X1 = np.concatenate([X1, w1], axis=-1)
         X2 = np.concatenate([X2, w2], axis=-1)
         naive_inner_cost = X1[:, None, :, :] - X2[None, :, :, :]
-        naive_inner_cost = _pnorm(naive_inner_cost, axis=(-1, -2), p=p)
+        inner_cost = _pnorm(naive_inner_cost, axis=(-1, -2), p=p)
 
     if not wtfn_type=='coord':
         inner_cost = np.multiply(naive_inner_cost, weight_mtx)
+
+    if wtfn_type=='prevalence':
+        inner_cost = np.power( np.power(inner_cost, p) + conj_proj, 1/p )
 
     return inner_cost
 
@@ -233,7 +247,7 @@ def _validate_input(X):
         Warning("Input data is expected to have type \"numpy.ndarray\" but has type {type(X)}; attempting to recast.")
         X = np.array(X)
 
-    assert isinstance(X, nd.ndarray), "Typecasting failed. Exiting."
+    assert isinstance(X, np.ndarray), "Typecasting failed. Exiting."
     return X
 
 # compute persistence of a given bar (birth, death)
