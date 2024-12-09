@@ -179,4 +179,4 @@ def switch(argument):
 
 
 if __name__=="__main__":
-    lindecomp_brainrep(sys.argv)
+    main(sys.argv)

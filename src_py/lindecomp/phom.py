@@ -10,7 +10,7 @@ import comp_Psim_mtx as cPm
 import scipy.special as scsp
 import matplotlib.pyplot as plt
 import SubjSubjHomologies as SSH
-import lindecomp_brainrep as ld_br
+import brainrep as ld_br
 
 ## summary of module:
 ## 

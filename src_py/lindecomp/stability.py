@@ -7,7 +7,7 @@ import shutil
 import inspect
 import datetime
 import numpy as np
-import lindecomp_brainrep as ld_br
+import brainrep as ld_br
 
 list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
 

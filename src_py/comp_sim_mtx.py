@@ -163,7 +163,14 @@ def comp_sim_from_list(subj_list, method='Psim', perm_pars=[None]):
 def _validate_data(data):
     print("Initial data has shape (n_subj, n_feats)=" + str(data.shape))
     n_subj = data.shape[0]
-    nan_data = np.isnan(data)
+    try:
+        nan_data = np.isnan(data)
+    except TypeError:
+        ### debugging code ###
+        print(f"data could not safely be checked for nan values because it is of type {type(data)}")
+        print(f"data shape: {data.shape}")
+        print(f"unique data shapes: {set([i.shape for i in data])}")
+        ### debugging code ###
     nanflag = nan_data.any()
 
     subj_vals = np.sum(data, axis=1)
@@ -180,6 +187,7 @@ def _validate_data(data):
         print("Number of subjects with NaN data: " + str(nan_subjs))
         print("Number of NaN features per subject with NaN data: ")
         print(np.histogram(nan_feats))
+        raise ValueError("Input data validation failed. Exiting to avoid further NaN-corrupted calculations.")
 ############################### debugging function ###############################  
 
 
@@ -196,6 +204,7 @@ def _validate_distmtx(dmtx):
     print("NaN values found in dist_mtx: " + str(nanflag))
     if nanflag:
         print("Number of NaN elements: " + str(nan_els), f"({nan_els/len(subj_vals)*100}%)")
+        raise ValueError("Distance matrix validation failed. Exiting to avoid further NaN-corrupted calculations.")
 ############################### debugging function ###############################  
 
 

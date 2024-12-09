@@ -19,7 +19,7 @@ while getopts ":b:s:g:p:t:" opt; do
     ;;
     s) spec_list_fname=${OPTARG}
     ;;
-    g) mem_gp=${OPTARG}
+    g) mem_gb=${OPTARG}
     ;;
     p) partition=${OPTARG}
     ;;

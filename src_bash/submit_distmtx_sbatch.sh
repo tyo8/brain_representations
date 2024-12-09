@@ -3,7 +3,7 @@
 set -o nounset
 
 # script directory
-base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-PROFUMO"
+base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-ICA"
 
 modality=ICA
 feature=Amps
@@ -12,19 +12,35 @@ mem_gb=500
 partition="tier2_cpu"
 maxtime_str="167:55:00"
 
-while getopts ":b:m:f:g:p:t:" opt; do
+do_perms=false
+permute_type="subject"
+perm_set=None
+perm_seed=0
+overwrite=true
+
+while getopts ":b:g:p:t:m:f:P:T:s:r:o:" opt; do
   case $opt in
     b) base_dir=${OPTARG}
+    ;;
+    g) mem_gb=${OPTARG}
+    ;;
+    p) partition=${OPTARG}
+    ;;
+    t) maxtime_str=${OPTARG}
     ;;
     m) modality=${OPTARG}
     ;;
     f) feature=${OPTARG}
     ;;
-    g) mem_gp=${OPTARG}
+    P) do_perms=${OPTARG}
     ;;
-    p) partition=${OPTARG}
+    T) permute_type=${OPTARG}
     ;;
-    t) maxtime_str=${OPTARG}
+    s) perm_set=${OPTARG}
+    ;;
+    r) perm_seed=${OPTARG}
+    ;;
+    o) overwrite=${OPTARG}
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
     exit 1
@@ -38,48 +54,120 @@ while getopts ":b:m:f:g:p:t:" opt; do
   esac
 done
 
-script_dir="${base_dir}/${modality}_${feature}"
-methods_fpath=${script_dir}"/methods.csv"
+subbase_dir="${base_dir}/${modality}_${feature}"
+methods_fpath=${subbase_dir}"/methods.csv"
 methods=$(cat ${methods_fpath})
 # path to source file
 pysrc_fpath="/scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py"
 
-
+if [ "${feature}" = "Maps" ]
+then
+	mem_gb=100
+	if [[ "${modality}" == *"100"* ]]
+	then
+		mem_gb=200
+	elif [[ "${modality}" == *"200"* ]]
+	then
+		mem_gb=400
+	elif [[ "${modality}" == *"300"* ]]
+	then
+		mem_gb=800
+	fi
+fi
 
 ########################## Write the input and the script #########################
 
 for method in ${methods};
 do
-    echo $method
-    # Create scripts
-    sbatch_fname=${script_dir}"/do_sim_"${feature}${modality}${method}
-    label=dists		# was previously either "sims" or "dists" but "sims" use case is deprecated
-    echo "\
+	echo "Calculating (dis)-similarity using ${method}..."
+	# Create scripts
+	if [ "${do_perms}" = "true" ]
+	then
+		if [ "${permute_type}" = "subject" ]
+		then
+    			perm_name=$(basename "${perm_set}" | cut -d. -f 1)
+		elif [ "${permute_type}" = "feature" ]
+		then
+    			perm_name="seed${perm_seed}"
+		else
+    			echo "Encountered invalid permutation type \'${permute_type}\' -- aborting."
+    			exit
+		fi
+		
+		script_dir="${subbase_dir}/permstrapping"
+		
+		perm_label="${permute_type}Perms_${perm_name}"
+		sbatch_fpath="${script_dir}/do_sim_${feature}${modality}${method}_${perm_label}"  # path to batch submission file
+		label="dists_${perm_label}"
+	else
+		script_dir="${subbase_dir}"
+
+		sbatch_fpath=${script_dir}"/do_sim_"${feature}${modality}${method}  # path to batch submission file
+		label="dists"	# 'label' was previously either "sims" or "dists" but "sims" use case is deprecated
+	fi
+	subj_dist="${script_dir}/${modality}_${feature}_${method}_${label}.txt"
+
+	if [ "${overwrite}" = "true" ]
+	then
+		printf "\noverwrite and resubmit existing batch file. ==> "
+	fi
+	if [ ! -f "${subj_dist}" ]
+	then
+		printf "\nresults file does not currently exist. ==> "
+	fi
+	if [ ! -f "${subj_dist}" ] || [ "${overwrite}" = "true" ]
+	then
+		echo "condition met to overwrite and resubmit batch file:"
+		echo "${sbatch_fpath}"
+	fi
+
+	if [ ! -f "${subj_dist}" ] || [ "${overwrite}" = "true" ]
+	then
+		mkdir -p "${script_dir}"
+		echo "\
 \
 #!/bin/sh
 
-#SBATCH --job-name=${modality}${feature}_${method}
-#SBATCH --output=${base_dir}/logs/${modality}${feature}_${method}.out
-#SBATCH --error=${base_dir}/logs/${modality}${feature}_${method}.err
+#SBATCH --job-name=${modality}${feature}_${method}${label}
+#SBATCH --output=${base_dir}/logs/${modality}${feature}_${method}${label}.out
+#SBATCH --error=${base_dir}/logs/${modality}${feature}_${method}${label}.err
 #SBATCH --partition=${partition}
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --time=${maxtime_str}
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
 #SBATCH --mem=${mem_gb}gb
 
-subj_list=${script_dir}/subj_list_${feature}.csv
+subj_list=${subbase_dir}/subj_list_${feature}.csv
 subj_dist=${script_dir}/${modality}_${feature}_${method}_${label}.txt
 
+printf \"Computing dissimilarity matrix...\n\n\"
+printf \"pulling subject data from: \\n\${subj_list}\\n\"
+printf \"sample data paths:\\n\$(cat \${subj_list} | head -3)\\n...\\n\\n\"
+printf \"saving dissimilarity matrix to: \\n\${subj_dist}\\n\"
+
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
-python ${pysrc_fpath} \${subj_list} \${subj_dist} ${method} True
 
-echo \${subj_dist} >> ${script_dir}/${feature}${modality}_${label}.csv
 \
-" > "${sbatch_fname}"  # Overwrite submission script
+		" > "${sbatch_fpath}"  # Overwrite submission script
 
-    # Make script executable
-    chmod +x "${sbatch_fname}" || { echo "Error changing the script permission!"; exit 1; }
+		if [ "${do_perms}" = "true" ];
+		then
+			echo "perm_set=${perm_set}" >> ${sbatch_fpath}
+			echo "perm_seed=${perm_seed}" >> ${sbatch_fpath}
+			echo "" >> ${sbatch_fpath}
+			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D -P -t ${permute_type} -s \${perm_set} -r \${perm_seed}" >> ${sbatch_fpath}
+		else
+			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D" >> ${sbatch_fpath}
+		fi
 
-    # Submit script
-    sbatch "${sbatch_fname}" || { echo "Error submitting jobs!"; exit 1; }
+		echo "" >> ${sbatch_fpath}
+		echo "echo \${subj_dist} >> ${subbase_dir}/distlist_${feature}${modality}.csv" >> ${sbatch_fpath}
+
+		# Make script executable
+		chmod +x "${sbatch_fpath}" || { echo "Error changing the script permission!"; exit 1; }
+
+		# Submit script
+		sbatch "${sbatch_fpath}" --nice 100000 || { echo "Error submitting jobs!"; exit 1; }
+	fi
 done

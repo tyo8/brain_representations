@@ -13,9 +13,10 @@ distlists_fpath="${subbase_dir}/real_distlists.csv"
 ### run parameters ###
 samps=3
 match_homdim=1
+collate_type="dict"
 
 ### argument parsing ###
-while getopts ":b:s:f:n:D:" opt; do
+while getopts ":b:s:f:n:D:c:" opt; do
   case $opt in
     b) base_dir=${OPTARG}
     ;;
@@ -26,6 +27,8 @@ while getopts ":b:s:f:n:D:" opt; do
     n) samps=${OPTARG}
     ;;
     D) match_homdim=${OPTARG}
+    ;;
+    c) collate_type=${OPTARG}
     ;;
     \?) echo "Invalid option -${OPTARG}" >&2
     exit 1
@@ -40,7 +43,7 @@ while getopts ":b:s:f:n:D:" opt; do
 done
 
 ### paths to code ###
-prev_scr="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/prevalence.py"
+prev_scr="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/prevalence.py"
 
 distlists=$(cat ${distlists_fpath})
 
@@ -60,8 +63,8 @@ do
 		outdir=$(dirname ${distname})"/phom_data_${data_label}"
 		matchdir="${outdir}/matching"
 
-		verbose_match_fpath="${matchdir}/verbose_match_dim${match_homdim}_n${samps}.txt"
-		prevscore_fpath="${outdir}/prevalence_scores_dim${match_homdim}_n${samps}.txt"
+		verbose_match_fpath="${matchdir}/verbose_match_dim${match_homdim}_n${samps}_${collate_type}.txt"
+		prevscore_fpath="${outdir}/prevalence_scores_dim${match_homdim}_n${samps}_${collate_type}.txt"
 		B1match_fpath="${outdir}/B1match_dim${match_homdim}_n${samps}.txt"
 
 		# Computes and saves prevalence scores from verbose matches

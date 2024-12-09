@@ -72,7 +72,11 @@ def _parse_fname(fname):
     ext = os.path.splitext(os.path.basename(fname))[1]
     _parser = _switch(ext)
     data = _parser(fname)
-    data = _shaper(data)
+    data = _shaper(data, netmat=("NMs" in fname or "NetMat" in fname))
+    ### debugging code ###
+    # print(f"filename: {fname}")
+    # print(f"data shape: {data.shape}")
+    ### debugging code ###
     return np.single(data.flatten())
 
 def _switch(argument):
@@ -110,10 +114,11 @@ def _load_npy(fname):
     data = np.load(fname, allow_pickle=True)
     return data
 
-def _shaper(data):
+def _shaper(data, netmat=False):
     if len(data.shape) == 2:
         if data.shape[0]==data.shape[1]:
-            if np.allclose(data, data.T):
+            if np.allclose(data, data.T, rtol=1e-3) or netmat:
+                data = (data + data.T)/2
                 data = triu_vals(data)       # assumes that symmetric matrices have noninformative diagonals
             else:
                 data=data.flatten()

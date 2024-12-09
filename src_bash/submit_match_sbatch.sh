@@ -48,7 +48,7 @@ while getopts ":x:y:D:f:d:m:p:t:s:" opt; do
 done
 
 ### paths to code ###
-match_script="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py"
+matching="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/matching.py"
 
 echo "\
 \
@@ -59,16 +59,19 @@ echo "\
 #SBATCH --error=${script_dir}/logs/match_${data_label}.err
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=${mem_gb}gb
 
-match_script=${match_script}
+matching=${matching}
 
 phomX_fpath=${phomX_fpath}
 phomY_fpath=${phomY_fpath}
 dim=${match_homdim}
 
+echo \"phomX_fpath: \\\"\${phomX_fpath}\\\"\"
+echo \"phomY_fpath: \\\"\${phomY_fpath}\\\"\"
 
-python \${match_script} -x \${phomX_fpath} -y \${phomY_fpath} --dim \${dim} -M -d
+python \${matching} -x \${phomX_fpath} -y \${phomY_fpath} --dim \${dim} -M -d
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

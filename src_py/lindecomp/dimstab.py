@@ -8,8 +8,8 @@ import HCP_utils
 import pull_cancorrs
 import numpy as np
 import matplotlib.pyplot as plt
-import run_lindecomp_perm as rldp
-import lindecomp_brainrep as ld_br
+import perm as rldp
+import brainrep as ld_br
 import analyze_CCA_permtests as anl_pt
 
 def main(argvals):

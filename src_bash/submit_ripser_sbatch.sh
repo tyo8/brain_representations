@@ -3,13 +3,13 @@
 set -o nounset
 
 dim=2
-do_img=1
+do_img=true
 mem_gb=7
 ldmZ_fpath=""
 partition="tier2_cpu"
 data_label="test"
 maxtime_str="23:55:00"
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 while getopts ":x:z:f:o:d:i:m:p:t:D:r:s:" opt; do
   case $opt in
@@ -47,7 +47,7 @@ while getopts ":x:z:f:o:d:i:m:p:t:D:r:s:" opt; do
   esac
 done
 
-if (($do_img)); then
+if $do_img; then
 	sbatch_fpath="${sbatch_fpath}_img"
 fi
 
@@ -73,6 +73,7 @@ echo "\
 #SBATCH --error=${logpath}.err%j
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=${mem_gb}gb
 
 dim=${dim}
@@ -83,12 +84,15 @@ ldmZ_fpath=\"${ldmZ_fpath}\"
 
 outpath=\"${outpath}\"
 
+echo \"input_ldm_fpath: \\\'\${ldmX_fpath}\\\'\"
+
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 
 # slightly different function calls/parameters depending on if we are doing image persistence
-if (($do_img))
+if $do_img
 then
+    echo \"image_ldm_fpath: \\\'\${ldmZ_fpath}\\\'\" >> "${sbatch_fpath}"
     if [[ -z ${ldmZ_fpath:+.} ]]
     then
         echo "ldmZ_fpath must be set when doing ripser-image"
@@ -108,5 +112,5 @@ chmod +x "${sbatch_fpath}" || { echo "Error changing the script permission!"; ex
 
 # Submit script
 echo "Submitting ${sbatch_fpath} and writing phom data to ${outpath} "
-sbatch "${sbatch_fpath}" || { echo "Error submitting jobs!"; exit 1; }
+sbatch "${sbatch_fpath}" --nice 200000 || { echo "Error submitting jobs!"; exit 1; }
 echo ""

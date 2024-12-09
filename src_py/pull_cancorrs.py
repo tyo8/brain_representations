@@ -4,7 +4,7 @@ import csv
 import dill
 import HCP_utils
 import numpy as np
-import lindecomp_brainrep as ld_br
+import lindecomp.brainrep as ld_br
 
 def pull_stbl_cancorrs(input_paragg_dir,output_cancorr_dir,namelist_path,reglist_path,
         decomp_method = 'CCA'):

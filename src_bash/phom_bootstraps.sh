@@ -14,7 +14,7 @@ distlists_fpath="${subbase_dir}/real_distlists.csv"
 samps=3
 bootstrap_prop=0.8
 maxhomdim=1
-do_X_phom=1
+do_X_phom=true
 mem_gb=300
 
 ### argument parsing ###
@@ -51,11 +51,22 @@ while getopts ":b:s:f:t:n:p:D:x:m:" opt; do
 done
 
 ### paths to code ###
-ripser_img_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
-ripser_rep_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
+# Base version of Ripser:
+ripser_rep_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
+
+# Ripser variant for image persistence (default option):
+ripser_img_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
+
+# Script to calcluate and save lower distance matrices of bootstrapped spaces
+ldm_script="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/ldm_script.py"
+
+# Batch job submission script 
 ripser_scripter="${base_dir}/src_bash/submit_ripser_sbatch.sh"
+
+# Path to script generating "tags" (bit-encoded subampling indices) if prefab list not provided
 gentags_script="${base_dir}/src_py/generate_subindex.py"
-ldm_script="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/ldm_script.py"
+
+
 
 ### node exclude list: maybe do not include for parallel case? ###
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
@@ -68,7 +79,10 @@ distlists=$(cat ${distlists_fpath})
 ndims=1003
 if compgen -G $tagpath >> /dev/null
 then
-	echo "Running ${samps} bootstraps from taglist \"${tagpath}\" with maximum homology dimension ${maxhomdim}."
+	echo "Running ${samps} bootstraps from taglist \"${tagpath}\" with maximum homology dimension ${maxhomdim} -- first and last tags are as follows:"
+	cat ${tagpath} | head -3
+	echo "..."
+	cat ${tagpath} | head -$samps | tail -3
 	tags=$( cat ${tagpath} | head -$samps )
 else
 	echo "Running ${samps} bootstraps at a sampling proportion of ${bootstrap_prop} with maximum homology dimension ${maxhomdim}."
@@ -79,7 +93,7 @@ else
 	done
 fi
 
-echo "Do X phom? (numeric) t/f: ${do_X_phom}"
+echo "Do X phom: ${do_X_phom}"
 printf '\n\n'
 
 for distlist in ${distlists}
@@ -96,53 +110,56 @@ do
 
 		# Create bookkeeping directories
 		outdir=$(dirname ${distname})"/phom_data_${data_label}"
-		scratchdir="${outdir}/dist_mtxs"
-		mkdir -p $scratchdir
+		ldm_dir="${outdir}/dist_mtxs"
+		mkdir -p $ldm_dir
 		phomdir="${outdir}/phom_out"
 		mkdir -p $phomdir
 
-		dX_fpath="${scratchdir}/dX.ldm"
-		cp $distname $dX_fpath
-		ndims=$(wc -l ${dX_fpath})
+		dX_fpath="${ldm_dir}/dX.ldm"
+		if ! [ -f ${dX_fpath} ]
+		then
+			cp $distname $dX_fpath
+		fi
+		ndims=$(wc -l ${dX_fpath})	# to avoid "unset variable"-type error in cases that do not trigger earlier if statements
 
 		phomX_outpath="${outdir}/phom_X.txt"
-		if ((${do_X_phom})) & ! [ -f ${phomX_outpath} ]
+		if ${do_X_phom} & ! [ -f ${phomX_outpath} ]
 		then
 			# submit persistence job for dX
-			${ripser_scripter} -x ${dX_fpath} -f ${sbatch_fpath} -o ${phomX_outpath} -r ${ripser_rep_path} -i 0 -m 50 -p "small" -d ${data_label}"_X" -D ${maxhomdim}
+			${ripser_scripter} -x ${dX_fpath} -f ${sbatch_fpath} -o ${phomX_outpath} -r ${ripser_rep_path} -i false -m 50 -d ${data_label}"_X" -D ${maxhomdim}
 		fi
 
     		for tag in $tags
 		do
 			# compute dZ_(tag) and dY_(tag) from dX and subsample indices (via `_subsamp_dZ` subfunction of `create_matrices_image.py')
 			# make dXZ_(tag) and dYZ_(tag) (via `create_matrices_image.py`)
-			dY_fpath=${scratchdir}"/dY_${tag}.ldm"
-			dXZ_fpath=${scratchdir}"/dXZ_${tag}.ldm"
-			dYZ_fpath=${scratchdir}"/dYZ_${tag}.ldm"
-			dZ_fpath=${scratchdir}"/dZ_${tag}.ldm"
+			dY_fpath=${ldm_dir}"/dY_${tag}.ldm"
+			dXZ_fpath=${ldm_dir}"/dXZ_${tag}.ldm"
+			dYZ_fpath=${ldm_dir}"/dYZ_${tag}.ldm"
+			dZ_fpath=${ldm_dir}"/dZ_${tag}.ldm"
 			if ! test -f $dZ_fpath
 			then
 				python ${ldm_script} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
-					printf "Failed to parse arguments to ldm_script (likely unreadable tag): \n${tag}\n\n"
+					printf "Failed to parse arguments to ldm_script (likely unreadable tag): \n${tag}\n\n" continue
 			fi
 
 			# name the (generic type of) output path for persistent homology data
 			phom_outpath=${phomdir}"/phomXZ_"${tag}".txt"
 
 			# submit image persistence job for dXZ_(tag) and dYZ_(tag) --in style of `do_ripser_test` sbatch script
-			if ! [ -f $phom_outpath ]
+			if ! test -f $phom_outpath
 			then
-				${ripser_scripter} -x ${dXZ_fpath} -z ${dZ_fpath} -f ${sbatch_fpath} -o ${phom_outpath} -m ${mem_gb} -p "small" -d ${data_label}"_XZ" -D ${maxhomdim}
+				${ripser_scripter} -x ${dXZ_fpath} -z ${dZ_fpath} -f ${sbatch_fpath} -o ${phom_outpath} -m ${mem_gb} -d "${data_label}_XZ" -D ${maxhomdim}
 			fi
-			if ! [ -f ${phom_outpath/phomXZ/phomYZ} ]
+			if ! test -f ${phom_outpath/phomXZ/phomYZ} 
 			then
-				${ripser_scripter} -x ${dYZ_fpath} -z ${dZ_fpath} -f ${sbatch_fpath} -o ${phom_outpath/phomXZ/phomYZ} -m ${mem_gb} -p "small" -d ${data_label}"_YZ" -D ${maxhomdim}
+				${ripser_scripter} -x ${dYZ_fpath} -z ${dZ_fpath} -f ${sbatch_fpath} -o ${phom_outpath/phomXZ/phomYZ} -m ${mem_gb} -d "${data_label}_YZ" -D ${maxhomdim}
 			fi
 
 			# submit persistence job for dY_(tag)
-			if ! [ -f ${phom_outpath/phomXZ/phomY} ]
+			if ! test -f ${phom_outpath/phomXZ/phomY} 
 			then
-				${ripser_scripter} -x ${dY_fpath} -f ${sbatch_fpath} -o ${phom_outpath/phomXZ/phomY} -r ${ripser_rep_path} -i 0 -d ${data_label}"_Y" -D ${maxhomdim}
+				${ripser_scripter} -x ${dY_fpath} -f ${sbatch_fpath} -o ${phom_outpath/phomXZ/phomY} -r ${ripser_rep_path} -i false -d "${data_label}_Y" -D ${maxhomdim}
 			fi
 		done
 	done

@@ -62,6 +62,7 @@ Persistent Homology
 	
 Figures and Statistics
 - [python optimal transport library](https://pythonot.github.io/index.html)
+- [pyRiemann](???)
 	
 Background
 - [numpy](https://numpy.org/)

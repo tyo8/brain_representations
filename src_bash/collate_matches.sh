@@ -60,7 +60,7 @@ do
 		data_label=$(basename ${distname} | cut -d. -f 1)
 
 		# Name the submission script for this dataset type
-		sbatch_fname=$(dirname ${distname})"/do_collate_${data_label}"
+		sbatch_fpath=$(dirname ${distname})"/do_collate_${data_label}"
 
 		# Create bookkeeping directories
 		outdir=$(dirname ${distname})"/phom_data_${data_label}"
@@ -70,7 +70,7 @@ do
 	
 		# collate outputs across group of tags
 		###############
-		python ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} 
+		python ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} -d "dictlist"
 		###############
 	done
 done

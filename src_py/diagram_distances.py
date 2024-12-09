@@ -34,7 +34,7 @@ def module_distance(verbose_match, use_affinity=True,
 def weighted_Wasserstein_dist(
         X1, X2, w1=None, w2=None, 
         wtfn_type='prevalence', q=2, p=2, ot_bknd="POT",
-        verbose=False, debug=True):
+        verbose=False, debug=False):
 
     X1 = _validate_input(X1)
     X2 = _validate_input(X2)
@@ -66,7 +66,7 @@ def weighted_Wasserstein_dist(
     wt_types = [None, "prevalence", "diff", "shrink", "measure", "coord"]
     if wtfn_type in wt_types:
         # compute transport cost matrix (given PD coordinates, p-norm power, and weight application function)
-        cost_mtx = weighted_cost_mtx(X1, X2, w1, w2, wtfn_type=wtfn_type, p=q)
+        cost_mtx = weighted_cost_mtx(X1, X2, w1, w2, wtfn_type=wtfn_type, p=p, q=q)
         if verbose:
             print(f"Using weighting function of type {wtfn_type} to compute W_q,p=W_{q,p} distance")
         if debug:
@@ -95,7 +95,7 @@ def weighted_Wasserstein_dist(
 # diagrams have discrite uniform measures D1=\mu' and D2=\nu'.
 # diagram transport problem is on measures \mu=\mu'+R\nu' and \nu=\nu'+R\mu',
 # where R is the "projection measure" of an arbitrary PD measure to the diagonal.
-def _get_signatures(w1, w2, wtfn_type=None, debug=True):
+def _get_signatures(w1, w2, wtfn_type=None, debug=False):
 
     if not wtfn_type=="measure":
         sig1 = np.ones(w1.shape)
@@ -163,11 +163,11 @@ def _get_emd(
     return Wp_dist
 
 
-def weighted_cost_mtx(X1, X2, w1, w2, p=2, wtfn_type='diff', debug=True):
+def weighted_cost_mtx(X1, X2, w1, w2, p=2, q=2, wtfn_type='diff', debug=False):
     proj_cost1 = _get_proj_cost(X1, w1, p=p)
     proj_cost2 = _get_proj_cost(X2, w2, p=p)
 
-    inner_cost = _get_inner_cost(X1, X2, w1, w2, wtfn_type=wtfn_type, p=p)
+    inner_cost = _get_inner_cost(X1, X2, w1, w2, wtfn_type=wtfn_type, p=p, q=q)
     
     cost_mtx = np.block( [[inner_cost, proj_cost1], [proj_cost2.T, 0] ] )
 
@@ -178,9 +178,9 @@ def weighted_cost_mtx(X1, X2, w1, w2, p=2, wtfn_type='diff', debug=True):
 
     return cost_mtx
 
-def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
+def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2, q=2):
     # Assumes that X1.shape=(n1, d) and X2.shape=(n2, d)
-    naive_inner_cost = _pnorm(X1[:, None, :] - X2[None, :, :], axis=-1, p=p)
+    naive_inner_cost = _pnorm(X1[:, None, :] - X2[None, :, :], axis=-1, p=q)
 
     # Assumes that X1.shape=(n1, d) and X2.shape=(n2, d)
     # assumes w1, w2 are either None or vectors/lists of scalars
@@ -190,10 +190,13 @@ def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
             X1 = np.multiply(X1, w1)
             X2 = np.multiply(X2, w2)
     elif wtfn_type=='prevalence':
-        weight_mtx = np.add.outer(w1, w2) / 2.
-        conj_proj_1 = _get_proj_cost(X1, 1 - w1, p=p).reshape(w1.shape)
-        conj_proj_2 = _get_proj_cost(X2, 1 - w2, p=p).reshape(w2.shape)
-        conj_proj = np.add.outer( np.power(conj_proj_1, p), np.power(conj_proj_2, p) )
+        weight_mtx = np.add.outer(w1, w2) 
+        conj_proj_1 = _get_proj_cost(X1, 1 - w1, p=q).reshape(w1.shape)
+        conj_proj_2 = _get_proj_cost(X2, 1 - w2, p=q).reshape(w2.shape)
+        conj_proj = np.abs(np.subtract.outer(conj_proj_1, conj_proj_2))
+        ##### OLD DEFINITION: DEPRECATED ####
+        # conj_proj = np.power( np.add.outer( np.power(conj_proj_1, p), np.power(conj_proj_2, p) ), 1/p)
+        ##### OLD DEFINITION: DEPRECATED ####
     elif wtfn_type=='diff':
         weight_mtx = 1 + np.abs(np.subtract.outer(w1, w2))
     elif wtfn_type=='coord':
@@ -202,22 +205,22 @@ def _get_inner_cost(X1, X2, w1, w2, wtfn_type='diff', p=2):
         X1 = np.concatenate([X1, w1], axis=-1)
         X2 = np.concatenate([X2, w2], axis=-1)
         naive_inner_cost = X1[:, None, :, :] - X2[None, :, :, :]
-        inner_cost = _pnorm(naive_inner_cost, axis=(-1, -2), p=p)
+        inner_cost = _pnorm(naive_inner_cost, axis=(-1, -2), p=q)
 
     if not wtfn_type=='coord':
         inner_cost = np.multiply(naive_inner_cost, weight_mtx)
 
     if wtfn_type=='prevalence':
-        inner_cost = np.power( np.power(inner_cost, p) + conj_proj, 1/p )
+        inner_cost = np.power( np.power(inner_cost, p) + np.power(conj_proj, p), 1/p ) / 2.
 
     return inner_cost
 
 # length of perpendicular segment connecting X to its nearest point on y=x; note that 2D assumption (X \subset R2) is important here
-def _get_proj_cost(X, w, p=2, debug=True):
+def _get_proj_cost(X, w, p=2, debug=False):
     if w is None:
         w = np.ones((X.shape[0],))
 
-    assert len(X)==len(w), "There must be as many weight values as diagram points."
+    assert len(X)==len(w), f"There must be as many weight values as diagram points: X and w have shapes {X.shape} and {w.shape}, respectively."
 
     # diagonal projection cost for all cycles assuming uniform prevalence scores of 1
     if p < np.inf:

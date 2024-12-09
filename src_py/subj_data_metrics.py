@@ -18,8 +18,8 @@ def spd_cos(X,Y, sym=True, normed=True):
     check.shape(X,Y)
 
     if sym:
-        X = symmetrize(X)
-        Y = symmetrize(Y)
+        X = _symmetrize(X)
+        Y = _symmetrize(Y)
 
     # note that we are overloading the signifier "normed" and using it in two distinct senses here: one refers to the magnitude of entries
     # in X and Y, and the other refers to our decision on whether or not to normalize by product of sqrt(var).
@@ -40,6 +40,13 @@ def inner(X,Y):
     y = Y.flatten()
     inner = spd_cos(x,y, sym=False, normed=False)
     return inner
+
+def Frob_dist(X,Y):
+    check.symmetric(X)
+    check.symmetric(Y)
+    D = X - Y
+    dist = np.power( np.sum( np.power(D.flatten(), 2) ), 1/2)   # equal to Tr(D.T @ D) since X and Y are both symmetric
+    return dist
 ############################################################################################################################################
 
 
@@ -75,27 +82,40 @@ def _ztrans(X):
 
 ############################################################################################################################################
 # computes the geodesic distance between X and Y on the positive-definite cone (NOTE: only feasible for very small spd matrices X and Y, n<~50 ??)
-def geodesic(X,Y):
+def geodesic(X,Y, tol=1e-6):
     check.shape(X,Y)
-    X = symmetrize(X)
-    Y = symmetrize(Y)
+    X = _symmetrize(X)
+    Y = _symmetrize(Y)
 
-    from pyriemann.utils.distance import distance_riemann
-    try:
-        spd_dist = distance_riemann(X,Y)
-    except np.linalg.LinAlgError:
-        spd_dist = distance_riemann(_regularize_sym(X), _regularize_sym(Y))
-    return spd_dist
+    if np.allclose(X, Y):
+        return 0
+    else:
+        from pyriemann.utils.distance import distance_riemann
+        try:
+            spd_dist = distance_riemann(X,Y)
+        except (np.linalg.LinAlgError, FloatingPointError) as err:
+            print(f"Error: {err}")
+            from pyriemann_addons import _regularize_SPD_mtx
+            spd_dist = distance_riemann(
+                    _regularize_SPD_mtx(X, verbose=False, tol=tol), 
+                    _regularize_SPD_mtx(Y, verbose=False, tol=tol)
+                    )
+            print(f"Riemannian SPD distance: {spd_dist}")
+        return spd_dist
 ############################################################################################################################################
 
 
+## HELPER FUNCTIONS
 ############################################################################################################################################
 # checks that input X is either a symmetric matrix or the vectorized upper triangle of one; returns a symmetric matrix of X
-def symmetrize(X):
+def _symmetrize(X, diag_val=1):
     dims = X.shape
     check.maxdims(dims, d=2)
     if len(dims) < 2:
-        X = _symmtx(X)
+        # X = _symmtx(X, diag_val=diag_val)
+        from scipy.spatial.distance import squareform
+        X = squareform(X)
+        np.fill_diagonal(X, diag_val)
 
     check.symmetric(X)
     return X
@@ -124,4 +144,9 @@ def _regularize_sym(X, eps=1e-6):
 
     X = X + max_l*eps*np.eye(n)
     return X
+
+# checks if input matrix X has trace approximately 0 (after max-normalizing entries)
+def _trace0(X, tol=1e-6):
+    X = X/np.max(np.abs(X))
+    return np.abs(np.trace(X)) < tol
 ############################################################################################################################################

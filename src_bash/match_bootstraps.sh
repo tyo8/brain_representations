@@ -45,8 +45,8 @@ while getopts ":b:s:f:t:n:D:m:" opt; do
 done
 
 ### paths to code ###
-xtr_script="${base_dir}/src_py/interval-matching-precomp_metric/match/utils_PH/xtr_script.py"
-match_scripter="${base_dir}/src_bash/submit_match_sbatch.sh"
+extract_src="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/extract.py"
+match_src="${base_dir}/src_bash/submit_match_sbatch.sh"
 
 ### node exclude list: maybe do not include for parallel case? ###
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
@@ -54,12 +54,18 @@ match_scripter="${base_dir}/src_bash/submit_match_sbatch.sh"
 ############################### Write the input and the script ##############################
 
 distlists=$(cat ${distlists_fpath})
-echo "Matching cycles in ${samps} phoms in homology dimension ${match_homdim}."
-printf '\n\n'
+tags=""
+xtr_only=false
 
-if [ -f $tagfile ]
+if [ -f $tagfile ] && [[ "${samps}" -gt "0" ]]
 then
+	echo "Matching cycles in ${samps} phoms in homology dimension ${match_homdim}. Pulling from ${distlists_fpath}."
+	printf '\n\n'
 	tags=$( cat ${tagfile} | head -$samps )
+elif [[ "${samps}" -eq "0" ]]
+then
+	echo "Specified that samps=${samps} bootstraps are to be used; skipping matching and proceeding with extraction only." 
+	xtr_only=true
 else
 	echo "Error: no tagfile given"
 	exit
@@ -67,6 +73,8 @@ fi
 
 for distlist in ${distlists}
 do
+	echo ""
+	echo "Iterating through ${distlist}..."
     	for distname in $(cat $distlist)
     	do
 		data_label=$(basename ${distname} | cut -d. -f 1)
@@ -81,11 +89,24 @@ do
 		mkdir -p $phomdir
 		mkdir -p $matchdir
 
+		# Extract bar and tightrep indices from Ripser output
 		phomX_fpath="${outdir}/phom_X.txt"
-		# submit persistence job for dX
-		###############
-		python ${xtr_script} -x ${phomX_fpath} -0 -w 
-		###############
+		if [ -f ${phomX_fpath/phom_X/bars_X} ]
+		then
+			echo "Skipping extraction. Bars output file already exists:"
+			ls ${phomX_fpath/phom_X/bars_X}
+		else
+			python ${extract_src} -x ${phomX_fpath} -0 -w 
+			if $xtr_only
+			then
+				echo "extracting from:"
+				ls ${phomX_fpath}
+			fi
+		fi
+		if $xtr_only
+		then
+			continue
+		fi
 
     		for tag in $tags
 		do
@@ -99,12 +120,12 @@ do
 			fi
 
 			# extract and write diagram summaries from Ripser output
-			python ${xtr_script} -x ${phomY_fpath} -0 -w
-			python ${xtr_script} -x ${phomY_fpath/phomY/phomXZ} -0 -w -i
-			python ${xtr_script} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
+			python ${extract_src} -x ${phomY_fpath} -0 -w
+			python ${extract_src} -x ${phomY_fpath/phomY/phomXZ} -0 -w -i
+			python ${extract_src} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
 		
 			# script submitter for matching job
-			${match_scripter} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb} -s ${subbase_dir}
+			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb} -s ${subbase_dir}
 		done
 	done
 done
