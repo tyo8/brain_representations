@@ -3,7 +3,7 @@
 set -o nounset
 
 ### bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations/"
+base_dir="interval-matching_bootstrap/"
 subbase_dir="${base_dir}/bootstrap_benchmarks"
 tagpath="${base_dir}/taglist.txt"
 
@@ -43,7 +43,7 @@ while getopts ":b:s:f:n:D:c:" opt; do
 done
 
 ### paths to code ###
-prev_scr="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/prevalence.py"
+prev_scr="${base_dir}/utils_match/prevalence.py"
 
 distlists=$(cat ${distlists_fpath})
 

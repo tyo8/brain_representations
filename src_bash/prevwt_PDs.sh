@@ -1,5 +1,5 @@
-base_dir=${1:-"/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt"}
-src_fpath=${2:-"/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/figures/prevwt_PD.py"}
+base_dir=${1:-"interval-matching_bootstrap"}
+src_fpath=${2:-"interval-matching_bootstrap/visualization/prevwt_PD.py"}
 dim=${3:-1}
 num_bootstraps=${4:-1000}
 

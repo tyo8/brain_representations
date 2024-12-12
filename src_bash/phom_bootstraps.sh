@@ -3,7 +3,7 @@
 set -o nounset
 
 ### bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations/"
+base_dir="interval-matching_bootstrap/"
 subbase_dir="${base_dir}/bootstrap_benchmarks"
 tagpath="${base_dir}/taglist.txt"
 
@@ -52,13 +52,13 @@ done
 
 ### paths to code ###
 # Base version of Ripser:
-ripser_rep_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
+ripser_rep_path="interval-matching_bootstrap/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
 
 # Ripser variant for image persistence (default option):
-ripser_img_path="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
+ripser_img_path="interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 # Script to calcluate and save lower distance matrices of bootstrapped spaces
-ldm_script="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/ldm_script.py"
+make_ldm_images="${base_dir}/utils_match/make_ldm_images.py"
 
 # Batch job submission script 
 ripser_scripter="${base_dir}/src_bash/submit_ripser_sbatch.sh"
@@ -131,16 +131,16 @@ do
 
     		for tag in $tags
 		do
-			# compute dZ_(tag) and dY_(tag) from dX and subsample indices (via `_subsamp_dZ` subfunction of `create_matrices_image.py')
-			# make dXZ_(tag) and dYZ_(tag) (via `create_matrices_image.py`)
+			# compute dZ_(tag) and dY_(tag) from dX and subsample indices (via `_subsamp_dZ` subfunction of `make_ldm_images.py')
+			# make dXZ_(tag) and dYZ_(tag) (via `make_ldm_images.py`)
 			dY_fpath=${ldm_dir}"/dY_${tag}.ldm"
 			dXZ_fpath=${ldm_dir}"/dXZ_${tag}.ldm"
 			dYZ_fpath=${ldm_dir}"/dYZ_${tag}.ldm"
 			dZ_fpath=${ldm_dir}"/dZ_${tag}.ldm"
 			if ! test -f $dZ_fpath
 			then
-				python ${ldm_script} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
-					printf "Failed to parse arguments to ldm_script (likely unreadable tag): \n${tag}\n\n" continue
+				python ${make_ldm_images} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
+					printf "Failed to parse arguments to make_ldm_images (likely unreadable tag): \n${tag}\n\n" continue
 			fi
 
 			# name the (generic type of) output path for persistent homology data

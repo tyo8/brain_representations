@@ -3,7 +3,7 @@
 set -o nounset
 
 ### bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations"
+base_dir="interval-matching_bootstrap"
 subbase_dir="${base_dir}/bootstrap_benchmarks"
 tagfile="${base_dir}/taglist.txt"
 
@@ -45,7 +45,7 @@ while getopts ":b:s:f:t:n:D:m:" opt; do
 done
 
 ### paths to code ###
-extract_src="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/extract.py"
+extract_src="${base_dir}/utils_match/extract.py"
 match_src="${base_dir}/src_bash/submit_match_sbatch.sh"
 
 ### node exclude list: maybe do not include for parallel case? ###

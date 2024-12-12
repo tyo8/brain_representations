@@ -3,7 +3,7 @@
 set -o nounset
 
 ## bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations"
+base_dir="interval-matching_bootstrap"
 script_dir="${base_dir}/bootstrap_benchmarks"
 
 phomX_fpath=""
@@ -48,7 +48,7 @@ while getopts ":x:y:D:f:d:m:p:t:s:" opt; do
 done
 
 ### paths to code ###
-matching="${base_dir}/src_py/interval-matching_bootstrap/match/utils_PH/matching.py"
+matching="${base_dir}/utils_match/matching.py"
 
 echo "\
 \

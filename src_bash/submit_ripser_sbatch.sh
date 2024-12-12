@@ -9,7 +9,7 @@ ldmZ_fpath=""
 partition="tier2_cpu"
 data_label="test"
 maxtime_str="23:55:00"
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
+ripser_fpath="interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 while getopts ":x:z:f:o:d:i:m:p:t:D:r:s:" opt; do
   case $opt in
