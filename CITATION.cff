@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Easley"
+  given-names: "Ty"
+  orcid: "https://orcid.org/0000-0002-8215-2598"
+title: "Brain Representations"
+version: 1.0
+date-released: 2024-12-10
+url: "https://github.com/tyo8/brain_representations"

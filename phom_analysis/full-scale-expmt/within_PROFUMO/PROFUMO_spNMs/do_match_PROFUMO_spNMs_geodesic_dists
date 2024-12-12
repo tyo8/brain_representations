@@ -4,15 +4,18 @@
 #SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/match_PROFUMO_spNMs_geodesic_dists.out
 #SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/logs/match_PROFUMO_spNMs_geodesic_dists.err
 #SBATCH --time=23:55:00
-#SBATCH --partition=small
+#SBATCH --partition=tier2_cpu
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=25gb
 
-match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/match/utils_PH/match_script.py
+match_script=/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/match/utils_PH/match_script.py
 
 phomX_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_X.txt
 phomY_fpath=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_geodesic_dists/phom_out/phomY__d79uf_3V92_ff_7__n__795___-z_-ln3v_P931f9____dZ___v9N__et97_7_v__v_-__-____v_z--f7___7_fx0__7_3v__62_____63X999T___39__X3_f_3____v_v_79__r_39__rb_-3_-_9vzv_3b_8_b_-v8H.txt
 dim=1
 
+echo "phomX_fpath: \\'${phomX_fpath}\\'"
+echo "phomY_fpath: \\'${phomY_fpath}\\'"
 
 python ${match_script} -x ${phomX_fpath} -y ${phomY_fpath} --dim ${dim} -M -d
 

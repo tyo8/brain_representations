@@ -9,7 +9,7 @@
 #SBATCH --mem=50gb
 
 dim=1
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 ldmX_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dXZ_P9__3_7n31_-_f_7zfv____9_n_e_9-b__7__vv_______v9_7fL_v__3__rb_7tv__9-r_st_1vd1-_99O5_fd_-t______r-______v_-7f93_b__73-X_____7vzu_37fv_37_9r___-vp9vc-_7___8_q_7_3_9X__8H.ldm"
 ldmZ_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_spNMs/phom_data_PROFUMO_spNMs_Psim_ztrans_dists/dist_mtxs/dZ_P9__3_7n31_-_f_7zfv____9_n_e_9-b__7__vv_______v9_7fL_v__3__rb_7tv__9-r_st_1vd1-_99O5_fd_-t______r-______v_-7f93_b__73-X_____7vzu_37fv_37_9r___-vp9vc-_7___8_q_7_3_9X__8H.ldm"

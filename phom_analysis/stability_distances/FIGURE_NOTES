@@ -1,0 +1,5 @@
+1. Show Wp(X,Y) over (all 36) embedding-dimension + noise proportion combinations (for choice of X, Y pair)
+	a. Wasserstein distance --> Wp(X,y) - mean(Wp(Xhat_i, Yhat_i))
+	b. Wasserstein distance --> var(Wp(Xhat_i, Yhat_i))
+	c. Wasserstein distance --> mean(Wphat(X,Y)_i)
+2. Wp_XXhat_i vs. PDXhat_diag_i vs. dIMp_XXhat_i (for each choice of X): scatter marker type corresponds to noise level, color to embedding dimension?

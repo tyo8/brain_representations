@@ -1,9 +1,10 @@
 #!/bin/sh
 
-#SBATCH --job-name=Schaefer1000pNMs_geodesic
-#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer1000pNMs_geodesic.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer1000pNMs_geodesic.err
-#SBATCH --partition=medium
+#SBATCH --job-name=Schaefer1000pNMs_geodesicdists
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer1000pNMs_geodesicdists.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer1000pNMs_geodesicdists.err
+#SBATCH --partition=tier2_cpu
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --time=167:55:00
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
@@ -12,8 +13,14 @@
 subj_list=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer1000_pNMs/subj_list_pNMs.csv
 subj_dist=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer1000_pNMs/Schaefer1000_pNMs_geodesic_dists.txt
 
+printf "Computing dissimilarity matrix...\n\n"
+printf "pulling subject data from: \n${subj_list}\n"
+printf "sample data paths:\n$(cat ${subj_list} | head -3)\n...\n\n"
+printf "saving dissimilarity matrix to: \n${subj_dist}\n"
+
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
-python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_dist} geodesic True
 
-echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer1000_pNMs/pNMsSchaefer1000_dists.csv
+		
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py -i ${subj_list} -o ${subj_dist} -m geodesic -D
 
+echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer1000_pNMs/distlist_pNMsSchaefer1000.csv

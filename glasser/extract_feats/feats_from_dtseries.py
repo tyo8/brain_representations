@@ -2,8 +2,9 @@ import os
 import sys
 import csv
 import numpy as np
+import nibabel as nb
 
-def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/glasser/timeseries/%s_%s.csv',
+def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/glasser/timeseries/%s_%s.ptseries.nii',
         subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
@@ -11,7 +12,6 @@ def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/gla
 
     label_list = ['REST1_LR', 'REST1_RL', 'REST2_LR', 'REST2_RL']
 
-    genpath_out = '/scratch/tyoeasley/brain_representations/glasser/%s/sub-%s.csv'
     
     for sID in subjID_list:
         runs_data = [None]*len(label_list)
@@ -26,7 +26,7 @@ def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/gla
                 runs_data.pop(-1)
 
         ts_data = np.concatenate(runs_data, axis=1)
-        outpath_type = genpath_out % ('%s', sID) 
+        outpath_type = f"/scratch/tyoeasley/brain_representations/glasser/%s/sub-{sID}.csv"
         feats_from_dtseries(ts_data, outpath_type, do_partial=True)
 
 
@@ -48,7 +48,7 @@ def feats_from_dtseries(ts_data, outpath_type, do_partial=True):
         write_out(outpath_type % 'partial_NMs', partial_netmats)
 
 def _load_data(fpath, dimval=360):
-    ts_data = np.genfromtxt(fpath)
+    ts_data = np.array( nb.load(fpath).get_fdata() )
     if ts_data.shape[0] != dimval:
         ts_data = ts_data.T
 

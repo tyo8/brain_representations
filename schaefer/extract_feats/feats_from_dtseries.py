@@ -3,8 +3,11 @@ import sys
 import csv
 import numpy as np
 
-def iter_extract_ICA(genpath = '/scratch/tyoeasley/brain_representations/schaefer/%s/d%d/',
-        dimlist = [100, 200, 300, 600, 1000],
+def_dimlist = [1000]
+# def_dimlist = [100, 200, 300, 600, 1000]
+
+def iter_extract_Schaefer(genpath = '/scratch/tyoeasley/brain_representations/schaefer/%s/d%d/',
+        dimlist = def_dimlist,
         subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
@@ -42,7 +45,7 @@ def feats_from_dtseries(ts_data, outpath_type, do_partial=True):
     if do_partial:
         # compute partial correlation matrix of ts_data
         invcorr = np.linalg.pinv(netmats, hermitian=True)
-        norms = np.diag(np.power(np.diag(invcorr), -1/2))
+        norms = np.diag( np.pinv( np.power(np.diag(invcorr), 1/2), hermitian=True ) )
         partial_netmats = norms @ invcorr @ norms
 
     write_out(outpath_type % 'Amplitudes', amps)
@@ -71,4 +74,4 @@ def write_out(outpath, data):
 
 
 if __name__=="__main__":
-    iter_extract_ICA()
+    iter_extract_Schaefer()

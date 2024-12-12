@@ -9,7 +9,7 @@
 #SBATCH --mem=50gb
 
 dim=1
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-image-persistence-simple/ripser-image"
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-image-persistence-simple/ripser-image"
 
 ldmX_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/grad100_Maps/phom_data_grad100_Maps_Psim_dists/dist_mtxs/dYZ__d79uf_3V92_ff_7__n__795___-z_-ln3v_P931f9____dZ___v9N__et97_7_v__v_-__-____v_z--f7___7_fx0__7_3v__62_____63X999T___39__X3_f_3____v_v_79__r_39__rb_-3_-_9vzv_3b_8_b_-v8H.ldm"
 ldmZ_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_grad/grad100_Maps/phom_data_grad100_Maps_Psim_dists/dist_mtxs/dZ__d79uf_3V92_ff_7__n__795___-z_-ln3v_P931f9____dZ___v9N__et97_7_v__v_-__-____v_z--f7___7_fx0__7_3v__62_____63X999T___39__X3_f_3____v_v_79__r_39__rb_-3_-_9vzv_3b_8_b_-v8H.ldm"

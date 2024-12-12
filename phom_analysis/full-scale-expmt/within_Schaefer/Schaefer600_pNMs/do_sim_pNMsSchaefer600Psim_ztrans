@@ -1,9 +1,10 @@
 #!/bin/sh
 
-#SBATCH --job-name=Schaefer600pNMs_Psim_ztrans
-#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer600pNMs_Psim_ztrans.out
-#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer600pNMs_Psim_ztrans.err
-#SBATCH --partition=medium
+#SBATCH --job-name=Schaefer600pNMs_Psim_ztransdists
+#SBATCH --output=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer600pNMs_Psim_ztransdists.out
+#SBATCH --error=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/logs/Schaefer600pNMs_Psim_ztransdists.err
+#SBATCH --partition=tier2_cpu
+#SBATCH --account=janine_bijsterbosch
 #SBATCH --time=167:55:00
 #SBATCH --nodes=1
 #SBATCH --tasks-per-node=1
@@ -12,8 +13,14 @@
 subj_list=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer600_pNMs/subj_list_pNMs.csv
 subj_dist=/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer600_pNMs/Schaefer600_pNMs_Psim_ztrans_dists.txt
 
+printf "Computing dissimilarity matrix...\n\n"
+printf "pulling subject data from: \n${subj_list}\n"
+printf "sample data paths:\n$(cat ${subj_list} | head -3)\n...\n\n"
+printf "saving dissimilarity matrix to: \n${subj_dist}\n"
+
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
-python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py ${subj_list} ${subj_dist} Psim_ztrans True
 
-echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer600_pNMs/pNMsSchaefer600_dists.csv
+		
+python /scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py -i ${subj_list} -o ${subj_dist} -m Psim_ztrans -D
 
+echo ${subj_dist} >> /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_Schaefer/Schaefer600_pNMs/distlist_pNMsSchaefer600.csv

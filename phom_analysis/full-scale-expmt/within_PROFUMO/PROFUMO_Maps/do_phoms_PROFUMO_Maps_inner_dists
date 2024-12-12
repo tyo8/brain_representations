@@ -9,7 +9,7 @@
 #SBATCH --mem=7gb
 
 dim=1
-ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching-precomp_metric/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
+ripser_fpath="/scratch/tyoeasley/brain_representations/src_py/interval-matching_bootstrap/modified_ripser/ripser-tight-representative-cycles/ripser-representatives"
 
 ldmX_fpath="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_PROFUMO/PROFUMO_Maps/phom_data_PROFUMO_Maps_inner_dists/dist_mtxs/dY___7_f7___795___7n____15__-_931v_f3__31_b_l__9v_9_d9__f__7_73--7vu-3_39f_977__v_3v_71_9__vx9-mv__J9_8-_37___u_3_-b5v__7v_f9__3_0___Dnt9_e___8397_76f_3__fb-___6__9__-_v8H.ldm"
 ldmZ_fpath=""
