@@ -13,20 +13,26 @@ def _get_pathlist(pathlist_fpath):
     return pathlist
 
 #######################################################################################################################
-def all_dist_plots(pathlist, stat_types=["prevalence", "B1match"], write_mode=True):
+def all_dist_plots(
+        pathlist, 
+        stat_types=["prevalence", "B1match"], 
+        dim_types=["feat_num","rank"], 
+        write_mode=True
+        ):
     for stat_type in stat_types:
-        reduced_pathlist = [path for path in pathlist if stat_type in path]
-        
-        stat_df = _pathlist_to_df(pathlist)
-        stat_df.rename(columns={"statvals": stat_type}, inplace=True)
-        ### debug code ###
-        print(stat_df)
-        if write_mode:
-            stat_df.to_csv(f"{stat_type}_df.csv")
-        ### debug code ###
+        for dim_type in dim_types:
+            reduced_pathlist = [path for path in pathlist if (stat_type in path and dim_type in path)]
+            
+            stat_df = _pathlist_to_df(pathlist)
+            stat_df.rename(columns={"statvals": stat_type}, inplace=True)
+            ### debug code ###
+            print(stat_df)
+            if write_mode:
+                stat_df.to_csv(f"{stat_type}_df.csv")
+            ### debug code ###
 
-        summ_lineplots(stat_df, stat_type, write_mode=write_mode)
-        # color_dist_plots(stat_df, stat_type, write_mode=write_mode)
+            summ_lineplots(stat_df, stat_type, dim_type=dim_type, write_mode=write_mode)
+            # color_dist_plots(stat_df, stat_type, write_mode=write_mode)
 
 
 def summ_lineplots(stat_df, stat_type, dim_type="feat_num", write_mode=True, outdir=os.getcwd()):
