@@ -17,17 +17,16 @@ The subdirectories of this repository are listed below, grouped approximately by
 
 ### Source Code
 Centrally houses code base for project; data cleaning & featurization, calculation, visualization, and key scripting functions are found here.
-#### `src\_py`
-Python repositorty. 
-- `interval-matching_bootstrap` (separate package, see [documentation](https://github.com/tyo8/interval-matching_bootstrap)
-- `calculate`
-- `figures`
-- `diagram_distances.py`
-- `collate_tagged_data.py`
-- `HCP_utils.py`
-- `toy_models.py`
-- `lindecomp`
-#### `src\_bash`
+#### Python repositorty: `src\_py`
+- `interval-matching_bootstrap` (separate package, see [documentation](https://github.com/tyo8/interval-matching_bootstrap))
+- `calculate`:
+- `figures`:
+- `diagram_distances.py`:
+- `collate_tagged_data.py`:
+- `HCP_utils.py`:
+- `toy_models.py`:
+- `lindecomp`:
+#### Bash repository: `src\_bash`
 - `phom_bootstraps.sh`
 - `match_bootstraps.sh`
 - `submit_*.sh`
