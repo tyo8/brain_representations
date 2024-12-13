@@ -52,28 +52,28 @@ Before running the code to perform cycle matching [1] in this repository, one ne
 This repo leverages several Python packages. These dependencies are listed below; when only a small number of scripts/modules in the repository use a given package, they are listed beneath the dependency.
 
 #### Parsing Neuroimaging Data
-[nibabel](https://nipy.org/nibabel/)
-[nilearn](https://nilearn.github.io/stable/index.html)
+- [nibabel](https://nipy.org/nibabel/)
+- [nilearn](https://nilearn.github.io/stable/index.html)
 	
 #### Canonical Correlation Analysis (regularized)
-[rcca](https://github.com/gallantlab/pyrcca)
+- [rcca](https://github.com/gallantlab/pyrcca)
 	
 #### Persistent Homology
-[interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) [4]
-[giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) [5]
+- [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) [4]
+- [giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) [5]
 	
 #### Figures and Statistics
-[python optimal transport library](https://pythonot.github.io/index.html)
-[pyRiemann](???)
-[scikit-palm](???)
+- [python optimal transport library](https://pythonot.github.io/index.html)
+- [pyRiemann](???)
+- [scikit-palm](???)
 	
 #### Background
-[numpy](https://numpy.org/)
-[scipy](https://scipy.org/)
-[pandas](https://pandas.pydata.org/)
-[seaborn](https://seaborn.pydata.org/)
-[matplotlib](https://matplotlib.org/stable/index.html)
-[scikit-learn](https://scikit-learn.org/stable/)
+- [numpy](https://numpy.org/)
+- [scipy](https://scipy.org/)
+- [pandas](https://pandas.pydata.org/)
+- [seaborn](https://seaborn.pydata.org/)
+- [matplotlib](https://matplotlib.org/stable/index.html)
+- [scikit-learn](https://scikit-learn.org/stable/)
 
 ## Academic use
 
