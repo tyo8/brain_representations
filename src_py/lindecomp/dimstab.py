@@ -4,20 +4,22 @@ import csv
 import time
 import dill
 import datetime
-import HCP_utils
 import pull_cancorrs
 import numpy as np
 import matplotlib.pyplot as plt
 import perm as rldp
-import brainrep as ld_br
+import brainrep as br
 import analyze_CCA_permtests as anl_pt
+
+sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
 
 def main(argvals):
     ## assigning named variables to user inputs
     # filepath to list of names of datasets
     dataset_fname=argvals[1]
     if ".csv" in dataset_fname:
-        reps = HCP_utils.load_reduced_data(dataset_fname)
+        reps = hutils.load_reduced_data(dataset_fname)
     elif ".brep" in dataset_fname:
         with open(dataset_fname,'rb') as fin:
             reps = dill.load(fin)
@@ -43,7 +45,7 @@ def main(argvals):
 
     # path to list of brain representation names (same order as datasets are listed in dataset_fname)
     listpath=argvals[4]
-    namelist=HCP_utils.load_namelist(listpath)
+    namelist=hutils.load_namelist(listpath)
     ## debug code
     print("Namelist read:")
     print(namelist)
@@ -101,9 +103,9 @@ def run_dimensional_stability_tst(reps,output_basedir,permset,namelist,regval_li
         data_outdir = os.path.join(output_basedir, "datasets", regval_tag)
         nulldist_outdir = os.path.join(output_basedir, "null_dists", regval_tag)
         cancorrplots_outdir = os.path.join(output_basedir, "cancorr_plots", regval_tag)
-        HCP_utils.check_to_make_dirs([data_outdir,nulldist_outdir,cancorrplots_outdir])
+        hutils.check_to_make_dirs([data_outdir,nulldist_outdir,cancorrplots_outdir])
 
-        ld_br.pairwise_lindecomp2(data_outdir, reps, namelist, reglist=reglist_i, decomp_method=decomp_method)
+        br.pairwise_lindecomp2(data_outdir, reps, namelist, reglist=reglist_i, decomp_method=decomp_method)
         pull_cancorrs.pull_res_cancorrs(data_outdir)
         nulldist_outdir = rldp.run_permutation_testing(reps, nulldist_outdir, permset, namelist, reglist_i, decomp_method, n_workers)
         dim_vs_reg_list[i] = anl_pt.visualize_permtests(cancorrplots_outdir, data_outdir, nulldist_outdir, reglist_i)

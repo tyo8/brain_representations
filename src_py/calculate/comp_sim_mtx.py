@@ -1,13 +1,15 @@
 import os
 import csv
 import ast
+import sys
 import argparse
 import permuteHCP
 import numpy as np
-import HCP_utils as hutils
 import subj_data_metrics as sdm
 from sklearn.metrics import pairwise_distances
 
+sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
 
 # receives path to .csv file containing list of subject data file names
 # outputs a subject-by-subject matrix of Pearson correlation coefficients
