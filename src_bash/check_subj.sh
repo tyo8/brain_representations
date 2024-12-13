@@ -1,11 +1,5 @@
 #!/bin/sh
 
-###### 
-# for a given subject, check that its data exists in the cluster's Human Connectome Project archive
-###### 
-
-
-
 report_file=/scratch/tyoeasley/brain_representations/hcpdb_data_report.txt
 
 subj_path_type=${2:-/ceph/hcpdb/archive/HCP_1200/arc001/%s_3T/RESOURCES/MSMAllDeDrift/MNINonLinear/Results/rfMRI_REST%s_%s/rfMRI_REST%s_%s_Atlas_MSMAll_hp2000_clean.dtseries.nii}

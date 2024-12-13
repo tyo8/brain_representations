@@ -86,7 +86,7 @@ then
 	tags=$( cat ${tagpath} | head -$samps )
 else
 	echo "Running ${samps} bootstraps at a sampling proportion of ${bootstrap_prop} with maximum homology dimension ${maxhomdim}."
-	tags=$(python ${gentags_script} --count ${samps} --dims ${ndims} --proportion ${bootstrap_prop})
+	tags=$(python3 ${gentags_script} --count ${samps} --dims ${ndims} --proportion ${bootstrap_prop})
 	for tag in $tags
 	do
 		echo $tag >> $tagpath
@@ -139,7 +139,7 @@ do
 			dZ_fpath=${ldm_dir}"/dZ_${tag}.ldm"
 			if ! test -f $dZ_fpath
 			then
-				python ${make_ldm_images} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
+				python3 ${make_ldm_images} -x ${dX_fpath} -t "${tag}" -z ${dZ_fpath} -y ${dY_fpath} -i ${dXZ_fpath} -j ${dYZ_fpath} || \
 					printf "Failed to parse arguments to make_ldm_images (likely unreadable tag): \n${tag}\n\n" continue
 			fi
 

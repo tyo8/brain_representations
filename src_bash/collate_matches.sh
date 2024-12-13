@@ -70,7 +70,7 @@ do
 	
 		# collate outputs across group of tags
 		###############
-		python ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} -d "dictlist"
+		python3 ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} -d "dictlist"
 		###############
 	done
 done

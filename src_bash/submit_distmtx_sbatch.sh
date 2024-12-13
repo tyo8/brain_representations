@@ -58,7 +58,7 @@ subbase_dir="${base_dir}/${modality}_${feature}"
 methods_fpath=${subbase_dir}"/methods.csv"
 methods=$(cat ${methods_fpath})
 # path to source file
-pysrc_fpath="/scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py"
+pysrc_fpath="/scratch/tyoeasley/brain_representations/src_py/calculate/comp_sim_mtx.py"
 
 if [ "${feature}" = "Maps" ]
 then
@@ -94,18 +94,18 @@ do
     			exit
 		fi
 		
-		script_dir="${subbase_dir}/permstrapping"
+		subbase_dir="${subbase_dir}/permstrapping"
 		
 		perm_label="${permute_type}Perms_${perm_name}"
-		sbatch_fpath="${script_dir}/do_sim_${feature}${modality}${method}_${perm_label}"  # path to batch submission file
+		sbatch_fpath="${subbase_dir}/do_sim_${feature}${modality}${method}_${perm_label}"  # path to batch submission file
 		label="dists_${perm_label}"
 	else
-		script_dir="${subbase_dir}"
+		subbase_dir="${subbase_dir}"
 
-		sbatch_fpath=${script_dir}"/do_sim_"${feature}${modality}${method}  # path to batch submission file
+		sbatch_fpath=${subbase_dir}"/do_sim_"${feature}${modality}${method}  # path to batch submission file
 		label="dists"	# 'label' was previously either "sims" or "dists" but "sims" use case is deprecated
 	fi
-	subj_dist="${script_dir}/${modality}_${feature}_${method}_${label}.txt"
+	subj_dist="${subbase_dir}/${modality}_${feature}_${method}_${label}.txt"
 
 	if [ "${overwrite}" = "true" ]
 	then
@@ -123,7 +123,7 @@ do
 
 	if [ ! -f "${subj_dist}" ] || [ "${overwrite}" = "true" ]
 	then
-		mkdir -p "${script_dir}"
+		mkdir -p "${subbase_dir}"
 		echo "\
 \
 #!/bin/sh
@@ -139,7 +139,7 @@ do
 #SBATCH --mem=${mem_gb}gb
 
 subj_list=${subbase_dir}/subj_list_${feature}.csv
-subj_dist=${script_dir}/${modality}_${feature}_${method}_${label}.txt
+subj_dist=${subbase_dir}/${modality}_${feature}_${method}_${label}.txt
 
 printf \"Computing dissimilarity matrix...\n\n\"
 printf \"pulling subject data from: \\n\${subj_list}\\n\"
@@ -156,9 +156,9 @@ source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
 			echo "perm_set=${perm_set}" >> ${sbatch_fpath}
 			echo "perm_seed=${perm_seed}" >> ${sbatch_fpath}
 			echo "" >> ${sbatch_fpath}
-			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D -P -t ${permute_type} -s \${perm_set} -r \${perm_seed}" >> ${sbatch_fpath}
+			echo "python3 ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D -P -t ${permute_type} -s \${perm_set} -r \${perm_seed}" >> ${sbatch_fpath}
 		else
-			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D" >> ${sbatch_fpath}
+			echo "python3 ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D" >> ${sbatch_fpath}
 		fi
 
 		echo "" >> ${sbatch_fpath}

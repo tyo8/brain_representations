@@ -4,7 +4,7 @@ set -o nounset
 
 ## bookkeeping paths ###
 base_dir="interval-matching_bootstrap"
-script_dir="${base_dir}/bootstrap_benchmarks"
+subbase_dir="${base_dir}/bootstrap_benchmarks"
 
 phomX_fpath=""
 phomY_fpath=""
@@ -33,7 +33,7 @@ while getopts ":x:y:D:f:d:m:p:t:s:" opt; do
     ;;
     t) maxtime_str=${OPTARG}
     ;;
-    s) script_dir=${OPTARG}
+    s) subbase_dir=${OPTARG}
     ;;
     \?) echo "Invalid option -$OPTARG" >&2
     exit 1
@@ -55,8 +55,8 @@ echo "\
 #!/bin/sh
 
 #SBATCH --job-name=${data_label}_match
-#SBATCH --output=${script_dir}/logs/match_${data_label}.out
-#SBATCH --error=${script_dir}/logs/match_${data_label}.err
+#SBATCH --output=${subbase_dir}/logs/match_${data_label}.out
+#SBATCH --error=${subbase_dir}/logs/match_${data_label}.err
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
 #SBATCH --account=janine_bijsterbosch
@@ -71,7 +71,7 @@ dim=${match_homdim}
 echo \"phomX_fpath: \\\"\${phomX_fpath}\\\"\"
 echo \"phomY_fpath: \\\"\${phomY_fpath}\\\"\"
 
-python \${matching} -x \${phomX_fpath} -y \${phomY_fpath} --dim \${dim} -M -d
+python3 \${matching} -x \${phomX_fpath} -y \${phomY_fpath} --dim \${dim} -M -d
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

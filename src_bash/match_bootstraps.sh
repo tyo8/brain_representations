@@ -45,7 +45,7 @@ while getopts ":b:s:f:t:n:D:m:" opt; do
 done
 
 ### paths to code ###
-extract_src="${base_dir}/utils_match/extract.py"
+extract_src="${base_dir}/src_py/interval-matching_bootstrap/utils_match/extract.py"
 match_src="${base_dir}/src_bash/submit_match_sbatch.sh"
 
 ### node exclude list: maybe do not include for parallel case? ###
@@ -96,7 +96,7 @@ do
 			echo "Skipping extraction. Bars output file already exists:"
 			ls ${phomX_fpath/phom_X/bars_X}
 		else
-			python ${extract_src} -x ${phomX_fpath} -0 -w 
+			python3 ${extract_src} -x ${phomX_fpath} -0 -w 
 			if $xtr_only
 			then
 				echo "extracting from:"
@@ -120,9 +120,9 @@ do
 			fi
 
 			# extract and write diagram summaries from Ripser output
-			python ${extract_src} -x ${phomY_fpath} -0 -w
-			python ${extract_src} -x ${phomY_fpath/phomY/phomXZ} -0 -w -i
-			python ${extract_src} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
+			python3 ${extract_src} -x ${phomY_fpath} -0 -w
+			python3 ${extract_src} -x ${phomY_fpath/phomY/phomXZ} -0 -w -i
+			python3 ${extract_src} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
 		
 			# script submitter for matching job
 			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb} -s ${subbase_dir}

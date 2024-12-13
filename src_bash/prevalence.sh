@@ -69,6 +69,6 @@ do
 
 		# Computes and saves prevalence scores from verbose matches
 		# (add -v option to print prevalence scores to stdout)
-		python ${prev_scr} -i ${verbose_match_fpath} -p ${prevscore_fpath} -m ${B1match_fpath}
+		python3 ${prev_scr} -i ${verbose_match_fpath} -p ${prevscore_fpath} -m ${B1match_fpath}
 	done
 done

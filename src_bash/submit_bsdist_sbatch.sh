@@ -61,7 +61,7 @@ while getopts ":x:y:T:n:D:P:Q:a:v:o:m:p:t:" opt; do
 done
 
 ### paths to code ###
-bsdist_script="${base_dir}/src_py/comp_bootstrap_dists.py"
+bsdist_script="${base_dir}/src_py/calculate/comp_bootstrap_dists.py"
 
 Yname=$(basename $(dirname $(ls ${barY_fpath})))
 
@@ -108,7 +108,7 @@ echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
 echo \"saving results to \${outpath}\"
 
-python \${bsdist_script} -x \${barX_fpath} -y \${barY_fpath} -t \${tagfile} -n \${count} --dim \${dim} -p ${p} -q ${q} -o \${outpath} ${run_suffix}
+python3 \${bsdist_script} -x \${barX_fpath} -y \${barY_fpath} -t \${tagfile} -n \${count} --dim \${dim} -p ${p} -q ${q} -o \${outpath} ${run_suffix}
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 
