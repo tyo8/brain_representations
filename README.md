@@ -16,8 +16,8 @@ In this repository:
 The subdirectories of this repository are listed below, grouped approximately by their role.
 
 ### Source Code
-Centrally houses code base for project; data cleaning & featurization, calculation, visualization, and key scripting functions are found here.
-#### Python repositorty: `src_py`
+Centrally houses code base for project: calculation, visualization, and key scripting functions are found here.
+#### Python repository `src_py`: distance and persistent homology calculations, statistical analysis, and visualization
 - `interval-matching_bootstrap` (separate package, see [documentation](https://github.com/tyo8/interval-matching_bootstrap))
 - `calculate`:
 - `figures`:
@@ -26,28 +26,19 @@ Centrally houses code base for project; data cleaning & featurization, calculati
 - `HCP_utils.py`:
 - `toy_models.py`:
 - `lindecomp`:
-#### Bash repository: `src_bash`
-- `phom_bootstraps.sh`
-- `match_bootstraps.sh`
-- `submit_*.sh`
+#### Bash repository `src_bash`: SLURM scripting at problem scale
+- `phom_bootstraps.sh`:
+- `match_bootstraps.sh`:
+- `submit_*.sh`:
 
-Experiments
-- 'datalists': lists of data files corresponding that help set conditions for specific experiments
-- 'phom_analysis': all persistent homology-based analyses in this project (with the exception of 'metric_tests' and 'bootstrap_benchmarks')
-- 'phom_analysis/full-scale-expmt': scripts, code, and tree structure corresponding to investigation in [*paper*] and corresponding figures
-- 'nonPH_analysis': most notably contains output of CCA analysis of shared information between pairs of brain representations
-- 'metric_tests': **preliminary** testing of the impact of metric choice on persistence data
-- 'bootstrap_benchmarks': benchmarking the cycle registration bootstrapping scheme to test scalability
-- 'output_benchmarks': becnhmarking the computation(al scaling) of Betti curves, Wasserstein distances, and other derivatives of persistence diagrams
-
-Brain Representation Computation/Extraction
+### Data (brain representation computation, extraction, and featurization)
 Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
-- profumo_reps: code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps)
-- gradient_reps: code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
-- ICA_reps: code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
-- glasser: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated data
-- schaefer: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated data
-- yeo: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Yeo-parcellated data
+- `profumo_reps`: code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps)
+- `gradient_reps`: code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
+- `ICA_reps`: code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
+- `glasser`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated data
+- `schaefer`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated data
+- `yeo`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Yeo-parcellated data
 
 ## Preparations
 
