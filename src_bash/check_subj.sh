@@ -8,15 +8,15 @@ subj_path=$(printf ${subj_path_type} $1 "1" "LR" "1" "LR")
 subj_path=${subj_path/HCP_500/HCP_1200}
 subj_path=${subj_path/HCP_900/HCP_1200}
 
-if test -f $subj_path
+if test -s $subj_path
 then
 	subj_path_type=${subj_path_type}
 	# echo "Subject "$1" found in HCP_1200 release" >> ${report_file}
-elif test -f ${subj_path/HCP_1200/HCP_900}
+elif test -s ${subj_path/HCP_1200/HCP_900}
 then
 	# echo "Subject "$1" found in HCP_900 release" >> ${report_file}
 	subj_path_type=${subj_path_type/HCP_1200/HCP_900}
-elif test -f ${subj_path/HCP_1200/HCP_500}
+elif test -s ${subj_path/HCP_1200/HCP_500}
 then
 	# echo "Subject "$1" found in HCP_500 release" >> ${report_file}
 	subj_path_type=${subj_path_type/HCP_1200/HCP_500}

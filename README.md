@@ -31,7 +31,8 @@ Centrally houses code base for project: calculation, visualization, and key scri
 - `match_bootstraps.sh`:
 - `submit_*.sh`:
 
-### Data (brain representation computation, extraction, and featurization)
+### Data 
+#### Brain representation computation, extraction, and featurization
 Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
 - `profumo_reps`: code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps)
 - `gradient_reps`: code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
