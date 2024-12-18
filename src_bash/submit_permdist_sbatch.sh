@@ -67,6 +67,8 @@ sbatch_fpath="${outdir}/do_permdist_${data_label}"
 if $verbose
 then
 	run_suffix="-v "
+else
+	run_suffix=""
 fi
 
 echo "\
