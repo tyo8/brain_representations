@@ -15,20 +15,17 @@ def all_permset_dists(datapath, permbarsX_listpath,
     
     barsX = dgmD._get_bars(datapath, homdim=homdim)
     with open(permbarsX_listpath, 'r') as fin:
-        perm_pathlist = fin.read().split()
+        perm_pathlist = [ _check_and_clean_barspath(ppath, verbose=False) for ppath in fin.read().split() ]
+        if debug:
+            ### debugging code ###
+            print(f"Datapath to bars for permuted dataset (first 11 entries): \n{perm_pathlist[0:10]}")
+            ### debugging code ###
 
     permcount = len(perm_pathlist)
     permdists_out = [None]*permcount
 
     if match_perms:
         data_labels = _parse_pathname(datapath, perm_pathtype=False)
-        if debug:
-            ### debugging code ###
-            for ppath in perm_pathlist:
-                print(f"\nppath: {ppath}")
-                _parse_pathname(ppath, perm_pathtype=True, debug=debug)
-            ### debugging code ###
-        perm_labels_list = [ _parse_pathname(ppath, perm_pathtype=True, debug=True) for ppath in perm_pathlist ]
         matched_perm_pathlist = [ ppath for i,ppath in enumerate(perm_pathlist) if 
                                  (data_labels["modality"], data_labels["feature"], data_labels["metric"])
                                  ==
@@ -37,13 +34,8 @@ def all_permset_dists(datapath, permbarsX_listpath,
         perm_pathlist = matched_perm_pathlist
 
     for i, perm_path in enumerate(perm_pathlist):
-        perm_path = _check_and_clean_barspath(perm_path, verbose=debug)
         perm_labels = _parse_pathname(perm_path, perm_pathtype=True, debug=debug)
 
-        if debug:
-            ### debugging code ###
-            print(f"Datapath to bars for permuted dataset: \n{perm_path}")
-            ### debugging code ###
 
         permbarsX = dgmD._get_bars(perm_path, homdim=homdim)
         dist_summ = permset_distance(
@@ -62,11 +54,11 @@ def all_permset_dists(datapath, permbarsX_listpath,
         print("")
         print("Permutation type(s):", set([ dist["permtype"] for dist in permdists_out ]))
         Wp_X_nullX = np.array( [dist["Wp_XY"] for dist in permdists_out] )
-        print(f"Distribution of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \n{np.histogram(Wp_X_nullX)}")
+        print(f"Distribution of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(Wp_X_nullX)}, sigma={np.std(Wp_X_nullX)}")
         PDX_diag = np.mean(np.array( [dist["PDX_diag"] for dist in permdists_out] ))
         print(f"Wasserstein distance from data persistence module to the diagonal diagram: \n{PDX_diag}")
         PDnullX_diag = np.array( [dist["PDY_diag"] for dist in permdists_out] )
-        print(f"Wasserstein distance from permuted-null persistence modules to the diagonal diagram: \n{np.histogram(PDnullX_diag)}")
+        print(f"Wasserstein distance from permuted-null persistence modules to the diagonal diagram: \nmu={np.mean(PDnullX_diag)}, sigma={np.std(PDnullX_diag)}")
         print("\n")
 
 
