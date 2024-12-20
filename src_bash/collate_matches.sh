@@ -3,7 +3,7 @@
 set -o nounset
 
 ### bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations"
+base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations"
 subbase_dir="${base_dir}/bootstrap_benchmarks"
 tagfile="${base_dir}/taglist.txt"
 
