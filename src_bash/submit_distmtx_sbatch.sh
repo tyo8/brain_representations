@@ -72,6 +72,9 @@ then
 	elif [[ "${modality}" == *"300"* ]]
 	then
 		mem_gb=800
+	elif [[ "${modality}" == *"PROFUMO"* ]]
+	then
+		mem_gb=150
 	fi
 fi
 

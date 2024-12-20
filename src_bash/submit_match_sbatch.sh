@@ -4,7 +4,6 @@ set -o nounset
 
 ## bookkeeping paths ###
 base_dir="interval-matching_bootstrap"
-subbase_dir="${base_dir}/bootstrap_benchmarks"
 
 phomX_fpath=""
 phomY_fpath=""
@@ -33,8 +32,6 @@ while getopts ":x:y:D:f:d:m:p:t:s:" opt; do
     ;;
     t) maxtime_str=${OPTARG}
     ;;
-    s) subbase_dir=${OPTARG}
-    ;;
     \?) echo "Invalid option -$OPTARG" >&2
     exit 1
     ;;
@@ -49,14 +46,15 @@ done
 
 ### paths to code ###
 matching="${base_dir}/utils_match/matching.py"
+logdir=$( dirname ${sbatch_fpath} )
 
 echo "\
 \
 #!/bin/sh
 
 #SBATCH --job-name=${data_label}_match
-#SBATCH --output=${subbase_dir}/logs/match_${data_label}.out
-#SBATCH --error=${subbase_dir}/logs/match_${data_label}.err
+#SBATCH --output=${logdir}/logs/match_${data_label}.out
+#SBATCH --error=${logdir}/logs/match_${data_label}.err
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
 #SBATCH --account=janine_bijsterbosch

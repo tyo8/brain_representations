@@ -125,7 +125,7 @@ do
 			python3 ${extract_src} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
 		
 			# script submitter for matching job
-			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb} -s ${subbase_dir}
+			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb}
 		done
 	done
 done
