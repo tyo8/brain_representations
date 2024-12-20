@@ -3,7 +3,7 @@
 set -o nounset
 
 ## bookkeeping paths ###
-base_dir="interval-matching_bootstrap"
+base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley"
 outdir="${base_dir}/phom_analysis/bootstrap_distances/PROFUMO_vs_null"
 
 barsX_fpath=""
@@ -17,8 +17,10 @@ mem_gb=10
 partition="tier2_cpu"
 maxtime_str="23:55:00"
 
-while getopts ":x:y:D:P:Q:v:o:m:p:t:" opt; do
+while getopts ":b:x:y:D:P:Q:v:o:m:p:t:" opt; do
   case $opt in
+    b) base_dir=${OPTARG}
+    ;;
     x) barsX_fpath=${OPTARG}
     ;;
     y) listPerm_fpath=${OPTARG}
@@ -52,17 +54,21 @@ while getopts ":x:y:D:P:Q:v:o:m:p:t:" opt; do
 done
 
 ### paths to code ###
-permdist_script="${base_dir}/src_py/comp_permtest_dists.py"
+permdist_script="${base_dir}/src_py/calculate/comp_permtest_dists.py"
 
-Permname=$(basename $(dirname $(ls ${listPerm_fpath})))
-
-Permname=${Permname/"phom_data"/"Perm"}
+Permname="$( basename $( dirname $( dirname ${listPerm_fpath} )))_$( basename ${listPerm_fpath} | cut -d'.' -f 1)"
+Permname=${Permname/"distlist_"/}
 data_label="X_vs_${Permname}"
+
+echo "Permutation location: ${listPerm_fpath}"
+echo "Name of permutation set: ${Permname}"
 
 sbatch_fpath="${outdir}/do_permdist_${data_label}"
 if $verbose
 then
 	run_suffix="-v "
+else
+	run_suffix=""
 fi
 
 echo "\
@@ -90,7 +96,7 @@ echo \"listPerm_fpath: \\\"\${listPerm_fpath}\\\"\"
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
 echo \"saving results in \${outdir}\"
 
-python \${permdist_script} -x \${barsX_fpath} -y \${listPerm_fpath} --dim \${dim} -p ${p} -q ${q} -o \${outdir} ${run_suffix}
+python3 \${permdist_script} -x \${barsX_fpath} -y \${listPerm_fpath} --dim \${dim} -p ${p} -q ${q} -o \${outdir} ${run_suffix}
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

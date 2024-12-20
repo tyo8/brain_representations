@@ -3,9 +3,9 @@
 set -o nounset
 
 # script directory
-base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-ICA"
+base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/phom_analysis/null_testing/within_PROFUMO"
 
-modality=ICA
+modality=PROFUMO
 feature=Amps
 
 mem_gb=500
@@ -58,7 +58,7 @@ subbase_dir="${base_dir}/${modality}_${feature}"
 methods_fpath=${subbase_dir}"/methods.csv"
 methods=$(cat ${methods_fpath})
 # path to source file
-pysrc_fpath="/scratch/tyoeasley/brain_representations/src_py/comp_sim_mtx.py"
+pysrc_fpath="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py/calculate/comp_sim_mtx.py"
 
 if [ "${feature}" = "Maps" ]
 then
@@ -72,6 +72,9 @@ then
 	elif [[ "${modality}" == *"300"* ]]
 	then
 		mem_gb=800
+	elif [[ "${modality}" == *"PROFUMO"* ]]
+	then
+		mem_gb=150
 	fi
 fi
 
@@ -94,43 +97,43 @@ do
     			exit
 		fi
 		
-		script_dir="${subbase_dir}/permstrapping"
+		perms_basedir="${subbase_dir}/permstrapping"
 		
 		perm_label="${permute_type}Perms_${perm_name}"
-		sbatch_fpath="${script_dir}/do_sim_${feature}${modality}${method}_${perm_label}"  # path to batch submission file
+		sbatch_fpath="${perms_basedir}/do_sim_${feature}${modality}${method}_${perm_label}"  # path to batch submission file
 		label="dists_${perm_label}"
 	else
-		script_dir="${subbase_dir}"
+		perms_basedir="${subbase_dir}"
 
-		sbatch_fpath=${script_dir}"/do_sim_"${feature}${modality}${method}  # path to batch submission file
+		sbatch_fpath=${perms_basedir}"/do_sim_"${feature}${modality}${method}  # path to batch submission file
 		label="dists"	# 'label' was previously either "sims" or "dists" but "sims" use case is deprecated
 	fi
-	subj_dist="${script_dir}/${modality}_${feature}_${method}_${label}.txt"
+	subj_dist="${perms_basedir}/${modality}_${feature}_${method}_${label}.txt"
 
 	if [ "${overwrite}" = "true" ]
 	then
 		printf "\noverwrite and resubmit existing batch file. ==> "
 	fi
-	if [ ! -f "${subj_dist}" ]
+	if [ ! -s "${subj_dist}" ]
 	then
 		printf "\nresults file does not currently exist. ==> "
 	fi
-	if [ ! -f "${subj_dist}" ] || [ "${overwrite}" = "true" ]
+	if [ ! -s "${subj_dist}" ] || [ "${overwrite}" = "true" ]
 	then
 		echo "condition met to overwrite and resubmit batch file:"
 		echo "${sbatch_fpath}"
 	fi
 
-	if [ ! -f "${subj_dist}" ] || [ "${overwrite}" = "true" ]
+	if [ ! -s "${subj_dist}" ] || [ "${overwrite}" = "true" ]
 	then
-		mkdir -p "${script_dir}"
+		mkdir -p "${perms_basedir}"
 		echo "\
 \
 #!/bin/sh
 
 #SBATCH --job-name=${modality}${feature}_${method}${label}
-#SBATCH --output=${base_dir}/logs/${modality}${feature}_${method}${label}.out
-#SBATCH --error=${base_dir}/logs/${modality}${feature}_${method}${label}.err
+#SBATCH --output=${perms_basedir}/logs/${modality}${feature}_${method}${label}.out
+#SBATCH --error=${perms_basedir}/logs/${modality}${feature}_${method}${label}.err
 #SBATCH --partition=${partition}
 #SBATCH --account=janine_bijsterbosch
 #SBATCH --time=${maxtime_str}
@@ -139,7 +142,7 @@ do
 #SBATCH --mem=${mem_gb}gb
 
 subj_list=${subbase_dir}/subj_list_${feature}.csv
-subj_dist=${script_dir}/${modality}_${feature}_${method}_${label}.txt
+subj_dist=${perms_basedir}/${modality}_${feature}_${method}_${label}.txt
 
 printf \"Computing dissimilarity matrix...\n\n\"
 printf \"pulling subject data from: \\n\${subj_list}\\n\"
@@ -156,13 +159,13 @@ source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
 			echo "perm_set=${perm_set}" >> ${sbatch_fpath}
 			echo "perm_seed=${perm_seed}" >> ${sbatch_fpath}
 			echo "" >> ${sbatch_fpath}
-			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D -P -t ${permute_type} -s \${perm_set} -r \${perm_seed}" >> ${sbatch_fpath}
+			echo "python3 ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D -P -t ${permute_type} -s \${perm_set} -r \${perm_seed}" >> ${sbatch_fpath}
 		else
-			echo "python ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D" >> ${sbatch_fpath}
+			echo "python3 ${pysrc_fpath} -i \${subj_list} -o \${subj_dist} -m ${method} -D" >> ${sbatch_fpath}
 		fi
 
 		echo "" >> ${sbatch_fpath}
-		echo "echo \${subj_dist} >> ${subbase_dir}/distlist_${feature}${modality}.csv" >> ${sbatch_fpath}
+		echo "echo \${subj_dist} >> ${perms_basedir}/distlist_${feature}${modality}.csv" >> ${sbatch_fpath}
 
 		# Make script executable
 		chmod +x "${sbatch_fpath}" || { echo "Error changing the script permission!"; exit 1; }

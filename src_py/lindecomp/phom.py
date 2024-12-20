@@ -3,14 +3,16 @@ import sys
 import csv
 import dill
 import copy
-import HCP_utils
 import numpy as np
 import phom_figs as pf
-import comp_Psim_mtx as cPm
+import calculate.cPmPsim_mtx as cPm
 import scipy.special as scsp
 import matplotlib.pyplot as plt
 import SubjSubjHomologies as SSH
-import brainrep as ld_br
+import brainrep as br
+
+sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
 
 ## summary of module:
 ## 
@@ -32,12 +34,12 @@ import brainrep as ld_br
 
 def main(argvals):
     dataset_list_name = argvals[1]
-    reps = HCP_utils.load_reps(dataset_list_name)
+    reps = hutils.load_reps(dataset_list_name)
 
     output_basedir = argvals[2]
 
     namelist_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
-    namelist = HCP_utils.load_namelist(namelist_path)
+    namelist = hutils.load_namelist(namelist_path)
 
     reglist_path = argvals[3]
     with open(reglist_path,'r') as fin:
@@ -95,7 +97,7 @@ def make_bcurves_over_rank(full_lindecomps, comp_rank, output_basedir, hom_dims=
 ## computes CCA for all pairs of variables in reps
 def iter_lindecomp(reps, reglist=[], namelist=[], decomp_method='CCA'):
     n_reps = len(reps)
-    lindecomp = ld_br.switch(decomp_method)
+    lindecomp = br.switch(decomp_method)
 
     full_lindecomps = [[None,None,[[None for j in range(n_reps-1)],[None for j in range(n_reps-1)]]] for i in range(n_reps)]
     
@@ -109,7 +111,7 @@ def iter_lindecomp(reps, reglist=[], namelist=[], decomp_method='CCA'):
             full_lindecomps[j][2][0][i] = namelist[i]                # stores name of X variable in list of Y decompositions
             Y = reps[j]
 
-            reg_val = ld_br.find_reg_val(reglist,namelist[i],namelist[j])                   # regularization hyperparameter
+            reg_val = br.find_reg_val(reglist,namelist[i],namelist[j])                   # regularization hyperparameter
             CCA_res,cross_pred = lindecomp(X, Y, param_search=False, reg_val = reg_val)     # CCA results 
 
             comps = CCA_res.comps   # CCA components Ux and Uy
@@ -132,7 +134,7 @@ def filt_lindecomps(full_lindecomps, CCrank=1000):
     for i in range(len(full_lindecomps)):
         lindecomps_i = full_lindecomps[i][2]
         X = full_lindecomps[i][1]
-        psim_grams[i][1] = HCP_utils.p_dist(cPm.comp_Psim_from_mtx(X), order=p)
+        psim_grams[i][1] = hutils.p_dist(cPm.comp_Psim_from_mtx(X), order=p)
 
         for j in range(len(lindecomps_i[0])):
             comp_ij = lindecomps_i[1][j][0]
@@ -140,10 +142,10 @@ def filt_lindecomps(full_lindecomps, CCrank=1000):
 
             filt_comp_ij = comp_ij[:,:CCrank]
             filt_ws_ji = ws_ji[:,:CCrank]
-            X_cp = ld_br.cross_predict(filt_comp_ij, filt_ws_ji)        # cross-predicted X ("shared" information according to CCA)
-            Xapp_pGram = HCP_utils.p_dist(cPm.comp_Psim_from_mtx(X_cp),       # Pearson correlation p-"Gram" matrix from CCA-approximated X
+            X_cp = br.cross_predict(filt_comp_ij, filt_ws_ji)        # cross-predicted X ("shared" information according to CCA)
+            Xapp_pGram = hutils.p_dist(cPm.comp_Psim_from_mtx(X_cp),       # Pearson correlation p-"Gram" matrix from CCA-approximated X
                     order=p)
-            Xcomp_pGram = HCP_utils.p_dist(cPm.comp_Psim_from_mtx(X - X_cp),  # Pearson correlation p-"Gram" matrix from compliment to Xapprox
+            Xcomp_pGram = hutils.p_dist(cPm.comp_Psim_from_mtx(X - X_cp),  # Pearson correlation p-"Gram" matrix from compliment to Xapprox
                     order=p)  
             approx_reps[i][2][1][j] = [X_cp, X - X_cp]
             psim_grams[i][2][1][j] = [Xapp_pGram, Xcomp_pGram]

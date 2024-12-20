@@ -25,7 +25,7 @@ do
 	echo "bars from: ${bars_fpath}"
 	echo "prevalence from: ${prev_fpath}"
 	
-	python ${src_fpath} -b "${bars_fpath}" -p "${prev_fpath}" -f "${fig_outpath}" -l "${label}"
+	python3 ${src_fpath} -b "${bars_fpath}" -p "${prev_fpath}" -f "${fig_outpath}" -l "${label}"
 	
 	echo ""
 done

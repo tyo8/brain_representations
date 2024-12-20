@@ -7,7 +7,7 @@ import shutil
 import inspect
 import datetime
 import numpy as np
-import brainrep as ld_br
+import brainrep as br
 
 list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
 
@@ -114,7 +114,7 @@ def run_stability_iters(output_basedir, reps=[], dataset_list_name='',
     decomp_vals = [[fpairnamelist[j] for i in range(1)] for j in range(len(fpairnamelist))]     # initializes list of decomp values
     elapsed = [None]*n_iter                                                     # time benchmarking
 
-    lindecomp = ld_br.switch(decomp_method)
+    lindecomp = br.switch(decomp_method)
 
     for i in range(n_iter):
         tic = time.time()   # benchmarking

@@ -21,9 +21,12 @@ __pycache__
 *cluster.sh
 pull*.sh
 
+# other modules
+skpalm
+
 # testing and benchmarking intermediates
 *benchmark*
-*test*
+*metric_test*
 *tst*
 
 # cluttered or potentially sensitive info
@@ -32,6 +35,7 @@ RESTRICTED*
 logs
 *do_*
 *MCCN*
+*within_*
 *deprecated*
 
 # image files

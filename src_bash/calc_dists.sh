@@ -3,7 +3,7 @@
 set -o nounset
 
 # script directory
-base_dir="/scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-PROFUMO"
+base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within-PROFUMO"
 
 # file containing a list of BR (modality/dimension, feature) specifications.
 # see comments below (lines 54-56) for some context on formatting expectations.
@@ -42,7 +42,7 @@ done
 spec_list_fpath="${base_dir}/${spec_list_fname}"	
 
 # path to batch-writing bash script (should be fixed, so is given as a constant)
-sbatch_fpath="/scratch/tyoeasley/brain_representations/src_bash/submit_distmtx_sbatch.sh"
+sbatch_fpath="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_bash/submit_distmtx_sbatch.sh"
 
 specifications=$(cat ${spec_list_fpath})
 

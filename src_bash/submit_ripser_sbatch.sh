@@ -51,15 +51,18 @@ if $do_img; then
 	sbatch_fpath="${sbatch_fpath}_img"
 fi
 
-script_dir=$( dirname $sbatch_fpath )
+subbase_dir=$( dirname $sbatch_fpath )
 
 job_name="shbsphoms_${data_label}"
-logdir="${script_dir}/logs"
+logdir="${subbase_dir}/logs"
 if ! compgen -G $logdir >> /dev/null
 then
 	mkdir $logdir
 fi
 logpath="${logdir}/${job_name}"
+
+echo "sending logs to"
+echo "${logpath}.*"
 
 # at one point, these were the nodes that regularly failed and had to be excluded -- the list is currently shorter, i hope?
    ###SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
@@ -69,8 +72,8 @@ echo "\
 
 #SBATCH --exclude=node15,node23,node21,node25,node27
 #SBATCH --job-name=${job_name}
-#SBATCH --output=${logpath}.out%j
-#SBATCH --error=${logpath}.err%j
+#SBATCH --output=${logpath}.out
+#SBATCH --error=${logpath}.err
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
 #SBATCH --account=janine_bijsterbosch

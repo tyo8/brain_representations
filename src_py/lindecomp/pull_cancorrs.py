@@ -2,23 +2,25 @@ import os
 import sys
 import csv
 import dill
-import HCP_utils
 import numpy as np
-import lindecomp.brainrep as ld_br
+import brainrep as br
+
+sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
 
 def pull_stbl_cancorrs(input_paragg_dir,output_cancorr_dir,namelist_path,reglist_path,
         decomp_method = 'CCA'):
     with open(reglist_path,newline='') as fin:
         reglist = list(csv.reader(fin))
 
-    namelist = HCP_utils.extract_namelist(namelist_path)
+    namelist = hutils.extract_namelist(namelist_path)
     n_reps = len(namelist)
     ext_in = "." + decomp_method + "_stbl"
 
     for i in range(n_reps):
         for j in range(i+1,n_reps):
             pairname = namelist[i] + "_and_" + namelist[j] 
-            reg_val = ld_br.find_reg_val(reglist,namelist[i],namelist[j])
+            reg_val = br.find_reg_val(reglist,namelist[i],namelist[j])
 
             input_fname = pairname + ext_in 
             input_floc = os.path.join(input_paragg_dir,input_fname)
