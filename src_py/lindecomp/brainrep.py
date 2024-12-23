@@ -7,7 +7,8 @@ import numpy as np
 import rcca as rcca
 import sklearn.cross_decomposition as decomp
 
-sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 import HCP_utils as hutils
 
 
@@ -26,7 +27,7 @@ def main(argvals):
         ## debug code
         print(reglist)
 
-    list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
+    list_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/BR_label_list.csv"
     pairwise_lindecomp(output_basedir, reps, namelist, reglist=reglist,
             decomp_method=decomp_method, write_mode=True, param_search=False)
 

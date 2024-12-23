@@ -9,7 +9,11 @@ import datetime
 import numpy as np
 import brainrep as br
 
-list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
+
+list_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/BR_label_list.csv"
 
 ## distributes, runs, and collects results from a stability analysis of regularized CCA over many iterations; manages calls to and options for## "run_stability_iters."
 def main(argvals):
@@ -26,7 +30,7 @@ def main(argvals):
     
     ## internal function to allow worker parameters as globals; implements distributed call to "run_stability_iters"
     def par_stbl_iters(output_bdir):
-        brainreps_data = HCP_utils.load_reps(dataset_listname)              # input datasets for pairwise CCA
+        brainreps_data = hutils.load_reps(dataset_listname)              # input datasets for pairwise CCA
         run_stability_iters(output_bdir, listpath=listpath, decomp_method=decomp_method,
                 read_mode=False, reps=brainreps_data,write_mode=False)      # calls "run_stability_iters" to specific output directory, taking
                                                                             # remaining arguments as globals
@@ -101,9 +105,9 @@ def run_stability_iters(output_basedir, reps=[], dataset_list_name='',
     ext = '.' + decomp_method + '_res'                                          # savefile extension
 
     if read_mode:
-        reps = HCP_utils.load_reps(dataset_list_name)                           # loads brain representations here if in read mode
+        reps = hutils.load_reps(dataset_list_name)                           # loads brain representations here if in read mode
 
-    namelist = HCP_utils.load_namelist(listpath)                                # list of variable names
+    namelist = hutils.load_namelist(listpath)                                # list of variable names
     pairnamelist = [namelist[i] + '_and_' + namelist[j]                         # list of pairs of variable names
         for i in range(len(namelist))
         for j in range(i + 1, len(namelist))]

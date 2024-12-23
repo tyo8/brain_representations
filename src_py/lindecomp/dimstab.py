@@ -11,7 +11,8 @@ import perm as rldp
 import brainrep as br
 import analyze_CCA_permtests as anl_pt
 
-sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 import HCP_utils as hutils
 
 def main(argvals):

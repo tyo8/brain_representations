@@ -1,7 +1,10 @@
 # Brain Representations
 A repository for topological comparisons of dimension reduction algorithms applied to resting-state fMRI data.
 
-## Rough Overview
+## Overview
+
+<span style="color:red">
+
 This repository contains code for/commemorates the directory tree structure of the repository underlying the analyses in <at least one untitled future paper.>
 
 In this repository:
@@ -11,35 +14,34 @@ In this repository:
 4. we have directories corresponding to the computation, outputs, and feature extraction of the brain representation/dimension reduction methods we consider
 5. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built
 
+</span>
+
 ## Structure of the repository
 
 The subdirectories of this repository are listed below, grouped approximately by their role.
 
 ### Source Code
-Centrally houses code base for project: calculation, visualization, and key scripting functions are found here.
-#### Python repository `src_py`: distance and persistent homology calculations, statistical analysis, and visualization
-- `interval-matching_bootstrap` (separate package, see [documentation](https://github.com/tyo8/interval-matching_bootstrap))
-- `calculate`:
-- `figures`:
-- `diagram_distances.py`:
-- `collate_tagged_data.py`:
-- `HCP_utils.py`:
-- `toy_models.py`:
-- `lindecomp`:
-#### Bash repository `src_bash`: SLURM scripting at problem scale
-- `phom_bootstraps.sh`:
-- `match_bootstraps.sh`:
-- `submit_*.sh`:
+Centrally houses code base for project: calculation, visualization, and key scripting functions are found here. Subdirectories contain nested READMEs with further details.
+#### `src_py` 
+Python repository: distance and persistent homology calculations, statistical analysis, and visualization
+
+#### `src_bash`
+Bash repository: distributed SLURM scripting at problem scale, also contains only direct calls to Ripser [2] and Ripser-image [3]
 
 ### Data 
-#### Brain representation computation, extraction, and featurization
-Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
-- `profumo_reps`: code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps)
-- `gradient_reps`: code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
-- `ICA_reps`: code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
-- `glasser`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated data
-- `schaefer`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated data
-- `yeo`: code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Yeo-parcellated data
+Brain representation computation, extraction, and featurization. Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
+#### `profumo_reps`
+code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps) from rfMRI data 
+#### `gradient_reps`
+code for the computing diffusion-network based gradient representations from connectivity data at both the subject and group level and derivative features of these representations
+#### `ICA_reps`
+code for computing FC network matrices, partial FC matrices, and amplitude features from extracted ICA-DR data
+#### `glasser`
+code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from extracted Glasser-parcellated rfMRI data
+#### `schaefer`
+code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Schaefer-parcellated rfMRI data
+#### `yeo`
+code for extracting parcellation-level timeseries from data and computing FC network matrices, partial FC matrices, and amplitude features from Yeo-parcellated rfMRI data
 
 ## Preparations
 
@@ -50,47 +52,61 @@ Before running the code to perform cycle matching [1] in this repository, one ne
 - The compiled files should be in the same directory than the python scripts/notebooks in which the cycle matching [1] code is invoked.
 
 ### Python dependencies
-This repo leverages several Python packages. These dependencies are listed below; when only a small number of scripts/modules in the repository use a given package, they are listed beneath the dependency.
+This repo leverages several Python packages beyond built-ins. These dependencies are listed below, grouped by approximate function and which subdirectories of `src_py` rely on that dependency.
 
-#### Parsing Neuroimaging Data
-- [nibabel](https://nipy.org/nibabel/)
-- [nilearn](https://nilearn.github.io/stable/index.html)
-	
-#### Canonical Correlation Analysis (regularized)
-- [rcca](https://github.com/gallantlab/pyrcca)
-	
-#### Persistent Homology
-- [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) [4]
-- [giotto-tda](https://giotto-ai.github.io/gtda-docs/0.5.1/library.html) [5]
-	
-#### Figures and Statistics
-- [python optimal transport library](https://pythonot.github.io/index.html)
-- [pyRiemann](???)
-- [scikit-palm](???)
-	
-#### Background
+#### All
 - [numpy](https://numpy.org/)
+
+#### Parsing Neuroimaging Data: `src_py/HCP_utils.py`
+- [nibabel](https://nipy.org/nibabel/) 
+	
+#### Computing Metric Matrices: `src_py/calclute`
+- [pyRiemann](https://pyriemann.readthedocs.io/en/latest)
+- [scikit-palm](https://github.com/jameschapman19/scikit-palm)
+
+#### Persistent Homology
+- [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) (adapted from [4])
+
+#### Figures and post-hoc Analysis: `src_py/figures`
+- [python optimal transport library](https://pythonot.github.io/index.html)
 - [scipy](https://scipy.org/)
 - [pandas](https://pandas.pydata.org/)
 - [seaborn](https://seaborn.pydata.org/)
 - [matplotlib](https://matplotlib.org/stable/index.html)
+	
+#### Regularized Canonical Correlation Analysis: `src_py/lindecomp`
+- [rcca](https://github.com/gallantlab/pyrcca)
 - [scikit-learn](https://scikit-learn.org/stable/)
 
 ## Academic use
 
-This code is available and is fully adaptable for individual user customization. If you use the our methods, please cite as the following:
-
-
+This code is available and is fully adaptable for individual user customization. If you clone or fork this repository, please cite the following work: 
 
 ```tex
-@misc{' ',
-	title = {Unknown},
-	publisher = {publisher?},
-	author = ###############
-	month = ??,
-	year = {2023/4},
-	note = {arXiv:####.<subj> [tag1, tag2]},
-	keywords = {topological data analysis, neuroscience, computational topology, persistent homology, functional connectivity, dimension reduction},
+@misc{easley2023comparingrepresentationshighdimensionaldata,
+      title={Comparing representations of high-dimensional data with persistent homology: a case study in neuroimaging}, 
+      author={Ty Easley and Kevin Freese and Elizabeth Munch and Janine Bijsterbosch},
+      year={2023},
+      eprint={2306.13802},
+      archivePrefix={arXiv},
+      primaryClass={cs.CG},
+      url={https://arxiv.org/abs/2306.13802}, 
+}
+```
+
+If your clone or fork includes the [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) submodule, please additionally cite the following work:
+
+```tex
+@misc{garcia-redondo_fast_2022,
+	title = {Fast {Topological} {Signal} {Identification} and {Persistent} {Cohomological} {Cycle} {Matching}},
+	url = {http://arxiv.org/abs/2209.15446},
+	urldate = {2022-10-03},
+	publisher = {arXiv},
+	author = {García-Redondo, Inés and Monod, Anthea and Song, Anna},
+	month = sep,
+	year = {2022},
+	note = {arXiv:2209.15446 [math, stat]},
+	keywords = {Mathematics - Algebraic Topology, Statistics - Machine Learning},
 }
 ```
 
@@ -102,5 +118,3 @@ This code is available and is fully adaptable for individual user customization.
 [3] Bauer, Ulrich, and Maximilian Schmahl. 2022. ‘Efficient Computation of Image Persistence’. ArXiv:2201.04170 [Cs, Math], January. http://arxiv.org/abs/2201.04170.
 
 [4] I. García-Redondo, A. Monod, and A. Song, “Fast Topological Signal Identification and Persistent Cohomological Cycle Matching.” arXiv, Sep. 30, 2022. doi: 10.48550/arXiv.2209.15446. https://arxiv.org/abs/2209.15446
-
-[5] G. Tauzin et al., “giotto-tda: A Topological Data Analysis Toolkit for Machine Learning and Data Exploration,” in NeurIPS 2020 Workshop TDA and Beyond, 2020. Accessed: Mar. 21, 2021. [Online]. Available: https://github.com/giotto-ai/pyflagser.

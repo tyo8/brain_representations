@@ -9,8 +9,8 @@ def main(argvals):
     if len(argvals) > 4:
         reglist_path = argvals[4]
     else:
-        reglist_path = "/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02_med.csv"
-        reglist_path = "/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist0.csv"
+        reglist_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist_2022Jan02_med.csv"
+        reglist_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/nonPH_analysis/CCA/reglist0.csv"
     with open(reglist_path,'r') as fin:
         reglist = list(csv.reader(fin))
 

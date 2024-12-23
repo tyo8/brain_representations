@@ -9,12 +9,16 @@ import datetime
 import numpy as np
 import brainrep as br
 
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
+
 ## assigns named variables to user inputs and runs primary task
 def main(argvals):
     # filepath to list of names of datasets
     dataset_fname=argvals[1]
     if ".csv" in dataset_fname:
-        reps = HCP_utils.load_reduced_data(dataset_fname)
+        reps = hutils.load_reduced_data(dataset_fname)
     elif ".brep" in dataset_fname:
         with open(dataset_fname,'rb') as fin:
             reps = dill.load(fin)
@@ -32,7 +36,7 @@ def main(argvals):
 
     # path to list of brain representation names (same order as datasets are listed in dataset_fname)
     listpath=argvals[4]
-    namelist=HCP_utils.load_namelist(listpath)
+    namelist=hutils.load_namelist(listpath)
 
     # path to list of paired [pairname, optimal_regularization] values
     regpath=argvals[5]

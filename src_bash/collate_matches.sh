@@ -42,7 +42,7 @@ while getopts ":b:s:f:t:D:n:" opt; do
 done
 
 ### paths to code ###
-coll_script="${base_dir}/src_py/collate_tagged_data.py"
+coll_script="${base_dir}/src_py/interval-matching_bootstrap/utils_match/collate_tagged_data.py"
 
 ### node exclude list: maybe do not include for parallel case? ###
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07

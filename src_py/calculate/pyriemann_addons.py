@@ -100,7 +100,7 @@ def _regularize_SPD_mtx(M, tol=1e-6, verbose=True):
     else:
         # if M is a traceless matrix, send it to Pn by the exponential map
         if verbose:
-            print("Matrix is traceless Hermitian! Exponentiate it to the positive definite cone; note that geodesic(expA, expB) = Frobnorm(A - B) by definition (for symmetric A, B).")
+            print("Matrix is traceless Hermitian! Exponentiate it to the positive definite cone; note that geodesic(expA, expB) = Frobnorm(A - B) by definition of the Lie algebra (for symmetric A, B).")
 
     if verbose:
         print(f"Trace of matrix is {trace}")

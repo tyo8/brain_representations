@@ -104,7 +104,7 @@ def get_oversize_perm_set(n_feats, perm_path=None, debug=True):
         set_num = int(os.path.basename(perm_path).split("perm_set")[1].split('_')[0])
         n_perms_per_set = int(os.path.basename(perm_path).split("_n")[1].split('.')[0])
     else:
-        perm_dir = "/scratch/tyoeasley/brain_representations/phom_analysis/null_testing/permutations/subject_perms"
+        perm_dir = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/phom_analysis/null_testing/permutations/subject_perms"
         set_num = 0
         n_perms_per_set = 64620
     

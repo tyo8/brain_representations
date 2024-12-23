@@ -5,7 +5,7 @@ import pickle
 import numpy as np
 from scipy.spatial import procrustes
 
-list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
+list_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/BR_label_list.csv"
 
 def main(argvals):
     PRCd.iter_PRCd_list(argvals[1],argvals[2],listpath=argvals[3])

@@ -8,7 +8,8 @@ import numpy as np
 import subj_data_metrics as sdm
 from sklearn.metrics import pairwise_distances
 
-sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 import HCP_utils as hutils
 
 # receives path to .csv file containing list of subject data file names

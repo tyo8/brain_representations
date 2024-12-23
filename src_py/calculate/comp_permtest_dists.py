@@ -5,7 +5,8 @@ import json
 import argparse
 import numpy as np
 
-sys.path.append("/scratch/tyoeasley/brain_representations/src_py")
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 import diagram_distances as dgmD
 
 
@@ -160,8 +161,8 @@ def _debug_bars_list(bars_flist, bars_list, name="X-hat_i"):
 ### debugging code ###
 
 
-    # sample datapath: /scratch/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/ICA50_pNMs/phom_data_ICA50_pNMs_geodesic_dists/bars_X.txt
-    # sample for perm_pathtype=True: /scratch/tyoeasley/brain_representations/phom_analysis/null_testing/within_ICA/ICA50_pNMs/permstrapping/phom_data_ICA50_pNMs_geodesic_dists_subjectPerms_perm_set922_n64620/bars_X.txt
+    # sample datapath: /ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/phom_analysis/full-scale-expmt/within_ICA/ICA50_pNMs/phom_data_ICA50_pNMs_geodesic_dists/bars_X.txt
+    # sample for perm_pathtype=True: /ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/phom_analysis/null_testing/within_ICA/ICA50_pNMs/permstrapping/phom_data_ICA50_pNMs_geodesic_dists_subjectPerms_perm_set922_n64620/bars_X.txt
 def _parse_pathname(datapath, perm_pathtype=False, debug=True):
     labelset={}
     xdirname = os.path.basename(os.path.dirname(datapath))
