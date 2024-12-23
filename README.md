@@ -8,7 +8,7 @@ This repository houses the code underlying the analysis in [5], preprinted [here
 The subdirectories of this repository are listed below, grouped approximately by their role.
 
 ## Source Code
-Centrally houses code base for project: calculation, visualization, and key scripting functions are found here. Subdirectories contain nested READMEs with further details.
+Centrally houses code base for project: calculation, visualization, and key scripting functions are found here. Note that all code in these directories enter the pipeline *after* data reduction and featurization. Each directory and subdirectory contain READMEs with further details.
 
 #### `src_py` 
 Python repository: distance and persistent homology calculations, statistical analysis, and visualization
@@ -17,7 +17,7 @@ Python repository: distance and persistent homology calculations, statistical an
 Bash repository: distributed SLURM scripting at problem scale, also contains only direct calls to [Ripser](https://github.com/Ripser/ripser/tree/image-persistence-simple) [2] and [Ripser-image](https://github.com/Ripser/ripser/tree/tight-representative-cycles) [3] 
 
 ## Data 
-Brain representation computation, extraction, and featurization. Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
+Brain representation computation, extraction, and featurization. Note that no subject data of any kind is included in this public repository! Instead, the following directories and their subdirectories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
 #### `profumo_reps`
 code for the computing FC network matrices (correlations between timecourses) and spatial correlation matrices (correlations between maps) from rfMRI data 
 #### `gradient_reps`
