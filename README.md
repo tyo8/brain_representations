@@ -3,16 +3,7 @@ A repository for topological comparisons of dimension reduction algorithms appli
 
 ## Overview
 
-```diff
-- This repository contains code for/commemorates the directory tree structure of the repository underlying the analyses in <at least one untitled future paper.>
-
-- In this repository:
-- 1. we have several different repositories of source code; the most populated one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
-- 2. we have lots of bash/slurm code meant to script resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
-- 3. we have brain representation extraction code and figure-making code in relevant directories: code is only included in "src_\*" if it is intentionally multipurpose
-- 4. we have directories corresponding to the computation, outputs, and feature extraction of the brain representation/dimension reduction methods we consider
-- 5. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built</span>
-```
+This repository houses the code underlying the analysis in [5], preprinted [here](https://arxiv.org/abs/2306.13802) on the arXiv. It implements an adaption (see [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap)) of [4] on neuroimaging data, leveraging the computational efficiency of [Ripser](https://github.com/Ripser/ripser/tree/image-persistence-simple) [2] and [Ripser-image](https://github.com/Ripser/ripser/tree/tight-representative-cycles) [3]. This repository's code is built to compare different "brain representations" (i.e., reduced-data representations) of resting-state fMRI data in the [Human Connectome Project](https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release) (HCP) produced through different algorithms and feature selection choices (see "Data" section). Brain representations are compared by the "metric" embedding they induce on the set of HCP subjects (given some choice of subject-pairwise dissimilarity measure), and the stability of these induced topologies is measured (in part) by the topological bootstrap [1,4]. The `brain_representations` repository contains the code necessary to repeat the analysis conducted in [5]. 
 
 The subdirectories of this repository are listed below, grouped approximately by their role.
 
@@ -23,7 +14,7 @@ Centrally houses code base for project: calculation, visualization, and key scri
 Python repository: distance and persistent homology calculations, statistical analysis, and visualization
 
 #### `src_bash`
-Bash repository: distributed SLURM scripting at problem scale, also contains only direct calls to Ripser [2] and Ripser-image [3]
+Bash repository: distributed SLURM scripting at problem scale, also contains only direct calls to [Ripser](https://github.com/Ripser/ripser/tree/image-persistence-simple) [2] and [Ripser-image](https://github.com/Ripser/ripser/tree/tight-representative-cycles) [3] 
 
 ## Data 
 Brain representation computation, extraction, and featurization. Note that no subject data of any kind is included in this public repository! Instead, the following directories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis.
@@ -115,3 +106,5 @@ If your clone or fork includes the [interval-matching_bootstrap](https://github.
 [3] Bauer, Ulrich, and Maximilian Schmahl. 2022. ‘Efficient Computation of Image Persistence’. ArXiv:2201.04170 [Cs, Math], January. http://arxiv.org/abs/2201.04170.
 
 [4] I. García-Redondo, A. Monod, and A. Song, “Fast Topological Signal Identification and Persistent Cohomological Cycle Matching.” arXiv, Sep. 30, 2022. doi: 10.48550/arXiv.2209.15446. https://arxiv.org/abs/2209.15446
+
+[5] T. Easley, K. Freese, E. Munch, and J. Bijsterbosch, “Comparing representations of high-dimensional data with persistent homology: a case study in neuroimaging,” Nov. 23, 2023, arXiv: arXiv:2306.13802. doi: 10.48550/arXiv.2306.13802.
