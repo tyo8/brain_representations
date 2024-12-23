@@ -77,7 +77,7 @@ This repo leverages several Python packages beyond built-ins. These dependencies
 
 ## Academic use
 
-This code is available and is fully adaptable for individual user customization. If you clone or fork this repository, please cite the following work: 
+This code is available and is fully adaptable for individual user customization. If you clone or fork this repository, please include the following bibtex citation: 
 
 ```tex
 @misc{easley2023comparingrepresentationshighdimensionaldata,
@@ -91,7 +91,7 @@ This code is available and is fully adaptable for individual user customization.
 }
 ```
 
-If your clone or fork includes the [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) submodule, please additionally cite the following work:
+If your clone or fork includes the [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) submodule, please additionally include the following bibtex citation:
 
 ```tex
 @misc{garcia-redondo_fast_2022,

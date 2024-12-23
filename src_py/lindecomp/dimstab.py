@@ -106,7 +106,7 @@ def run_dimensional_stability_tst(reps,output_basedir,permset,namelist,regval_li
         cancorrplots_outdir = os.path.join(output_basedir, "cancorr_plots", regval_tag)
         hutils.check_to_make_dirs([data_outdir,nulldist_outdir,cancorrplots_outdir])
 
-        br.pairwise_lindecomp2(data_outdir, reps, namelist, reglist=reglist_i, decomp_method=decomp_method)
+        br.pairwise_lindecomp(data_outdir, reps, namelist, reglist=reglist_i, decomp_method=decomp_method)
         pull_cancorrs.pull_res_cancorrs(data_outdir)
         nulldist_outdir = rldp.run_permutation_testing(reps, nulldist_outdir, permset, namelist, reglist_i, decomp_method, n_workers)
         dim_vs_reg_list[i] = anl_pt.visualize_permtests(cancorrplots_outdir, data_outdir, nulldist_outdir, reglist_i)

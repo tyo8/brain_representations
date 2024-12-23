@@ -1,27 +1,21 @@
-# Python source repository
+# Regularized CCA submodule
 
-Primary source repository. Computes metric (Gram) matrices for persistent homology input, performs cycle-matching, and carries out secondary and post-hoc analysis of results. Each module listed below has its own README with further detais.
+Computes regularized canonical correlation analysis ([rCCA](https://github.com/gallantlab/pyrcca)) between pairs of brain representation (post-featurization) which is used to define a measurement of "maximal shared affine dimensions" between them. Included for completeness -- unused in current version of paper and will likely be moved to `_deprecated` in a future push.
 
-- `interval-matching_bootstrap` 
-[submodule repository](https://github.com/tyo8/interval-matching_bootstrap) forked from original Song and Garcia-Redondo's [interval-matching](https://github.com/inesgare/interval-matching) repository
+### `brainrep.py`
+Computes regularized CCA between pairs of feature sets listed in input file. Regularization hyperparameter chosen by cross-validation unless specified via principal component truncation. Partial Least Squares (PLS) is included as an alternate method to CCA (corresponding to "unwhitened" CCA).
 
-- `calculate`
-Computes finite metric (Gram) matrices from neuroimaging feature data as Ripser/Ripser-image input. Also houses distance computatiosn between cycle-matched diagrams. 
+### `dimstab.py`
+Defines and measures "maximal shared affine dimension" given (a) rCCA results and (b) permutation-tested rCCA results between two brain representations.
 
-- `figures`
-Visualizes/summarizes post-hoc analysis of persistence outputs (including cycle-matched persistence)
+### `permtest.py`  
+Conducts pairwise regularized CCA between permuted feature sets.
 
-- `lindecomp`
-Module for regularized CCA analysis of brain representations; linear (affine) method for comparison to the persistent homology approach.
+### `stability.py`
+Assesses the stability of rCCA results with respect to variation in the regularization hyperparameter; shown over distribution of chosen hyperparameters.
 
-- `HCP_utils.py`
-Python utilities for loading, cleaning, and formatting neuroimaging (rfMRI) data from the [Human Connectome Project](https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release) (HCP) 1200 Young Adult Subjects release
+### `pull_cancorrs.py`  
+Aggregates canonical correlation values from rCCA results.
 
-- `diagram_distances.py `
-define and compute distance metrics (i.e., Wasserstein variants) between persitence diagrams
-
-- `toy_models.py`
-submodule for creation of several toy-model validation spaces (concentric circles, S<sup>1</sup> wegde S<sup>2</sup> wedge S<sup>1</sup>, S<sup>2</sup> with a diameter, and the torus T<sup>2</sup>)
-
-- `_deprecated`
-Included for completeness and transparency/access to version history. 
+### `analyze_CCA_permtests.py`
+Figure/visualization code for analyzing results of pairwise rCCA results, including permutation, stability, and dimensional stability testing.
