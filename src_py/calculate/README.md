@@ -18,8 +18,3 @@ Computes (variant) Wasserstein distances between null-permuted and/or cycle-matc
 #### `comp_bootstrap_dists.py`
 #### `comp_permtest_dists.py`  
 #### `generate_subindex.py`
-
-## Miscellaneous
-#### `comp_prc_dist.py
-
-

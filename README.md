@@ -3,14 +3,16 @@ A repository for topological comparisons of dimension reduction algorithms appli
 
 ## Overview
 
-<span style="color:red">This repository contains code for/commemorates the directory tree structure of the repository underlying the analyses in <at least one untitled future paper.>
+```diff
+- This repository contains code for/commemorates the directory tree structure of the repository underlying the analyses in <at least one untitled future paper.>
 
-In this repository:
-1. we have several different repositories of source code; the most populated one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
-2. we have lots of bash/slurm code meant to script resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
-3. we have brain representation extraction code and figure-making code in relevant directories: code is only included in "src_\*" if it is intentionally multipurpose
-4. we have directories corresponding to the computation, outputs, and feature extraction of the brain representation/dimension reduction methods we consider
-5. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built</span>
+- In this repository:
+- 1. we have several different repositories of source code; the most populated one is 'src_py', with 'src_bash' a distant second and 'src_MATLAB' an even further third
+- 2. we have lots of bash/slurm code meant to script resource-heavy operations on a compute cluster, plus the occasional bit of python code meant to do the same
+- 3. we have brain representation extraction code and figure-making code in relevant directories: code is only included in "src_\*" if it is intentionally multipurpose
+- 4. we have directories corresponding to the computation, outputs, and feature extraction of the brain representation/dimension reduction methods we consider
+- 5. finally, we also have Ripser [2] and Ripser-image [3] here, upon which all of the persistence analysis is *actually* built</span>
+```
 
 The subdirectories of this repository are listed below, grouped approximately by their role.
 
