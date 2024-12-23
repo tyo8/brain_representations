@@ -1,4 +1,4 @@
-__pycache__/
+__pycache__
 # plaintext data 
 *.csv
 *.txt
@@ -21,9 +21,12 @@ __pycache__
 *cluster.sh
 pull*.sh
 
+# other modules
+skpalm
+
 # testing and benchmarking intermediates
 *benchmark*
-*test*
+*metric_test*
 *tst*
 
 # cluttered or potentially sensitive info
@@ -32,7 +35,7 @@ RESTRICTED*
 logs
 *do_*
 *MCCN*
-*deprecated*
+*within_*
 
 # image files
 *.png

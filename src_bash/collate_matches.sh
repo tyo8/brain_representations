@@ -3,7 +3,7 @@
 set -o nounset
 
 ### bookkeeping paths ###
-base_dir="/scratch/tyoeasley/brain_representations"
+base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations"
 subbase_dir="${base_dir}/bootstrap_benchmarks"
 tagfile="${base_dir}/taglist.txt"
 
@@ -42,7 +42,7 @@ while getopts ":b:s:f:t:D:n:" opt; do
 done
 
 ### paths to code ###
-coll_script="${base_dir}/src_py/collate_tagged_data.py"
+coll_script="${base_dir}/src_py/interval-matching_bootstrap/utils_match/collate_tagged_data.py"
 
 ### node exclude list: maybe do not include for parallel case? ###
 #SBATCH --exclude=node22,node29,node31,node15,node25,node30,node24,node28,node08,node07
@@ -70,7 +70,7 @@ do
 	
 		# collate outputs across group of tags
 		###############
-		python ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} -d "dictlist"
+		python3 ${coll_script} -f ${vmatch_nametype} -t ${tagfile} -c ${samps} -d "dictlist"
 		###############
 	done
 done

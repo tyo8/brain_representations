@@ -6,6 +6,9 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
+
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 from diagram_distances import weighted_Wasserstein_dist as Wp_wt
 from diagram_distances import _get_bars 
 

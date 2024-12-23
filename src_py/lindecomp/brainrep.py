@@ -1,11 +1,15 @@
 import os
 import re
 import csv
+import sys
 import dill
-import HCP_utils
 import numpy as np
 import rcca as rcca
 import sklearn.cross_decomposition as decomp
+
+# add parent directory to path instead of using relative import, which fails in command line use case
+sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
+import HCP_utils as hutils
 
 
 def main(argvals):
@@ -16,14 +20,14 @@ def main(argvals):
     decomp_method = argvals[5]
 
 
-    reps = HCP_utils.load_reps(dataset_fname)
-    namelist = HCP_utils.extract_namelist(namelist_path)
+    reps = hutils.load_reps(dataset_fname)
+    namelist = hutils.extract_namelist(namelist_path)
     with open(reglist_path,'r') as fin:
         reglist = list(csv.reader(fin))
         ## debug code
         print(reglist)
 
-    list_path = "/scratch/tyoeasley/brain_representations/BR_label_list.csv"
+    list_path = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/BR_label_list.csv"
     pairwise_lindecomp(output_basedir, reps, namelist, reglist=reglist,
             decomp_method=decomp_method, write_mode=True, param_search=False)
 
@@ -60,8 +64,8 @@ def pairwise_lindecomp(output_basedir, reps, namelist, reglist=[],
 # given a pair X and Y of NxP and NxQ matrices, computes the CCA between them.
 def comp_CCA(X, Y, param_search=True, reg_val=1, comp_prop=0.1):
 
-    Rx,Vx = HCP_utils.svd_reduce(X)
-    Ry,Vy = HCP_utils.svd_reduce(Y)
+    Rx,Vx = hutils.svd_reduce(X)
+    Ry,Vy = hutils.svd_reduce(Y)
 
     if reg_val == 0:                     # if regularization hyperparameter is 0, impose simple regularization via PCA reduction
         n_dims = min(round(Rx.shape[0]*comp_prop),  # no. of included PCA components is proportional to no. of subjects; default prop is 1/10
@@ -117,8 +121,8 @@ def comp_CCA(X, Y, param_search=True, reg_val=1, comp_prop=0.1):
 def comp_PLS(X,Y,param_search=False,reg_val=1):
     n_comps = int(np.sqrt(np.amin([X.shape, Y.shape])))         # projection dimension (rank) of the PLS
 
-    RX,VX = HCP_utils.svd_reduce(X)
-    RY,VY = HCP_utils.svd_reduce(Y)
+    RX,VX = hutils.svd_reduce(X)
+    RY,VY = hutils.svd_reduce(Y)
 
     PLS_model = decomp.PLSRegression(n_components = n_comps)    # problem parameterization of PLS regression
     
