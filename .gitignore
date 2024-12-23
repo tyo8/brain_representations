@@ -37,5 +37,8 @@ logs
 # image files
 *.png
 
+# unmodified submodules
+skpalm
+
 # writeup and publishing data
 Null_Models

@@ -1,6 +1,0 @@
-#PBS -N feature_extraction -l nodes=1:ppn=2,walltime=4:00:00
-
-module load matlab
-
-cd /scratch/tyo8teasley/glasser
-matlab -nojvm -nosplash -nodisplay \< Feature_extraction0.m
