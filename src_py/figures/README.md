@@ -15,10 +15,10 @@ Visualizes/summarizes post-hoc analysis of persistence outputs (including cycle-
 Module for regularized CCA analysis of brain representations; linear (affine) method for comparison to the persistent homology approach.
 
 - `HCP_utils.py`
-Python utilities for loading, cleaning, and formatting neuroimaging (rfMRI) data from the [Human Connectome Project](https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release) (HCP) 1200 Young Adult Subjects release. Dependency for both `calculate` and `figures` submodules.
+Python utilities for loading, cleaning, and formatting neuroimaging (rfMRI) data from the [Human Connectome Project](https://www.humanconnectome.org/study/hcp-young-adult/document/1200-subjects-data-release) (HCP) 1200 Young Adult Subjects release
 
 - `diagram_distances.py `
-define and compute distance metrics (i.e., Wasserstein variants) between persitence diagrams. Dependency for both `calculate` and `figures` submodules.
+define and compute distance metrics (i.e., Wasserstein variants) between persitence diagrams
 
 - `toy_models.py`
 submodule for creation of several toy-model validation spaces (concentric circles, S<sup>1</sup> wegde S<sup>2</sup> wedge S<sup>1</sup>, S<sup>2</sup> with a diameter, and the torus T<sup>2</sup>)
