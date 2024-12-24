@@ -3,9 +3,11 @@ import numpy as np
 
 
 ############################################################################################################################################
+# "distance" defined from some similarity measure R (assumed to have image in [0,1]), D := sqrt( 1 - R^2 )
 def p_simdist(R, p=2):
     np.fill_diagonal(R, 1)
     D = np.power(1 - R**p, 1/p)
+    np.fill_diagonal(D, 0)
     return D
 ############################################################################################################################################
 
@@ -42,8 +44,7 @@ def inner(X,Y):
     return inner
 
 def Frob_dist(X,Y):
-    check.symmetric(X)
-    check.symmetric(Y)
+    check.shape(X,Y)
     D = X - Y
     dist = np.power( np.sum( np.power(D.flatten(), 2) ), 1/2)   # equal to Tr(D.T @ D) since X and Y are both symmetric
     return dist

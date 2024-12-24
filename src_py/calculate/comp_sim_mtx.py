@@ -49,13 +49,11 @@ def comp_sim_mtx(
 
         sim_mtx = comp_sim_from_mtx(np.double(data_mtx), method=method)
 
-    if method=='geodesic':
+    if method=='geodesic' or method=='Frobenius':
         np.fill_diagonal(sim_mtx, 0)
         dist_mtx = sim_mtx
     else:
-        np.fill_diagonal(sim_mtx, 1)
         dist_mtx = sdm.p_simdist(sim_mtx, p=2)
-        np.fill_diagonal(dist_mtx, 0)
     
     ### debugging code ###
     _validate_distmtx(dist_mtx)
@@ -102,6 +100,8 @@ def comp_simval(data1,data2,method='Psim'):
         simval = sdm.inner(data1, data2)
     elif method=='geodesic':
         simval = sdm.geodesic(data1, data2)
+    elif method=='Frobenius':
+        simval = sdm.Frob_dist(data1, data2)
 
     return simval
 
@@ -122,6 +122,9 @@ def comp_sim_from_mtx(data_mtx, method='Psim', p=2):
         sim_mtx = sim_mtx/sim_mtx.max()
     elif method=='geodesic':
         sim_mtx = pairwise_distances(data_mtx, metric=sdm.geodesic)
+        sim_mtx = sim_mtx/sim_mtx.max()
+    elif method=='Frobenius':
+        sim_mtx = pairwise_distances(data_mtx, metric=sdm.Frob_dist)
         sim_mtx = sim_mtx/sim_mtx.max()
 
     assert sim_mtx.shape == (n_subj, n_subj),'sim_mtx is not a symmetric n_subj x n_subj matrix.'

@@ -4,7 +4,7 @@ import numpy as np
 
 # checks that input data does not exceed maximum number of dimensions (i.e., entries)
 def maxdims(dims, d=2):
-    assert len(dims) <= d, 'operation not supported for input of dimension '+str(d)+' or greater'
+    assert len(dims) <= d, f"operation not supported for input of dimension {d} or greater"
 
 
 # checks that input data X,Y have the same shape
