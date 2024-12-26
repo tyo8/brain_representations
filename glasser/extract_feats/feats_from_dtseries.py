@@ -4,8 +4,8 @@ import csv
 import numpy as np
 import nibabel as nb
 
-def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/glasser/timeseries/%s_%s.ptseries.nii',
-        subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
+def iter_extract_glasser(genpath = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/glasser/timeseries/%s_%s.ptseries.nii',
+        subjID_path = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
         subjID_list = list(map(''.join, list(csv.reader(fin))))
@@ -26,7 +26,7 @@ def iter_extract_glasser(genpath = '/scratch/tyoeasley/brain_representations/gla
                 runs_data.pop(-1)
 
         ts_data = np.concatenate(runs_data, axis=1)
-        outpath_type = f"/scratch/tyoeasley/brain_representations/glasser/%s/sub-{sID}.csv"
+        outpath_type = f"/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/glasser/%s/sub-{sID}.csv"
         feats_from_dtseries(ts_data, outpath_type, do_partial=True)
 
 

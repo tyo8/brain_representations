@@ -3,15 +3,15 @@ import sys
 import csv
 import numpy as np
 
-def iter_extract_yeo(genpath = '/scratch/tyoeasley/brain_representations/yeo/ext_ptseries/wb_cp/%s_%s.csv',
-        subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
+def iter_extract_yeo(genpath = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/yeo/ext_ptseries/wb_cp/%s_%s.csv',
+        subjID_path = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
         subjID_list = list(map(''.join, list(csv.reader(fin))))
 
     label_list = ['REST1_LR', 'REST1_RL', 'REST2_LR', 'REST2_RL']
 
-    genpath_out = '/scratch/tyoeasley/brain_representations/yeo/%s/sub-%s.csv'
+    genpath_out = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/yeo/%s/sub-%s.csv'
     
     for sID in subjID_list:
         runs_data = [None]*len(label_list)

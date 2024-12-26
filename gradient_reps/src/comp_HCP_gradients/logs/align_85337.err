@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/gradient_reps/src/comp_HCP_gradients/align_subj_gradients.py", line 43, in <module>
-    align_alli_subjs(subjIDs_fpath, 
-NameError: name 'align_alli_subjs' is not defined. Did you mean: 'align_all_subjs'?

@@ -6,9 +6,9 @@ import numpy as np
 def_dimlist = [1000]
 # def_dimlist = [100, 200, 300, 600, 1000]
 
-def iter_extract_Schaefer(genpath = '/scratch/tyoeasley/brain_representations/schaefer/%s/d%d/',
+def iter_extract_Schaefer(genpath = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/schaefer/%s/d%d/',
         dimlist = def_dimlist,
-        subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
+        subjID_path = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
         subjID_list = list(map(''.join, list(csv.reader(fin))))

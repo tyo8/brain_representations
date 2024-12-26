@@ -1,5 +1,0 @@
-pixdim[1,2,3] should be non-zero; setting 0 dims to 1
-pixdim[1,2,3] should be non-zero; setting 0 dims to 1
-pixdim[1,2,3] should be non-zero; setting 0 dims to 1
-pixdim[1,2,3] should be non-zero; setting 0 dims to 1
-slurmstepd: error: *** JOB 33137 ON node15 CANCELLED AT 2022-08-30T09:53:45 DUE TO TIME LIMIT ***

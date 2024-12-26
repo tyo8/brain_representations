@@ -3,9 +3,9 @@ import sys
 import csv
 import numpy as np
 
-def iter_extract_ICA(genpath = '/scratch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d%d_ts2_Z/%s',
+def iter_extract_ICA(genpath = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/brain_representations/ICA_reps/3T_HCP1200_MSMAll_d%d_ts2_Z/%s',
         dimlist = [15, 25, 50, 100, 200, 300],
-        subjID_path = '/scratch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
+        subjID_path = '/ceph/chpc/shared/janine_bijsterbosch/tyoeasley/HCPsubj_subsets/HCP_IDs_all.csv', do_partial=True):
 
     with open(subjID_path, newline='') as fin:
         subjID_list = list(map(''.join, list(csv.reader(fin))))
