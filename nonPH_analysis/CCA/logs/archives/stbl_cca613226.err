@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 37, in <module>
-    decomp_vals,stbl_arch_dir = run_parallel_iters(output_basedir)
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 15, in run_parallel_iters
-    dirlocs = [os.path.join(output_basedir,"CCA_stbl_" + str(k)) for k in range(n_workers) + "_" + date_label]
-TypeError: unsupported operand type(s) for +: 'range' and 'str'

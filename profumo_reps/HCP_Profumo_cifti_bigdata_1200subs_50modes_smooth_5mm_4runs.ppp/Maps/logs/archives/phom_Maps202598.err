@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_DMF.py", line 5, in <module>
-    cpm.comp_dist_mtx(sys.argv[1],sys.argv[2])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 14, in comp_dist_mtx
-    Psim_mtx = Psim_mtx + np.identity(n_subj) + np.matrix.transpose(Psim_mtx)
-NameError: name 'n_subj' is not defined

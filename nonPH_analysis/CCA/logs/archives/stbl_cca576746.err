@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 4, in <module>
-    ld_st.stability_testing(sys.argv[1],sys.argv[2],listpath=sys.argv[3],decomp_method=sys.argv[4])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 31, in stability_testing
-    ld_br.pairwise_lin_decomp(datset_list_name,var_output_dir,listpath=listpath,decomp_method=decomp_method)
-NameError: name 'datset_list_name' is not defined

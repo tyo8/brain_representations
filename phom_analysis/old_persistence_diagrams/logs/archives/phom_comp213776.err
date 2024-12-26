@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_SSpHom.py", line 4, in <module>
-    SSH.comp_persdiag(sys.argv[1],sys.argv[2])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 22, in comp_persdiag
-    pf.export_PHdgms(dist_list_name,fname_out)
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/phom_figs.py", line 32, in export_PHdgms
-    pers_dgms.update_layout(title = "Subject-Subject Persistence Dgm. for "+dtype)
-NameError: name 'pers_dgms' is not defined

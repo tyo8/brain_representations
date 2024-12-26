@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 49, in <module>
-    listpath=listpath, decomp_method=decomp_method)
-TypeError: stability_testing() got an unexpected keyword argument 'dataset_listname'

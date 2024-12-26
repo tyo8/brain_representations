@@ -1,6 +1,0 @@
-/var/spool/slurm/d/job800810/slurm_script: line 27: cd: /scratch/tyoeasley/brain_represetnations/src_MATLAB: No such file or directory
-/var/spool/slurm/d/job800810/slurm_script: line 28: matlab: command not found
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 11, in <module>
-    reps = pull_data(dataset_listname)
-NameError: name 'pull_data' is not defined

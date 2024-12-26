@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 4, in <module>
-    ld_st.stability_testing(sys.argv[1],sys.argv[2],listpath=sys.argv[3],decomp_method=sys.argv[4])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 64, in stability_testing
-    stability_summary = summarizer(decomp_vals)
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 137, in summ_CCA
-    summary_vals[0] = CCA_stbl[i][0]
-NameError: name 'summary_vals' is not defined

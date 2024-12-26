@@ -1,9 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_comp_Psim.py", line 2, in <module>
-    import comp_Psim_mtx as cpm
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/comp_Psim_mtx.py", line 6, in <module>
-    import parse_neurodata as parse
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/parse_neurodata.py", line 20
-    parser = switcher.get(argument, lambda argument: print "Unknown file extension: "+argument)
-                                                                                    ^
-SyntaxError: invalid syntax

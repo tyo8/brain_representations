@@ -1,4 +1,0 @@
-  File "/scratch/tyoeasley/brain_representations/src_py/run_MDS.py", line 24
-    print(dist_mtx_array.shape)
-        ^
-SyntaxError: invalid syntax

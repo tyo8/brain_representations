@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "ext_nilearn_schaeffer.py", line 51, in <module>
-    main(sys.argv)
-  File "ext_nilearn_schaeffer.py", line 23, in main
-    ext_schaeffer_dts(n_roi, subj_list, out_dir, HCPdir=HCPdir)
-  File "ext_nilearn_schaeffer.py", line 29, in ext_schaeffer_dts
-    sch_dataset = datasets.fetch_atlas_schaeffer_2018(n_rois=n_roi, yeo_networks=17)
-AttributeError: module 'nilearn.datasets' has no attribute 'fetch_atlas_schaeffer_2018'

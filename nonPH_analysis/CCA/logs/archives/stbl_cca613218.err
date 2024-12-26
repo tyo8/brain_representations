@@ -1,4 +1,0 @@
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 16
-    decomp_vals,stbl_arch_dir = run_parallel_iters(output_basedir):
-                                                                  ^
-SyntaxError: invalid syntax

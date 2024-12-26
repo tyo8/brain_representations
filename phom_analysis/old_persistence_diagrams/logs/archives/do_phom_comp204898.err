@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_SSpHom.py", line 5, in <module>
-    SSH.compare_phom(sys.argv[2],sys.argv[3])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/SubjSubjHomologies.py", line 48, in compare_phom
-    PW = dgms.PairwiseDistance(metric="wasserstein",delta=0.0001,n_jobs=-1)
-TypeError: __init__() got an unexpected keyword argument 'delta'

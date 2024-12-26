@@ -1,2 +1,0 @@
-slurmstepd: error: *** JOB 618181 ON node19 CANCELLED AT 2021-12-02T10:55:11 ***
-slurmstepd: error: Detected 21 oom-kill event(s) in StepId=618181.batch. Some of your processes may have been killed by the cgroup out-of-memory handler.

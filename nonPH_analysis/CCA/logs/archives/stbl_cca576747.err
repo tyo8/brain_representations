@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_stbl.py", line 4, in <module>
-    ld_st.stability_testing(sys.argv[1],sys.argv[2],listpath=sys.argv[3],decomp_method=sys.argv[4])
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_stability.py", line 35, in stability_testing
-    with open(loadname,'rb') as f_in:
-FileNotFoundError: [Errno 2] No such file or directory: '/scratch/tyoeasley/brain_representations/nonPH_analysis/CCA/breps_CCA/stability_testing/CCA_vars/NM_PROFUMO.CCA_res'
