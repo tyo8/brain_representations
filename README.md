@@ -48,12 +48,6 @@ This repo leverages several Python packages beyond built-ins. These dependencies
 #### Parsing Neuroimaging Data: `src_py/HCP_utils.py`
 - [nibabel](https://nipy.org/nibabel/)
 
-#### Diffusion Gradient Brain Representations: `gradient_reps/src/compute_(subj|group)_gradients.py`
-- [hd5py](https://docs.h5py.org/en/stable/)
-- [nibabel](https://nipy.org/nibabel/)
-- [mapalign](https://github.com/sensein/mapalign)
-- [scikit-learn](https://scikit-learn.org/stable/)
-	
 #### Computing Metric Matrices: `src_py/calclute`
 - [pyRiemann](https://pyriemann.readthedocs.io/en/latest)
 - [scikit-palm](https://github.com/jameschapman19/scikit-palm)
