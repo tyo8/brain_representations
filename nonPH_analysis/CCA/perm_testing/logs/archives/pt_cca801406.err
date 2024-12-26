@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 112, in <module>
-    decomp_vals,pt_arch_dir = run_parallel_permtests(output_basedir,n_workers)
-  File "/scratch/tyoeasley/brain_representations/src_py/run_lindecomp_perm.py", line 97, in run_parallel_permtests
-    agg_data,fpairnames = ld_pt.aggregate_cancorrs(dirlocs)
-  File "/mnt/beegfs/scratch/tyoeasley/brain_representations/src_py/lindecomp_permtest.py", line 80, in aggregate_cancorrs
-    shutil.rmtree(i)
-NameError: name 'shutil' is not defined

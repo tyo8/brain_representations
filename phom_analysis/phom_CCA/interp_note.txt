@@ -1,4 +1,0 @@
-A quick thought to jot down:
-
-The Wasserstein distance between B(PH(X)) and B(PH(X~)) under the Pearson dissimilarity, especially as the approximation rank of X~ increases, measures the extent to which there fails to exist an affine transformation relating Ux and Uy.
-This is to say that the Wasserstein distance computes information analogous to (a mean/summary of) to the canonical correlations, but in topological (i.e., homological) terms.
