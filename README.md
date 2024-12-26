@@ -16,6 +16,15 @@ Python repository: distance and persistent homology calculations, statistical an
 #### `src_bash`
 Bash repository: distributed SLURM scripting at problem scale, also contains only direct calls to [Ripser](https://github.com/Ripser/ripser/tree/image-persistence-simple) [2] and [Ripser-image](https://github.com/Ripser/ripser/tree/tight-representative-cycles) [3] 
 
+## Experiments
+Submission code and ad-hoc scripts for running experimental analyses. 
+
+#### `nonPH_analysis`
+Analysis conducted without persistent homology; contains CCA experiments.
+
+#### `phom_analysis`
+Persistent homology analysis; contains vast majority of experiments.
+
 ## Data 
 Brain representation computation, extraction, and featurization. Note that no subject data of any kind is included in this public repository! Instead, the following directories and their subdirectories contain the extraction/computation/processing code used to standardize brain representations for persistent homology analysis. References for and/or further details of the decomposition method are included in a README of each subdirectory.
 #### `profumo_reps`
