@@ -1,17 +1,9 @@
-# Diffusion Gradient Brain Representations 
-Computes the dense (unparcellated) connectivity matrix from subject data, which then defines the kernel of a diffusion operator used to compute a parallel transport distance between temporal states of rfMRI timeseries data; these states are then projected back onto the cortical surface.
+# Dual-Regression Independent Component Analysis (DR-ICA)
+ICA decomposes group-level data and the ensuing independent time courses are regressed out of individual subjects to produce individual maps. A user guide can be found [here](https://ftp.nmr.mgh.harvard.edu/pub/dist/freesurfer/tutorial_packages/centos6/fsl_507/doc/wiki/DualRegression.html)
 
 ## References
-The diffusion gradient brain representation approach is derived from the following work:
-- [1] R. R. Coifman and S. Lafon, “Diffusion maps,” Applied and Computational Harmonic Analysis, vol. 21, no. 1, pp. 5–30, Jul. 2006, doi: 10.1016/j.acha.2006.04.006.
+Dual-regression ICA derives from the following work:
 
-- [2] Langs, Golland and Ghosh (2015) Predicting Activation Across Individuals with Resting-State Functional Connectivity based Multi-Atlas Label Fusion. MICCAI. 
+- [1] C.F. Beckmann, C.E. Mackay, N. Filippini, and S.M. Smith. Group comparison of resting-state FMRI data using multi-subject ICA and dual regression. OHBM, 2009.
 
-- [3] D. S. Margulies et al., “Situating the default-mode network along a principal gradient of macroscale cortical organization,” Proceedings of the National Academy of Sciences, vol. 113, no. 44, pp. 12574–12579, Nov. 2016, doi: 10.1073/pnas.1608282113.
-
-## Python dependencies
-The following packages are necessary for computing diffusion gradient decompositions of Human Connectome Project (HCP-YA) data using the code in `src`: 
-- [hd5py](https://docs.h5py.org/en/stable/)
-- [nibabel](https://nipy.org/nibabel/)
-- [mapalign](https://github.com/sensein/mapalign)
-- [scikit-learn](https://scikit-learn.org/stable/)
+- [2] N. Filippini, B.J. MacIntosh, M.G. Hough, G.M. Goodwin, G.B. Frisoni, S.M. Smith, P.M. Matthews, C.F. Beckmann and C.E. Mackay. Distinct patterns of brain activity in young carriers of the APOE-ε4 allele. PNAS, 106(17):7209-14, 2009.
