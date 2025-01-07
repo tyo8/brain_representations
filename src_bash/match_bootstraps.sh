@@ -101,10 +101,13 @@ do
 			then
 				echo "extracting from:"
 				ls ${phomX_fpath}
+				echo "extracted to:"
+				ls ${phomX_fpath/phom_X/bars_X}
 			fi
 		fi
 		if $xtr_only
 		then
+			printf "\n\n"
 			continue
 		fi
 
