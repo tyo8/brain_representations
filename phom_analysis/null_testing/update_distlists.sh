@@ -2,10 +2,11 @@
 
 submit=${1:-false}
 permtype=${2:-"subj"}
-dir_pattern=${3:-"within_*"}
-dX_pattern=${4:-"*_dists_*Perm*.txt"}
-subdir_pattern=${5:-"*_*/permstrapping"}
-base=${6:-$(pwd)}
+script_type=${3:-"do_phom_permtests"}
+dir_pattern=${4:-"within_*"}
+dX_pattern=${5:-"*_dists_*Perm*.txt"}
+subdir_pattern=${6:-"*_*/permstrapping"}
+base=${7:-$(pwd)}
 
 dX_pattern="${dX_pattern/Perm/"${permtype}"*Perm}"
 
@@ -37,13 +38,13 @@ do
 	if $submit
 	then
 		cd ${j}
-		echo "Submitting ${j}/do_phom_permtests..."
-		sed -i "s/subjperm/${permtype}perm/g" ${j}/do_phom_permtests
-		sed -i "s/featperm/${permtype}perm/g" ${j}/do_phom_permtests
+		echo "Submitting ${j}/${script_type}..."
+		sed -i "s/subjperm/${permtype}perm/g" ${j}/${script_type}
+		sed -i "s/featperm/${permtype}perm/g" ${j}/${script_type}
 		echo "Taking input from:"
-		sed "20q;d" ${j}/do_phom_permtests
+		sed "20q;d" ${j}/${script_type}
 		echo "Sending output to:"
-		sed "5q;d" ${j}/do_phom_permtests
-		sbatch "${j}/do_phom_permtests"
+		sed "5q;d" ${j}/${script_type}
+		sbatch "${j}/${script_type}"
 	fi
 done

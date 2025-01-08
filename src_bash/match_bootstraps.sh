@@ -96,11 +96,14 @@ do
 			echo "Skipping extraction. Bars output file already exists:"
 			ls ${phomX_fpath/phom_X/bars_X}
 		else
-			python3 ${extract_src} -x ${phomX_fpath} -0 -w 
 			if $xtr_only
 			then
 				echo "extracting from:"
 				ls ${phomX_fpath}
+			fi
+			python3 ${extract_src} -x ${phomX_fpath} -0 -w -v
+			if $xtr_only
+			then
 				echo "extracted to:"
 				ls ${phomX_fpath/phom_X/bars_X}
 			fi
