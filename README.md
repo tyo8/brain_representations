@@ -57,15 +57,16 @@ This repo leverages several Python packages beyond built-ins. These dependencies
 #### Parsing Neuroimaging Data: `src_py/HCP_utils.py`
 - [nibabel](https://nipy.org/nibabel/)
 
-#### Computing Metric Matrices: `src_py/calclute`
+#### Persistent Homology: `src_py/interval-matching_bootstrap`
+- [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) (adapted from [4])
+
+#### Metric Matrices and pot-hoc Analysis: `src_py/calclute`
+- [python optimal transport library (POT)](https://pythonot.github.io/index.html) (required for import of `src_py/diagram_distances.py`)
 - [pyRiemann](https://pyriemann.readthedocs.io/en/latest)
 - [scikit-palm](https://github.com/jameschapman19/scikit-palm)
 
-#### Persistent Homology
-- [interval-matching_bootstrap](https://github.com/tyo8/interval-matching_bootstrap) (adapted from [4])
-
-#### Figures and post-hoc Analysis: `src_py/figures`
-- [python optimal transport library](https://pythonot.github.io/index.html)
+#### Figures and Visualization: `src_py/figures`
+- [python optimal transport library (POT)](https://pythonot.github.io/index.html)
 - [scipy](https://scipy.org/)
 - [pandas](https://pandas.pydata.org/)
 - [seaborn](https://seaborn.pydata.org/)
