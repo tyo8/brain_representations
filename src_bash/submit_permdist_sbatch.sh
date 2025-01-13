@@ -13,7 +13,7 @@ p=2
 q=2
 verbose=true
 
-mem_gb=10
+mem_gb=1
 partition="tier2_cpu"
 maxtime_str="23:55:00"
 

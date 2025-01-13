@@ -89,16 +89,19 @@ def _check_and_clean_barspath(inpath, verbose=True):
     return barpath
 
 
-def write_out(outdir, null_dists, datapath=None):
-    if datapath_name is None:
-        outpath = os.path.join(outdir, "all_permdists.json")
-    else:
-        nameinfo = _parse_pathname(datapath)
-        outname = f"permtests_{nameinfo['modality']}_{nameinfo['feature']}_{nameinfo['metric']}.json"
-        outpath = os.path.join(outdir, outname)
+def write_out(outdir, null_dists):
+
+    modalities = set([ null_dist["modality"] for null_dist in null_dists])
+    features = set([ null_dist["feature"] for null_dist in null_dists])
+    permtypes = set([ null_dist["permtype"] for null_dist in null_dists])
+    metrics = set([ null_dist["metric"] for null_dist in null_dists])
+
+    outname = f"data_vs_{permtypes}null_{modalities}_{features}_{metrics}.json"
+
+    outpath = os.path.join(outdir, outname)
 
     with open(outpath, 'w') as fout:
-        json.dump(null_dists, fout)
+        json.dump(null_dists, fout, indent=4)
     return outpath
 
 
@@ -282,6 +285,6 @@ if __name__=="__main__":
             match_perms=args.match_perms,
             verbose=args.verbose 
             )
-    outpath = write_out(args.outdir, null_dists, datapath=args.datapath)
+    outpath = write_out(args.outdir, null_dists)
 
     print(f"\n\nSaved to: \n{outpath}")

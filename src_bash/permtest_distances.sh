@@ -14,7 +14,7 @@ Perm_distlists_fpath="${parent_outdir}/distlistPerm_set.csv"
 permdist_homdim=1
 verbose=true
 
-mem_gb=10
+mem_gb=1
 
 ### argument parsing ###
 while getopts ":b:o:X:P:D:v:m:" opt; do
