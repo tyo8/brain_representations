@@ -21,9 +21,6 @@ __pycache__
 *cluster.sh
 pull*.sh
 
-# other modules
-skpalm
-
 # testing and benchmarking intermediates
 *benchmark*
 *metric_test*
@@ -42,6 +39,10 @@ logs
 
 # unmodified submodules
 skpalm
+
+# raw results data
+*.json
+*.pkl
 
 # writeup and publishing data
 Null_Models
