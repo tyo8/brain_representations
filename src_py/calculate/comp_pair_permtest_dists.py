@@ -18,27 +18,32 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
         persistence_type="diff", homdim=1, q=2, p=2,
         match_perms=True, verbose=True, debug=True):
 
+
     barsX = dgmD._get_bars(barsX_fpath, homdim=homdim)
     barsY = dgmD._get_bars(barsY_fpath, homdim=homdim)
 
     # compute standard Wasserstein distance between diagrams from X and Y
     data_summ = _summarize_data(barsX_fpath, barsY_fpath, debug=debug)
+
+    if verbose:
+        print(f"Computing ({p},{q})-Wasserstein distance between data-derived persistence H{homdim} diagrams...")
+
     data_summ = data_summ | putils.simple_distance(
             barsX, 
             barsY, 
             persistence_type=persistence_type,
             q=q, p=p,
-            verbose=verbose
+            verbose=False
             )
     Wp_XY = data_summ["Wp_XY"]
 
-    nullbarsX_pathlist = putils._permpaths_from_barsX_fpath(barsX_fpath, nulldir=nulldir, permtype=permtype, verbose=verbose, debug=debug)
+    nullbarsX_pathlist = putils._permpaths_from_datapath(barsX_fpath, nulldir=nulldir, permtype=permtype, verbose=verbose, debug=debug)
     nullbarsX = [dgmD._get_bars(fpath, homdim=homdim) for fpath in nullbarsX_pathlist]
 
-    nullbarsY_pathlist = putils._permpaths_from_barsX_fpath(barsY_fpath, nulldir=nulldir, permtype=permtype, verbose=verbose, debug=debug)
+    nullbarsY_pathlist = putils._permpaths_from_datapath(barsY_fpath, nulldir=nulldir, permtype=permtype, verbose=verbose, debug=debug)
     nullbarsY = [dgmD._get_bars(fpath, homdim=homdim) for fpath in nullbarsY_pathlist]
 
-    permlabels = [putils._parse_pathname(fpath, permtype_path=True, debug=False) for fpath in nullbarsX_pathlist]
+    permlabels = [putils._parse_pathname(fpath, perm_pathtype=True, debug=False) for fpath in nullbarsX_pathlist]
 
     if verbose:
         print(f"X bars pulled from: \n{barsX_fpath}")
@@ -47,22 +52,28 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
         print(f"Found {len(nullbarsY)} associated permuted nulls of type \"{permtype}\"")
 
     if debug:
+        k=2
         ### debugging code ###
-        print(f"Last 3 paths of permuted X nulls: \n{nullbarsX_pathlist[-2:]}")
-        print(f"Last 3 paths of permuted Y nulls: \n{nullbarsY_pathlist[-2:]}")
-        assert len(nullbarsX)==len(nullbarsY), "Must pair permutations to compute distance distributions"
+        print(f"Last {k} paths of permuted X nulls: \n{nullbarsX_pathlist[-k:]}")
+        print(f"Last {k} paths of permuted Y nulls: \n{nullbarsY_pathlist[-k:]}")
+        print(f"Restricting to intersection of first {min(len(nullbarsX), len(nullbarsY))} permutation sets")
+        # assert len(nullbarsX)==len(nullbarsY), "Must pair permutations to compute distance distributions"
         ### debugging code ###
     else:
         if verbose:
-            print(f"Restricting to intersection of first {min(len(nullbarsX), len(nullbarsY))} permutation sets...")
+            print(f"Restricting to intersection of first {min(len(nullbarsX), len(nullbarsY))} permutation sets")
 
-    paired_nullbars = zip(nullbarsX, nullbarsY)
+    paired_nullbars = list(zip(nullbarsX, nullbarsY))
 
     perm_summ = {}
     perm_summ["datatype"] = "Null"
+    perm_summ["permtype"] = permtype
     perm_summ["X_type"] = data_summ["X_type"]
     perm_summ["Y_type"] = data_summ["Y_type"]
-    pairdist_summ = [data_summ] + [perm_summ]*len(paired_nullbars)
+    pairdist_summ = [data_summ] + [None]*len(paired_nullbars)
+
+    if verbose:
+        print(f"Computing Wasserstein distances between {len(paired_nullbars)} H{homdim} diagrams derived from permutation-matched null data...")
 
     for i, pair in enumerate(paired_nullbars):
         perm_dist = putils.simple_distance(
@@ -73,7 +84,15 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
                 verbose=False
                 )
         perm_dist["permlabel"] = permlabels[i]["permlabel"]
-        pairdist_summ = pairdist_summ[i+1] | perm_dist
+        pairdist_summ[i+1] = perm_summ | perm_dist 
+
+    if debug:
+        ### debugging code ###
+        print("First entry of \'pairdist_summ\':", pairdist_summ[0])
+        print(f"Last {k} entries of \'pairdist_summ\':")
+        for entry in pairdist_summ[-k:]:
+            print(entry)
+        ### debugging code ###
 
     if verbose:
         print("\n")
@@ -81,10 +100,13 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
         print("")
         print("Datatype of \'X\':", data_summ["X_type"])
         print("Datatype of \'Y\':", data_summ["Y_type"])
+        print("Projection cost of sending PD(X) to the empty diagram:", data_summ["PDX_diag"])
+        print("Projection cost of sending PD(Y) to the empty diagram:", data_summ["PDY_diag"])
         print(f"Observed Wasserstein distance between X and Y: {Wp_XY}")
-        print("Permutation type(s):", set([ dist["permtype"] for dist in pairdist_summ ]))
-        Wp_XYnull = np.array( [dist["Wp_XY"] for dist in pairdist_summ if pairdist_summ["datatype"]=="Null"] )
-        print(f"Distribution of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(Wp_XYnull)}, sigma={np.std(Wp_XYnull)}")
+        print("Permutation type(s):", ', '.join(list(set([ dist["permtype"] for dist in pairdist_summ if dist["datatype"]=="Null" ]))))
+        Wp_XYnull = np.array( [dist["Wp_XY"] for dist in pairdist_summ if dist["datatype"]=="Null"] )
+        print(f"Summary of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(Wp_XYnull)}, sigma={np.std(Wp_XYnull)}")
+        print(f"Distribution of Wasserstein distances: \n{np.histogram(Wp_XYnull)}")
         print("\n")
 
     return pairdist_summ
@@ -103,8 +125,8 @@ def _get_outpath(data_summ, outdir=".", permtype="subject"):
 
 def _summarize_data(barsX_fpath, barsY_fpath, debug=True):
     
-    xlabels = putils._parse_pathname(barsX_fpath, permtype_path=False, debug=debug)
-    ylabels = putils._parse_pathname(barsY_fpath, permtype_path=False, debug=debug)
+    xlabels = putils._parse_pathname(barsX_fpath, perm_pathtype=False, debug=debug)
+    ylabels = putils._parse_pathname(barsY_fpath, perm_pathtype=False, debug=debug)
 
     data_summ = {}
     data_summ["datatype"] = "Data"
@@ -119,7 +141,7 @@ def _summarize_data(barsX_fpath, barsY_fpath, debug=True):
 # parses input, saves output
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
-        description="Show distributions of outputs from topological bootstrap"
+        description="Compute Wasserstein distance between persistence data derived from original data and their null-permuted derivatives"
     )
     parser.add_argument(
         "-x",
@@ -183,17 +205,16 @@ if __name__=="__main__":
         action="store_true",
         help="toggle verbose output"
     )
-    parser.add_argument(
-        "-m", "--match_perms", 
-        default=False, 
-        action="store_true",
-        help="toggle: enforce match between modality, feature, and distance metric of data vs. null"
-    )
     args = parser.parse_args()
 
+    putils._verify_distinct_spaces(args.barsX_fpath, args.barsY_fpath)
+
     if args.verbose:
-        print(f"List of datasets pulled from: \n{args.barsX_fpath}")
+        print(f"\n\nList of datasets pulled from: \n{args.barsX_fpath}")
         print(f"List of nullsets pulled from: \n{args.barsY_fpath}")
+        print(f"Using permutations of type \'{args.permtype}\', from parent directory: \n{args.nulldir}")
+        print(f"Computing (p,q)=({args.p},{args.q}) Wasserstein distance between diagrams of generators in H{args.dim}")
+        print(f"Persistence values can be defined by either the \'difference\' or \'quotient\' of birth-death pairs: using \'{args.persistence_type}\'\n\n")
 
     pairdist_summ = get_permset_dists(
             args.barsX_fpath, 
@@ -204,8 +225,8 @@ if __name__=="__main__":
             homdim=args.dim, 
             q=args.q, 
             p=args.p,
-            match_perms=args.match_perms,
-            verbose=args.verbose 
+            verbose=args.verbose,
+            debug=True
             )
     outpath = _get_outpath(pairdist_summ[0], outdir=args.outdir, permtype=args.permtype)
     

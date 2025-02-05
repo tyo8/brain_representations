@@ -3,14 +3,14 @@
 set -o nounset
 
 ## bookkeeping paths ###
-base_dir="interval-matching_bootstrap"
-outdir="${base_dir}/phom_analysis/bootstrap_distances/PROFUMO_vs_null"
+base_dir="interval-matching_pairperms"
+outdir="${base_dir}/phom_analysis/pairperms_distances/PROFUMO_vs_null"
 
 barX_fpath=""
 barY_fpath=""
-tagfile="${base_dir}/subsampling/taglist100k_90p_famstruct.txt"
+permtype="subject"
 count=100
-bsdist_homdim=1
+pairperms_homdim=1
 p=2
 q=2
 use_affinity=true
@@ -28,11 +28,11 @@ while getopts ":b:x:y:T:n:D:P:Q:a:v:o:m:p:t:" opt; do
     ;;
     y) barY_fpath=${OPTARG}
     ;;
-    T) tagfile=${OPTARG}
+    T) permtype=${OPTARG}
     ;;
     n) count=${OPTARG}
     ;;
-    D) bsdist_homdim=${OPTARG}
+    D) pairperms_homdim=${OPTARG}
     ;;
     P) p=${OPTARG}
     ;;
@@ -63,54 +63,44 @@ while getopts ":b:x:y:T:n:D:P:Q:a:v:o:m:p:t:" opt; do
 done
 
 ### paths to code ###
-bsdist_script="${base_dir}/src_py/calculate/comp_bootstrap_dists.py"
-
+pairperms_script="${base_dir}/src_py/calculate/comp_pair_permtest_dists.py"
+Xname=$(basename $(dirname $(ls ${barX_fpath})))
+Xname=${Xname/phom_data_/}
+Xname=${Xname/_dists/}
 Yname=$(basename $(dirname $(ls ${barY_fpath})))
+Yname=${Yname/phom_data_/}
+Yname=${Yname/_dists/}
+data_label="${Xname}-vs-${Yname}"
 
-Yname=${Yname/"phom_data"/"Y"}
-data_label="X_vs_${Yname}"
-
-sbatch_fpath="${outdir}/do_bsdist_${data_label}"
-if $use_affinity
-then
-	run_suffix="-a "
-else
-	run_suffix=""
-fi
-if $verbose
-then
-	run_suffix="${run_suffix}-v"
-fi
-outpath="${outdir}/Wp_hat_${data_label}.pkl"
+sbatch_fpath="${outdir}/do_nullpairdists_${data_label}"
 
 echo "\
 \
 #!/bin/sh
 
-#SBATCH --job-name=bsdist_${data_label}
-#SBATCH --output=${outdir}/logs/bsdist_${data_label}.out
-#SBATCH --error=${outdir}/logs/bsdist_${data_label}.err
+#SBATCH --job-name=pairperms_${data_label}
+#SBATCH --output=${outdir}/logs/pairperms_${data_label}.out
+#SBATCH --error=${outdir}/logs/pairperms_${data_label}.err
 #SBATCH --time=${maxtime_str}
 #SBATCH --partition=${partition}
 #SBATCH --account=janine_bijsterbosch
 #SBATCH --mem=${mem_gb}gb
 
-bsdist_script=${bsdist_script}
+pairperms_script=${pairperms_script}
 
 barX_fpath=${barX_fpath}
 barY_fpath=${barY_fpath}
-count=${count}
-tagfile=${tagfile}
-dim=${bsdist_homdim}
-outpath=${outpath}
+permtype=${permtype}
+dim=${pairperms_homdim}
+outdir=${outdir}
 
 echo \"barX_fpath: \\\"\${barX_fpath}\\\"\"
 echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
-echo \"saving results to \${outpath}\"
+echo \"saving results to \${outdir}\"
 
-python3 \${bsdist_script} -x \${barX_fpath} -y \${barY_fpath} -t \${tagfile} -n \${count} --dim \${dim} -p ${p} -q ${q} -o \${outpath} ${run_suffix}
+python3 \${pairperms_script} -x \${barX_fpath} -y \${barY_fpath} -t \${permtype} --dim \${dim} -p ${p} -q ${q} -o \${outdir} -v
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

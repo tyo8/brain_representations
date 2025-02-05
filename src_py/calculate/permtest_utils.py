@@ -30,9 +30,9 @@ def simple_distance(barsX, permbarsX,
         print("\n")
         print("##########################################    RESULTS SUMMARY    ##########################################")
         print("")
-        print("Standard Wasserstein distance between PD(X) and PD(permX):", Wp_XY)
+        print("Standard Wasserstein distance between PD(X) and PD(Y):", Wp_XY)
         print("Projection cost of sending PD(X) to the empty diagram:", PDX_diag)
-        print("Projection cost of sending PD(permX) to the empty diagram:", PDY_diag)
+        print("Projection cost of sending PD(Y) to the empty diagram:", PDY_diag)
 
     return results_dict
 ################################################################################################################
@@ -82,17 +82,17 @@ def _parse_pathname(datapath, perm_pathtype=False, debug=True):
 def _permpaths_from_datapath(datapath, nulldir=def_nulldir, permtype="subject", permno="*", debug=False, verbose=False):
     import re
     import glob
-    labelset = _parse_pathname(datapath, perm_pathtype=False, debug=debug)
+    labelset = _parse_pathname(datapath, perm_pathtype=False, debug=False)
 
     modality = labelset["modality"]
     modality_nonum = re.sub(r'[0-9]+','', modality)
     feature = labelset["feature"]
-    metric = labelset["metric"]
+    metric = labelset["metric"].replace('Psim-ztrans','Psim_ztrans')
 
     if permtype=="subject":
-        permlabel = "perm_set{permno}_n64620"
+        permlabel = f"perm_set{permno}_n64620"
     elif permtype=="feature":
-        permlabel = "seed{permno}"
+        permlabel = f"seed{permno}"
     else:
         raise ValueError(f"Unrecognized permutation type \"{permtype}\"")
 
@@ -106,6 +106,7 @@ def _permpaths_from_datapath(datapath, nulldir=def_nulldir, permtype="subject", 
             "bars_X.txt")
 
     permpaths = glob.glob(gen_permpath)
+    permpaths.sort()
 
     if verbose:
         print(f"parent null directory: \n{nulldir}")
@@ -156,7 +157,7 @@ def _debug_bars_list(bars_flist, bars_list, name="X-hat_i"):
 
 
 
-## should not be relevant to permtests case; kept in for use as debugging functions
+## Load-in checker: skips computations for what should be trivial distances
 ################################################################################################################
 def _verify_distinct_spaces(pathX, pathY):
     if pathX==pathY:

@@ -30,7 +30,7 @@ def get_permset_dists(datapath, permbarsX_listpath,
 
 
     for i, permpath in enumerate(permpath_list):
-        perm_labels = putils._parse_pathname(permpath, permpath_type=True, debug=debug)
+        perm_labels = putils._parse_pathname(permpath, perm_pathtype=True, debug=debug)
 
 
         permbarsX = dgmD._get_bars(permpath, homdim=homdim)

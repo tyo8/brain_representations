@@ -25,6 +25,7 @@ pull*.sh
 *benchmark*
 *metric_test*
 *tst*
+*troubleshooting*
 
 # cluttered or potentially sensitive info
 *.html
