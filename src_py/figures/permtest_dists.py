@@ -15,11 +15,15 @@ from matplotlib import pyplot as plt
 
 def_fig_size = (24, 24)
 
-def_pattern='X_*_dists'
+def_pattern='*X_*_dists'
+
+##### FOR WELL-MODULATED INCORPORATION LATER!!! #####
 
 def_heatmap_vars = ["Wp_XY", "Wp_XhatYhat_i", "Mean Wp Approximation Difference", "Wphat0_XY", "Wphat_XY", "Wphat0_XY_i"]
 # def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i"]
 def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i", "PDX_diag", "PDY_diag"]
+
+# exp_outtype="null_vs_grad/permtesting/X_grad50_Maps_Psim_dists/data_vs_subjectnull_grad50_Maps_Psim_OR_inner.json"
 
 ####################################################################################################################
 # Synthesizer functions

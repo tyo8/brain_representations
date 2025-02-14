@@ -15,11 +15,17 @@ from matplotlib import pyplot as plt
 
 def_fig_size = (24, 24)
 
-def_pattern='*X_*_L2dists'
+def_pattern='*X_*_dists'
+
+
+##### FOR WELL-MODULATED INCORPORATION LATER!!! #####
+
 
 def_heatmap_vars = ["Wp_XY", "Wp_XhatYhat_i", "Mean Wp Approximation Difference", "Wphat0_XY", "Wphat_XY", "Wphat0_XY_i"]
 # def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i"]
 def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i", "PDX_diag", "PDY_diag"]
+
+# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
 
 ####################################################################################################################
 # Synthesizer functions
@@ -30,7 +36,7 @@ def summarize_pair_dists(
         pattern=def_pattern,
         heatmap_vars=def_heatmap_vars, 
         scatter_vars=def_scatter_vars,
-        do_rainbow=True,
+        do_heatmap=True,
         cluster_method="average",
         do_scatter=True,
         write_mode=True
@@ -46,9 +52,9 @@ def summarize_pair_dists(
         print(f"Warning: making new directory {output_dir}")
         os.mkdir(output_dir)
 
-    if do_rainbow:
+    if do_heatmap:
         xnamelist, ynamelist, valuegrid_list = _get_heatmap_inputs(alldata_grid, heatmap_vars=heatmap_vars)
-        generate_rainbow_plots(
+        generate_heatmap_plots(
                 xnamelist, 
                 ynamelist, 
                 valuegrid_list, 
@@ -156,7 +162,7 @@ def _get_scatter_df(alldata_grid, scatter_vars=def_scatter_vars, name_type="toy_
     return scatter_df, hue_var, style_var
 
 
-def generate_rainbow_plots(
+def generate_heatmap_plots(
         xnamelist, 
         ynamelist, 
         valuegrid_list, 
@@ -171,7 +177,7 @@ def generate_rainbow_plots(
         value_name = heatmap_vars[i]
         if value_grid.ndim > 2:
             mean_grid = np.mean(value_grid, axis=2)
-            rainbow_plot(
+            heatmap_plot(
                     f"{value_name}_mean", 
                     mean_grid, 
                     xnamelist, 
@@ -182,7 +188,7 @@ def generate_rainbow_plots(
                     write_mode=write_mode
                     )
             std_grid = np.std(value_grid, axis=2)
-            rainbow_plot(
+            heatmap_plot(
                     f"{value_name}_stddev", 
                     std_grid, 
                     xnamelist, 
@@ -193,7 +199,7 @@ def generate_rainbow_plots(
                     write_mode=write_mode
                     )
         else:
-            rainbow_plot(
+            heatmap_plot(
                     value_name, 
                     value_grid, 
                     xnamelist, 
@@ -294,7 +300,7 @@ def scatter_plot(
         plt.show()
     
 
-def rainbow_plot(
+def heatmap_plot(
         value_name, 
         value_grid, 
         xnamelist, 
@@ -316,7 +322,7 @@ def rainbow_plot(
     vartype = _get_vartype(xticklabels[0].split('\n'), name_type=name_type)
     rb_title = _construct_title((value_name, xname, yname, vartype), title_type="heatmap")
 
-    from figs_compare_topostats import _plot_clustermap
+    from compare_topostats import _plot_clustermap
 
     if debug:
         ### debugging code ###
@@ -366,7 +372,7 @@ def rainbow_plot(
     ax.set(ylabel = yname)
 
     if write_mode:
-        outpath = os.path.join(outdir, f"rainbow_cluster_{xname}_{yname}_{value_name}.png").replace(" ","")
+        outpath = os.path.join(outdir, f"heatmap_cluster_{xname}_{yname}_{value_name}.png").replace(" ","")
         _write_img(fig, outpath)
         plt.close()
     else:
@@ -389,7 +395,7 @@ def rainbow_plot(
     ax.set(ylabel = yname)
 
     if write_mode:
-        outpath = os.path.join(outdir, f"rainbow_heatmap_{xname}_{yname}_{value_name}.png").replace(" ","")
+        outpath = os.path.join(outdir, f"heatmap_heatmap_{xname}_{yname}_{value_name}.png").replace(" ","")
         _write_img(fig, outpath)
         plt.close()
     else:
@@ -611,7 +617,7 @@ if __name__=="__main__":
     )
     parser.add_argument(
         "-R",
-        "--do_rainbow",
+        "--do_heatmap",
         default=False,
         action="store_true",
         help="Generate heatmaps of pairwise summary comparisons over varying parameters in each pair"
@@ -637,7 +643,7 @@ if __name__=="__main__":
             args.output_dir,
             pattern=args.pattern,
             name_type=args.name_type,
-            do_rainbow=args.do_rainbow,
+            do_heatmap=args.do_heatmap,
             do_scatter=args.do_scatter,
             write_mode=args.write_mode
             )
