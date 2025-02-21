@@ -8,7 +8,9 @@ import matplotlib.pyplot as plt
 from scipy import stats
 
 # add parent directory to path instead of using relative import, which fails in command line use case
-sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
+import sys
+sys.path.append("/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/src_py")
+# sys.path.append("/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations/src_py")
 from diagram_distances import weighted_Wasserstein_dist as Wp_wt
 from diagram_distances import _get_bars 
 
@@ -137,7 +139,7 @@ def _plot_clustermap(
         fig_size=(12, 12), 
         outpath="", 
         write_mode=True,
-        debug=True
+        debug=False
         ):
 
     if symmetrize:
@@ -156,9 +158,9 @@ def _plot_clustermap(
             else:
                 linkage_vals = values
 
-            linkage = hc.linkage(sp.distance.squareform(linkage_vals, checks=False), method=cluster_method, optimal_ordering=True)
-            xlinkage=linkage
-            ylinkage=linkage
+            link = hc.linkage(sp.distance.squareform(linkage_vals, checks=False), method=cluster_method, optimal_ordering=True)
+            xlinkage=link
+            ylinkage=link
 
         kws = dict(cbar_kws=dict(orientation='vertical'), figsize=fig_size)
         dgram_ratio = 0.1618
@@ -195,8 +197,6 @@ def _plot_clustermap(
         plt.tight_layout()  # neccessary to get the x-axis labels to fit
         g.set_size_inches(fig_size, forward=False)
 
-    plt.xticks(fontsize=6,rotation=90)
-    plt.yticks(fontsize=6) #rotate the tick labels
     if write_mode:
         g.savefig(outpath, dpi=600)
         print(f"saved to {outpath}")

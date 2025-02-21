@@ -10,16 +10,19 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 from matplotlib import pyplot as plt
+from scipy.spatial.distance import squareform
+from statsmodels.stats.multitest import fdrcorrection
 
 # global variables 
 
 def_fig_size = (24, 24)
+def_label_fontsize = 7 
 
 def_pattern='*X_*_dists'
 
 
 # def_heatmap_vars = ["Wp_XY", "empirical_pval"]
-def_heatmap_vars = ["empirical_pval"]
+def_heatmap_vars = ["Wp_XY", "empirical_pval"]
 def_scatter_vars = ["Wp_XY", "Y_type"] 
 
 # exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
@@ -37,7 +40,7 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
 
     # compute p-value from 2-sided test against empirical CDF (enforcing inf(p)=1/N)
     data_pval = 1 - np.mean(data_diff > null_diffs["Wp_XY"].to_numpy())
-    data_pval = 2*min(data_pval, 1 - data_pval)
+    data_pval = min(data_pval, 1 - data_pval)
     if data_pval < 1/len(null_diffs):
         data_pval = 1/len(null_diffs)
 
@@ -59,18 +62,22 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
 
 # heatmap plotting
 ########################################################################################################################
-def _get_heatmap_inputs(alldata_grid, heatmap_vars=def_heatmap_vars, debug=True):
+def _get_heatmap_inputs(alldata_grid, heatmap_vars=def_heatmap_vars, debug=False):
     xnamelist = [list(set(i[0]["X_type"]))[0] for i in alldata_grid]
     ynamelist = [list(set(j["Y_type"]))[0] for j in alldata_grid[0]]
 
-    valuegrid_list = [None]*len(heatmap_vars)
 
-    for idx, varname in enumerate(heatmap_vars):
+    valuegrid = {}
+
+    for varname in heatmap_vars:
+        print(f"loading {varname}...")
         try:
-            valuegrid_list[idx] = np.squeeze(np.array([[j[varname].dropna().to_numpy() for j in i] for i in alldata_grid]))
+            vals = np.squeeze(np.array([[j[varname].to_numpy() for j in i] for i in alldata_grid]))
+            valuegrid[varname] = vals
+            if debug:
+                print(f"variable has grid of values: \n{vals}")
         except ValueError:
-            new_entry = [[j[varname].dropna().to_numpy() for j in i] for i in alldata_grid]
-            valuegrid_list[idx] = np.squeeze(new_entry)
+            new_entry = [[j[varname].to_numpy() for j in i] for i in alldata_grid]
             if debug:
                 ### debugging code ###
                 print(f"found data inmogeneity in {varname} readin. attempted new entry has data of following shapes and values:")
@@ -83,218 +90,160 @@ def _get_heatmap_inputs(alldata_grid, heatmap_vars=def_heatmap_vars, debug=True)
 
     if debug:
         ### debugging code ###
-        print(f"Names of 'X' spaces: \n{xnamelist}")
-        print(f"Names of 'Y' spaces: \n{ynamelist}")
-        print(f"Entries in list of grid values have the following shapes: \n{[i.shape for i in valuegrid_list]}")
-        print("First entry in valuegrid_list: ", np.array(valuegrid_list[0]))
+        print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
+        print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
+        print(f"Entries in list of grid values have the following shapes: \n{[valuegrid[var].shape for var in heatmap_vars]}")
+        print("First entry in valuegrid: ", np.array(valuegrid[heatmap_vars[0]]))
         print(f"Generating one heatmap for each of the following set of variables: \n{heatmap_vars}")
         print("")
         ### debugging code ###
-    return xnamelist, ynamelist, valuegrid_list
+    return xnamelist, ynamelist, valuegrid
 
 
-def generate_heatmap_plots(
-        xnamelist, 
-        ynamelist, 
-        valuegrid_list, 
-        heatmap_vars = def_heatmap_vars,
-        outdir = None,
-        name_type = "exp_results",
-        self_cluster = False,
+def generate_clustermaps(
+        xnamelist,
+        ynamelist,
+        valuegrid,
+        linkage_var = "Wp_XY",
         cluster_method = "average",
+        fig_size = def_fig_size,
+        label_fontsize = def_label_fontsize,
+        outdir = None,
         write_mode = True
         ):
-    for i, value_grid in enumerate(valuegrid_list):
-        value_name = heatmap_vars[i]
-        if value_grid.ndim > 2:
-            mean_grid = np.mean(value_grid, axis=2)
-            heatmap_plot(
-                    f"{value_name}_mean", 
-                    mean_grid, 
-                    xnamelist, 
-                    ynamelist,
-                    outdir=outdir,
-                    name_type=name_type,
-                    self_cluster=self_cluster,
-                    write_mode=write_mode
-                    )
-            std_grid = np.std(value_grid, axis=2)
-            heatmap_plot(
-                    f"{value_name}_stddev", 
-                    std_grid, 
-                    xnamelist, 
-                    ynamelist,
-                    outdir=outdir,
-                    name_type=name_type,
-                    self_cluster=self_cluster,
-                    write_mode=write_mode
-                    )
-        else:
-            heatmap_plot(
-                    value_name, 
-                    value_grid, 
-                    xnamelist, 
-                    ynamelist,
-                    outdir=outdir,
-                    name_type=name_type,
-                    self_cluster=self_cluster,
-                    write_mode=write_mode
-                    )
+    clustervars = list(valuegrid.keys())
+
+    assert linkage_var in clustervars, f"Value does not include variable \"{linkage_var}\", the specified common linkage operator"
+    print(f"Using \"{linkage_var}\" as linkage variable while generating clustermaps")
+
+    fig_dict = {}
+    
+    for varname in clustervars:
+        fig_dict[varname] = plot_clustermap(
+                xnamelist,
+                ynamelist,
+                valuegrid,
+                cluster_method = cluster_method,
+                linkage_var = linkage_var,
+                display_var = varname,
+                enf_sym = True,
+                fig_size = fig_size,
+                label_fontsize = label_fontsize,
+                outdir = outdir,
+                write_mode = write_mode
+                )
+
+        # can i turn list figure set into something that shows everything?
 
 
 
-def heatmap_plot(
-        value_name, 
-        value_grid, 
-        xnamelist, 
-        ynamelist, 
-        outdir=None,
-        name_type="exp_results", 
-        self_cluster=True,
-        cluster_method="average",
-        label_fontsize = 8,
-        write_mode=True,
-        debug=False
+def plot_clustermap(
+        xnamelist,
+        ynamelist,
+        valuegrid,
+        cluster_method = "average",
+        linkage_var = "Wp_XY",
+        display_var = "empirical_pval",
+        enf_sym = False,
+        label_fontsize = def_label_fontsize,
+        fig_size = def_fig_size,
+        outdir = None,
+        write_mode = True,
+        debug = True
         ):
 
-    print(f"Plotting grid of '{value_name}' values...")
+    print(f"enforcing symmetry in \'{linkage_var}\' values.")
+    linkage_vals = _enforce_symmetry(valuegrid[linkage_var], fill_val=0)
+    import scipy.cluster.hierarchy as hc
+    xlinkage = hc.linkage(squareform(linkage_vals), method=cluster_method, optimal_ordering=True)
+    if debug:
+        print(f"found {np.count_nonzero(xlinkage < 0)} negative linkage values") 
+        print(f"found {np.count_nonzero(np.isnan(xlinkage))} NaN linkage values")
+        print(f"found {np.count_nonzero(np.isinf(xlinkage))} infinite linkage values")
+
+    if enf_sym:
+        print(f"enforcing symmetry in \'{display_var}\' values.")
+        display_vals = _enforce_symmetry(valuegrid[display_var], fill_val=0)
+        try:
+            assert xnamelist == ynamelist
+        except AssertionError:
+            if debug:
+                print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
+                # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
+            ynamelist = xnamelist
+    else:
+        display_vals = valuegrid[display_var]
+
+    assert linkage_vals.shape==display_vals.shape, "linkage and display values must have same dimensions!"
+    
+    print(f"Plotting grid of '{display_var}' values...")
 
     xticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in xnamelist]
     yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
     
-    vartype = _get_vartype(xticklabels[0].split('\n'), name_type=name_type)
-    rb_title = f"Heatmap plot of {value_name}"
+    rb_title = f"Clustermap plot of {display_var}"
 
-    if "pval" in value_name:
-        value_grid[np.abs(value_grid) == np.inf] = np.nan
-        value_grid = -np.log10(2*value_grid)
+    if "pval" in display_var:
+        display_vals = squareform(correct_pvals(triu_vals(display_vals,k=1)))
+        np.fill_diagonal(display_vals, np.nan)
+        display_vals = -np.log10(2*display_vals)
         rb_title = rb_title + " (-log10(2p))"
+        np.nan_to_num(display_vals, nan=-1, copy=False)
+    if "Wp_XY" in display_var:
+        display_vals[ display_vals==0 ] = np.nan
+        display_vals = np.log10(display_vals)
+        rb_title = rb_title + " (log10(W_p))"
+        max_num = -1.1*np.nanmax(np.abs(display_vals))
+        if debug:
+            print(f"replacing NaNs in log10(Wp_XY) with {max_num}")
+        np.nan_to_num(display_vals, nan=max_num, copy=False)
+
+    if np.count_nonzero(np.isnan(display_vals)) > 0:
+        if debug:
+            print(f"{np.count_nonzero(np.isnan(display_vals))} NaNs removed removed from \'display_vals\' for var \"{display_var}\"")
+        np.nan_to_num(display_vals, nan=-1, copy=False)
         
 
-    if debug:
-        ### debugging code ###
-        print(f"xticklabels: \n{xticklabels}")
-        print(f"yticklabels: \n{yticklabels}")
+#   if debug:
+#       ### debugging code ###
+#       print(f"xticklabels: {xticklabels[0]}")
+#       print(f"yticklabels: {yticklabels[0]}")
 
-        value_uniq = np.unique((value_grid + value_grid.T)/2)
-        print(f"Variable 'value_grid' has shape: {value_grid.shape}")
-        print(f"Variable 'value_grid' is roughly symmetric: {np.allclose(value_grid, value_grid.T)}.")
-        print(f"Variable 'value_grid' is strictly symmetric: {np.all(np.equal(value_grid, value_grid.T))}.")
-        print(f"Variable 'value_grid' contains {len(value_uniq)} unique elements:")
-        print(np.histogram(value_uniq))
-        print("")
-        ### debugging code ###
+    from compare_topostats import _plot_clustermap
 
-#   if np.allclose(value_grid, value_grid.T):
-#       value_grid = (value_grid + value_grid.T)/2      # force exact symmetry because clustermap symmetry tolerance is stricter than np.allclose
-#   else:
-#       raise ValueError("Variable 'value_grid' must be (at least approximately) symmetric to use as linkage for a clustermap")
+    g = _plot_clustermap(
+        display_vals, 
+        cluster=True,
+        cluster_method=cluster_method,
+        cm_title = rb_title,
+        xticklabels=xticklabels, 
+        yticklabels=yticklabels,
+        xlinkage=xlinkage,
+        ylinkage=xlinkage,
+        cmap = sns.color_palette("Spectral", as_cmap=True),
+        fig_size=fig_size,
+        write_mode=False,
+        debug=debug
+        )
 
-    fig, ax = plt.subplots()
-    ax = sns.heatmap(
-            value_grid, 
-            square = True, 
-            cbar = True, 
-            ax=ax, 
-            cmap = sns.color_palette("Spectral", as_cmap=True),
-            xticklabels=xticklabels, 
-            yticklabels=yticklabels
-            )
+    fig = g.fig
+    ax = g.ax_heatmap
     ax.set(title = rb_title)
     ax.xaxis.tick_top()
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, fontsize=label_fontsize)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=label_fontsize)
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=label_fontsize)
 
     if write_mode:
-        outpath = os.path.join(outdir, f"heatmap_{value_name}.png").replace(" ","")
+        outpath = os.path.join(outdir, f"clustermap_{display_var}.png").replace(" ","")
         _write_img(fig, outpath)
         plt.close()
     else:
         fig.set_size_inches(fig_size, forward=True)
         plt.show()
-########################################################################################################################
 
+    return g
 
 # heatmap plot utilities
-########################################################################################################################
-def _construct_title(nametuple, title_type=None):
-    if title_type=="heatmap":
-        title = "Variation of %s \n in %s and %s \n over %s pairs" % nametuple
-    elif title_type=="scatter":
-        if len(nametuple) == 3:
-            title = "Relationships between resampling stability measurements in %s:\n%s vs. %s" % nametuple
-        elif len(nametuple) == 4:
-            title = "Relationships between resampling stability measurements in %s:\n%s vs. %s vs. %s" % nametuple
-        else:
-            raise IOError(f"Input 'nametuple'={nametuple} must have len=3 or len=4 for title of type {title_type}")
-    else:
-        raise IOError(f"Unrecognized title type '{title_type}'")
-    return title
-
-def _get_vartype(ticklabel, name_type="exp_results", debug=True):
-
-    if debug:
-        ### debugging code ###
-        print(f"Submitting ticklabels that look like: \n{ticklabel}")
-        ### debugging code ###
-
-    if isinstance(ticklabel, list):
-        vartype = [None]*len(ticklabel)
-        for i,name in enumerate(ticklabel):
-            vartype[i] = _name_vartype(name, name_type=name_type)
-        vartype = tuple(vartype)
-    else:
-        vartype = _name_vartype(ticklabel, name_type=name_type)
-    return vartype
-
-def _name_vartype(name, name_type="exp_results", debug=True):
-    if debug:
-        ### debugging code ###
-        print(f"Producing variable type from name '{name}' under '{name_type}' conventions.")
-        ### debugging code ###
-    if name_type=="exp_results":
-        if "Psim" in name or name=="inner" or name=="geodesic":
-            vartype = "Dissimilarity Function"
-        elif name=="Maps" or name=="Amps" or name=="pNMs" or name=="NMs":
-            vartype = "Feature Type"
-        elif any([mode in name for mode in modalities]):
-            vartype = "Modality"
-        else:
-            raise IOError(f"Variable \"{name}\" not of type recognized under \"{name_type}\" conventions")
-    else:
-        raise IOError(f"Unrecognized name_type \"{name_type}\"")
-
-    if debug:
-        ### debugging code ###
-        print(f"variable type name: {vartype}")
-        ### debugging code ###
-    return vartype
-
-def _manual_stylemap(uniq_data, style_order=None, debug=True):
-    if style_order is None:
-        style_order = list(matplotlib.markers.MarkerStyle("").markers.keys())
-    mdict = {}
-    for i,val in enumerate(uniq_data):
-        mdict[val] = style_order[i]
-
-    if debug:
-        ### debugging code ###
-        print("Style order:", style_order)
-        print("Marker dictionary:", mdict)
-        ### debugging code ###
-    return mdict
-
-def _manual_colormap(uniq_data, debug=True):
-    cvec = np.linspace(0, 1, len(uniq_data))
-    cdict = {}
-    for i, val in enumerate(uniq_data):
-        cdict[val] = cvec[i]
-    
-    if debug:
-        ### debugging code ###
-        print("Color dictionary:", cdict)
-        ### debugging code ###
-    return cdict
 ########################################################################################################################
 ########################################################################################################################
 
@@ -310,7 +259,7 @@ def _add_emp_pval(df, check_match=True):
     Wp_XYnull = nullrows["Wp_XY"].to_numpy()
 
     if len(Wp_XYnull) == 0:
-        empirical_pval = -np.inf
+        empirical_pval = np.nan
     else:
         if check_match:
             check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
@@ -319,27 +268,42 @@ def _add_emp_pval(df, check_match=True):
 
         prop_lower = np.mean(Wp_XY > Wp_XYnull)
         # compute p-value from 2-sided test against empirical CDF (enforcing inf(p)=1/N)
-        empirical_pval = max(1/len(Wp_XYnull), 2*min(prop_lower, 1 - prop_lower))
+        # empirical_pval = max(1/len(Wp_XYnull), 2*min(prop_lower, 1 - prop_lower))
         # compute p-value from 1-sided test against empirical CDF (enforcing inf(p)=1/N)
         # empirical_pval = max(1/len(Wp_XYnull), 1 - prop_lower)
+        # compute p-value from 1-sided test against empirical CDF (enforcing inf(p)=1/N)
+        empirical_pval = max(1/len(Wp_XYnull), prop_lower)
 
     df["empirical_pval"] = [empirical_pval] + [np.nan]*len(Wp_XYnull)
 
     return df
+
+def correct_pvals(pval_vec):
+    rmv_idx = np.isnan(pval_vec) + (pval_vec < 0)
+    _, corr_pvals = fdrcorrection(pval_vec[ rmv_idx == False ])
+    pval_vec[ rmv_idx == False ] = corr_pvals
+    return pval_vec
 ########################################################################################################################
 
 
 # Data wrangling functions
 ########################################################################################################################
-def pull_data(parent_dir, dir_pattern='X_*_dists', f_pattern = '*_vs_*', name_type="exp_results", enforce_sym=True, debug=True):
+def pull_data(
+        parent_dir, dir_pattern='X_*_dists', f_pattern = '*_vs_*', 
+        name_type="exp_results", check_pval=True, data_only=True, debug=True
+        ):
     dirlist = glob.glob(os.path.join(parent_dir, dir_pattern))
     dirlist.sort()
 
     fpath_grid = [ glob.glob(os.path.join(X_dir, f"{f_pattern}.json")) for X_dir in dirlist ]
     [i.sort() for i in fpath_grid]
 
-    alldata_grid = [ [ _load(fpath, name_type=name_type) for fpath in X_sublist ] for X_sublist in fpath_grid ]
-    gridlist_shape = [len(alldata_grid), set([len(i) for i in alldata_grid]), set([i.shape for j in alldata_grid for i in j])]
+    if data_only:
+        print("Only retaining information from datatype \"Data\" (discarding \"Null\"-type data after necessary computations)")
+    
+    alldata_grid = [ [ _load(
+        fpath, data_only=data_only, name_type=name_type, check_pval=check_pval
+        ) for fpath in X_sublist ] for X_sublist in fpath_grid ]
 
     if debug:
         ### debugging code ###
@@ -347,69 +311,59 @@ def pull_data(parent_dir, dir_pattern='X_*_dists', f_pattern = '*_vs_*', name_ty
         if not isinstance(alldata_grid[0], list):
             print(f"alldata_grid loadin variable is not nested lists, but instead has following structure: \n{[type(x) for x in alldata_grid]}")
         try:
-            print(f"00 entry of alldata_grid: \n{alldata_grid[0][0]}")
+            samp = alldata_grid[0][0]
+            print(f"00 entry of alldata_grid: \n{samp}")
         except IndexError:
             print(f"0-row entry of alldata_grid: \n{alldata_grid[0]}")
-        ### debugging code ###
+        if isinstance(samp, str):
+            gridlist_shape = [len(alldata_grid), np.mean([len(i) for i in alldata_grid]), np.mean([len(i) for j in alldata_grid for i in j])]
+        else:
+            gridlist_shape = [len(alldata_grid), np.mean([len(i) for i in alldata_grid]), set([i.shape for j in alldata_grid for i in j])]
 
-    if enforce_sym:
-        # Enforces symmetry under assumption 'alldata_grid' produced by a pairwise process skipping its first trivial pairing
-        alldata_grid = _enforce_symmetry(alldata_grid, debug=debug)
+        print(f"gridlist has \"shape\" given by \n{gridlist_shape}")
+        ### debugging code ###
 
     return alldata_grid
 
 
-def _load(input_fpath, name_type="exp_results", check_pval=True, parse_longname=False):
-    if name_type=="exp_results":
-        
-        with open(input_fpath, 'r') as fin:
-            data_df = pd.DataFrame(json.load(fin))
+def _load(input_fpath, name_type="exp_results", check_pval=True, data_only=True, parse_longname=False):
+    with open(input_fpath, 'r') as fin:
+        data_df = pd.DataFrame(json.load(fin))
 
-        if parse_longname:
-            data_df[["X_mod","X_feat","X_diff"]] = data_df["X_type"].str.split('_', n=2, expand=True)
-            data_df[["Y_mod","Y_feat","Y_diff"]] = data_df["Y_type"].str.split('_', n=2, expand=True)
-            data_df.drop(["X_type","Y_type"], axis=1, inplace=True)
+    if parse_longname:
+        data_df[["X_mod","X_feat","X_diff"]] = data_df["X_type"].str.split('_', n=2, expand=True)
+        data_df[["Y_mod","Y_feat","Y_diff"]] = data_df["Y_type"].str.split('_', n=2, expand=True)
+        data_df.drop(["X_type","Y_type"], axis=1, inplace=True)
 
 
-        if check_pval:
-            if "empirical_pval" not in data_df.columns:
-                data_df = _add_emp_pval(data_df)
+    if check_pval:
+        if "empirical_pval" not in data_df.columns:
+            data_df = _add_emp_pval(data_df)
+
+    if data_only:
+        data_df = data_df[data_df["datatype"] == "Data"]
 
     return data_df
 
 
 # Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
-def _enforce_symmetry(gridlist, debug=True):
+def _enforce_symmetry(mtx, debug=False, fill_val=np.nan):
+    assert len(mtx.shape)==2, "Only valid for matrix inputs"
+    assert (mtx.shape[0]-1)==mtx.shape[1], f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
 
-    print("Enforcing symmetry under assumption \'gridlist\' produced by pairwise process that skipped its first trivial pairing...")
+    # takes values from upper diagonal
+    sym_mtx = squareform(triu_vals(mtx, k=0))
+    np.fill_diagonal(sym_mtx, fill_val)
 
-    for i in range(1,len(gridlist)):
-        gridlist[i].insert(0, gridlist[0][i-1])
-    
-    # NOTE: assumes each data-layer entry in gridlist has dataframe format!
-    df = gridlist[0][0].copy()
+    assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
 
-    if debug:
-        print(f"first trivial pairing before substitions: \n{df}")
-    
-    for var in (def_heatmap_vars + def_scatter_vars):
-        val = df[var].dropna().to_numpy()
-        df[var].replace(to_replace=val, value=-np.inf, inplace=True)
-    
-    check_cols = [col for col in df.columns if col.startswith("X")]
-    for col in check_cols:
-        df[col.replace("X","Y")] = df[col].copy()
+    return sym_mtx
 
-    if debug:
-        print(f"first trivial pairing after substitions: \n{df}")
 
-    gridlist[0].insert(0, df)
-
-    gridlist_shape = [len(gridlist), set([len(i) for i in gridlist]), set([i.shape for j in gridlist for i in j])]
-    if debug:
-        print(f"After enforcing symmetry under pairwise process assumption, \'gridlist\' has \"shape\" {tuple(gridlist_shape)}.")
-
-    return gridlist
+def triu_vals(A, k=1):
+    n = min(A.shape)
+    vals = A[np.triu_indices(n, k)]
+    return vals
 
 
 def _write_list(outpath, list_out):
@@ -459,11 +413,11 @@ if __name__=="__main__":
         help="substring pattern to specify subset of matching directories"
     )
     parser.add_argument(
-        "-R",
+        "-H",
         "--do_heatmap",
         default=False,
         action="store_true",
-        help="Generate heatmaps of pairwise summary comparisons over varying parameters in each pair"
+        help="Generate heatmaps of pairwise summary comparisons over varying parameters in each pair (CURRENTLY UNUSED)"
     )
     parser.add_argument(
         "-S",
@@ -480,31 +434,47 @@ if __name__=="__main__":
         help="write plots to .png"
     )
     args = parser.parse_args()
-
-    alldata_grid = pull_data(args.input_dir, dir_pattern=args.pattern, name_type=args.name_type)
-
-    if "_vs_self" in args.input_dir:
-        self_cluster=True
-    else:
-        self_cluster=False
-
+    
     if not os.path.isdir(args.output_dir):
-        print(f"Warning: making new directory {output_dir}")
+        print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)
 
-    if args.do_heatmap:
-        xnamelist, ynamelist, valuegrid_list = _get_heatmap_inputs(alldata_grid, heatmap_vars=def_heatmap_vars)
-        generate_heatmap_plots(
-                xnamelist, 
-                ynamelist, 
-                valuegrid_list, 
-                heatmap_vars=def_heatmap_vars,
-                outdir=args.output_dir,
-                name_type=args.name_type,
-                self_cluster=self_cluster,
-                cluster_method=None,
-                write_mode=args.write_mode
-                )
+    debug=True
+
+    alldata_grid = pull_data(
+            args.input_dir, 
+            dir_pattern=args.pattern,
+            data_only = True,
+            check_pval = True,
+            name_type=args.name_type
+            )
+    if debug:
+        intm_dir = os.path.join(args.output_dir, "alldata_grid")
+        if not os.path.isdir(intm_dir):
+            os.mkdir(intm_dir)
+        for i, sublist in enumerate(alldata_grid):
+            for j, df in enumerate(sublist):
+                fname = f"alldata_col{i}_row{j}.csv"
+                df.to_csv(os.path.join(intm_dir, fname))
+
+    xnamelist, ynamelist, valuegrid = _get_heatmap_inputs(alldata_grid, heatmap_vars=def_heatmap_vars)
+
+    if debug:
+        for name in def_heatmap_vars:
+            savepath = os.path.join(args.output_dir, f"{name}.csv")
+            np.savetxt(savepath, valuegrid[name])
+            print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+
+    generate_clustermaps(
+            xnamelist, 
+            ynamelist, 
+            valuegrid, 
+            linkage_var = "Wp_XY",
+            cluster_method = "average",
+            label_fontsize = def_label_fontsize,
+            outdir=args.output_dir,
+            write_mode=args.write_mode
+            )
 
     if args.do_scatter:
         scatter_df, hue_var, style_var = _get_scatter_df(alldata_grid, scatter_vars=def_scatter_vars, name_type=name_type)
