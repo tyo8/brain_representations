@@ -2,6 +2,7 @@ import check
 import numpy as np
 
 
+##### "DISTANCE" FROM SIMILARITY FUNCTION #####
 ############################################################################################################################################
 # "distance" defined from some similarity measure R (assumed to have image in [0,1]), D := sqrt( 1 - R^2 )
 def p_simdist(R, p=2):
@@ -12,6 +13,7 @@ def p_simdist(R, p=2):
 ############################################################################################################################################
 
 
+##### MATRIX NORM/INNER PRODUCT DISTANCES #####
 ############################################################################################################################################
 # implements the (normalized) self-dualizing inner product on the vector space S+ (symmetric positive semidefinite matrices),
 # which is given by <A,B> = Tr(A^T B) = Tr(AB), where last equality holds because A is symmetric, 
@@ -28,29 +30,46 @@ def spd_cos(X,Y, sym=True, normed=True):
     if normed:
         check.unit_sup(X)
         check.unit_sup(Y)
-        spd_cos = np.trace(X.T @ Y) / np.sqrt( np.sum(np.abs(X)**2) * np.sum(np.abs(Y)**2)  )
+        spd_cos = np.trace(X.T @ Y) 
     else:
+        norm = np.sqrt( np.sum(np.abs(X)**2) * np.sum(np.abs(Y)**2)  )
         if len(X.shape) > 1:
-            spd_cos = np.trace(X.T @ Y)
+            spd_cos = np.trace(X.T @ Y)/norm
         else:
-            spd_cos = X.T @ Y
+            spd_cos = X.T @ Y/norm
 
     return spd_cos
 
 def inner(X,Y):
     x = X.flatten()
     y = Y.flatten()
-    inner = spd_cos(x,y, sym=False, normed=False)
+    inner = np.dot(x,y)   # returns vector inner product
     return inner
 
-def Frob_dist(X,Y):
+def euclidean_dist(X,Y):
+    # also Frobenius norm of D: equal to sqrt(Tr(D.T @ D)) if X and Y (and thus D) are symmetric
     check.shape(X,Y)
     D = X - Y
-    dist = np.power( np.sum( np.power(D.flatten(), 2) ), 1/2)   # equal to Tr(D.T @ D) since X and Y are both symmetric
+    dist = np.power( np.sum( np.power(D.flatten(), 2) ), 1/2)   
     return dist
+
+def spectral_dist(X,Y):
+    check.shape(X,Y)
+    X = _symmetrize(X)
+    Y = _symmetrize(Y)
+    singvals = np.linalg.svd( X-Y , full_matrices=False, compute_uv=False, hermitian=True)
+    return max(singvals)
+
+def nuclear_dist(X,Y):
+    check.shape(X,Y)
+    X = _symmetrize(X)
+    Y = _symmetrize(Y)
+    singvals = np.linalg.svd( X-Y , full_matrices=False, compute_uv=False, hermitian=True)
+    return sum(singvals)
 ############################################################################################################################################
 
 
+##### PEARSON SIMILARITY #####
 ############################################################################################################################################
 # computes Pearson similarity of z-transformed Pearson similarity samples
 def ztrans_psim(X,Y):
@@ -81,6 +100,7 @@ def _ztrans(X):
 ############################################################################################################################################
 
 
+##### GEODESIC DISTANCE #####
 ############################################################################################################################################
 # computes the geodesic distance between X and Y on the positive-definite cone (NOTE: only feasible for very small spd matrices X and Y, n<~50 ??)
 def geodesic(X,Y, tol=1e-6):
@@ -123,25 +143,25 @@ def _symmetrize(X, diag_val=1):
 
 
 # recomputes a symmetric matrix (assumed to have constant diagonal) from its vectorized upper triangle
-def _symmtx(V, diag_val=1):
-    k = len(V)
-    n = 1/2 * np.sqrt(8*k + 1) + 1/2        # computes n satisfying k = (n choose 2)
-    check.whole(n)
-    n = int(n)
-
-    M = np.zeros((n,n))
-    M[np.triu_indices(n,1)] = V
-    M = M + M.T
-    np.fill_diagonal(M, diag_val)
-
-    return M
+#def _symmtx(V, diag_val=1):
+#   k = len(V)
+#   n = 1/2 * np.sqrt(8*k + 1) + 1/2        # computes n satisfying k = (n choose 2)
+#   check.whole(n)
+#   n = int(n)
+#
+#   M = np.zeros((n,n))
+#   M[np.triu_indices(n,1)] = V
+#   M = M + M.T
+#   np.fill_diagonal(M, diag_val)
+#
+#   return M
 
 def _regularize_sym(X, eps=1e-6):
     check.symmetric(X)
     n = X.shape[0]
 
-    spectrum = np.linalg.eigvals(X)
-    max_l = max(abs(spectrum))
+    singvals = np.linalg.svd(X, full_matrices=False, compute_uv=False, hermitian=True)
+    max_l = np.sqrt(max(singvals))
 
     X = X + max_l*eps*np.eye(n)
     return X

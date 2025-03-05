@@ -18,11 +18,13 @@ def comp_sim_mtx(
         fname_in, 
         fname_out, 
         method='Psim', 
+        norm_exp=2, 
         return_dist=False,
         permute=False,
         perm_type="subject",
         perm_set=None,
-        rng_seed=0
+        rng_seed=0,
+        debug=True
         ):
     with open(fname_in,newline='') as fin:
         subj_list = fin.read().split()   # list of strings of subject filenames
@@ -34,31 +36,32 @@ def comp_sim_mtx(
     else:
         data_mtx = np.asarray([hutils._parse_fname(i) for i in subj_list])
 
-        ### debugging code ###
-        _validate_data(data_mtx)
-        ### debugging code ###
+        if debug:
+            ### debugging code ###
+            _validate_data(data_mtx)
+            ### debugging code ###
 
         if permute:
-            ### debugging code ###
-            print(f"original data: \n{data_mtx}")
-            ### debugging code ###
-            data_mtx = permuteHCP.permute(data_mtx, perm_type=perm_type, perm_set=perm_set, rng_seed=rng_seed)
-            ### debugging code ###
-            print(f"permuted data: \n{data_mtx}")
-            ### debugging code ###
+            data_mtx = permuteHCP.permute(
+                    data_mtx, 
+                    perm_type=perm_type, 
+                    perm_set=perm_set, 
+                    rng_seed=rng_seed, 
+                    debug=False
+                    )
 
         sim_mtx = comp_sim_from_mtx(np.double(data_mtx), method=method)
 
-    if method=='geodesic' or method=='Frobenius':
-        np.fill_diagonal(sim_mtx, 0)
+    if method in ["geodesic", "euclidean", "spectral", "nuclear"]:
         dist_mtx = sim_mtx
+        np.fill_diagonal(dist_mtx, 0)
     else:
-        dist_mtx = sdm.p_simdist(sim_mtx, p=2)
-    
-    ### debugging code ###
-    _validate_distmtx(dist_mtx)
-    ### debugging code ###
+        dist_mtx = sdm.p_simdist(sim_mtx, p=norm_exp)
 
+    if debug:
+        ### debugging code ###
+        _validate_distmtx(dist_mtx)
+        ### debugging code ###
 
     if return_dist:
         np.savetxt(fname_out.replace('_sims.txt','_dists.txt'), dist_mtx)
@@ -100,8 +103,12 @@ def comp_simval(data1,data2,method='Psim'):
         simval = sdm.inner(data1, data2)
     elif method=='geodesic':
         simval = sdm.geodesic(data1, data2)
-    elif method=='Frobenius':
-        simval = sdm.Frob_dist(data1, data2)
+    elif method=='euclidean':
+        simval = sdm.euclidean_dist(data1, data2)
+    elif method=='spectral':
+        simval = sdm.spectral_dist(data1, data2)
+    elif method=='nuclear':
+        simval = sdm.nuclear_dist(data1, data2)
 
     return simval
 
@@ -123,11 +130,17 @@ def comp_sim_from_mtx(data_mtx, method='Psim', p=2):
     elif method=='geodesic':
         sim_mtx = pairwise_distances(data_mtx, metric=sdm.geodesic)
         sim_mtx = sim_mtx/sim_mtx.max()
-    elif method=='Frobenius':
-        sim_mtx = pairwise_distances(data_mtx, metric=sdm.Frob_dist)
+    elif method=='euclidean':
+        sim_mtx = pairwise_distances(data_mtx, metric=sdm.euclidean_dist)
+        sim_mtx = sim_mtx/sim_mtx.max()
+    elif method=='spectral':
+        sim_mtx = pairwise_distances(data_mtx, metric=sdm.spectral_dist)
+        sim_mtx = sim_mtx/sim_mtx.max()
+    elif method=='nuclear':
+        sim_mtx = pairwise_distances(data_mtx, metric=sdm.nuclear_dist)
         sim_mtx = sim_mtx/sim_mtx.max()
 
-    assert sim_mtx.shape == (n_subj, n_subj),'sim_mtx is not a symmetric n_subj x n_subj matrix.'
+    assert sim_mtx.shape == (n_subj, n_subj), f"sim_mtx must have shape {(n_subj,n_subj)} instead of {sim_mtx.shape}."
 
     return sim_mtx
 

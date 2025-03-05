@@ -6,15 +6,17 @@ import numpy as np
 
 ## DEFINE PARENT "PERMUTE" FUNCTION THAT INCLUDES LOGIC FOR BOTH "subject" AND "feature" TYPE PERMUTATIONS
 ###################################################################################################
-def permute(data, perm_type="subject", perm_set=None, rng_seed=0, check=False):
+def permute(data, perm_type="subject", perm_set=None, rng_seed=0, check=False, debug=False):
     if perm_set is None:
         perm_set = None
     elif isinstance(perm_set, str):
         perm_path = perm_set
         n_feats = data.shape[1]
         perm_set = np.loadtxt(perm_path, max_rows=n_feats).astype(int)
+
         if perm_set.shape[0] < n_feats and perm_type=="subject":
             perm_set = get_oversize_perm_set(n_feats, perm_path=perm_path)
+
         shape_err=f"Permutation set for \'subject\'-type permutations should have shape of transpose of data:\nperm shape: {perm_set.shape} \ndata shape: {data.shape}"
         assert np.all(data.shape==perm_set.shape[::-1]), shape_err
     else:
@@ -27,6 +29,11 @@ def permute(data, perm_type="subject", perm_set=None, rng_seed=0, check=False):
     else:
         raise ValueError(f"Unrecognized permutation type \"{perm_type}\".")
 
+    if debug:
+        ### debugging code ###
+        print(f"original data: \n{data_mtx}")
+        print(f"permuted data: \n{data_mtx}")
+        ### debugging code ###
     return permdata
 
 # assumes that 'data' has shape (subjects)x(features) and 'perm_set' has shape (features)x(subjects)
