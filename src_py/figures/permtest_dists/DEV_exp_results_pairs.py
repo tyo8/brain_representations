@@ -22,11 +22,67 @@ def_pattern='*X_*_dists'
 
 
 # def_clustermap_vars = ["Wp_XY", "empirical_pval"]
-def_clustermap_vars = ["Wp_XY", "empirical_pval", "Wp_XYNull_mean", "Wp_XYNull_std"]
+def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
 def_scatter_vars = ["Wp_XY", "Y_type"] 
 
 # exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
+
+def main(args, debug=False):
+    if args.pattern_restriction is not None:
+        if not args.output_dir.endswith(args.pattern_restriction):
+            args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+
+        args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
+        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*'
+    else:
+        args.dir_pattern=f'X_*_dists'
+        args.f_pattern = f'*_vs_*'
+
+    if args.verbose:
+        var_dict = vars(args)
+        print(f"argument values for function {__name__}")
+        for varname in list(var_dict.keys()):
+            print(f"\tThe argument \'{varname}\' has been initialized with value: {var_dict[varname]}")
+
+    if not os.path.isdir(args.output_dir):
+        print(f"Warning: making new directory {args.output_dir}")
+        os.mkdir(args.output_dir)
+
+
+    if args.fpathlist_path is None: 
+        fpath_list = None
+    else:
+        with open(args.fpathlist_path, 'r') as fin:
+            fpath_list = fin.read().split('\n')
+
+    alldata_grid = pull_data(
+            args,
+            fpath_list = fpath_list,
+            data_only = True,
+            check_pval = True
+            )
+
+    if debug:
+        intm_dir = os.path.join(args.output_dir, "alldata_grid")
+        if not os.path.isdir(intm_dir):
+            os.mkdir(intm_dir)
+        for i, sublist in enumerate(alldata_grid):
+            for j, df in enumerate(sublist):
+                fname = f"alldata_col{i}_row{j}.csv"
+                df.to_csv(os.path.join(intm_dir, fname))
+
+    xnamelist, ynamelist, valuegrid = _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars)
+
+    if debug:
+        for name in list(valuegrid.keys()):
+            savepath = os.path.join(args.output_dir, f"{name}.csv")
+            np.savetxt(savepath, valuegrid[name])
+            print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+
+    return xnamelist, ynamelist, valuegrid
+
+
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
 ########################################################################################################################
@@ -62,12 +118,15 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
 
 # heatmap plotting
 ########################################################################################################################
-def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, debug=False):
+def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, check_pval=True, debug=False):
     xnamelist = [list(set(i[0]["X_type"]))[0] for i in alldata_grid]
     ynamelist = [list(set(j["Y_type"]))[0] for j in alldata_grid[0]]
 
 
     valuegrid = {}
+    if check_pval:
+        pval_vars = [ varname for varname in alldata_grid[0][0].columns.values if "pval" in varname ]
+        clustermap_vars = clustermap_vars + pval_vars
 
     for varname in clustermap_vars:
         try:
@@ -84,21 +143,6 @@ def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, debug
                 print([[(j["X_type"],j["Y_type"]) for j in i] for i in alldata_grid])
                 # print(new_entry)
                 ### debugging code ###
-        if 'pval' in varname:
-            pval_type = alldata_grid[0][0]["pval_type"].values[0]
-            if debug:
-                print(f"p-value of type {pval_type} means varname becomes {varname}")
-            if pval_type == "all":
-                valuegrid[f"{varname}_right"] = vals
-                valuegrid[f"{varname}_left"] = 1-vals
-                vals2t =  2*np.min(np.stack((vals, 1-vals), axis=2), axis=2)
-                valuegrid[f"{varname}_two-tailed"] = vals2t
-                if debug:
-                    print(f"2-sided p-values: \n{vals2t}")
-                    exit()
-                continue
-            else:
-                varname = f"{varname}_{pval_type}"
 
         valuegrid[varname] = vals
         print(f"\'{varname}\' gridded.")
@@ -142,6 +186,9 @@ def generate_clustermaps(
 
     for linkage_var in linkvars:
         for display_var in dispvars:
+            if ("fwe-pval" in linkage_var) and ("fwe-pval" in display_var):
+                print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
+                continue
             fig_dict[display_var] = plot_clustermap(
                     xnamelist,
                     ynamelist,
@@ -209,20 +256,9 @@ def plot_clustermap(
     cm_title = f"Clustermap plot of {display_var} \n(clustered on {linkage_var})"
 
     if log_scale:
-        if "pval" in display_var:
-            display_vals = squareform(correct_pvals(triu_vals(display_vals,k=1)))
-            np.fill_diagonal(display_vals, np.nan)
-            display_vals = -np.log10(2*display_vals)
-            cm_title = cm_title + " (-log10(2p))"
-            np.nan_to_num(display_vals, nan=-1, copy=False)
-        if "Wp_XY" in display_var:
-            display_vals[ display_vals==0 ] = np.nan
-            display_vals = np.log10(display_vals)
-            cm_title = cm_title + " (log10(W_p))"
-            max_num = -1.1*np.nanmax(np.abs(display_vals))
-            print(f"replacing NaNs in log10({display_var}) with {max_num}")
-            np.nan_to_num(display_vals, nan=max_num, copy=False)
-        display_var = f"log-{display_var}"
+        display_var, display_vals, ttl_suffix = _disp_logdata(display_var, display_vals)
+        cm_title = cm_title + ttl_suffix
+
 
     if np.count_nonzero(np.isnan(display_vals)) > 0:
         if debug:
@@ -269,6 +305,27 @@ def plot_clustermap(
     return g
 
 # heatmap plot utilities
+def _disp_logdata(varname, values, disp_var=True):
+    if disp_var and "pval" in varname:
+        if "fdr" in varname:
+            values = squareform(correct_pvals(triu_vals(values,k=1), corr_type="fdr"))
+        elif "fwe" in varname:
+            values = squareform(correct_pvals(triu_vals(values,k=1), corr_type="fwe"))
+        np.fill_diagonal(values, np.nan)
+        title_suffix = " (-log10(2p))"
+        values = -np.log10(2*values)
+        nanval = -1
+
+    if "Wp_XY" in varname:
+        values[ values==0 ] = np.nan
+        title_suffix = " (log10(W_p))"
+        values= np.log10(values)
+        nanval = -1.1*np.nanmax(np.abs(values))
+
+    print(f"replacing NaNs in{title_suffix} for {varname} with {nanval}")
+    np.nan_to_num(values, nan=nanval, copy=False)
+    varname = f"log-{varname}"
+    return varname, values, title_suffix
 ########################################################################################################################
 ########################################################################################################################
 
@@ -276,62 +333,79 @@ def plot_clustermap(
 # compute secondary statistics
 ########################################################################################################################
 # add an empirical p-val to a dataframe containing only a single data-derived distance and its null counterparts
-def _add_emp_pval(df, check_match=True, pval_type="all", debug=False):
+def _add_emp_pval(df, check_match=True, tail_type="all", corr_type="fdr", null_hi=None, null_lo=None, debug=False):
     datarow = df[df["datatype"] == "Data"]
-    nullrows = df[df["datatype"] == "Null"]
 
     Wp_XY = datarow["Wp_XY"].to_numpy()
-    Wp_XYnull = nullrows["Wp_XY"].to_numpy()
+    if corr_type == "fdr":
+        nullrows = df[df["datatype"] == "Null"]
+        null_lo = nullrows["Wp_XY"].to_numpy()
+        null_hi = nullrows["Wp_XY"].to_numpy()
+        check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
+        err_str =  f"data row and null rows are not of matching type: \n{[[col, set(datarow[col]), set(nullrows[col])] for col in check_cols]}"
+        assert all( [ set(datarow[col]) == set(nullrows[col]) for col in check_cols ] ), err_str
+
+    err_msg = "extremal family-wise distributions must be provided for family-wise error (\'fwe\') p-value correction"
+    assert null_hi is not None and null_lo is not None, err_msg
 
     if debug:
-        print(f"Adding p-value of type {pval_type}")
+        print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")
 
-    if len(Wp_XYnull) == 0:
-        empirical_pval = np.nan
+    if tail_type == "all":
+        tails = ["left", "right", "two-tailed"]
     else:
-        if check_match:
-            check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
-            err_str =  f"data row and null rows are not of matching type: \n{[[col, set(datarow[col]), set(nullrows[col])] for col in check_cols]}"
-            assert all( [ set(datarow[col]) == set(nullrows[col]) for col in check_cols ] ), err_str
+        tails = [tail_type]
 
-        prop_lower = np.mean(Wp_XY > Wp_XYnull)
-        if pval_type == "two-tailed":
-            # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
-            empirical_pval = max(1/len(Wp_XYnull), 2*min(prop_lower, 1 - prop_lower))
-        elif pval_type in ["all", "right"]:
-            # compute p-value from 1-sided (right) test against empirical CDF (enforcing inf(p)=1/N)
-            empirical_pval = max(1/len(Wp_XYnull), 1 - prop_lower)
-        elif pval_type == "left":
-            # compute p-value from 1-sided (left) test against empirical CDF (enforcing inf(p)=1/N)
-            empirical_pval = max(1/len(Wp_XYnull), prop_lower)
-        else:
-            raise ValueError(f"Unrecognized p-value type {pval_type}")
+    try:
+        epsilon_lo = 1/len(null_lo)
+        epsilon_hi = 1/len(null_hi)
+        prop_lo = np.mean(Wp_XY <= null_lo)
+        prop_hi = np.mean(Wp_XY >= null_hi)
 
-    if empirical_pval == 1:
-        empirical_pval = 1 - 1/len(Wp_XYnull)
+        for tail in tails:
+            if tail == "two-tailed":
+                # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
+                empirical_pval = 2*min( max(epsilon_lo, prop_lo), max(epsilon_hi, prop_hi) )
+            elif tail == "right":
+                # compute p-value from 1-sided (right) test against empirical CDF (enforcing inf(p)=1/N)
+                empirical_pval = min( max(epsilon_hi, prop_hi), 1 - epsilon_hi )
+            elif tail == "left":
+                # compute p-value from 1-sided (left) test against empirical CDF (enforcing inf(p)=1/N)
+                empirical_pval = min( max(epsilon_lo, prop_lo), 1 - epsilon_lo )
+            else:
+                raise ValueError(f"Unrecognized p-value type {tail}")
 
-    df["empirical_pval"] = [empirical_pval] + [np.nan]*len(Wp_XYnull)
-    df["pval_type"] = [pval_type] + [np.nan]*len(Wp_XYnull)
+            df[f"{corr_type}-{tail}-pval"] = empirical_pval
+    except Exception as err:
+        for tail in tails:
+            print(f"p-value computation failed for correction type {corr_type} with tail type {tail}: \n{err}")
+            df[f"{tail}-{corr_type}-pval"] = np.nan
 
     return df
 
-def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05):
-    if verbose:
-        print(f"correcting family of {len(pval_vec)} pvals")
-        low_count = np.count_nonzero(pval_vec < low_thresh)
-        high_count = np.count_nonzero(pval_vec < high_thresh)
-        print(f"found {low_count} signficant (<{low_thresh}) pvals before correction")
-        print(f"found {high_count} signficant (<{high_thresh}) pvals before correction")
+def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, corr_type="fdr"):
+    low_count = np.count_nonzero(pval_vec < low_thresh)
+    high_count = np.count_nonzero(pval_vec < high_thresh)
+    if corr_type == "fdr":
+        if verbose:
+            print(f"correcting family of {len(pval_vec)} pvals")
+            print(f"found {low_count} signficant (<{low_thresh}) pvals before correction")
+            print(f"found {high_count} signficant (<{high_thresh}) pvals before correction")
 
-    rmv_idx = np.isnan(pval_vec) + (pval_vec < 0)
-    _, corr_pvals = fdrcorrection(pval_vec[ rmv_idx == False ])
-    pval_vec[ rmv_idx == False ] = corr_pvals
+        rmv_idx = np.isnan(pval_vec) + (pval_vec < 0)
+        _, corr_pvals = fdrcorrection(pval_vec[ rmv_idx == False ])
+        pval_vec[ rmv_idx == False ] = corr_pvals
 
-    if verbose:
-        low_count = np.count_nonzero(pval_vec < low_thresh)
-        high_count = np.count_nonzero(pval_vec < high_thresh)
-        print(f"found {low_count} signficant (<{low_thresh}) pvals after correction")
-        print(f"found {high_count} signficant (<{high_thresh}) pvals after correction")
+        if verbose:
+            low_count = np.count_nonzero(pval_vec < low_thresh)
+            high_count = np.count_nonzero(pval_vec < high_thresh)
+            print(f"found {low_count} signficant (<{low_thresh}) pvals after \'fdr\' correction")
+            print(f"found {high_count} signficant (<{high_thresh}) pvals after \'fdr\' correction")
+    elif corr_type == "fwe":
+        if verbose:
+            print(f"found {low_count} signficant (<{low_thresh}) pvals after \'fwe\' correction")
+            print(f"found {high_count} signficant (<{high_thresh}) pvals after \'fwe\' correction")
+
 
     return pval_vec
 ########################################################################################################################
@@ -340,18 +414,17 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05):
 # Data wrangling functions
 ########################################################################################################################
 def pull_data(
-        fpath_list=None, parent_dir=None, dir_pattern=def_pattern, f_pattern = '*_vs_*', 
-        check_pval=True, pval_type="all", data_only=True, debug=False
+        args, fpath_list=None, check_pval=True, data_only=True, debug=False
         ):
 
-    if fpath_list is None and parent_dir is not None:
-        parent_pattern = os.path.join(parent_dir, dir_pattern)
+    if fpath_list is None and args.input_dir is not None:
+        parent_pattern = os.path.join(args.input_dir, args.dir_pattern)
         dirlist = glob.glob(parent_pattern)
         dirlist.sort()
         if debug:
-            print(f"matching files of with pattern \'{f_pattern}\' in directories matching \'{parent_pattern}\'")
+            print(f"matching files of with pattern \'{args.f_pattern}.json\' in directories matching \'{parent_pattern}\'")
 
-        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{f_pattern}.json")) for X_dir in dirlist ]
+        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}.json")) for X_dir in dirlist ]
     else:
         fpath_grid = [ fpath_list for i in range(len(fpath_list)) ]
         
@@ -359,9 +432,14 @@ def pull_data(
 
     if data_only:
         print("Only retaining information from datatype \"Data\" (discarding \"Null\"-type data after necessary computations)")
+
+    if args.corr_type == "fwe":
+        null_lo, null_hi = _pull_extremal_dists(args)
     
     alldata_grid = [ [ _load(
-        fpath, data_only=data_only, check_pval=check_pval, pval_type=pval_type,
+        fpath, data_only=data_only,
+        check_pval=check_pval, tail_type=args.tail_type, 
+        corr_type=args.corr_type, null_hi=null_hi, null_lo=null_lo,
         ) for fpath in X_sublist ] for X_sublist in fpath_grid ]
 
     if debug:
@@ -385,7 +463,10 @@ def pull_data(
     return alldata_grid
 
 
-def _load(input_fpath, check_pval=True, data_only=True, parse_longname=False, pval_type="all"):
+def _load(
+        input_fpath, data_only=True, parse_longname=False, 
+        check_pval=True, tail_type="all", corr_type="fwe", null_hi=None, null_lo=None
+        ):
     with open(input_fpath, 'r') as fin:
         data_df = pd.DataFrame(json.load(fin))
 
@@ -396,8 +477,8 @@ def _load(input_fpath, check_pval=True, data_only=True, parse_longname=False, pv
 
 
     if check_pval:
-        if "empirical_pval" not in data_df.columns:
-            data_df = _add_emp_pval(data_df, pval_type=pval_type)
+        if not any(["pval" in col for col in data_df.columns]):
+            data_df = _add_emp_pval(data_df, tail_type=tail_type, corr_type=corr_type, null_hi=null_hi, null_lo=null_lo)
 
     if data_only:
         null_df = data_df[data_df["datatype"] == "Null"]
@@ -406,6 +487,15 @@ def _load(input_fpath, check_pval=True, data_only=True, parse_longname=False, pv
         data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
 
     return data_df
+
+
+def _pull_extremal_dists(args):
+    import DEV_extremal_null_dists as ex_null
+
+    args.extrema_only = True
+    args.verbose = False
+    extrema_df,_ = ex_null.main(args)
+    return extrema_df["Wp_XYNull_min"].values, extrema_df["Wp_XYNull_max"].values
 
 
 # Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
@@ -469,10 +559,17 @@ if __name__=="__main__":
     )
     parser.add_argument(
         "-p",
-        "--pval_type",
+        "--tail_type",
         type=str,
-        default="two-tailed",
-        help="choose between \'left\', \'right\', or \'two-tailed\' p-value calculation -- or \'all\' to calculate all 3"
+        default="all",
+        help="choose between \'left\', \'right\', or \'two-tailed\' p-value calculation -- or \'all\' to calculate all 3. supports both \'fwe\' and \'fdr\' pval correction types."
+    )
+    parser.add_argument(
+        "-c",
+        "--corr_type",
+        type=str,
+        default="fwe",
+        help="choose family-wise error (\'fwe\') or false discovery rate (\'fdr\') pval correction types."
     )
     parser.add_argument(
         "-r",
@@ -504,60 +601,7 @@ if __name__=="__main__":
     )
     args = parser.parse_args()
     
-    if args.pattern_restriction is not None:
-        args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
-        if not os.path.isdir(args.output_dir):
-            os.mkdir(args.output_dir)
-        dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
-        f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*'
-    else:
-        dir_pattern=f'X_*_dists'
-        f_pattern = f'*_vs_*'
-
-    if args.verbose:
-        var_dict = vars(args)
-        for varname in var_dict:
-            print(f"The argument \'{varname}\' has been initialized with value: {var_dict[varname]}")
-        print(f"The argument \'dir_pattern\' has been initialized with value: {dir_pattern}")
-        print(f"The argument \'f_pattern\' has been initialized with value: {f_pattern}")
-
-    if not os.path.isdir(args.output_dir):
-        print(f"Warning: making new directory {args.output_dir}")
-        os.mkdir(args.output_dir)
-
-    debug=False
-
-    if args.fpathlist_path is None: 
-        fpath_list = None
-    else:
-        with open(args.fpathlist_path, 'r') as fin:
-            fpath_list = fin.read().split('\n')
-
-    alldata_grid = pull_data(
-            fpath_list = fpath_list,
-            parent_dir = args.input_dir, 
-            dir_pattern= dir_pattern,
-            f_pattern =  f_pattern,
-            data_only = True,
-            check_pval = True,
-            pval_type = args.pval_type
-            )
-    if debug:
-        intm_dir = os.path.join(args.output_dir, "alldata_grid")
-        if not os.path.isdir(intm_dir):
-            os.mkdir(intm_dir)
-        for i, sublist in enumerate(alldata_grid):
-            for j, df in enumerate(sublist):
-                fname = f"alldata_col{i}_row{j}.csv"
-                df.to_csv(os.path.join(intm_dir, fname))
-
-    xnamelist, ynamelist, valuegrid = _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars)
-
-    if debug:
-        for name in list(valuegrid.keys()):
-            savepath = os.path.join(args.output_dir, f"{name}.csv")
-            np.savetxt(savepath, valuegrid[name])
-            print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+    xnamelist, ynamelist, valuegrid = main(args)
 
     fig_inches = def_fig_size[0] * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
     label_fontsize = def_label_fontsize * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries

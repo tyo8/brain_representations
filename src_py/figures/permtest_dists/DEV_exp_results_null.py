@@ -46,6 +46,7 @@ modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 def one_displot(
         df,
         regularize=True,
+        log_scale=True,
         x_var="Wp_XY",
         y_var="feat_num",
         row_var="modality",
@@ -65,14 +66,21 @@ def one_displot(
             df[y_var] = df[y_var] + 1e-12
 
     if y_var is None:
-        g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
+        g = sns.displot(df, x=x_var, hue=hue_var, multiple="layer", log_scale=True, rug=False, element='poly')
+        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
         # g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
     else:
         g = sns.displot(df, x=x_var, y=y_var, hue=hue_var, log_scale=[10,10], rug=False)
         # g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=[10,10], rug=False)
 
     if write_mode:
-        outname = f"displot_x-{x_var}_y-{y_var}_hue-{hue_var}_row-{row_var}_col-{col_var}.png"
+        outname = "nulldists.png"
+        if log_scale:
+            outname = outname.replace("nulldists","nulldists-log")
+        for var in ['x', 'y', 'hue', 'row', 'col']:
+            varname = eval(f"{var}_var")
+            if varname is not None:
+                outname = outname.replace("nulldists", f"nulldists_{var}-{varname}")
         outpath = os.path.join(outdir, outname)
         _write_img(g.fig, outpath, fig_size=fig_size)
         plt.close()
@@ -327,11 +335,25 @@ if __name__=="__main__":
         help="figure output directory"
     )
     parser.add_argument(
-        "-p",
-        "--pattern",
+        "-t",
+        "--sample_type",
         type=str,
-        default=def_pattern,
+        default="perm",
         help="substring pattern to specify subset of matching directories"
+    )
+    parser.add_argument(
+        "-r",
+        "--pattern_restriction",
+        type=str,
+        default=None,
+        help="substring pattern to specify subset of matching directories"
+    )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        default=False,
+        action="store_true",
+        help="write plots to .png"
     )
     parser.add_argument(
         "-w",
@@ -354,17 +376,18 @@ if __name__=="__main__":
         with open(args.fpathlist_path, 'r') as fin:
             fpath_list = fin.read().split('\n')
 
+    if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction):
+        args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
 
     alldata_list = pull_data(
             fpath_list = fpath_list,
             parent_dir = args.input_dir, 
-            dir_pattern='null_vs_*/permtesting/X_*_dists',  # args.pattern 
+            dir_pattern='null_vs_*/permtesting/X_*{args.pattern_restriction}*_dists',
             f_pattern = '*_vs_*null*'
             )
 
     null_df = pd.concat(alldata_list, ignore_index=True)
     print(f"total collected dataframe: \n{null_df}")
-
 
     for x_var in ["Wp_XY", "PDY_diag"]:
         for y_var in ["feat_num", "PDY_diag", None]:

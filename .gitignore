@@ -37,6 +37,7 @@ logs
 
 # image files
 *.png
+*.pdf
 
 # unmodified submodules
 skpalm
