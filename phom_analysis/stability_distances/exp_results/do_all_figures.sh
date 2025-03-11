@@ -5,7 +5,7 @@ outdir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/ph
 
 srcdir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/src_py/figures/permtest_dists"
 pairs_srcpath="${srcdir}/DEV_exp_results_pairs.py"
-nullpairs_srcpath="${srcdir}/DEV_extremal_null_dists.py"
+nullpairs_srcpath="${srcdir}/DEV_extremal_nullpair_dists.py"
 null_solo_srcpath="${srcdir}/DEV_exp_results_null.py"
 
 declare -a rstr=("Maps" "Psim" "geodesic" "NMs")

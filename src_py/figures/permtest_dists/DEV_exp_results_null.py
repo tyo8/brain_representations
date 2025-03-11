@@ -37,7 +37,58 @@ modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 #       "PDX_diag": 0.04047972885902275,
 #       "PDY_diag": 0.005473396660210167
 #   },
+#
+################################################# MAIN FUNCTION ########################################################
+########################################################################################################################
+def main(args, debug=False):
+    if args.fpathlist_path is None: 
+        fpath_list = None
+    else:
+        with open(args.fpathlist_path, 'r') as fin:
+            fpath_list = fin.read().split('\n')
 
+    if args.output_dir is None: 
+        args.output_dir = os.getcwd()
+
+    if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction):
+        args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+        if not os.path.isdir(args.output_dir):
+            os.path.mkdir(args.output_dir)
+            print(f"Warning: created new output directory \'{args.output_dir}\'")
+
+    alldata_list = pull_data(
+            fpath_list = fpath_list,
+            parent_dir = args.input_dir, 
+            dir_pattern=f'null_vs_*/permtesting/X_*{args.pattern_restriction}*_dists',
+            f_pattern = '*_vs_*null*'
+            )
+
+    null_df = pd.concat(alldata_list, ignore_index=True)
+    print(f"total collected dataframe: \n{null_df}")
+
+    for x_var in ["Wp_XY", "PDY_diag"]:
+        for y_var in ["feat_num", "PDY_diag", None]:
+            for hue_var in ["modality", "feature", "metric"]:
+                if not x_var==y_var:
+                    one_displot(
+                            null_df,
+                            x_var=x_var,
+                            y_var=y_var,
+                            row_var=None,
+                            col_var=None,
+                            hue_var=hue_var,
+                            write_mode=args.write_mode, 
+                            outdir=args.output_dir
+                            )
+
+#   generate_scatter_plots(
+#           args.output_dir, 
+#           null_df, 
+#           hue_var=hue_var, 
+#           style_var=style_var, 
+#           write_mode=args.write_mode
+#           )
+    return None
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
 ########################################################################################################################
@@ -331,7 +382,7 @@ if __name__=="__main__":
         "-o",
         "--output_dir",
         type=str,
-        default="",
+        default=None,
         help="figure output directory"
     )
     parser.add_argument(
@@ -339,7 +390,7 @@ if __name__=="__main__":
         "--sample_type",
         type=str,
         default="perm",
-        help="substring pattern to specify subset of matching directories"
+        help="Specify whether sampling randomness comes from bootstrapping or (indexing) permutation"
     )
     parser.add_argument(
         "-r",
@@ -363,51 +414,6 @@ if __name__=="__main__":
         help="write plots to .png"
     )
     args = parser.parse_args()
+
+    main(args, debug=False)
     
-    if not os.path.isdir(args.output_dir):
-        print(f"Warning: making new directory {args.output_dir}")
-        os.mkdir(args.output_dir)
-
-    debug=False
-    
-    if args.fpathlist_path is None: 
-        fpath_list = None
-    else:
-        with open(args.fpathlist_path, 'r') as fin:
-            fpath_list = fin.read().split('\n')
-
-    if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction):
-        args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
-
-    alldata_list = pull_data(
-            fpath_list = fpath_list,
-            parent_dir = args.input_dir, 
-            dir_pattern='null_vs_*/permtesting/X_*{args.pattern_restriction}*_dists',
-            f_pattern = '*_vs_*null*'
-            )
-
-    null_df = pd.concat(alldata_list, ignore_index=True)
-    print(f"total collected dataframe: \n{null_df}")
-
-    for x_var in ["Wp_XY", "PDY_diag"]:
-        for y_var in ["feat_num", "PDY_diag", None]:
-            for hue_var in ["modality", "feature", "metric"]:
-                if not x_var==y_var:
-                    one_displot(
-                            null_df,
-                            x_var=x_var,
-                            y_var=y_var,
-                            row_var=None,
-                            col_var=None,
-                            hue_var=hue_var,
-                            write_mode=args.write_mode, 
-                            outdir=args.output_dir
-                            )
-
-#   generate_scatter_plots(
-#           args.output_dir, 
-#           null_df, 
-#           hue_var=hue_var, 
-#           style_var=style_var, 
-#           write_mode=args.write_mode
-#           )

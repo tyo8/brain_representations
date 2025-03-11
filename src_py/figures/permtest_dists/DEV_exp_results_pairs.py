@@ -186,7 +186,7 @@ def generate_clustermaps(
 
     for linkage_var in linkvars:
         for display_var in dispvars:
-            if ("fwe-pval" in linkage_var) and ("fwe-pval" in display_var):
+            if ("fwe-" in linkage_var) and ("fwe-" in display_var):
                 print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
                 continue
             fig_dict[display_var] = plot_clustermap(
@@ -359,19 +359,19 @@ def _add_emp_pval(df, check_match=True, tail_type="all", corr_type="fdr", null_h
     try:
         epsilon_lo = 1/len(null_lo)
         epsilon_hi = 1/len(null_hi)
-        prop_lo = np.mean(Wp_XY <= null_lo)
-        prop_hi = np.mean(Wp_XY >= null_hi)
+        p_lo = 1 - np.mean(Wp_XY <= null_lo)
+        p_hi = 1 - np.mean(Wp_XY >= null_hi)
 
         for tail in tails:
             if tail == "two-tailed":
                 # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
-                empirical_pval = 2*min( max(epsilon_lo, prop_lo), max(epsilon_hi, prop_hi) )
+                empirical_pval = 2*min( max(epsilon_lo, p_lo), max(epsilon_hi, p_hi) )
             elif tail == "right":
                 # compute p-value from 1-sided (right) test against empirical CDF (enforcing inf(p)=1/N)
-                empirical_pval = min( max(epsilon_hi, prop_hi), 1 - epsilon_hi )
+                empirical_pval = min( max(epsilon_hi, p_hi), 1 - epsilon_hi )
             elif tail == "left":
                 # compute p-value from 1-sided (left) test against empirical CDF (enforcing inf(p)=1/N)
-                empirical_pval = min( max(epsilon_lo, prop_lo), 1 - epsilon_lo )
+                empirical_pval = min( max(epsilon_lo, p_lo), 1 - epsilon_lo )
             else:
                 raise ValueError(f"Unrecognized p-value type {tail}")
 
@@ -379,7 +379,7 @@ def _add_emp_pval(df, check_match=True, tail_type="all", corr_type="fdr", null_h
     except Exception as err:
         for tail in tails:
             print(f"p-value computation failed for correction type {corr_type} with tail type {tail}: \n{err}")
-            df[f"{tail}-{corr_type}-pval"] = np.nan
+            df[f"{corr_type}-{tail}-pval"] = np.nan
 
     return df
 
@@ -435,6 +435,9 @@ def pull_data(
 
     if args.corr_type == "fwe":
         null_lo, null_hi = _pull_extremal_dists(args)
+    else:
+        null_lo = None
+        null_hi = None
     
     alldata_grid = [ [ _load(
         fpath, data_only=data_only,
@@ -490,7 +493,7 @@ def _load(
 
 
 def _pull_extremal_dists(args):
-    import DEV_extremal_null_dists as ex_null
+    import DEV_extremal_nullpair_dists as ex_null
 
     args.extrema_only = True
     args.verbose = False
@@ -604,7 +607,7 @@ if __name__=="__main__":
     xnamelist, ynamelist, valuegrid = main(args)
 
     fig_inches = def_fig_size[0] * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
-    label_fontsize = def_label_fontsize * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
+    label_fontsize = def_label_fontsize * np.power(73 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
     generate_clustermaps(
             xnamelist, 
