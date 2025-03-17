@@ -53,7 +53,7 @@ def main(args, debug=False):
     if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction):
         args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
         if not os.path.isdir(args.output_dir):
-            os.path.mkdir(args.output_dir)
+            os.mkdir(args.output_dir)
             print(f"Warning: created new output directory \'{args.output_dir}\'")
 
     alldata_list = pull_data(
