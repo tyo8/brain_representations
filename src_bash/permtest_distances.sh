@@ -4,7 +4,7 @@ set -o nounset
 
 ### bookkeeping paths ###
 base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_representations"
-parent_outdir="${base_dir}/bar_analysis/bootstrap_distances/PROFUMO_vs_null"
+parent_outdir="${base_dir}/bar_analysis/stability_distances/PROFUMO_vs_null"
 
 ### input datasets ###
 Xdistlists_fpath="${parent_outdir}/distlistX_set.csv"

@@ -4,7 +4,7 @@ set -o nounset
 
 ## bookkeeping paths ###
 base_dir="/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley"
-outdir="${base_dir}/phom_analysis/bootstrap_distances/PROFUMO_vs_null"
+outdir="${base_dir}/phom_analysis/stability_distances/PROFUMO_vs_null"
 
 barsX_fpath=""
 listPerm_fpath=""

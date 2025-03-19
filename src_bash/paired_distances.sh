@@ -4,7 +4,7 @@ set -o nounset
 
 ### bookkeeping paths ###
 base_dir="interval-matching_bootstrap"
-parent_outdir="${base_dir}/bar_analysis/bootstrap_distances/PROFUMO_vs_null"
+parent_outdir="${base_dir}/phom_analysis/stability_distances/PROFUMO_vs_null"
 tagfile="${base_dir}/subsampling/taglist100k_90p_famstruct.txt"
 
 ### input datasets ###
@@ -60,7 +60,7 @@ done
 ### paths to code ###
 if ${bootstrap}
 then
-	bsdist_scripter="${base_dir}/src_bash/submit_bsdist_sbatch.sh"
+	bsdist_scripter="${base_dir}/src_bash/submit_bspair_sbatch.sh"
 	if [ -s $tagfile ]
 	then
 		tags=$( cat ${tagfile} | head -$count )
