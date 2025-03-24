@@ -1,7 +1,6 @@
 import re
 import os
 import glob
-import json
 import scipy
 import argparse
 import itertools
@@ -185,8 +184,7 @@ def pull_data(
 
 
 def _load(input_fpath, extrema_only=False, parse_longname=True):
-    with open(input_fpath, 'r') as fin:
-        data_df = pd.DataFrame(json.load(fin))
+    data_df = pd.read_csv(input_fpath, index_col=0)
 
     if parse_longname:
         data_df[["X_modality","X_feature","X_metric"]] = data_df["X_type"].str.split('_', n=2, expand=True)

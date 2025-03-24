@@ -78,9 +78,9 @@ data_label="${Xname}-vs-${Yname}"
 
 sbatch_fpath="${outdir}/do_bspairdists_${data_label}"
 
-outpath="${outdir}/bspairdists_${data_label}.json"
+outpath="${outdir}/bspairdists_${data_label}.csv"
 
-outpath2="${subbase_dir}/within_${Xmod}/subsampling/within_self/${Xname}.json"
+outpath2="${subbase_dir}/within_${Xmod}/subsampling/within_self/bsdists_${Xname}.csv"
 
 echo "\
 \
@@ -107,9 +107,10 @@ echo \"barX_fpath: \\\"\${barX_fpath}\\\"\"
 echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
-echo \"saving results to \${outdir}\"
+echo \"saving pair results to \${outpath}\"
+echo \"saving individual results to \${outpath2}\"
 
-python3 \${pairperms_script} -x \${barX_fpath} -y \${barY_fpath} -t \${permtype} --dim \${dim} -p ${p} -q ${q} -o \${outpath} -O \${outpath2} -v
+python3 \${pairperms_script} -x \${barX_fpath} -y \${barY_fpath} -t \${permtype} --dim \${dim} -p ${p} -q ${q} -o \${outpath} -O \${outpath2} -I -v
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

@@ -1,8 +1,8 @@
 import os
 import sys
-import json
 import argparse
 import numpy as np
+import pandas as pd
 import permtest_utils as putils
 
 # add parent directory to path instead of using relative import, which fails in command line use case
@@ -61,16 +61,27 @@ def get_permset_dists(datapath, permbarsX_listpath,
 
     return permdists_out
 
-def _get_outpath(outdir, null_dists):
+def _write_out(outdir, df_full, verbose=True):
 
-    modalities = '_OR_'.join(list(set([ null_dist["modality"] for null_dist in null_dists])))
-    features = '_OR_'.join(list(set([ null_dist["feature"] for null_dist in null_dists])))
-    permtypes = '_OR_'.join(list(set([ null_dist["permtype"] for null_dist in null_dists])))
-    metrics = '_OR_'.join(list(set([ null_dist["metric"] for null_dist in null_dists])))
+    keynames = ["modality", "feature", "permtype", "metric"]
 
-    outname = f"data_vs_{permtypes}null_{modalities}_{features}_{metrics}.json"
 
-    outpath = os.path.join(outdir, outname)
+    for mod in list(set(df_full["modality"])):
+        df = df_full[ df_full["modality"] == mod ]
+
+        for feat in list(set(df["feature"])):
+            df = df[ df["feature"] == feat]
+
+            for perm in list(set(df["permtype"])):
+                df = df[ df["permtype"] == perm]
+
+                for dist in list(set(df["metric"])):
+                    df = df[ df["metric"] == dist]
+                    outname = f"data_vs_{perm}null_{mod}_{feat}_{dist}.csv"
+                    outpath = os.path.join(outdir, outname)
+                    df.to_csv(outpath)
+                    print(f"Results written to {outpath}")
+
 
     return outpath
 ################################################################################################################
@@ -155,9 +166,8 @@ if __name__=="__main__":
             match_perms=args.match_perms,
             verbose=args.verbose 
             )
-    outpath = _get_outpath(args.outdir, null_dists)
     
-    with open(outpath, 'w') as fout:
-        json.dump(null_dists, fout, indent=4)
+    df_full = pd.DataFrame(null_dists)
+    outpath = _write_out(args.outdir, df_full, verbose=args.verbose)
 
     print(f"\n\nSaved to: \n{outpath}")

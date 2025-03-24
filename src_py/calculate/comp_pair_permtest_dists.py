@@ -1,8 +1,8 @@
 import os
 import sys
-import json
 import argparse
 import numpy as np
+import pandas as pd
 import permtest_utils as putils
 
 # add parent directory to path instead of using relative import, which fails in command line use case
@@ -129,7 +129,7 @@ def _get_outpath(data_summ, outdir=".", permtype="subject"):
     xlabel = data_summ["X_type"]
     ylabel = data_summ["Y_type"]
 
-    outname = f"{xlabel}_vs_{ylabel}_null-{permtype}Perms.json"
+    outname = f"{xlabel}_vs_{ylabel}_null-{permtype}Perms.csv"
     outpath = os.path.join(outdir, outname)
 
     return outpath
@@ -241,8 +241,8 @@ if __name__=="__main__":
             debug=True
             )
     outpath = _get_outpath(pairdist_summ[0], outdir=args.outdir, permtype=args.permtype)
-    
-    with open(outpath, 'w') as fout:
-        json.dump(pairdist_summ, fout, indent=4)
+
+    df_out = pd.DataFrame(pairdist_summ)
+    df_out.to_csv(outpath)
 
     print(f"\n\nSaved to: \n{outpath}")

@@ -1,7 +1,6 @@
 import re
 import os
 import glob
-import json
 import scipy
 import argparse
 import itertools
@@ -21,7 +20,7 @@ def_label_fontsize = 7
 def_scatter_vars = ["Wp_XY", "PDX_diag", "PDY_diag"]
 def_pattern='null_vs_*/permtesting/X_*_dists', 
 
-# exp_outtype="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/null_vs_grad/permtesting/X_grad200_Maps_Psim_dists/data_vs_subjectnull_grad100_Maps_Psim_OR_inner.json"
+# exp_outtype="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/null_vs_grad/permtesting/X_grad200_Maps_Psim_dists/data_vs_subjectnull_grad100_Maps_Psim_OR_inner.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
 # potential separating vars = ["modality", "dimension", "feature", "metric", "permtype"]
@@ -270,7 +269,7 @@ def pull_data(
         debug=True
         ):
     if fpath_list is None and parent_dir is not None:
-        match_pattern = os.path.join(parent_dir, dir_pattern, f"{f_pattern}.json")
+        match_pattern = os.path.join(parent_dir, dir_pattern, f"{f_pattern}.csv")
         fpath_list = glob.glob(match_pattern)
         fpath_list.sort()
 
@@ -291,8 +290,7 @@ def pull_data(
 
 
 def _load(input_fpath, enforce_match=True, debug=False):
-    with open(input_fpath, 'r') as fin:
-        data_df = pd.DataFrame(json.load(fin))
+    data_df = pd.read_csv(input_fpath, index_col=0)
 
     if enforce_match:
         data_modality, data_feature, data_metric = _parse_fpath(input_fpath, metric=True)

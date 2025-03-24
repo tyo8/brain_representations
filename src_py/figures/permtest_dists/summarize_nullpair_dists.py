@@ -1,7 +1,6 @@
 import re
 import os
 import glob
-import json
 import scipy
 import argparse
 import itertools
@@ -25,7 +24,7 @@ def_pattern='*X_*_dists'
 def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
 def_scatter_vars = ["Wp_XY", "Y_type"] 
 
-# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
+# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
 def main(args, debug=False):
@@ -89,19 +88,18 @@ def main(args, debug=False):
 # make quick and dirty paired-null distance distribution summaries
 ########################################################################################################################
 def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
-    with open(fpath,'r') as fin:
-        outputs = json.load(fin)
-    data_diff = outputs[0]["Wp_XY"]
-    null_diffs = pd.DataFrame(outputs[1:])
+    full_df = pd.read_csv(fpath, index_col=0)
+    data_df = full_df[ full_df["datatype"]~="Null" ]
+    null_df = full_df[ full_df["datatype"]=="Null" ]
 
     # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
-    data_pval = 1 - np.mean(data_diff > null_diffs["Wp_XY"].to_numpy())
+    data_pval = 1 - np.mean(data_df > null_df["Wp_XY"].to_numpy())
     data_pval = min(data_pval, 1 - data_pval)
-    if data_pval < 1/len(null_diffs):
-        data_pval = 1/len(null_diffs)
+    if data_pval < 1/len(null_df):
+        data_pval = 1/len(null_df)
 
-    g = sns.displot(data=null_diffs, x="Wp_XY", kind="hist", kde=True, hue="permtype")
-    g.refline(x=data_diff, linestyle="--", color="red", label="data distance")
+    g = sns.displot(data=null_df, x="Wp_XY", kind="hist", kde=True, hue="permtype")
+    g.refline(x=data_df, linestyle="--", color="red", label="data distance")
 
     if fig_title is None:
         X_type = outputs[0]["X_type"]
@@ -111,7 +109,7 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     g.fig.suptitle(fig_title)
 
     if verbose:
-        print(f"The approximate empircal p-value for data vs. null distance of {data_diff} is {data_pval}")
+        print(f"The approximate empircal p-value for data vs. null distance of {data_df} is {data_pval}")
 
     return g, data_pval
 ########################################################################################################################
@@ -422,9 +420,9 @@ def pull_data(
         dirlist = glob.glob(parent_pattern)
         dirlist.sort()
         if debug:
-            print(f"matching files of with pattern \'{args.f_pattern}.json\' in directories matching \'{parent_pattern}\'")
+            print(f"matching files of with pattern \'{args.f_pattern}.csv\' in directories matching \'{parent_pattern}\'")
 
-        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}.json")) for X_dir in dirlist ]
+        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}.csv")) for X_dir in dirlist ]
     else:
         fpath_grid = [ fpath_list for i in range(len(fpath_list)) ]
         
@@ -470,8 +468,7 @@ def _load(
         input_fpath, data_only=True, parse_longname=False, 
         check_pval=True, tail_type="all", corr_type="fwe", null_hi=None, null_lo=None
         ):
-    with open(input_fpath, 'r') as fin:
-        data_df = pd.DataFrame(json.load(fin))
+    data_df = pd.read_csv(input_fpath, index_col=0)
 
     if parse_longname:
         data_df[["X_mod","X_feat","X_diff"]] = data_df["X_type"].str.split('_', n=2, expand=True)

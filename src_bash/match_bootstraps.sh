@@ -13,7 +13,7 @@ distlists_fpath="${subbase_dir}/real_distlists.csv"
 ### run parameters ###
 samps=3
 match_homdim=1
-mem_gb=10
+mem_gb=2
 
 ### argument parsing ###
 while getopts ":b:s:f:t:n:D:m:" opt; do
@@ -46,6 +46,7 @@ done
 
 ### paths to code ###
 extract_src="${base_dir}/src_py/interval-matching_bootstrap/utils_match/extract.py"
+xtr_script="${base_dir}/src_bash/submit_xtr_sbatch.sh"
 match_src="${base_dir}/src_bash/submit_match_sbatch.sh"
 
 ### node exclude list: maybe do not include for parallel case? ###
@@ -100,12 +101,13 @@ do
 			then
 				echo "extracting from:"
 				ls ${phomX_fpath}
+				sbatch_fpath=${sbatch_fpath/do_match/do_xtr}
 			fi
-			python3 ${extract_src} -x ${phomX_fpath} -0 -w -v
+			${xtr_script} -s ${extract_src} -x ${phomX_fpath} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb}
 			if $xtr_only
 			then
-				echo "extracted to:"
-				ls ${phomX_fpath/phom_X/bars_X}
+				echo "submitted script:"
+				ls ${sbatch_fpath}
 			fi
 		fi
 		if $xtr_only
@@ -131,7 +133,7 @@ do
 			python3 ${extract_src} -x ${phomY_fpath/phomY/phomYZ} -0 -w -i 
 		
 			# script submitter for matching job
-			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb}
+			${match_src} -x ${phomX_fpath} -y ${phomY_fpath} -D ${match_homdim} -f ${sbatch_fpath} -d ${data_label} -m ${mem_gb} -0
 		done
 	done
 done

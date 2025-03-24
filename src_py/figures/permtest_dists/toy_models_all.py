@@ -25,7 +25,7 @@ def_heatmap_vars = ["Wp_XY", "Wp_XhatYhat_i", "Mean Wp Approximation Difference"
 # def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i"]
 def_scatter_vars = ["Xname", "Yname", "Wp_XXhat_i", "Wp_YYhat_i", "dIM_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i", "PDX_diag", "PDY_diag"]
 
-# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
+# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 
 ####################################################################################################################
 # Synthesizer functions

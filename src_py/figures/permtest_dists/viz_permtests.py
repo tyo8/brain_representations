@@ -1,7 +1,6 @@
 import re
 import os
 import glob
-import json
 import scipy
 import argparse
 import itertools
@@ -22,7 +21,7 @@ def_pattern='*X_*_dists'
 def_heatmap_vars = ["empirical_pval"]
 def_scatter_vars = ["Wp_XY", "Y_type"] 
 
-# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.json"
+# exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
@@ -30,19 +29,18 @@ modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 # make quick and dirty paired-null distance distribution summaries
 ########################################################################################################################
 def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
-    with open(fpath,'r') as fin:
-        outputs = json.load(fin)
-    data_diff = outputs[0]["Wp_XY"]
-    null_diffs = pd.DataFrame(outputs[1:])
+    full_df = pd.read_csv(fpath, index_col=0)
+    data_df = full_df[ full_df["datatype"]~="Null" ]
+    null_df = full_df[ full_df["datatype"]=="Null" ]
 
     # compute p-value from 2-sided test against empirical CDF (enforcing inf(p)=1/N)
-    data_pval = 1 - np.mean(data_diff > null_diffs["Wp_XY"].to_numpy())
+    data_pval = 1 - np.mean(data_df > null_df["Wp_XY"].to_numpy())
     data_pval = 2*min(data_pval, 1 - data_pval)
-    if data_pval < 1/len(null_diffs):
-        data_pval = 1/len(null_diffs)
+    if data_pval < 1/len(null_df):
+        data_pval = 1/len(null_df)
 
-    g = sns.displot(data=null_diffs, x="Wp_XY", kind="hist", kde=True, hue="permtype")
-    g.refline(x=data_diff, linestyle="--", color="red", label="data distance")
+    g = sns.displot(data=null_df, x="Wp_XY", kind="hist", kde=True, hue="permtype")
+    g.refline(x=data_df, linestyle="--", color="red", label="data distance")
 
     if fig_title is None:
         X_type = outputs[0]["X_type"]
@@ -52,7 +50,7 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     g.fig.suptitle(fig_title)
 
     if verbose:
-        print(f"The approximate empircal p-value for data vs. null distance of {data_diff} is {data_pval}")
+        print(f"The approximate empircal p-value for data vs. null distance of {data_df} is {data_pval}")
 
     return g, data_pval
 ########################################################################################################################
@@ -335,7 +333,7 @@ def pull_data(parent_dir, dir_pattern='X_*_dists', f_pattern = '*_vs_*', name_ty
     dirlist = glob.glob(os.path.join(parent_dir, dir_pattern))
     dirlist.sort()
 
-    fpath_grid = [ glob.glob(os.path.join(X_dir, f"{f_pattern}.json")) for X_dir in dirlist ]
+    fpath_grid = [ glob.glob(os.path.join(X_dir, f"{f_pattern}.csv")) for X_dir in dirlist ]
     [i.sort() for i in fpath_grid]
 
     alldata_grid = [ [ _load(fpath, name_type=name_type) for fpath in X_sublist ] for X_sublist in fpath_grid ]
@@ -361,9 +359,8 @@ def pull_data(parent_dir, dir_pattern='X_*_dists', f_pattern = '*_vs_*', name_ty
 
 def _load(input_fpath, name_type="exp_results", check_pval=True, parse_longname=False):
     if name_type=="exp_results":
-        
-        with open(input_fpath, 'r') as fin:
-            data_df = pd.DataFrame(json.load(fin))
+
+        data_df = pd.read_csv(input_fpath, index_col=0)
 
         if parse_longname:
             data_df[["X_mod","X_feat","X_diff"]] = data_df["X_type"].str.split('_', n=2, expand=True)
