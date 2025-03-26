@@ -4,32 +4,33 @@ indir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/pho
 outdir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/All_vs_AllNull/figures"
 
 srcdir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/src_py/figures/permtest_dists"
-pairs_srcpath="${srcdir}/DEV_exp_results_pairs.py"
-nullpairs_srcpath="${srcdir}/DEV_extremal_nullpair_dists.py"
-null_solo_srcpath="${srcdir}/DEV_exp_results_null.py"
+nullpairs_srcpath="${srcdir}/summarize_nullpair_dists.py"
+extremals_srcpath="${srcdir}/extremal_nullpair_dists.py"
+null_solo_srcpath="${srcdir}/single_null_dists.py"
 
-declare -a rstr=("Maps" "Psim" "geodesic" "NMs")
+declare -a rstr=("Maps" "Psim" "geodesic" "Amps" "NM")
 declare -a corrs=("fdr" "fwe")
 declare -a subsmp=("perm" "bstrap")
 
 solo_indir="$(dirname ${indir})"
 
-python ${nullpairs_srcpath} -v -w -i ${indir} -o ${outdir} -L
-python ${nullpairs_srcpath} -v -w -i ${indir} -o ${outdir} -L -E
-python ${pairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "fwe"
-python ${pairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "fdr"
+python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L
+python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L -E
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "fwe"
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "fdr"
+python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null"
 
 printf "## now looping through arrays: \n${rstr} \n${corrs} \n\n"
 for R in "${rstr[@]}"
 do
 	printf "#################################################################################################\n\n"
-	python ${nullpairs_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L
+	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L
 	printf "#################################################################################################\n\n"
-	python ${nullpairs_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L -E
+	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L -E
    for C in "${corrs[@]}"
    do
 	   printf "#################################################################################################\n\n"
-	   python ${pairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c ${C} -r ${R}; 
+	   python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c ${C} -r ${R}; 
    done
    for T in "${subsmp[@]}"
    do

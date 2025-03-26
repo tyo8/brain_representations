@@ -18,7 +18,7 @@ def_fig_size = (24, 24)
 def_label_fontsize = 7 
 
 def_scatter_vars = ["Wp_XY", "PDX_diag", "PDY_diag"]
-def_pattern='null_vs_*/permtesting/X_*_dists', 
+def_pattern='within_*/permtesting/X_*_dists', 
 
 # exp_outtype="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/null_vs_grad/permtesting/X_grad200_Maps_Psim_dists/data_vs_subjectnull_grad100_Maps_Psim_OR_inner.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
@@ -58,27 +58,26 @@ def main(args, debug=False):
     alldata_list = pull_data(
             fpath_list = fpath_list,
             parent_dir = args.input_dir, 
-            dir_pattern=f'null_vs_*/permtesting/X_*{args.pattern_restriction}*_dists',
+            dir_pattern=f'within_*/permtesting/X_*{args.pattern_restriction}*_dists',
             f_pattern = '*_vs_*null*'
             )
 
     null_df = pd.concat(alldata_list, ignore_index=True)
     print(f"total collected dataframe: \n{null_df}")
 
-    for x_var in ["Wp_XY", "PDY_diag"]:
-        for y_var in ["feat_num", "PDY_diag", None]:
-            for hue_var in ["modality", "feature", "metric"]:
-                if not x_var==y_var:
-                    one_displot(
-                            null_df,
-                            x_var=x_var,
-                            y_var=y_var,
-                            row_var=None,
-                            col_var=None,
-                            hue_var=hue_var,
-                            write_mode=args.write_mode, 
-                            outdir=args.output_dir
-                            )
+#             for y_var in ["feat_num", "PDY_diag", None]:
+#                 if not x_var==y_var:
+    for hue_var in ["modality", "feature", "metric", "permtype"]:
+        one_displot(
+                null_df,
+                x_var="Wp_XY",
+                y_var=None,
+                row_var=None,
+                col_var=None,
+                hue_var=hue_var,
+                write_mode=args.write_mode, 
+                outdir=args.output_dir
+                )
 
 #   generate_scatter_plots(
 #           args.output_dir, 
@@ -116,7 +115,8 @@ def one_displot(
             df[y_var] = df[y_var] + 1e-12
 
     if y_var is None:
-        g = sns.displot(df, x=x_var, hue=hue_var, multiple="layer", log_scale=True, rug=False, element='poly')
+        g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False, element='step')
+        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="layer", log_scale=True, rug=False, element='poly')
         # g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
         # g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
     else:
@@ -263,10 +263,10 @@ def one_displot(
 def pull_data(
         fpath_list = None,
         parent_dir = None, 
-        dir_pattern='null_vs_*/permtesting/X_*_dists', 
+        dir_pattern='within_*/permtesting/X_*_dists', 
         f_pattern = '*_vs_*null*',
         enforce_match=True,
-        debug=True
+        debug=False
         ):
     if fpath_list is None and parent_dir is not None:
         match_pattern = os.path.join(parent_dir, dir_pattern, f"{f_pattern}.csv")
@@ -301,14 +301,21 @@ def _load(input_fpath, enforce_match=True, debug=False):
     if debug:
         print(f"df before expansion: \n{data_df}")
 
-    data_df[["modality","rank"]] = data_df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
-    data_df["feat_num"] = data_df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
+    if data_df.empty:
+        if debug:
+            print(f"Loaded empty DataFrame from path: \n{input_fpath}")
+        data_df["rank"] = None
+        data_df["feat_num"] = None
+        return data_df
+    else:
+        data_df[["modality","rank"]] = data_df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
+        data_df["feat_num"] = data_df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
 
     if debug:
         print(f"df after expansion: \n{data_df}")
     return data_df
 
-def _pull_rank(long_method):
+def _pull_rank(long_method, debug=False):
     if 'PROFUMO' in long_method:
         rank=33
         method="PROFUMO"
@@ -319,6 +326,8 @@ def _pull_rank(long_method):
         rank_pattern = re.compile('\d{1,4}')
         rank = re.search(r'\d{1,4}', long_method).group()
         method = long_method.replace(rank,'')
+        if debug:
+            print(f"[method, rank] = {[method, int(rank)]}")
     return method, int(rank)
 
 def _pull_feat_num(rank, feature):

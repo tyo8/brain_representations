@@ -1,11 +1,13 @@
 #!/bin/bash
 
 submit=${1:-false}
-script_name=${2:-"do_bsdists"}
-dir_pattern_type=${3:-"*_vs_*"}
-base=${4:-$(pwd)}
+permtype=${2:-"feat"}
+script_name=${3:-"do_permdists_null"}
+dir_pattern_type=${4:-"within_*/permtesting"}
+base=${5:-$(pwd)}
 
 echo ""
+echo "Using permtutation type: ${permtype}"
 echo "Updating scripts matching \"${base}/${dir_pattern_type}/${script_name}\""
 echo "Updating from generic version at: \"$(ls ${base}/${script_name})\""
 echo "Submitting scripts after update: ${submit}"
@@ -13,28 +15,21 @@ echo ""
 
 for i in $(ls ${base}/${dir_pattern_type} -d)
 do
-	Xname=$( basename ${i} | cut -d_ -f 1 )
-	Yname=$( basename ${i} | cut -d_ -f 3 )
+	Xname=$( basename $( dirname ${i} ) | cut -d_ -f 2)
 
 	cp ${base}/${script_name} ${i}/${script_name}
+	echo "updated ${i}/${script_name}, permtest distances for modality ${Xname}"
 
 	sed -i "s/{Xname}/${Xname}/g" ${i}/${script_name}
-	sed -i "s/{Yname}/${Yname}/g" ${i}/${script_name}
+	sed -i "s/{permtype}/${permtype}/g" ${i}/${script_name}
 
-	if [ ${Yname} = "self" ]
-	then
-		sed -i "/within_self/d" ${i}/${script_name}
-		sed -i "s/Ydistlist/Xdistlist/g" ${i}/${script_name}
-	fi
-
-	echo "Name of toy model: ${Xname}_vs_${Yname} (updated!)"
 	if $submit
 	then
 		cd ${i}
-		echo "Submitting: $(ls ${i}/${script_name})"
-		sbatch ${i}/${script_name}
+		echo "submitting ${script_name} in $(pwd)"
+		sbatch ${script_name}
 		echo ""
 	fi
 done
 
-echo ""
+cd ${base}

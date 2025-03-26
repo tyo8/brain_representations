@@ -11,8 +11,8 @@ import seaborn as sns
 from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 
-# dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "PDX_diag", "PDY_diag"]
-dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std"]
+dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "PDX_diag", "PDY_diag"]
+# dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "permtype"]
 def_fig_size = (24, 24)
 
 def main(args, debug=False):
@@ -20,53 +20,69 @@ def main(args, debug=False):
         if not args.output_dir.endswith(args.pattern_restriction):
             args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
         args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
-        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*'
+        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*.csv'
     else:
         args.dir_pattern=f'X_*_dists'
-        args.f_pattern = f'*_vs_*'
+        args.f_pattern = f'*_vs_*.csv'
+
+    if args.fpathlist_path is None: 
+        args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
+        fpath_list = glob.glob(args.search_pattern)
+    else:
+        with open(args.fpathlist_path, 'r') as fin:
+            fpath_list = fin.read().split('\n')
 
     if args.verbose:
+        print(f"argument initializations for: \n{__name__}\n***")
         var_dict = vars(args)
         for varname in list(var_dict.keys()):
-            print(f"The argument \'{varname}\' has been initialized with value: {var_dict[varname]}")
+            print(f"The argument \'{varname}\' has initial value: {var_dict[varname]}")
 
     if not os.path.isdir(args.output_dir):
         print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)
 
-    if args.fpathlist_path is None: 
-        search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
-        fpath_list = glob.glob(search_pattern)
-    else:
-        with open(args.fpathlist_path, 'r') as fin:
-            fpath_list = fin.read().split('\n')
-
     df = pd.concat([ _load(fpath, extrema_only=args.extrema_only) for fpath in fpath_list ], ignore_index=True)
+    if debug:
+        check_out=os.path.join(os.getcwd(), "tmp_df.csv")
+        print(f"saving dataframe to: \n{check_out}")
+        df.to_csv(check_out)
 
     if args.verbose:
         print(f"collected summary dataframe: \n{df}")
-        for colname in df.columns.values:
-            print(f"Number of unique values in column \'{colname}\' is {len(set(df[colname].values))}")
+#         for colname in df.columns.values:
+#             print(f"Number of unique values in column \'{colname}\' is {len(set(df[colname].values))}")
 
     if args.extrema_only:
-        df = df.filter(["Wp_XYNull_min", "Wp_XYNull_max"], axis=1)
+        args.dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max"] 
 
     return df, args
 
 def plot_dists(df, args):
     one_displot(
             df,
+            dist_vars=args.dist_vars,
             log_scale=args.log_scale,
             extrema_only=args.extrema_only,
             write_mode=args.write_mode, 
             outdir=args.output_dir
             )
-    if not args.extrema_only:
-        for dist_var in dist_vars:
-            for var in ["modality", "feature", "metric"]:
-                df[var] = df.apply(lambda x: frozenset([x[f"X_{var}"], x[f"Y_{var}"]]), axis=1)
-                row_var = f"X_{var}"
-                col_var = f"Y_{var}"
+    if args.extrema_only:
+        for ptype in list(set(df["permtype"])):
+            df_perm = df[ df["permtype"]==ptype ]
+            one_displot(
+                    df_perm,
+                    dist_vars=args.dist_vars,
+                    log_scale=args.log_scale,
+                    extrema_only=args.extrema_only,
+                    write_mode=args.write_mode, 
+                    outdir=args.output_dir
+                    )
+    else:
+        for dist_var in args.dist_vars:
+            for var in ["permtype", "modality", "feature", "metric"]:
+                if not var=="permtype":
+                    df[var] = df.apply(lambda x: frozenset([x[f"X_{var}"], x[f"Y_{var}"]]), axis=1)
                 one_displot(
                         df,
                         x_var=dist_var,
@@ -77,6 +93,8 @@ def plot_dists(df, args):
                         outdir=args.output_dir
                         )
                 if var in ["metric", "feature"]:
+                    row_var = f"X_{var}"
+                    col_var = f"Y_{var}"
                     one_displot(
                             df,
                             x_var=dist_var,
@@ -104,7 +122,7 @@ def one_displot(
         legend=True,
         log_scale=True,
         regularize=True,
-        epsilon=1e-12,
+        epsilon=1e-9,
         write_mode=True,
         outdir=os.getcwd(),
         verbose=True, 
@@ -116,11 +134,9 @@ def one_displot(
         return None
 
     if log_scale and regularize:
-        if x_var is None:
-            for name in df.columns.values:
-                df[df[name] == 0] = epsilon 
-        else:
-            df[x_var] = df[x_var] + epsilon
+        if x_var is not None:
+            if isinstance(df[x_var].values, np.ndarray):
+                df[x_var] = df[x_var] + epsilon
         if y_var is not None:
             if isinstance(df[y_var].values, np.ndarray):
                 log_scale = [10, 10]
@@ -133,21 +149,37 @@ def one_displot(
     if hue_var is not None:
         hue_num = len(set(df[hue_var]))
         legend = hue_num <= 20
+        if debug:
+            ### debugging code ###
+            unq_vals = set(df[hue_var])
+            if any(['e-12' in name for name in unq_vals]):
+                print(f"unique set of values in dataframe column \'{hue_var}\': \n{unq_vals}")
+                err_out = os.path.join(os.getcwd(), "ERR_df.csv")
+                print(f"Found epsilon value embedded as qualitive variable label! Saving offending dataframe to: \n{err_out}")
+                df.to_csv(err_out)
+                print("Exiting.")
+                exit()
+            ### debugging code ###
+
 
     if y_var is None:
         if x_var is None:
+            plot_df = df.filter(dist_vars, axis=1)
+            if log_scale and regularize:
+                for name in plot_df.columns.values:
+                    if isinstance(df[name].values, np.ndarray) and not name=="permtype":
+                        plot_df[name] = plot_df[name] + epsilon 
             if extrema_only:
-                plot_df = df.filter(["Wp_XYNull_min", "Wp_XYNull_max"], axis=1)
                 element = 'bars'; multiple = 'dodge'
             else:
-                plot_df = df.filter(dist_vars, axis=1)
                 element = 'poly'; multiple = 'layer'
             if verbose:
                 print(f"wide-form plotting histogram of dataframe df=\n{plot_df}")
             g = sns.displot(data=plot_df, multiple=multiple, log_scale=log_scale, rug=False, legend=legend, element=element)
         else:
             # g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
-            g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=log_scale, rug=False, legend=legend, element='poly')
+            g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=log_scale, rug=False, legend=legend, element='step')
+            # g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="layer", log_scale=log_scale, rug=False, legend=legend, element='poly')
     else:
         # g = sns.displot(df, x=x_var, y=y_var, hue=hue_var, log_scale=[10,10], rug=False)
         g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=log_scale, rug=False, legend=legend)
@@ -157,7 +189,8 @@ def one_displot(
         if log_scale:
             outname = outname.replace("pairs_nulldists","pairs_nulldists-log")
         if extrema_only:
-            outname = outname.replace("pairs_nulldists","pairs_nulldists-extremal")
+            permtype = '-'.join(list(set(df["permtype"])))
+            outname = outname.replace("pairs_nulldists",f"pairs_{permtype}-nulldists-extremal")
         for var in ['x', 'y', 'hue', 'row', 'col']:
             varname = eval(f"{var}_var")
             if varname is not None:
@@ -171,17 +204,6 @@ def one_displot(
     return g
 
 ########################################################################################################################
-
-def pull_data(
-        fpath_list=None, 
-        extrema_only=True, 
-        debug=False
-        ):
-
-    df_list = [ _load(fpath, extrema_only=extrema_only) for fpath in fpath_list ]
-
-    return df_list
-
 
 def _load(input_fpath, extrema_only=False, parse_longname=True):
     data_df = pd.read_csv(input_fpath, index_col=0)
@@ -199,8 +221,15 @@ def _load(input_fpath, extrema_only=False, parse_longname=True):
     if not extrema_only:
         data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
         data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-        
-    data_df.drop(["X_type","Y_type", "Wp_XY", "permtype", "permlabel", "datatype"], axis=1, inplace=True)
+
+    if "permtype" in null_df.keys():
+        permtype = list(set(null_df["permtype"]))
+        assert len(permtype)==1, f"found more than one permutation type is single-null file {input_fpath}"
+        permtype = permtype[0]
+    else:
+        permtype = "Empty"
+    data_df["permtype"] = permtype
+    data_df.drop(["X_type","Y_type", "Wp_XY", "permlabel", "datatype"], axis=1, inplace=True)
 
     return data_df
 
@@ -272,6 +301,7 @@ if __name__=="__main__":
         help="toggle verbose output"
     )
     args = parser.parse_args()
+    args.dist_vars = dist_vars
     
     df, args = main(args)
 

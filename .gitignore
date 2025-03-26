@@ -38,6 +38,7 @@ logs
 # image files
 *.png
 *.pdf
+*.nii.gz
 
 # unmodified submodules
 skpalm

@@ -35,12 +35,12 @@ def main(args, debug=False):
         args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
         args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*'
     else:
-        args.dir_pattern=f'X_*_dists'
-        args.f_pattern = f'*_vs_*'
+        args.dir_pattern=f'X_*'
+        args.f_pattern = f'*_vs_*.csv'
 
     if args.verbose:
         var_dict = vars(args)
-        print(f"argument values for function {__name__}")
+        print(f"argument initializations for: \n{__name__}\n***")
         for varname in list(var_dict.keys()):
             print(f"\tThe argument \'{varname}\' has been initialized with value: {var_dict[varname]}")
 
@@ -89,7 +89,7 @@ def main(args, debug=False):
 ########################################################################################################################
 def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     full_df = pd.read_csv(fpath, index_col=0)
-    data_df = full_df[ full_df["datatype"]~="Null" ]
+    data_df = full_df[ full_df["datatype"]!="Null" ]
     null_df = full_df[ full_df["datatype"]=="Null" ]
 
     # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
@@ -412,7 +412,7 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, cor
 # Data wrangling functions
 ########################################################################################################################
 def pull_data(
-        args, fpath_list=None, check_pval=True, data_only=True, debug=False
+        args, fpath_list=None, check_pval=True, data_only=True, debug=True
         ):
 
     if fpath_list is None and args.input_dir is not None:
@@ -420,9 +420,13 @@ def pull_data(
         dirlist = glob.glob(parent_pattern)
         dirlist.sort()
         if debug:
-            print(f"matching files of with pattern \'{args.f_pattern}.csv\' in directories matching \'{parent_pattern}\'")
+            print(f"matching files of with pattern \'{args.f_pattern}\' in directories matching \'{parent_pattern}\'")
 
-        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}.csv")) for X_dir in dirlist ]
+        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}")) for X_dir in dirlist ]
+        if debug:
+            import json
+            with open("fpath_grid_tmp.txt", 'w') as fout:
+                json.dump(fpath_grid, fout, indent=4)
     else:
         fpath_grid = [ fpath_list for i in range(len(fpath_list)) ]
         
@@ -437,11 +441,13 @@ def pull_data(
         null_lo = None
         null_hi = None
     
-    alldata_grid = [ [ _load(
+    alldata_grid = [ 
+                    [ _load(
         fpath, data_only=data_only,
         check_pval=check_pval, tail_type=args.tail_type, 
         corr_type=args.corr_type, null_hi=null_hi, null_lo=null_lo,
-        ) for fpath in X_sublist ] for X_sublist in fpath_grid ]
+        ) for fpath in X_sublist ] 
+                    for X_sublist in fpath_grid ]
 
     if debug:
         ### debugging code ###
@@ -485,12 +491,14 @@ def _load(
         data_df = data_df[data_df["datatype"] == "Data"]
         data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
         data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
+        data_df["permtype"] = '-'.join(list(set(null_df["permtype"])))
+        data_df.drop(["permlabel"], axis=1, inplace=True)
 
     return data_df
 
 
 def _pull_extremal_dists(args):
-    import DEV_extremal_nullpair_dists as ex_null
+    import extremal_nullpair_dists as ex_null
 
     args.extrema_only = True
     args.verbose = False
