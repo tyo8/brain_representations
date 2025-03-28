@@ -64,7 +64,7 @@ while getopts ":b:x:y:T:n:D:P:Q:a:v:o:m:p:t:" opt; do
 done
 
 ### paths to code ###
-pairperms_script="${base_dir}/src_py/calculate/DEV_comp_bootstrap_dists.py"
+pairperms_script="${base_dir}/src_py/calculate/comp_bootstrap_dists.py"
 
 Xname=$(basename $(dirname $(ls ${barX_fpath})))
 Xname=${Xname/phom_data_/}

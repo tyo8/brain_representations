@@ -8,6 +8,7 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import fig_utils as futils
 from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 from statsmodels.stats.multitest import fdrcorrection
@@ -17,26 +18,13 @@ from statsmodels.stats.multitest import fdrcorrection
 def_fig_size = (24, 24)
 def_label_fontsize = 7 
 
-def_scatter_vars = ["Wp_XY", "PDX_diag", "PDY_diag"]
-def_pattern='within_*/permtesting/X_*_dists', 
-
+def_dir_pattern = 'within_*'
+def_f_pattern =  '*_vs_*null*'
 # exp_outtype="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/null_vs_grad/permtesting/X_grad200_Maps_Psim_dists/data_vs_subjectnull_grad100_Maps_Psim_OR_inner.csv"
-modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
-# potential separating vars = ["modality", "dimension", "feature", "metric", "permtype"]
-#sample entry:
-#   {
-#       "modality": "grad25",
-#       "feature": "Maps",
-#       "metric": "inner",
-#       "datatype": "Null",
-#       "permtype": "subject",
-#       "permlabel": "perm_set0_n64620",
-#       "Wp_XY": 0.00374385142019842,
-#       "PDX_diag": 0.04047972885902275,
-#       "PDY_diag": 0.005473396660210167
-#   },
-#
+modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
+sample_dirnames = {"perm": "permtesting", "bstrap": "subsampling"}
+
 ################################################# MAIN FUNCTION ########################################################
 ########################################################################################################################
 def main(args, debug=False):
@@ -55,44 +43,134 @@ def main(args, debug=False):
             os.mkdir(args.output_dir)
             print(f"Warning: created new output directory \'{args.output_dir}\'")
 
-    alldata_list = pull_data(
-            fpath_list = fpath_list,
-            parent_dir = args.input_dir, 
-            dir_pattern=f'within_*/permtesting/X_*{args.pattern_restriction}*_dists',
-            f_pattern = '*_vs_*null*'
-            )
+    # sample null-data fpath: "data_vs_subjectnull_grad15_Maps_Psim.csv"
+    # sample subsample fpath: "bsdists_grad15_Maps_Psim.csv"
 
-    null_df = pd.concat(alldata_list, ignore_index=True)
-    print(f"total collected dataframe: \n{null_df}")
+    if fpath_list is None and args.input_dir is not None:
+        fpath_list = _get_fpath_list(args)
 
-#             for y_var in ["feat_num", "PDY_diag", None]:
-#                 if not x_var==y_var:
-    for hue_var in ["modality", "feature", "metric", "permtype"]:
-        one_displot(
-                null_df,
-                x_var="Wp_XY",
-                y_var=None,
-                row_var=None,
-                col_var=None,
-                hue_var=hue_var,
-                write_mode=args.write_mode, 
-                outdir=args.output_dir
-                )
+    if args.solo_plots:
+        make_solo_plots(fpath_list, dist_type="single", args=args)
 
-#   generate_scatter_plots(
-#           args.output_dir, 
-#           null_df, 
-#           hue_var=hue_var, 
-#           style_var=style_var, 
-#           write_mode=args.write_mode
-#           )
+    if args.aggregate_plots:
+        alldata_list = [ _load(fpath, enforce_match=args.enforce_match) for fpath in fpath_list ]
+
+        null_df = pd.concat(alldata_list, ignore_index=True)
+        print(f"total collected dataframe: \n{null_df}")
+
+        for hue_var in ["modality", "feature", "metric", "permtype"]:
+            agg_displot(
+                    null_df,
+                    x_var="Wp_XY",
+                    y_var=None,
+                    row_var=None,
+                    col_var=None,
+                    hue_var=hue_var,
+                    write_mode=args.write_mode, 
+                    outdir=args.output_dir
+                    )
+
     return None
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
 ########################################################################################################################
 # make quick and dirty nulled-null distance distribution summaries
 ########################################################################################################################
+def make_solo_plots(fpath_list, dist_type="single", args=None, figs=True, debug=True):
+
+    fpath_groups = list(set([ _get_fpath_types(fpath, dist_type=dist_type)[0] for fpath in fpath_list ]))
+
+    single_df_list = [ pd.concat( 
+                                 [pd.read_csv(fpath, index_col=0) for fpath in group if os.path.isfile(fpath)]
+                                 ) for group in fpath_groups ]
+    for df in single_df_list:
+        null_mask = df["datatype"] == "Null"
+        if any(null_mask):
+            df.loc[null_mask,"datatype"] = df.loc[null_mask].apply( lambda x: "_".join([x["permtype"], x["datatype"]]), axis=1 )
+
+    if debug:
+        single_df_list[-1].to_csv("df_tmp.csv")
+        with open("fpath_group.txt",'w') as fin:
+            for fpath in fpath_groups[-1]:
+                fin.write(f"{fpath}\n")
+
+    if figs:
+        single_outdirs = [ _get_fpath_types(group[0])[1] for group in fpath_groups ]
+
+        for inputs in list(zip(single_df_list, single_outdirs)):
+            if args is None:
+                one_displot( inputs[0], outdir=inputs[1], hue_var="datatype" )
+            else:
+                one_displot(
+                        inputs[0],
+                        outdir=inputs[1],
+                        hue_var="datatype",
+                        write_mode = args.write_mode,
+                        verbose = args.verbose
+                        )
+    else:
+        return single_df_list
+
 def one_displot(
+        df,
+        regularize=True,
+        log_scale=True,
+        x_var="Wp_XY",
+        y_var=None,
+        hue_var=None,
+        row_var=None,
+        col_var=None,
+        fig_title=None, 
+        fig_size=def_fig_size,
+        write_mode=True,
+        outdir=os.getcwd(),
+        verbose=True, 
+        debug=False
+        ):
+    if regularize:
+        df[x_var] = df[x_var] + 1e-12
+        if y_var is not None:
+            df[y_var] = df[y_var] + 1e-12
+
+    plot_df = df[ df["datatype"] != "Data" ]
+    data_df = df[ df["datatype"] == "Data" ]
+
+    if "Y_name" in df.columns.values:
+        name = df["X_name"][0] + "-vs-" + df["Y_name"][0]
+    else:
+        name = df["X_name"][0]
+
+    if y_var is None:
+        g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="stack", log_scale=args.log_scale, rug=False, element='step')
+        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="layer", log_scale=True, rug=False, element='poly')
+        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
+        # g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
+    else:
+        g = sns.displot(plot_df, x=x_var, y=y_var, hue=hue_var, log_scale=[10,10], rug=False)
+        # g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=[10,10], rug=False)
+
+    if not data_df.empty:
+        g.refline(x=data_df[x_var], linestyle="--", color="red", label="data distance")
+
+    if write_mode:
+        outname = f"{name}_summary.png"
+        if log_scale:
+            outname = outname.replace("summary","summary-log")
+        for var in ['x', 'y', 'hue', 'row', 'col']:
+            varname = eval(f"{var}_var")
+            if varname is not None:
+                outname = outname.replace("summary", f"summary_{var}-{varname}")
+        outpath = os.path.join(outdir, outname)
+        _write_img(g.fig, outpath, fig_size=fig_size)
+        plt.close()
+    else:
+        fig.set_size_inches(fig_size, forward=True)
+        plt.show()
+
+
+    return None
+
+def agg_displot(
         df,
         regularize=True,
         log_scale=True,
@@ -141,115 +219,6 @@ def one_displot(
 
     return g
 ########################################################################################################################
-# handle scatter plots
-########################################################################################################################
-#ef generate_scatter_plots(
-#       output_dir,
-#       null_df,
-#       hue_var="modality",
-#       size_var="metric",
-#       style_var="feature",
-#       write_mode=True,
-#       debug=True
-#       ):
-#
-#   all_plotvars = [colname for colname in null_df.columns if colname.endswith("_i")]
-#   var_pairs = list(itertools.combinations(all_plotvars, 2))
-#   var_triples = []
-#   # var_triples = list(itertools.combinations(all_plotvars, 3))
-#
-#   df_list = [df for _, df in null_df.groupby(null_df['Name'])]
-#   
-#   if debug:
-#       ### debugging code ###
-#       print("Generating scater plots...\nSpecified inputs:")
-#       print("output_directory:\n", output_dir)
-#       print("dataframe (columns):\n", null_df.columns)
-#       print("hue_var:\n", hue_var)
-#       print("style_var:\n", style_var)
-#       print(f"input dataframe split into {len(df_list)} subframes:", [list(df["Name"])[0] for df in df_list])
-#       print("set of plotting variable pairs:\n", var_pairs)
-#       print("set of plotting variable triples:\n", var_triples)
-#       ### debugging code ###
-#
-#
-#   for df in df_list:
-#       name = list(df["Name"])[0]
-#       for pair in var_pairs:
-#           scatter_plot(
-#                   df, pair[0], pair[1], 
-#                   plt_title = _construct_title((name, pair[0], pair[1]), title_type = "scatter"), 
-#                   outdir = output_dir,
-#                   style_var = style_var, 
-#                   hue_var = hue_var,
-#                   space_name = name,
-#                   write_mode = write_mode
-#                   )
-#       for triple in var_triples:
-#           scatter_plot(
-#                   df, triple[0], triple[1], z_var=triple[2],
-#                   plt_title = _construct_title((name, triple[0], triple[1], triple[2]), title_type = "scatter"), 
-#                   outdir = output_dir,
-#                   style_var = style_var, 
-#                   hue_var = hue_var,
-#                   space_name = name,
-#                   write_mode = write_mode
-#                   )
-#
-#
-#
-#
-# Figure plotting functions
-#ef scatter_plot(
-#       dataframe, x_var, y_var, z_var=None, space_name=None,
-#       write_mode=True, plt_title = None, outdir=None,
-#       style_var="noise_lvl", style_order=None,
-#       hue_var="emb_dim", hue_order=None
-#       ):
-#
-#   if z_var is None:
-#       fig, ax = plt.subplots()
-#       g = sns.scatterplot(
-#               data = dataframe,
-#               x = x_var,
-#               y = y_var,
-#               markers = True,
-#               style = style_var,
-#               style_order = style_order,
-#               hue = hue_var,
-#               hue_order = hue_order,
-#               legend = "brief"
-#               )
-#       g.set(xlabel = x_var)
-#       g.set(ylabel = y_var)
-#       g.set(title = plt_title)
-#   elif isinstance(z_var, str):
-#       cmap = matplotlib.colors.ListedColormap(sns.color_palette("Spectral", 256).as_hex())    
-#       fig, ax = plt.subplots()
-#       ax = fig.add_subplot(projection = '3d')
-#       mdict = _manual_stylemap(dataframe[style_var].drop_duplicates().sort_values(), style_order=style_order)
-#       cdict = _manual_colormap(dataframe[hue_var].drop_duplicates().sort_values())
-#       sc = ax.scatter(
-#               dataframe[x_var],
-#               dataframe[y_var],
-#               dataframe[z_var],
-#               marker = list(map(mdict.get, list(dataframe[style_var]))),
-#               c = list(map(cdict.get, list(dataframe[hue_var]))),
-#               cmap = cmap
-#               )
-#       ax.set_xlabel( x_var )
-#       ax.set_ylabel( y_var )
-#       ax.set_zlabel( z_var )
-#   
-#   if write_mode:
-#       outpath = os.path.join(outdir, f"scatter_{space_name}_x-{x_var}_y-{y_var}_hue-{hue_var}_sty-{style_var}.png").replace(" ","")
-#       if z_var is not None:
-#           outpath = outpath.replace("_hue-", f"_z-{z_var}_hue-")
-#       _write_img(fig, outpath)
-#       plt.close()
-#   else:
-#       fig.set_size_inches(fig_size, forward=True)
-#       plt.show()
 ########################################################################################################################
     
 
@@ -260,33 +229,35 @@ def one_displot(
 
 # Data wrangling functions
 ########################################################################################################################
-def pull_data(
-        fpath_list = None,
-        parent_dir = None, 
-        dir_pattern='within_*/permtesting/X_*_dists', 
-        f_pattern = '*_vs_*null*',
-        enforce_match=True,
-        debug=False
-        ):
-    if fpath_list is None and parent_dir is not None:
-        match_pattern = os.path.join(parent_dir, dir_pattern, f"{f_pattern}.csv")
-        fpath_list = glob.glob(match_pattern)
-        fpath_list.sort()
+def _get_fpath_list(args, debug=True):
+    if args.pattern_restriction is None:
+        args.pattern_restriction = ""
+
+    subdir_pattern = os.path.join(
+            args.dir_pattern, 
+            sample_dirnames[args.sample_type],
+            f"X_*{args.pattern_restriction}*_dists"
+            )
+    match_pattern = os.path.join(
+            args.input_dir, 
+            subdir_pattern, 
+            f"{args.f_pattern}.csv"
+            )
+
+    fpath_list = glob.glob(match_pattern)
+    fpath_list.sort()
 
     if debug:
         print(f"general match pattern is: \n\'{match_pattern}\'")
 
-    if enforce_match:
+    if args.enforce_match:
         print("enforcing modality, feature, and metric matching between data and null")
         if debug:
             print(f"fpath_list has {len(fpath_list)} entries prior to match enforcement.")
         fpath_list = [fpath for fpath in fpath_list if '_'.join(_parse_fpath(fpath, metric=False)) in os.path.basename(fpath)]
         if debug:
             print(f"fpath_list has {len(fpath_list)} entries after match enforcement.")
-
-    alldata_list = [ _load(fpath, enforce_match=enforce_match) for fpath in fpath_list ]
-
-    return alldata_list
+    return fpath_list
 
 
 def _load(input_fpath, enforce_match=True, debug=False):
@@ -353,12 +324,49 @@ def _parse_fpath(fpath, metric=True):
     else:
         return modality, feature
 
+def _get_fpath_types(fpath, dist_type="single"):
+    if dist_type == "single":
+        dirname = os.path.dirname(fpath)
+        if "permtesting" in fpath:
+            name = '_'.join(_parse_fpath(fpath))
+            basedir = os.path.dirname(os.path.dirname(os.path.dirname(fpath)))
+        elif "subsampling" in fpath:
+            name = os.path.basename(fpath).replace('.csv','').replace('bsdists_','')
+            basedir = os.path.dirname(os.path.dirname(fpath))
+        else:
+            raise ValueError(f"did not see expected filepath sampling convention name in given fpath: \n{fpath}")
+
+        featnullspath = os.path.join(basedir, "permtesting", f"X_{name}_dists", f"data_vs_featurenull_{name}.csv")
+        subjnullspath = os.path.join(basedir, "permtesting", f"X_{name}_dists", f"data_vs_subjectnull_{name}.csv")
+        subsamplepath = os.path.join(basedir, "subsampling", f"bsdists_{name}.csv")
+        outdir = basedir
+    elif dist_type == "pair":
+        xname = '_'.join(_parse_fpath(fpath))
+        yname = re.split(r'vs.', os.path.basename(fpath))[1].split('_null')[0]
+        basedir = os.path.dirname(os.path.dirname(os.path.dirname(fpath)))
+
+        featnullspath = os.path.join(basedir, "All_vs_AllNull", f"X_{xname}_dists", f"{xname}_vs_{yname}_null-featurePerms.csv")
+        subjnullspath = os.path.join(basedir, "All_vs_AllNull", f"X_{xname}_dists", f"{xname}_vs_{yname}_null-subjectPerms.csv")
+        subsamplepath = os.path.join(basedir, "All_vs_self", f"X_{xname}_dists", f"bspairdists_{xname}-vs-{yname}.csv")
+        outdir = os.path.join(basedir, "single-pair_figures")
+    else:
+        raise ValueError(f"Unrecognized distance output file type \'{dist_type}\'")
+
+    return (featnullspath, subjnullspath, subsamplepath), outdir 
+
+
+
+
+
 def _write_list(outpath, list_out):
     with open(outpath, 'w') as fout:
         fout.write(list_out.__str__())
 
 def _write_img(fig, outpath, fig_size=def_fig_size):
     fig.set_size_inches(fig_size, forward=False)
+    if not os.path.isdir(os.path.basename(outpath)):
+        os.mkdir(os.path.basename(outpath))
+        Warning(f"Created new output directory: \n{os.path.basename(outpath)}")
     fig.savefig(outpath, dpi=600)
     print(f"saved to {outpath}")
 ########################################################################################################################
@@ -379,13 +387,6 @@ if __name__=="__main__":
         help="directory with name of type []_vs_[] containing bootstrapped distance outputs"
     )
     parser.add_argument(
-        "-F",
-        "--fpathlist_path",
-        type=str,
-        default=None,
-        help="filepath to .csv (or .txt) list of filepaths to results to be visualized"
-    )
-    parser.add_argument(
         "-o",
         "--output_dir",
         type=str,
@@ -393,11 +394,39 @@ if __name__=="__main__":
         help="figure output directory"
     )
     parser.add_argument(
+        "-S",
+        "--solo_plots",
+        default=False,
+        action="store_true",
+        help="flag to perform solo plots"
+    )
+    parser.add_argument(
+        "-A",
+        "--aggregate_plots",
+        default=False,
+        action="store_true",
+        help="flag to perform solo plots"
+    )
+    parser.add_argument(
+        "-d",
+        "--dir_pattern",
+        type=str,
+        default=def_dir_pattern,
+        help="search pattern to find desired directories"
+    )
+    parser.add_argument(
         "-t",
         "--sample_type",
         type=str,
         default="perm",
-        help="Specify whether sampling randomness comes from bootstrapping or (indexing) permutation"
+        help="Specify whether sampling randomness comes from bootstrapping or (indexing) permutation: \'perm\' or \'bsdist\'"
+    )
+    parser.add_argument(
+        "-f",
+        "--f_pattern",
+        type=str,
+        default=def_f_pattern,
+        help="search pattern to find desired files"
     )
     parser.add_argument(
         "-r",
@@ -405,6 +434,20 @@ if __name__=="__main__":
         type=str,
         default=None,
         help="substring pattern to specify subset of matching directories"
+    )
+    parser.add_argument(
+        "-z",
+        "--enforce_match",
+        default=True,
+        action="store_false",
+        help="turn off modality + feature + metric match enforcement between data and null"
+    )
+    parser.add_argument(
+        "-F",
+        "--fpathlist_path",
+        type=str,
+        default=None,
+        help="filepath to .csv (or .txt) list of filepaths to results to be visualized"
     )
     parser.add_argument(
         "-v",

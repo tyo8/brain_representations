@@ -27,16 +27,7 @@ def_scatter_vars = ["Wp_XY", "Y_type"]
 # exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
-def main(args, debug=False):
-    if args.pattern_restriction is not None:
-        if not args.output_dir.endswith(args.pattern_restriction):
-            args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
-
-        args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
-        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*'
-    else:
-        args.dir_pattern=f'X_*'
-        args.f_pattern = f'*_vs_*.csv'
+def main(args, debug=True):
 
     if args.verbose:
         var_dict = vars(args)
@@ -50,14 +41,20 @@ def main(args, debug=False):
 
 
     if args.fpathlist_path is None: 
-        fpath_list = None
+        fpath_list, fpath_grid = _get_fpath_sets(args)
+
     else:
         with open(args.fpathlist_path, 'r') as fin:
-            fpath_list = fin.read().split('\n')
+            fpath_list, fpath_grid = fin.read().split('\n')
+
+    if args.solo_plots:
+        from single_null_dists import make_solo_plots
+        make_solo_plots(fpath_list, dist_type="pair")
+        exit()
 
     alldata_grid = pull_data(
+            fpath_grid,
             args,
-            fpath_list = fpath_list,
             data_only = True,
             check_pval = True
             )
@@ -412,25 +409,8 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, cor
 # Data wrangling functions
 ########################################################################################################################
 def pull_data(
-        args, fpath_list=None, check_pval=True, data_only=True, debug=True
+        fpath_grid, args, check_pval=True, data_only=True, debug=True
         ):
-
-    if fpath_list is None and args.input_dir is not None:
-        parent_pattern = os.path.join(args.input_dir, args.dir_pattern)
-        dirlist = glob.glob(parent_pattern)
-        dirlist.sort()
-        if debug:
-            print(f"matching files of with pattern \'{args.f_pattern}\' in directories matching \'{parent_pattern}\'")
-
-        fpath_grid = [ glob.glob(os.path.join(X_dir, f"{args.f_pattern}")) for X_dir in dirlist ]
-        if debug:
-            import json
-            with open("fpath_grid_tmp.txt", 'w') as fout:
-                json.dump(fpath_grid, fout, indent=4)
-    else:
-        fpath_grid = [ fpath_list for i in range(len(fpath_list)) ]
-        
-    [i.sort() for i in fpath_grid]
 
     if data_only:
         print("Only retaining information from datatype \"Data\" (discarding \"Null\"-type data after necessary computations)")
@@ -443,7 +423,7 @@ def pull_data(
     
     alldata_grid = [ 
                     [ _load(
-        fpath, data_only=data_only,
+        fpath, data_only=data_only, permtype=args.permtype,
         check_pval=check_pval, tail_type=args.tail_type, 
         corr_type=args.corr_type, null_hi=null_hi, null_lo=null_lo,
         ) for fpath in X_sublist ] 
@@ -471,7 +451,7 @@ def pull_data(
 
 
 def _load(
-        input_fpath, data_only=True, parse_longname=False, 
+        input_fpath, data_only=True, parse_longname=False, permtype="feature",
         check_pval=True, tail_type="all", corr_type="fwe", null_hi=None, null_lo=None
         ):
     data_df = pd.read_csv(input_fpath, index_col=0)
@@ -488,7 +468,7 @@ def _load(
 
     if data_only:
         null_df = data_df[data_df["datatype"] == "Null"]
-        data_df = data_df[data_df["datatype"] == "Data"]
+        data_df = data_df[data_df["datatype"] != "Null"]
         data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
         data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
         data_df["permtype"] = '-'.join(list(set(null_df["permtype"])))
@@ -496,6 +476,39 @@ def _load(
 
     return data_df
 
+def _get_fpath_sets(args, debug=False):
+    if args.pattern_restriction is not None and args.permtype is not None:
+        if not args.output_dir.endswith(args.pattern_restriction):
+            args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+
+        args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
+        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*{args.permtype}Perms.csv'
+    elif args.permtype is not None:
+        args.dir_pattern=f'X_*'
+        args.f_pattern = f'*_vs_*{args.permtype}Perms.csv'
+    else:
+        args.dir_pattern=f'X_*'
+        args.f_pattern = f'*_vs_*.csv'
+
+    pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
+
+    fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in glob.glob(pdir_pattern) ]
+    fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
+    [pathlist.sort() for pathlist in fpath_grid]
+    
+    fpath_list = list(itertools.chain(*fpath_grid))
+
+    if args.verbose:
+        print(f"matching patterns of general form: \n{(pdir_pattern, args.f_pattern)}")
+        print(f"shaping matches into a \'filepath grid\' array results in shape(s): \n{ ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
+        print(f"found {len(fpath_list)} total matches.")
+
+    if debug:
+        import json
+        with open("fpath_grid_tmp.txt", 'w') as fout:
+            json.dump(fpath_grid, fout, indent=4)
+
+    return fpath_list, fpath_grid
 
 def _pull_extremal_dists(args):
     import extremal_nullpair_dists as ex_null
@@ -580,6 +593,13 @@ if __name__=="__main__":
         help="choose family-wise error (\'fwe\') or false discovery rate (\'fdr\') pval correction types."
     )
     parser.add_argument(
+        "-P",
+        "--permtype",
+        type=str,
+        default="feature",
+        help="permutation type: either \'subject\' or \'feature\'"
+    )
+    parser.add_argument(
         "-r",
         "--pattern_restriction",
         type=str,
@@ -592,6 +612,13 @@ if __name__=="__main__":
         default=False,
         action="store_true",
         help="apply log10 to display values (collapse difference)"
+    )
+    parser.add_argument(
+        "-S",
+        "--solo_plots",
+        default=False,
+        action="store_true",
+        help="flag to perform solo plots"
     )
     parser.add_argument(
         "-w",
