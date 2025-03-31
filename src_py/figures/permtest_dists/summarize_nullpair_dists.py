@@ -49,7 +49,8 @@ def main(args, debug=True):
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
-        make_solo_plots(fpath_list, dist_type="pair")
+        args.fig_size=(6,6)
+        make_solo_plots(fpath_list, dist_type="pair", figs=args.write_mode, args=args)
         exit()
 
     alldata_grid = pull_data(
@@ -469,10 +470,15 @@ def _load(
     if data_only:
         null_df = data_df[data_df["datatype"] == "Null"]
         data_df = data_df[data_df["datatype"] != "Null"]
-        data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
-        data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-        data_df["permtype"] = '-'.join(list(set(null_df["permtype"])))
-        data_df.drop(["permlabel"], axis=1, inplace=True)
+        try:
+            data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
+            data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
+            data_df["permtype"] = '-'.join(list(set(null_df["permtype"])))
+            data_df.drop(["permlabel"], axis=1, inplace=True)
+        except KeyError as err:
+            print(f"Encountered KeyError! offending dataframe has \n\'data_df\'=\n{data_df}\n and \n\'null_df\'=\n{null_df}\n")
+            print(f"loaded from filepath: \n{input_fpath}")
+            exit()
 
     return data_df
 

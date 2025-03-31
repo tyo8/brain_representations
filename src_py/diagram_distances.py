@@ -226,13 +226,13 @@ def _get_proj_cost(X, w, p=2, debug=False):
     if p < np.inf:
         if debug: 
             try:
-                stable_proj_cost = np.abs(np.diff(X, axis=1))*np.power(2., (1-p)/p)      # if a multidiagram with M coordinates, then 2->M
+                stable_proj_cost = np.abs(np.diff(X, axis=1))*np.power(2., (1-p)/p)      # if a multidiagram with M coordinates, then substitute 2 -> M
             except np.exceptions.AxisError:
                 print("Failed to compute cost of projection to diagonal!")
                 print(f"input array X has shape {X.shape}, size {X.size} and takes values: \n{X}")
                 exit()
         else:
-            stable_proj_cost = np.abs(np.diff(X, axis=1))*np.power(2., (1-p)/p)      # if a multidiagram with M coordinates, then 2->M
+            stable_proj_cost = np.abs(np.diff(X, axis=1))*np.power(2., (1-p)/p)      # if a multidiagram with M coordinates, then substitute 2 -> M
     else:
         stable_proj_cost = np.max(np.abs(np.diff(X, axis=1)))/2
 
@@ -250,7 +250,7 @@ def _validate_input(X):
         Warning("Input data is expected to have type \"numpy.ndarray\" but has type {type(X)}; attempting to recast.")
         X = np.array(X)
 
-    assert isinstance(X, np.ndarray), "Typecasting failed. Exiting."
+    assert isinstance(X, np.ndarray), "Error: Typecasting failed."
     return X
 
 # compute persistence of a given bar (birth, death)

@@ -67,16 +67,17 @@ def _write_out(outdir, df_full, verbose=True):
 
 
     for mod in list(set(df_full["modality"])):
-        df = df_full[ df_full["modality"] == mod ]
+        for feat in list(set(df_full["feature"])):
+            for perm in list(set(df_full["permtype"])):
+                for dist in list(set(df_full["metric"])):
 
-        for feat in list(set(df["feature"])):
-            df = df[ df["feature"] == feat]
+                    df = df_full[ 
+                                 (df_full["modality"] == mod) &
+                                 (df_full["feature"] == feat) &
+                                 (df_full["permtype"] == perm) &
+                                 (df_full["metric"] == dist)
+                                 ]
 
-            for perm in list(set(df["permtype"])):
-                df = df[ df["permtype"] == perm]
-
-                for dist in list(set(df["metric"])):
-                    df = df[ df["metric"] == dist]
                     outname = f"data_vs_{perm}null_{mod}_{feat}_{dist}.csv"
                     outpath = os.path.join(outdir, outname)
                     df.to_csv(outpath)

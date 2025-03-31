@@ -96,7 +96,7 @@ echo \"listPerm_fpath: \\\"\${listPerm_fpath}\\\"\"
 source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
 echo \"saving results in \${outdir}\"
 
-python3 \${permdist_script} -x \${barsX_fpath} -y \${listPerm_fpath} --dim \${dim} -p ${p} -q ${q} -o \${outdir} ${run_suffix}
+python3 \${permdist_script} -x \${barsX_fpath} -y \${listPerm_fpath} --dim \${dim} -p ${p} -q ${q} -o \${outdir} -m ${run_suffix}
 \
 " > "${sbatch_fpath}"  # Overwrite submission script
 

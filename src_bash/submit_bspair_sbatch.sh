@@ -80,7 +80,7 @@ sbatch_fpath="${outdir}/do_bspairdists_${data_label}"
 
 outpath="${outdir}/bspairdists_${data_label}.csv"
 
-outpath2="${subbase_dir}/within_${Xmod}/subsampling/within_self/bsdists_${Xname}.csv"
+outpath2="${subbase_dir}/within_${Xmod}/subsampling/bsdists_${Xname}.csv"
 
 echo "\
 \

@@ -208,6 +208,7 @@ def one_displot(
 def _load(input_fpath, extrema_only=False, parse_longname=True):
     data_df = pd.read_csv(input_fpath, index_col=0)
 
+    droplist = ["X_type","Y_type", "Wp_XY", "permlabel", "datatype"]
     if parse_longname:
         data_df[["X_modality","X_feature","X_metric"]] = data_df["X_type"].str.split('_', n=2, expand=True)
         data_df[["Y_modality","Y_feature","Y_metric"]] = data_df["Y_type"].str.split('_', n=2, expand=True)
@@ -228,8 +229,10 @@ def _load(input_fpath, extrema_only=False, parse_longname=True):
         permtype = permtype[0]
     else:
         permtype = "Empty"
+        droplist.pop(droplist.index("permalbel"))
+        droplist.append("taglist")
     data_df["permtype"] = permtype
-    data_df.drop(["X_type","Y_type", "Wp_XY", "permlabel", "datatype"], axis=1, inplace=True)
+    data_df.drop(droplist, axis=1, inplace=True)
 
     return data_df
 

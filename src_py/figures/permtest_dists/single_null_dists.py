@@ -50,6 +50,7 @@ def main(args, debug=False):
         fpath_list = _get_fpath_list(args)
 
     if args.solo_plots:
+        args.fig_size = (8,8)
         make_solo_plots(fpath_list, dist_type="single", args=args)
 
     if args.aggregate_plots:
@@ -58,7 +59,13 @@ def main(args, debug=False):
         null_df = pd.concat(alldata_list, ignore_index=True)
         print(f"total collected dataframe: \n{null_df}")
 
-        for hue_var in ["modality", "feature", "metric", "permtype"]:
+        if "permtype" in null_df.columns.values:
+            if len(set(null_df["permtype"])) > 1:
+                hue_list = ["modality", "feature", "metric", "permtype"]
+        else:
+            hue_list = ["modality", "feature", "metric"]
+
+        for hue_var in hue_list:
             agg_displot(
                     null_df,
                     x_var="Wp_XY",
@@ -80,13 +87,7 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, figs=True, debug=
 
     fpath_groups = list(set([ _get_fpath_types(fpath, dist_type=dist_type)[0] for fpath in fpath_list ]))
 
-    single_df_list = [ pd.concat( 
-                                 [pd.read_csv(fpath, index_col=0) for fpath in group if os.path.isfile(fpath)]
-                                 ) for group in fpath_groups ]
-    for df in single_df_list:
-        null_mask = df["datatype"] == "Null"
-        if any(null_mask):
-            df.loc[null_mask,"datatype"] = df.loc[null_mask].apply( lambda x: "_".join([x["permtype"], x["datatype"]]), axis=1 )
+    single_df_list = [ get_merge_df(group) for group in fpath_groups ]
 
     if debug:
         single_df_list[-1].to_csv("df_tmp.csv")
@@ -95,17 +96,21 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, figs=True, debug=
                 fin.write(f"{fpath}\n")
 
     if figs:
-        single_outdirs = [ _get_fpath_types(group[0])[1] for group in fpath_groups ]
+        single_outdirs = [ _get_fpath_types(group[0], dist_type=dist_type)[1] for group in fpath_groups ]
 
-        for inputs in list(zip(single_df_list, single_outdirs)):
+        for (df, outdir) in list(zip(single_df_list, single_outdirs)):
+            if df.empty:
+                continue
             if args is None:
-                one_displot( inputs[0], outdir=inputs[1], hue_var="datatype" )
+                one_displot( df, outdir=outdir, hue_var="datatype" )
             else:
                 one_displot(
-                        inputs[0],
-                        outdir=inputs[1],
+                        df,
+                        outdir=outdir,
                         hue_var="datatype",
+                        log_scale = args.log_scale,
                         write_mode = args.write_mode,
+                        fig_size = args.fig_size,
                         verbose = args.verbose
                         )
     else:
@@ -141,16 +146,19 @@ def one_displot(
         name = df["X_name"][0]
 
     if y_var is None:
-        g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="stack", log_scale=args.log_scale, rug=False, element='step')
-        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="layer", log_scale=True, rug=False, element='poly')
-        # g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
-        # g = sns.displot(df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
+        g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="layer", log_scale=log_scale, rug=False, element='poly')
+        # g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="dodge", log_scale=log_scale, rug=False, element='step')
+        # g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
+        # g = sns.displot(plot_df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
     else:
         g = sns.displot(plot_df, x=x_var, y=y_var, hue=hue_var, log_scale=[10,10], rug=False)
         # g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=[10,10], rug=False)
 
     if not data_df.empty:
         g.refline(x=data_df[x_var], linestyle="--", color="red", label="data distance")
+
+    modality, feature, metric = name.split('_', maxsplit=2)
+    title = f""
 
     if write_mode:
         outname = f"{name}_summary.png"
@@ -233,15 +241,20 @@ def _get_fpath_list(args, debug=True):
     if args.pattern_restriction is None:
         args.pattern_restriction = ""
 
-    subdir_pattern = os.path.join(
+    basedir_pattern = os.path.join(
+            args.input_dir,
             args.dir_pattern, 
-            sample_dirnames[args.sample_type],
-            f"X_*{args.pattern_restriction}*_dists"
+            sample_dirnames[args.sample_type]
             )
+
+    if args.sample_type=="perm":
+        path_ext = os.path.join(f"X_*{args.pattern_restriction}*_dists", f"{args.f_pattern}.csv")
+    elif args.sample_type == "bstrap":
+        path_ext = f"bsdists_*{args.pattern_restriction}*.csv"
+
     match_pattern = os.path.join(
-            args.input_dir, 
-            subdir_pattern, 
-            f"{args.f_pattern}.csv"
+            basedir_pattern,
+            path_ext
             )
 
     fpath_list = glob.glob(match_pattern)
@@ -262,28 +275,21 @@ def _get_fpath_list(args, debug=True):
 
 def _load(input_fpath, enforce_match=True, debug=False):
     data_df = pd.read_csv(input_fpath, index_col=0)
-
-    if enforce_match:
-        data_modality, data_feature, data_metric = _parse_fpath(input_fpath, metric=True)
-        data_df= data_df[data_df["modality"] == data_modality]
-        data_df= data_df[data_df["feature"] == data_feature]
-        data_df= data_df[data_df["metric"] == data_metric]
-
-    if debug:
-        print(f"df before expansion: \n{data_df}")
-
     if data_df.empty:
-        if debug:
-            print(f"Loaded empty DataFrame from path: \n{input_fpath}")
-        data_df["rank"] = None
-        data_df["feat_num"] = None
-        return data_df
-    else:
-        data_df[["modality","rank"]] = data_df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
-        data_df["feat_num"] = data_df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
+        print(f"pulled empty dataframe from path: \n{input_fpath}")
 
-    if debug:
-        print(f"df after expansion: \n{data_df}")
+    data_df = _unify_df(data_df, fpath=input_fpath)
+
+    modality, feature, metric = _parse_fpath(input_fpath, metric=True)
+    pars = {
+            "modality": modality,
+            "feature": feature,
+            "metric": metric
+            }
+    if enforce_match:
+        for keyname in ["modality", "feature", "metric"]:
+            data_df= data_df[ data_df[keyname] == pars[keyname] ]
+
     return data_df
 
 def _pull_rank(long_method, debug=False):
@@ -316,7 +322,10 @@ def _pull_feat_num(rank, feature):
     return int(feat_num)
 
 def _parse_fpath(fpath, metric=True):
-    longname = os.path.basename(os.path.dirname(fpath))
+    if "subsampling" in fpath:
+        longname = os.path.basename(fpath).split('.')[0].replace("bsdists_","")
+    else:
+        longname = os.path.basename(os.path.dirname(fpath))
     name = longname.replace("_dists","").replace("X_","")
     modality, feature, metric = name.split('_', maxsplit=2)
     if metric:
@@ -334,7 +343,7 @@ def _get_fpath_types(fpath, dist_type="single"):
             name = os.path.basename(fpath).replace('.csv','').replace('bsdists_','')
             basedir = os.path.dirname(os.path.dirname(fpath))
         else:
-            raise ValueError(f"did not see expected filepath sampling convention name in given fpath: \n{fpath}")
+            raise ValueError(f"did not see expected filepath sampling convention name for distance type \'{dist_type}\' in given fpath: \n{fpath}")
 
         featnullspath = os.path.join(basedir, "permtesting", f"X_{name}_dists", f"data_vs_featurenull_{name}.csv")
         subjnullspath = os.path.join(basedir, "permtesting", f"X_{name}_dists", f"data_vs_subjectnull_{name}.csv")
@@ -344,6 +353,7 @@ def _get_fpath_types(fpath, dist_type="single"):
         xname = '_'.join(_parse_fpath(fpath))
         yname = re.split(r'vs.', os.path.basename(fpath))[1].split('_null')[0]
         basedir = os.path.dirname(os.path.dirname(os.path.dirname(fpath)))
+        name = f"{xname}_vs_{yname}"
 
         featnullspath = os.path.join(basedir, "All_vs_AllNull", f"X_{xname}_dists", f"{xname}_vs_{yname}_null-featurePerms.csv")
         subjnullspath = os.path.join(basedir, "All_vs_AllNull", f"X_{xname}_dists", f"{xname}_vs_{yname}_null-subjectPerms.csv")
@@ -352,11 +362,75 @@ def _get_fpath_types(fpath, dist_type="single"):
     else:
         raise ValueError(f"Unrecognized distance output file type \'{dist_type}\'")
 
-    return (featnullspath, subjnullspath, subsamplepath), outdir 
+    return (featnullspath, subjnullspath, subsamplepath), outdir, name
 
 
+def get_merge_df(fpath_group):
+    df_list = [pd.read_csv(fpath, index_col=0) for fpath in fpath_group if os.path.isfile(fpath)]
 
+    for df in df_list:
+        if df.empty:
+            continue
+        else:
+            df = _unify_df(df)
 
+    if all([df.empty for df in df_list]):
+        print("\nCompletely empty dataframe output corresponding to fpath group:")
+        for fpath in fpath_group:
+            print(f"\t{fpath}")
+        merge_df = pd.DataFrame(None)
+    else:
+        merge_df = pd.concat( df_list, ignore_index=True )
+    return merge_df
+
+def _unify_df(df, fpath=None):
+
+    if df.empty:
+        return df
+
+    if not "X_name" in df.columns.values:
+        if "X_type" in df.columns.values:
+            df.rename( mapper={"X_type":"X_name", "Y_type":"Y_name"}, axis=1, inplace=True )
+        else:
+            df["X_name"] = df.apply( lambda x: "_".join([x["modality"], x["feature"], x["metric"]]), axis=1 )
+    else:
+        df[["modality","feature","metric"]] = df["X_name"].str.split('_', n=2, expand=True)
+
+    if fpath is not None:
+        modality, feature, metric = _parse_fpath(fpath, metric=True)
+        pars = {
+                "modality": modality,
+                "feature": feature,
+                "metric": metric
+                }
+        for keyname in ["modality", "feature", "metric"]:
+            if keyname not in df.columns.values:
+                df[keyname] = pars[keyname]
+
+    if "permtype" in df.columns.values:
+        try:
+            df["datatype"] = df.apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
+        except TypeError:
+            print(f"encountered unexpected float values in \'permtype\' field: {list(set(df.permtype))}")
+            print("attempting to resolve by forcing type to \'str\'.")
+            df["datatype"] = df.apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
+
+    if "permlabel" in df.columns.values:
+        df.drop( labels = ["permlabel"], axis=1, inplace=True )
+
+    if "taglist" in df.columns.values:
+        df.drop( labels = ["taglist", "PDX_diag", "X_path"], axis=1, inplace=True )
+        if "Wp_XY" not in df.columns.values:
+            renamer={"Wp_XXhat_i":"Wp_XY"}
+        else:
+            df.drop( labels = "Wp_XY", axis=1, inplace=True )
+            renamer={"Wp_XhatYhat_i":"Wp_XY"}
+        df.rename( mapper=renamer, axis=1, inplace=True )
+
+    df[["modality","rank"]] = df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
+    df["feat_num"] = df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
+
+    return df
 
 def _write_list(outpath, list_out):
     with open(outpath, 'w') as fout:
@@ -364,8 +438,8 @@ def _write_list(outpath, list_out):
 
 def _write_img(fig, outpath, fig_size=def_fig_size):
     fig.set_size_inches(fig_size, forward=False)
-    if not os.path.isdir(os.path.basename(outpath)):
-        os.mkdir(os.path.basename(outpath))
+    if not os.path.isdir(os.path.dirname(outpath)):
+        os.mkdir(os.path.dirname(outpath))
         Warning(f"Created new output directory: \n{os.path.basename(outpath)}")
     fig.savefig(outpath, dpi=600)
     print(f"saved to {outpath}")
@@ -448,6 +522,13 @@ if __name__=="__main__":
         type=str,
         default=None,
         help="filepath to .csv (or .txt) list of filepaths to results to be visualized"
+    )
+    parser.add_argument(
+        "-L",
+        "--log_scale",
+        default=False,
+        action="store_true",
+        help="apply log10 to display values (collapse difference)"
     )
     parser.add_argument(
         "-v",
