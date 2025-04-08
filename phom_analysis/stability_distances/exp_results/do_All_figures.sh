@@ -15,19 +15,23 @@ declare -a perms=("subject" "feature")
 
 solo_indir="$(dirname ${indir})"
 
-# # 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
-# python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -S -L
-# # 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
-# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -S 
+# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
+python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -D -L
 
-# python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -A -L
-# python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L
-# python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L -E
+# 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -S -C -D
+
+python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -A -S -L
+python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L
+python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L -E
+
+printf "#################################################################################################\n\n"
+
 for C in ${corrs[@]}
 do
 	for P in ${perms[@]}
 	do
-#		python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "${C}" -P "${P}"
+		python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "${C}" -P "${P}" -C
 		printf "#################################################################################################\n\n"
 	done
 done
@@ -35,18 +39,18 @@ done
 printf "## now looping through arrays: \n${rstr} \n${corrs} \n\n"
 for R in "${rstr[@]}"
 do
+	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L
 	printf "#################################################################################################\n\n"
-#	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L
+	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L -E
 	printf "#################################################################################################\n\n"
-#	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L -E
    for C in "${corrs[@]}"
    do
+	   python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c ${C} -r ${R} -P "subject" -D -C
 	   printf "#################################################################################################\n\n"
-#	   python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c ${C} -r ${R}; 
    done
    for T in "${subsmp[@]}"
    do
-	   printf "#################################################################################################\n\n"
 	   python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -t ${T} -A -L
+	   printf "#################################################################################################\n\n"
    done
 done

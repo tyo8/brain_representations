@@ -50,32 +50,16 @@ def main(args, debug=False):
         fpath_list = _get_fpath_list(args)
 
     if args.solo_plots:
-        args.fig_size = (8,8)
+        args.fig_size=(8,8)
         make_solo_plots(fpath_list, dist_type="single", args=args)
 
     if args.aggregate_plots:
-        alldata_list = [ _load(fpath, enforce_match=args.enforce_match) for fpath in fpath_list ]
+        args.fig_size=(12,12)
+        make_agg_plots(fpath_list, args)
 
-        null_df = pd.concat(alldata_list, ignore_index=True)
-        print(f"total collected dataframe: \n{null_df}")
-
-        if "permtype" in null_df.columns.values:
-            if len(set(null_df["permtype"])) > 1:
-                hue_list = ["modality", "feature", "metric", "permtype"]
-        else:
-            hue_list = ["modality", "feature", "metric"]
-
-        for hue_var in hue_list:
-            agg_displot(
-                    null_df,
-                    x_var="Wp_XY",
-                    y_var=None,
-                    row_var=None,
-                    col_var=None,
-                    hue_var=hue_var,
-                    write_mode=args.write_mode, 
-                    outdir=args.output_dir
-                    )
+    if args.distribution_plots:
+        args.fig_size=(12,12)
+        make_distribution_plots(fpath_list, dist_type="single", args=args)
 
     return None
 
@@ -83,48 +67,124 @@ def main(args, debug=False):
 ########################################################################################################################
 # make quick and dirty nulled-null distance distribution summaries
 ########################################################################################################################
-def make_solo_plots(fpath_list, dist_type="single", args=None, figs=True, debug=True):
-
+def make_solo_plots(fpath_list, dist_type="single", args=None, debug=False):
+    
+    merged_df_list = merged_dfs(fpath_list, dist_type=dist_type)
     fpath_groups = list(set([ _get_fpath_types(fpath, dist_type=dist_type)[0] for fpath in fpath_list ]))
 
-    single_df_list = [ get_merge_df(group) for group in fpath_groups ]
+    solo_outdirs = [ _get_fpath_types(group[0], dist_type=dist_type)[1] for group in fpath_groups ]
 
-    if debug:
-        single_df_list[-1].to_csv("df_tmp.csv")
-        with open("fpath_group.txt",'w') as fin:
-            for fpath in fpath_groups[-1]:
-                fin.write(f"{fpath}\n")
+    for (df, outdir) in list(zip(merged_df_list, solo_outdirs)):
+        if df.empty:
+            continue
+        if args is None:
+            one_displot( df, outdir=outdir, hue_var="datatype" )
+        else:
+            one_displot(
+                    df,
+                    outdir=outdir,
+                    hue_var="datatype",
+                    log_scale = args.log_scale,
+                    write_mode = args.write_mode,
+                    fig_size = args.fig_size,
+                    verbose = args.verbose
+                    )
+    return merged_df_list
 
-    if figs:
-        single_outdirs = [ _get_fpath_types(group[0], dist_type=dist_type)[1] for group in fpath_groups ]
 
-        for (df, outdir) in list(zip(single_df_list, single_outdirs)):
-            if df.empty:
-                continue
-            if args is None:
-                one_displot( df, outdir=outdir, hue_var="datatype" )
-            else:
-                one_displot(
-                        df,
-                        outdir=outdir,
-                        hue_var="datatype",
-                        log_scale = args.log_scale,
-                        write_mode = args.write_mode,
-                        fig_size = args.fig_size,
-                        verbose = args.verbose
-                        )
+
+def make_agg_plots(fpath_list, args):
+    alldata_list = [ _load(fpath, enforce_match=args.enforce_match) for fpath in fpath_list ]
+
+    null_df = pd.concat(alldata_list, ignore_index=True)
+    print(f"total collected dataframe: \n{null_df}")
+
+    if "permtype" in null_df.columns.values:
+        if len(set(null_df["permtype"])) > 1:
+            hue_list = ["modality", "feature", "metric", "permtype"]
     else:
-        return single_df_list
+        hue_list = ["modality", "feature", "metric"]
 
+    for hue_var in hue_list:
+        agg_displot(
+                null_df,
+                x_var="Wp_XY",
+                y_var=None,
+                row_var=None,
+                col_var=None,
+                hue_var=hue_var,
+                write_mode=args.write_mode, 
+                outdir=args.output_dir
+                )
+
+
+def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=False):
+    merged_df_list = merged_dfs(fpath_list, dist_type=dist_type)
+
+    alldata_df = pd.concat(merged_df_list, ignore_index=True)
+
+    groupings = [None, "modality", "feature", "metric"]
+    if "permtype" in alldata_df.columns.values:
+        hue_vars = ["datatype", "permtype"]
+    else:
+        hue_vars = ["datatype"]
+    distvar = "Wp_XY"
+
+    for x_var in groupings[1:]:
+        for hue_var in hue_vars:
+            for row_var in groupings:
+                for col_var in groupings:
+                    if row_var is not None:
+                        if (col_var == row_var) or (x_var == row_var):
+                            continue
+                    if col_var is not None:
+                        if (col_var == row_var) or (x_var == col_var):
+                            continue
+
+                    if dist_type=="pair":
+                        df = subselect_pairs(
+                                alldata_df.copy(),
+                                x_var=x_var,
+                                row_var=row_var,
+                                col_var=col_var
+                                )
+                    elif dist_type=="single":
+                        df = alldata_df.copy()
+                    else:
+                        raise ValueError(f"Unknown distribution type \'{dist_type}\'")
+                    
+                    if df.empty:
+                        continue
+
+                    if debug:
+                        plotvars={"y_var": distvar, "x_var": x_var, "hue_var": hue_var, "row_var": row_var, "col_var": col_var}
+                        print(f"plotting distributional category plot with plotvars \n{plotvars} \nof dataframe with columns \n{df.columns.values}")
+
+                    distribution_catplot(
+                            df,
+                            x_var = x_var,
+                            y_var = distvar,
+                            hue_var = hue_var,
+                            row_var = row_var,
+                            col_var = col_var,
+                            dist_type = dist_type,
+                            write_mode=args.write_mode, 
+                            outdir=args.output_dir
+                            )
+
+    
+########################################################################################################################
+    
 def one_displot(
         df,
-        regularize=True,
-        log_scale=True,
         x_var="Wp_XY",
         y_var=None,
         hue_var=None,
         row_var=None,
         col_var=None,
+        regularize=True,
+        log_scale=True,
+        epsilon=1e-12,
         fig_title=None, 
         fig_size=def_fig_size,
         write_mode=True,
@@ -133,12 +193,12 @@ def one_displot(
         debug=False
         ):
     if regularize:
-        df[x_var] = df[x_var] + 1e-12
+        df.loc[:,x_var] = df.loc[:,x_var] + epsilon
         if y_var is not None:
-            df[y_var] = df[y_var] + 1e-12
+            df.loc[:,y_var] = df.loc[:,y_var] + epsilon
 
+    data_df = df[ df["datatype"] == "Data" ].copy()
     plot_df = df[ df["datatype"] != "Data" ]
-    data_df = df[ df["datatype"] == "Data" ]
 
     if "Y_name" in df.columns.values:
         name = df["X_name"][0] + "-vs-" + df["Y_name"][0]
@@ -146,7 +206,7 @@ def one_displot(
         name = df["X_name"][0]
 
     if y_var is None:
-        g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="layer", log_scale=log_scale, rug=False, element='poly')
+        g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="layer", log_scale=log_scale, rug=False, element='poly', stat='proportion')
         # g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="dodge", log_scale=log_scale, rug=False, element='step')
         # g = sns.displot(plot_df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
         # g = sns.displot(plot_df, x=x_var, row=row_var, col=col_var, hue=hue_var, multiple="stack", log_scale=True, rug=False)
@@ -155,10 +215,12 @@ def one_displot(
         # g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=[10,10], rug=False)
 
     if not data_df.empty:
-        g.refline(x=data_df[x_var], linestyle="--", color="red", label="data distance")
+        dataline = np.unique(data_df[x_var].values).flatten()
+        assert len(dataline) == 1, f"found more than one Wp_XY data value in {name}!"
+        g.refline(x=dataline[0], linestyle="--", color="red", label="Data")
 
-    modality, feature, metric = name.split('_', maxsplit=2)
-    title = f""
+    title = f"Wasserstein distance distributions for \n{name}"
+    g.fig.suptitle(title, fontsize='x-large')
 
     if write_mode:
         outname = f"{name}_summary.png"
@@ -172,21 +234,25 @@ def one_displot(
         _write_img(g.fig, outpath, fig_size=fig_size)
         plt.close()
     else:
-        fig.set_size_inches(fig_size, forward=True)
+        g.fig.set_size_inches(fig_size, forward=True)
         plt.show()
 
 
     return None
 
+    
+########################################################################################################################
+    
 def agg_displot(
         df,
-        regularize=True,
-        log_scale=True,
         x_var="Wp_XY",
         y_var="feat_num",
         row_var="modality",
         col_var="feature",
         hue_var="metric",
+        regularize=True,
+        log_scale=True,
+        epsilon=1e-12,
         fig_title=None, 
         fig_size=def_fig_size,
         write_mode=True,
@@ -196,9 +262,9 @@ def agg_displot(
         ):
 
     if regularize:
-        df[x_var] = df[x_var] + 1e-12
+        df.loc[:,x_var] = df.loc[:,x_var] + epsilon
         if y_var is not None:
-            df[y_var] = df[y_var] + 1e-12
+            df.loc[:,y_var] = df.loc[:,y_var] + epsilon
 
     if y_var is None:
         g = sns.displot(df, x=x_var, hue=hue_var, multiple="stack", log_scale=True, rug=False, element='step')
@@ -217,6 +283,79 @@ def agg_displot(
             varname = eval(f"{var}_var")
             if varname is not None:
                 outname = outname.replace("nulldists", f"nulldists_{var}-{varname}")
+        outpath = os.path.join(outdir, outname)
+        _write_img(g.fig, outpath, fig_size=fig_size)
+        plt.close()
+    else:
+        fig.set_size_inches(fig_size, forward=True)
+        plt.show()
+
+
+    return g
+    
+    
+########################################################################################################################
+    
+
+def distribution_catplot(
+        df,
+        x_var="modality",
+        y_var="Wp_XY",
+        row_var=None,
+        col_var=None,
+        hue_var="datatype",
+        kind = "violin",
+        dist_type="single",
+        regularize=True,
+        log_scale=True,
+        epsilon=1e-12,
+        fig_title=None, 
+        fig_size=def_fig_size,
+        write_mode=True,
+        outdir=os.getcwd(),
+        verbose=True, 
+        debug=False
+        ):
+
+    if regularize:
+        df.loc[:,y_var] = df.loc[:,y_var] + epsilon
+
+    try:
+        g = sns.catplot(
+                df, 
+                y=y_var,
+                x=x_var, 
+                hue=hue_var,
+                row=row_var,
+                col=col_var,
+                kind=kind,
+                log_scale=log_scale, 
+                fill=False,             # a violin plot option
+                split=True              # a violin plot option
+                )
+    except ValueError as err:
+        print(f"Failed with error: {err}")
+        print(f"offending dataframe has column set: \n{df.columns.values} \nand values: \n{df}")
+        exit()
+
+    title = f"Wasserstein {dist_type}-distance distributions\ngrouped by {x_var}"
+    for var in ['row', 'col', 'hue', 'x']:
+        varname = eval(f"{var}_var")
+        if varname is not None:
+            title = title + f" and {varname}"
+    g.fig.suptitle(title, fontsize='x-large')
+
+    if write_mode:
+        # kindstring = '-'.join(kinds)
+        basename = f"catplot_{dist_type}"
+        # outname = f"{kindstring}-{basename}.png"
+        outname = f"{kind}-{basename}.png"
+        for var in ['row', 'col', 'hue', 'x', 'y']:
+            varname = eval(f"{var}_var")
+            if varname is not None:
+                outname = outname.replace(basename, f"{basename}_{var}-{varname}")
+        if log_scale:
+            outname = outname.replace(basename,f"{basename}-log")
         outpath = os.path.join(outdir, outname)
         _write_img(g.fig, outpath, fig_size=fig_size)
         plt.close()
@@ -365,6 +504,18 @@ def _get_fpath_types(fpath, dist_type="single"):
     return (featnullspath, subjnullspath, subsamplepath), outdir, name
 
 
+def merged_dfs(fpath_list, dist_type="single", debug=False):
+    fpath_groups = list(set([ _get_fpath_types(fpath, dist_type=dist_type)[0] for fpath in fpath_list ]))
+    merged_df_list = [ get_merge_df(group) for group in fpath_groups ]
+    
+    if debug:
+        merged_df_list[-1].to_csv("df_tmp.csv")
+        with open("fpath_group.txt",'w') as fin:
+            for fpath in fpath_groups[-1]:
+                fin.write(f"{fpath}\n")
+
+    return merged_df_list
+
 def get_merge_df(fpath_group):
     df_list = [pd.read_csv(fpath, index_col=0) for fpath in fpath_group if os.path.isfile(fpath)]
 
@@ -381,39 +532,107 @@ def get_merge_df(fpath_group):
         merge_df = pd.DataFrame(None)
     else:
         merge_df = pd.concat( df_list, ignore_index=True )
+
     return merge_df
+
+
+def subselect_pairs(df, x_var="modality", row_var=None, col_var=None, debug=False, verbose=False):
+    if verbose:
+        inputs = {
+                "x_var": x_var,
+                "row_var": row_var,
+                "col_var": col_var
+                }
+        print(f"subselecting pairs according to: \n{inputs}")
+    if debug:
+        ### debugging code ###
+        print(f"dataframe has pre-subselection columns: \n{df.columns.values}")
+        print(f"with pre-subselection values: \n{df}")
+        ### debugging code ###
+
+    if (x_var, row_var, col_var) == (None, None, None):
+        return df
+
+    if (x_var is not None) and (x_var not in df.columns.values):
+        x_mask = df[f"X_{x_var}"] == df[f"Y_{x_var}"]
+        df_mask = x_mask
+        dropper = [f"Y_{x_var}"]
+        renamer = {f"X_{x_var}": x_var}
+
+    if (row_var is not None) and (row_var not in df.columns.values):
+        rowvar_mask = df[f"X_{row_var}"] == df[f"Y_{row_var}"]
+        df_mask = df_mask & rowvar_mask
+        dropper.append( f"Y_{row_var}" )
+        renamer = renamer | {f"X_{row_var}": row_var}
+
+    if (col_var is not None) and (col_var not in df.columns.values):
+        colvar_mask = df[f"X_{col_var}"] == df[f"Y_{col_var}"]
+        df_mask = df_mask & colvar_mask
+        dropper.append( f"Y_{col_var}" )
+        renamer = renamer | {f"X_{col_var}": col_var}
+
+    if verbose:
+        print(f"\ndropping columns {dropper} \nrenaming columns as: {renamer}")
+
+    df.drop( columns=dropper, inplace=True )
+    df.rename( columns=renamer, inplace=True )
+
+    df = df.loc[df_mask,:]
+
+    if debug:
+        ### debugging code ###
+        print(f"dataframe has post-subselection columns: \n{df.columns.values}")
+        print(f"with post-subselection values: \n{df}")
+        ### debugging code ###
+
+    return df
+
 
 def _unify_df(df, fpath=None):
 
     if df.empty:
         return df
 
-    if not "X_name" in df.columns.values:
-        if "X_type" in df.columns.values:
-            df.rename( mapper={"X_type":"X_name", "Y_type":"Y_name"}, axis=1, inplace=True )
+    if "X_type" in df.columns.values:
+        df.rename( mapper={"X_type":"X_name"}, axis=1, inplace=True )
+        if "Y_type" in df.columns.values:
+            df.rename( mapper={"Y_type":"Y_name"}, axis=1, inplace=True )
+            df[["X_modality","X_feature","X_metric"]] = df["X_name"].str.split('_', n=2, expand=True)
+            df[["Y_modality","Y_feature","Y_metric"]] = df["Y_name"].str.split('_', n=2, expand=True)
+
+    if not "Y_name" in df.columns.values:
+        if "X_name" in df.columns.values:
+            df[["modality","feature","metric"]] = df["X_name"].str.split('_', n=2, expand=True)
         else:
             df["X_name"] = df.apply( lambda x: "_".join([x["modality"], x["feature"], x["metric"]]), axis=1 )
-    else:
-        df[["modality","feature","metric"]] = df["X_name"].str.split('_', n=2, expand=True)
 
-    if fpath is not None:
-        modality, feature, metric = _parse_fpath(fpath, metric=True)
-        pars = {
-                "modality": modality,
-                "feature": feature,
-                "metric": metric
-                }
-        for keyname in ["modality", "feature", "metric"]:
-            if keyname not in df.columns.values:
-                df[keyname] = pars[keyname]
+        if fpath is not None:
+            modality, feature, metric = _parse_fpath(fpath, metric=True)
+            pars = {
+                    "modality": modality,
+                    "feature": feature,
+                    "metric": metric
+                    }
+            for keyname in ["modality", "feature", "metric"]:
+                if keyname not in df.columns.values:
+                    df[keyname] = pars[keyname]
+                else:
+                    assert all(df[keyname] == pars[keyname]), f"Data value and filename conflict for key \'{keyname}\' in file: \n\'{fpath}\'"
+
+        df[["modality","rank"]] = df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
+        df["feat_num"] = df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
+    else:
+        df[["X_modality","X_feature","X_metric"]] = df["X_name"].str.split('_', n=2, expand=True)
+        df[["Y_modality","Y_feature","Y_metric"]] = df["Y_name"].str.split('_', n=2, expand=True)
+
 
     if "permtype" in df.columns.values:
         try:
-            df["datatype"] = df.apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
+            null_mask = df["datatype"]=="Null" 
+            df.loc[null_mask, "datatype"] = df.loc[null_mask,:].apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
         except TypeError:
             print(f"encountered unexpected float values in \'permtype\' field: {list(set(df.permtype))}")
             print("attempting to resolve by forcing type to \'str\'.")
-            df["datatype"] = df.apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
 
     if "permlabel" in df.columns.values:
         df.drop( labels = ["permlabel"], axis=1, inplace=True )
@@ -423,12 +642,11 @@ def _unify_df(df, fpath=None):
         if "Wp_XY" not in df.columns.values:
             renamer={"Wp_XXhat_i":"Wp_XY"}
         else:
-            df.drop( labels = "Wp_XY", axis=1, inplace=True )
             renamer={"Wp_XhatYhat_i":"Wp_XY"}
+            to_drop = ["Wp_XY", "Y_path", "Wp_YYhat_i", "Wp_XXhat_i", "dIM_YYhat_i", "PDXhat_diag_i", "PDYhat_diag_i",
+                    "dIM_XXhat_i", "Mean Wp Approximation Difference", "Wphat_XY", "Wphat0_XY_i"]
+            df.drop( labels = to_drop, axis=1, inplace=True )
         df.rename( mapper=renamer, axis=1, inplace=True )
-
-    df[["modality","rank"]] = df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
-    df["feat_num"] = df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
 
     return df
 
@@ -480,6 +698,13 @@ if __name__=="__main__":
         default=False,
         action="store_true",
         help="flag to perform solo plots"
+    )
+    parser.add_argument(
+        "-D",
+        "--distribution_plots",
+        default=False,
+        action="store_true",
+        help="flag to perform distribution plots"
     )
     parser.add_argument(
         "-d",

@@ -45,37 +45,21 @@ def main(args, debug=True):
 
     else:
         with open(args.fpathlist_path, 'r') as fin:
-            fpath_list, fpath_grid = fin.read().split('\n')
+            fpath_list = fin.read().split('\n')
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
         args.fig_size=(6,6)
-        make_solo_plots(fpath_list, dist_type="pair", figs=args.write_mode, args=args)
+        make_solo_plots(fpath_list, dist_type="pair", args=args)
         exit()
 
-    alldata_grid = pull_data(
-            fpath_grid,
-            args,
-            data_only = True,
-            check_pval = True
-            )
+    if args.distribution_plots:
+        from single_null_dists import make_distribution_plots
+        args.fig_size=(12,12)
+        make_distribution_plots(fpath_list, dist_type="pair", args=args) 
 
-    if debug:
-        intm_dir = os.path.join(args.output_dir, "alldata_grid")
-        if not os.path.isdir(intm_dir):
-            os.mkdir(intm_dir)
-        for i, sublist in enumerate(alldata_grid):
-            for j, df in enumerate(sublist):
-                fname = f"alldata_col{i}_row{j}.csv"
-                df.to_csv(os.path.join(intm_dir, fname))
-
-    xnamelist, ynamelist, valuegrid = _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars)
-
-    if debug:
-        for name in list(valuegrid.keys()):
-            savepath = os.path.join(args.output_dir, f"{name}.csv")
-            np.savetxt(savepath, valuegrid[name])
-            print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+    if args.clustermap_plots:
+        plot_clustermaps(fpath_grid, args=args)
 
     return xnamelist, ynamelist, valuegrid
 
@@ -110,6 +94,48 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
         print(f"The approximate empircal p-value for data vs. null distance of {data_df} is {data_pval}")
 
     return g, data_pval
+
+
+def plot_clustermaps(fpath_grid, args=None):
+    alldata_grid = pull_data(
+            fpath_grid,
+            args,
+            data_only = True,
+            check_pval = True
+            )
+
+    if debug:
+        intm_dir = os.path.join(args.output_dir, "alldata_grid")
+        if not os.path.isdir(intm_dir):
+            os.mkdir(intm_dir)
+        for i, sublist in enumerate(alldata_grid):
+            for j, df in enumerate(sublist):
+                fname = f"alldata_col{i}_row{j}.csv"
+                df.to_csv(os.path.join(intm_dir, fname))
+
+    xnamelist, ynamelist, valuegrid = _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars)
+
+    if debug:
+        for name in list(valuegrid.keys()):
+            savepath = os.path.join(args.output_dir, f"{name}.csv")
+            np.savetxt(savepath, valuegrid[name])
+            print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+    
+    fig_inches = def_fig_size[0] * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
+    label_fontsize = def_label_fontsize * np.power(73 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
+
+    generate_clustermaps(
+            xnamelist, 
+            ynamelist, 
+            valuegrid, 
+            linkage_var = "Wp_XY",
+            cluster_method = "average",
+            log_scale = args.log_scale,
+            fig_size = (fig_inches, fig_inches),
+            label_fontsize = label_fontsize,
+            outdir=args.output_dir,
+            write_mode=args.write_mode
+            )
 ########################################################################################################################
 
 # heatmap plotting
@@ -329,12 +355,14 @@ def _disp_logdata(varname, values, disp_var=True):
 # compute secondary statistics
 ########################################################################################################################
 # add an empirical p-val to a dataframe containing only a single data-derived distance and its null counterparts
-def _add_emp_pval(df, check_match=True, tail_type="all", corr_type="fdr", null_hi=None, null_lo=None, debug=False):
+def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_type="fdr", null_hi=None, null_lo=None, debug=False):
     datarow = df[df["datatype"] == "Data"]
 
     Wp_XY = datarow["Wp_XY"].to_numpy()
     if corr_type == "fdr":
         nullrows = df[df["datatype"] == "Null"]
+        if permtype is not None:
+            nullrows = nullrows[ nullrows["permtype"] == permtype ]
         null_lo = nullrows["Wp_XY"].to_numpy()
         null_hi = nullrows["Wp_XY"].to_numpy()
         check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
@@ -452,7 +480,7 @@ def pull_data(
 
 
 def _load(
-        input_fpath, data_only=True, parse_longname=False, permtype="feature",
+        input_fpath, data_only=True, parse_longname=False, permtype=None,
         check_pval=True, tail_type="all", corr_type="fwe", null_hi=None, null_lo=None
         ):
     data_df = pd.read_csv(input_fpath, index_col=0)
@@ -465,15 +493,18 @@ def _load(
 
     if check_pval:
         if not any(["pval" in col for col in data_df.columns]):
-            data_df = _add_emp_pval(data_df, tail_type=tail_type, corr_type=corr_type, null_hi=null_hi, null_lo=null_lo)
+            data_df = _add_emp_pval(data_df, permtype=permtype, tail_type=tail_type, corr_type=corr_type, null_hi=null_hi, null_lo=null_lo)
 
     if data_only:
         null_df = data_df[data_df["datatype"] == "Null"]
+        if permtype is not None:
+            null_df = null_df[ null_df["permtype"] == permtype ]
+
         data_df = data_df[data_df["datatype"] != "Null"]
         try:
             data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
             data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-            data_df["permtype"] = '-'.join(list(set(null_df["permtype"])))
+            data_df["permtype"] = permtype 
             data_df.drop(["permlabel"], axis=1, inplace=True)
         except KeyError as err:
             print(f"Encountered KeyError! offending dataframe has \n\'data_df\'=\n{data_df}\n and \n\'null_df\'=\n{null_df}\n")
@@ -602,7 +633,7 @@ if __name__=="__main__":
         "-P",
         "--permtype",
         type=str,
-        default="feature",
+        default="subject",
         help="permutation type: either \'subject\' or \'feature\'"
     )
     parser.add_argument(
@@ -627,6 +658,20 @@ if __name__=="__main__":
         help="flag to perform solo plots"
     )
     parser.add_argument(
+        "-D",
+        "--distribution_plots",
+        default=False,
+        action="store_true",
+        help="flag to visualized grouped distributions"
+    )
+    parser.add_argument(
+        "-C",
+        "--clustermap_plots",
+        default=False,
+        action="store_true",
+        help="flag to visualized grouped distributions"
+    )
+    parser.add_argument(
         "-w",
         "--write_mode",
         default=False,
@@ -644,18 +689,3 @@ if __name__=="__main__":
     
     xnamelist, ynamelist, valuegrid = main(args)
 
-    fig_inches = def_fig_size[0] * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
-    label_fontsize = def_label_fontsize * np.power(73 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
-
-    generate_clustermaps(
-            xnamelist, 
-            ynamelist, 
-            valuegrid, 
-            linkage_var = "Wp_XY",
-            cluster_method = "average",
-            log_scale = args.log_scale,
-            fig_size = (fig_inches, fig_inches),
-            label_fontsize = label_fontsize,
-            outdir=args.output_dir,
-            write_mode=args.write_mode
-            )
