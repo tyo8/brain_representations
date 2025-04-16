@@ -8,7 +8,7 @@ nullpairs_srcpath="${srcdir}/summarize_nullpair_dists.py"
 extremals_srcpath="${srcdir}/extremal_nullpair_dists.py"
 null_solo_srcpath="${srcdir}/single_null_dists.py"
 
-declare -a rstr=("Maps" "Psim" "geodesic" "Amps" "NM")
+declare -a rstr=("Psim" "geodesic" "Maps" "Amps" "NM")
 declare -a subsmp=("perm" "bstrap")
 declare -a corrs=("fdr" "fwe")
 declare -a perms=("subject" "feature")
@@ -17,6 +17,12 @@ solo_indir="$(dirname ${indir})"
 
 # 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
 python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -D -L
+
+for R in "${rstr[@]}"
+do
+	python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -A -L -D
+	printf "#################################################################################################\n\n"
+done
 
 # 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
 python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -S -C -D
@@ -50,7 +56,7 @@ do
    done
    for T in "${subsmp[@]}"
    do
-	   python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -t ${T} -A -L
+	   python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -t ${T} -A -L -D
 	   printf "#################################################################################################\n\n"
    done
 done
