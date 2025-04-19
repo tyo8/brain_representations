@@ -41,6 +41,10 @@ def do_ROC_analysis(
                     roc = (None, None)
                     auc = None
                     overlap = None
+                elif df["PDX_diag"].unique() == 0:
+                    roc = (None, None)
+                    auc = 0
+                    overlap = 1
                 else:
                     try:
                         assert len(names) == 1, "Conflating distributions for more than one brain representation type."
@@ -65,7 +69,14 @@ def do_ROC_analysis(
                     datavals = df_data[distvar].to_numpy()
                     nullvals = df_null[distvar].to_numpy()
 
-                    roc, auc = get_roc(datavals, nullvals)
+                    # only counts as significant if subsamples are *closer* to original than null is
+                    if distvar == "Wp_XY":
+                        roc, auc = get_roc(datavals, nullvals, flip = flip)
+                    elif distvar == "PDY_diag":
+                        roc, auc_l = get_roc(datavals, nullvals, flip=True)
+                        roc, auc_r = get_roc(datavals, nullvals)
+                        auc = max(auc_l, auc_r)
+
                     overlap = (1 - auc)
 
                 auc_dict = {
@@ -126,7 +137,8 @@ def get_roc(pos_dist, dist_null, n=None, flip=False):
             fpr[i] = np.mean( dist_null >= t )
 
     roc_curve = (fpr, tpr)
-    auc = 1/2 + np.abs(1/2 - integrate(roc_curve))      # modifies AUC to be invariant w.r.t. designation of positive vs. null distribution
+    auc = integrate(roc_curve)                          # AUC is senstive (complementary to) designation of positive vs. null distribution
+    # auc = 1/2 + np.abs(1/2 - integrate(roc_curve))      # modifies AUC to be invariant w.r.t. designation of positive vs. null distribution
 
     return roc_curve, auc
 

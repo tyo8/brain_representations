@@ -268,6 +268,13 @@ def _get_bars(bars_fname, homdim=1):
         bars = all_bars[homdim]  # "bars" dictionary is indexed by homology dimension
     return np.array(bars)
 
+# read a list of birth-death pairs (of the specified homology dimension) from file
+def _get_matched_bars(vbmatch_fname, homdim=1):
+    with open(vbmatch_fname, 'r') as fin:
+        verbose_match = ast.literal_eval(fin.read())
+        matched_bars = [np.array(barmatch["barY"]) for barmatch in verbose_match if (barmatch["affinity"] > 0) and (barmatch["dim"]==homdim)]
+    return np.array(matched_bars)
+
 def _pnorm(X, p=2, axis=None):
     X = np.abs(X)
     if p < np.inf:

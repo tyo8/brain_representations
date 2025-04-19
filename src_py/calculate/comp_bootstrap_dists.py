@@ -16,7 +16,7 @@ default_tagfile = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_r
 
 def bootstrap_distance(barsX_fpath, nametype="X",
         tagfile=default_tagfile, count=1000, homdim=1, do_prev=False, do_dIM=True,
-        use_affinity=False, persistence_type="diff", q=2, p=2, 
+        match_only=True, use_affinity=False, persistence_type="diff", q=2, p=2, 
         verbose=True, debug=True):
 
     barsX = dgmD._get_bars(barsX_fpath, homdim=homdim)
@@ -47,9 +47,14 @@ def bootstrap_distance(barsX_fpath, nametype="X",
             ### debugging code ###
     taglist.sort()
 
-    # read lists of bars from list of filepaths
-    barsXhat_flist = [os.path.join(os.path.dirname(barsX_fpath), 'phom_out', f"barsY_{tag}.txt") for tag in taglist]
-    barsXhat_list = [dgmD._get_bars(fpath) for fpath in barsXhat_flist]
+    if match_only:
+        # read lists of cycle-registered bootstrap matches from list of filepaths
+        barsXhat_flist = [os.path.join(os.path.dirname(barsX_fpath), 'matching', f"verbose_match_dim{homdim}_{tag}.txt") for tag in taglist]
+        barsXhat_list = [dgmD._get_matched_bars(fpath) for fpath in barsXhat_flist]
+    else:
+        # read lists of bars from list of filepaths
+        barsXhat_flist = [os.path.join(os.path.dirname(barsX_fpath), 'phom_out', f"barsY_{tag}.txt") for tag in taglist]
+        barsXhat_list = [dgmD._get_bars(fpath) for fpath in barsXhat_flist]
 
     if debug:
         ### debugging code ###
@@ -60,11 +65,8 @@ def bootstrap_distance(barsX_fpath, nametype="X",
 
     PDXhat_diag_i = np.array([dgmD.weighted_Wasserstein_dist(barsXhat, None, wtfn_type=None, q=q, p=p, verbose=False) for barsXhat in barsXhat_list])
 
-    # cycle-registered distance (Omer & Bobrowski) between original diagram and its bootstrap (between matched cycles) 
     if do_dIM:
-        # read lists of cycle-registered bootstrap matches from list of filepaths
-        Xmatch_fpaths = [os.path.join(os.path.dirname(barsX_fpath), 'matching', f"verbose_match_dim{homdim}_{tag}.txt") for tag in taglist]
-
+        # cycle-registered distance (Omer & Bobrowski) between original diagram and its bootstrap (between matched cycles) 
         # compute registered distance between all subset-generated persistence modules
         dIM_XXhat_i = get_registered_distances(Xmatch_fpaths, use_affinity=use_affinity, persistence_type=persistence_type, q=q, p=p)
     else:
@@ -216,7 +218,7 @@ def _get_subsample_prop(tag):
 # parses input, saves results
 if __name__=="__main__":
     parser = argparse.ArgumentParser(
-        description="Show distributions of resultss from topological bootstrap"
+        description="Show distributions of results from topological bootstrap"
     )
     parser.add_argument(
         "-x",
@@ -249,6 +251,12 @@ if __name__=="__main__":
         default=1000, 
         type=int, 
         help="results filepath to persistence diagram image"
+    )
+    parser.add_argument(
+        "-F", "--match_only", 
+        default=True, 
+        action="store_false",
+        help="enable 'free Wasserstein' (we are allowed to use bars in bootstrapped Y with no match in X)"
     )
     parser.add_argument(
         "-a", "--use_affinity", 
@@ -309,7 +317,8 @@ if __name__=="__main__":
             args.barsY_fpath, 
             tagfile=args.tagfile, 
             count=args.count, 
-            homdim=args.dim, 
+            homdim=args.dim,
+            match_only=args.match_only,
             use_affinity=args.use_affinity, 
             do_prev=args.use_affinity, 
             do_dIM=args.do_dIM, 

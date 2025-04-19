@@ -830,9 +830,12 @@ def _get_orig_bars(
         print("with values:")
         for line in barlines:
             print(line)
-        [b1match_fpath] = glob.glob(os.path.join(searchdir, "B1match_dim1_n1000.txt"))     # should have exactly 1 result
-        b1match_vec = np.loadtxt(b1match_fpath)
-        print(f"Of {len(b1match_vec)} recorded attempted matches, {np.count_nonzero(b1match_vec)} produced matches with nonzero affinity. ref:\n{b1match_fpath}")
+        if len(glob.glob(os.path.join(searchdir, "B1match_dim1_n1000.txt"))) > 0:     # should have <=1 result
+            [b1match_fpath] = glob.glob(os.path.join(searchdir, "B1match_dim1_n1000.txt"))     # should have <=1 result
+            b1match_vec = np.loadtxt(b1match_fpath)
+            print(f"Of {len(b1match_vec)} recorded attempted matches, {np.count_nonzero(b1match_vec)} produced matches with nonzero affinity. ref:\n{b1match_fpath}")
+        else:
+            print("-----No corresponding B1match file found!-----")
     return None
 
 def _add_data_slice(df):
