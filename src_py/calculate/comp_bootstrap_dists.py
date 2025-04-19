@@ -253,10 +253,10 @@ if __name__=="__main__":
         help="results filepath to persistence diagram image"
     )
     parser.add_argument(
-        "-F", "--match_only", 
-        default=True, 
-        action="store_false",
-        help="enable 'free Wasserstein' (we are allowed to use bars in bootstrapped Y with no match in X)"
+        "-M", "--match_only", 
+        default=False, 
+        action="store_True",
+        help="disable 'free Wasserstein' computation (we are not allowed to use bars in bootstrapped Y with no match in X)"
     )
     parser.add_argument(
         "-a", "--use_affinity", 

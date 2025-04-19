@@ -37,6 +37,7 @@ do
 			printf "#################################################################################################\n\n"
 		done
 	done
+	python ${extremals_srcpath} -i ${indir} -o ${outdir} -P ${P} -L -v -w
 	python ${extremals_srcpath} -i ${indir} -o ${outdir} -P ${P} -L -E -v -w
 done
 
