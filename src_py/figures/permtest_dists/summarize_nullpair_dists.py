@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import figstats as fstats
+import figutils as futils
 from matplotlib import pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 from scipy.spatial.distance import squareform
@@ -73,7 +74,7 @@ def main(args, debug=False):
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
 ########################################################################################################################
-# make quick and dirty paired-null distance distribution summaries
+# make quick and dirty paired-null distance distribution summaries (defunct)
 ########################################################################################################################
 def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     full_df = pd.read_csv(fpath, index_col=0)
@@ -442,7 +443,7 @@ def plot_clustermap(
 
     if write_mode:
         outpath = os.path.join(outdir, outname)
-        _write_img(fig, outpath)
+        futils._write_img(fig, outpath)
         plt.close()
     else:
         fig.set_size_inches(fig_size, forward=True)
@@ -450,7 +451,7 @@ def plot_clustermap(
 
     return g
 
-# heatmap plot utilities
+# heatmap plot utility
 def _disp_logdata(varname, values, disp_var=True):
     if disp_var and "pval" in varname:
         if "fdr" in varname:
@@ -493,8 +494,9 @@ def pull_data(
         null_hi = None
     
     alldata_grid = [ 
-                    [ _load(
-        fpath, data_only=data_only, permtype=args.permtype,
+                    [ futils._load(
+        fpath, load_type="pair",
+        data_only=data_only, permtype=args.permtype,
         check_pval=check_pval, tail_type=args.tail_type, 
         corr_type=args.corr_type, null_hi=null_hi, null_lo=null_lo,
         ) for fpath in X_sublist ] 
@@ -520,41 +522,6 @@ def pull_data(
 
     return alldata_grid
 
-
-def _load(
-        input_fpath, data_only=True, parse_longname=False, permtype=None,
-        check_pval=True, tail_type="all", corr_type="fwe", null_hi=None, null_lo=None
-        ):
-    data_df = pd.read_csv(input_fpath, index_col=0)
-
-    if parse_longname:
-        data_df[["X_mod","X_feat","X_diff"]] = data_df["X_type"].str.split('_', n=2, expand=True)
-        data_df[["Y_mod","Y_feat","Y_diff"]] = data_df["Y_type"].str.split('_', n=2, expand=True)
-        data_df.drop(["X_type","Y_type"], axis=1, inplace=True)
-
-
-    if check_pval:
-        data_df.drop( columns=["empirical_pval"], inplace=True )
-        if not any(["pval" in col for col in data_df.columns]):
-            data_df = fstats._add_emp_pval(data_df, permtype=permtype, tail_type=tail_type, corr_type=corr_type, null_hi=null_hi, null_lo=null_lo)
-
-    if data_only:
-        null_df = data_df[data_df["datatype"] == "Null"]
-        if permtype is not None:
-            null_df = null_df[ null_df["permtype"] == permtype ]
-
-        data_df = data_df[data_df["datatype"] != "Null"]
-        try:
-            data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
-            data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-            data_df["permtype"] = permtype 
-            data_df.drop(["permlabel"], axis=1, inplace=True)
-        except KeyError as err:
-            print(f"Encountered KeyError! offending dataframe has \n\'data_df\'=\n{data_df}\n and \n\'null_df\'=\n{null_df}\n")
-            print(f"loaded from filepath: \n{input_fpath}")
-            exit()
-
-    return data_df
 
 def _get_fpath_sets(args, debug=False):
     if args.pattern_restriction is not None and args.permtype is not None:
@@ -618,16 +585,6 @@ def triu_vals(A, k=1):
     n = min(A.shape)
     vals = A[np.triu_indices(n, k)]
     return vals
-
-
-def _write_list(outpath, list_out):
-    with open(outpath, 'w') as fout:
-        fout.write(list_out.__str__())
-
-def _write_img(fig, outpath, fig_size=def_fig_size):
-    fig.set_size_inches(fig_size, forward=False)
-    fig.savefig(outpath, dpi=600)
-    print(f"saved to {outpath}")
 ########################################################################################################################
 
 

@@ -29,20 +29,21 @@ def do_ROC_analysis(
                 names = set(df["X_name"].to_numpy())
                 if verbose:
                     print(f"In {names}, df_data has shape {df_data.shape}, df_null has shape {df_null.shape}")
-                if debug:
-                    ### debugging code ###
-                    if df_null.empty:
+                if df_null.empty:
+                    # Will hold if (only if) there was some error in computing null distances/this null set was not computed
+                    if debug:
+                        ### debugging code ###
                         print(f"empty df_null for nulltype=\'{null}\' pulled from: \n{df}\n")
                         print(f"df has datatypes={set(df.datatype)} and permtypes={set(df.permtype)}")
                         exit()
-                    ### debugging code ###
-                if df_data.empty:
-                    # Will hold if H1 trivial for full data (nothing to bootstrap)
-                    roc = (None, None)
+                        ### debugging code ###
                     auc = None
                     overlap = None
-                elif df["PDX_diag"].unique() == 0:
-                    roc = (None, None)
+                if df_data.empty:
+                    # Will hold if H1 trivial for full data (nothing to bootstrap)
+                    auc = None
+                    overlap = None
+                if df["PDX_diag"].unique() < 1e-9:
                     auc = 0
                     overlap = 1
                 else:
@@ -71,10 +72,10 @@ def do_ROC_analysis(
 
                     # only counts as significant if subsamples are *closer* to original than null is
                     if distvar == "Wp_XY":
-                        roc, auc = get_roc(datavals, nullvals, flip = flip)
+                        _, auc = get_roc(datavals, nullvals, flip = True)
                     elif distvar == "PDY_diag":
-                        roc, auc_l = get_roc(datavals, nullvals, flip=True)
-                        roc, auc_r = get_roc(datavals, nullvals)
+                        _, auc_l = get_roc(datavals, nullvals, flip = True)
+                        _, auc_r = get_roc(datavals, nullvals)
                         auc = max(auc_l, auc_r)
 
                     overlap = (1 - auc)

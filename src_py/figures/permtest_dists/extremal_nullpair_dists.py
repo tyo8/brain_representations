@@ -8,6 +8,8 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import figstats as fstats
+import figutils as futils
 from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 
@@ -45,7 +47,7 @@ def main(args, debug=False):
         print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)
 
-    df = pd.concat([ _load(fpath, args=args, extrema_only=args.extrema_only) for fpath in fpath_list ], ignore_index=True)
+    df = pd.concat([ futils._load(fpath, load_type="ext", args=args, extrema_only=args.extrema_only) for fpath in fpath_list ], ignore_index=True)
 
     if debug:
         check_out=os.path.join(os.getcwd(), "tmp_df.csv")
@@ -200,63 +202,13 @@ def one_displot(
             if varname is not None:
                 outname = outname.replace("pairs_nulldists", f"pairs_nulldists_{var}-{varname}")
         outpath = os.path.join(outdir, outname)
-        _write_img(g.fig, outpath, fig_size=fig_size)
+        futils._write_img(g.fig, outpath, fig_size=fig_size)
         plt.close()
     else:
         fig.set_size_inches(fig_size, forward=True)
         plt.show()
     return g
 
-########################################################################################################################
-
-def _load(input_fpath, args=None, extrema_only=False, parse_longname=True, debug=True):
-    df = pd.read_csv(input_fpath, index_col=0)
-
-    droplist = ["X_type","Y_type", "Wp_XY", "permlabel", "datatype"]
-    if parse_longname:
-        df[["X_modality","X_feature","X_metric"]] = df["X_type"].str.split('_', n=2, expand=True)
-        df[["Y_modality","Y_feature","Y_metric"]] = df["Y_type"].str.split('_', n=2, expand=True)
-        # df["XY_type"] = df.apply(lambda x: "_vs_".join([x["X_type"], x["Y_type"]]), axis=1)
-
-    if "permtype" in df.keys():
-        permtype = df["permtype"].unique()
-        if args is not None:
-            err_str = f"Specified permtype {args.permtype} not in df.permtype: \'{df.permtype.unique()}\'. From input path: \n{input_fpath}"
-            assert args.permtype in df.permtype.unique(), err_str
-            df = df[ df.permtype == args.permtype ]
-        permtype = args.permtype
-    else:
-        permtype = "Empty"
-        droplist.pop(droplist.index("permlabel"))
-        droplist.append("taglist")
-
-    df["permtype"] = permtype
-    df.drop( droplist, axis=1, inplace=True)
-
-    if debug:
-        if "datatype" not in df.keys():
-            print("column 'datatype' not found in:", input_fpath)
-            print("columns:", df.columns.values)
-            print("dataframe", df)
-            exit()
-            
-
-    null_df = df[df["datatype"] == "Null"]
-    data_df = df[df["datatype"] == "Data"]
-    data_df["Wp_XYNull_min"] = np.min(null_df["Wp_XY"])
-    data_df["Wp_XYNull_max"] = np.max(null_df["Wp_XY"])
-
-    if not extrema_only:
-        data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
-        data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-
-    return data_df.copy()
-
-
-def _write_img(fig, outpath, fig_size=def_fig_size):
-    fig.set_size_inches(fig_size, forward=False)
-    fig.savefig(outpath, dpi=600)
-    print(f"saved to {outpath}")
 ########################################################################################################################
 # parses input, saves output
 if __name__=="__main__":
