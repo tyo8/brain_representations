@@ -12,51 +12,60 @@ declare -a rstr=("Psim" "geodesic" "Maps" "Amps" "NM")
 declare -a subsmp=("perm" "bstrap")
 declare -a corrs=("fdr" "fwe")
 declare -a perms=("subject" "feature")
+declare -a alphas=(0.01 0.05)
+
+########## SIGNIFICANCE THRESHOLD ##########
 
 solo_indir="$(dirname ${indir})"
-
-# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
-python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -D -L
-
+for alpha in ${alphas[@]}
+do
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}" -a ${alpha} -v -w -R 
+done
 for R in "${rstr[@]}"
 do
-	python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -A -L -D
+	python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -L -A -D
 	printf "#################################################################################################\n\n"
 done
 
-# 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
-python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -S -C -D
-
-python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -A -S -L
-python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L
-python ${extremals_srcpath} -v -w -i ${indir} -o ${outdir} -L -E
-
-printf "#################################################################################################\n\n"
-
-for C in ${corrs[@]}
+for P in ${perms[@]}
 do
-	for P in ${perms[@]}
+	for C in ${corrs[@]}
 	do
-		python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c "${C}" -P "${P}" -C
-		printf "#################################################################################################\n\n"
+		for alpha in ${alphas[@]}
+		do
+			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -w -v
+			printf "#################################################################################################\n\n"
+		done
 	done
+	python ${extremals_srcpath} -i ${indir} -o ${outdir} -P ${P} -L -E -v -w
 done
 
 printf "## now looping through arrays: \n${rstr} \n${corrs} \n\n"
 for R in "${rstr[@]}"
 do
-	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L
-	printf "#################################################################################################\n\n"
-	python ${extremals_srcpath} -v -w -r ${R} -i ${indir} -o ${outdir} -L -E
-	printf "#################################################################################################\n\n"
-   for C in "${corrs[@]}"
-   do
-	   python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -w -v -L -c ${C} -r ${R} -P "subject" -D -C
-	   printf "#################################################################################################\n\n"
-   done
-   for T in "${subsmp[@]}"
-   do
-	   python ${null_solo_srcpath} -v -w -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -t ${T} -A -L -D
-	   printf "#################################################################################################\n\n"
-   done
+	for P in ${perms[@]}
+	do
+		for C in "${corrs[@]}"
+		do
+			for alpha in ${alphas[@]}
+			do
+				python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -a ${alpha} -L -C -w -v
+				printf "#################################################################################################\n\n"
+			done
+		done
+		python ${extremals_srcpath} -i ${indir} -o ${outdir} -r ${R} -P ${P} -L -E -v -w
+		printf "#################################################################################################\n\n"
+	done
+	for T in "${subsmp[@]}"
+	do
+		python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -r ${R} -t ${T} -A -L -D -v -w
+		printf "#################################################################################################\n\n"
+	done
 done
+
+# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
+python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -D -A -S -L -v -w
+
+printf "#################################################################################################\n\n"
+# 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -L -S -w -v

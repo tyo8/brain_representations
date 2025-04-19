@@ -1,15 +1,18 @@
 import re
 import os
 import glob
+import copy
 import scipy
 import argparse
 import itertools
+import functools
 import matplotlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import figstats as fstats
 from matplotlib import pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 from scipy.spatial.distance import squareform
 from statsmodels.stats.multitest import fdrcorrection
 
@@ -22,13 +25,15 @@ def_pattern='*X_*_dists'
 
 
 # def_clustermap_vars = ["Wp_XY", "empirical_pval"]
-def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
-def_scatter_vars = ["Wp_XY", "Y_type"] 
+# def_scatter_vars = ["Wp_XY", "Y_type"] 
+
+def_clustermap_vars = ["Wp_XY"]
+# def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
 
 # exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 
-def main(args, debug=True):
+def main(args, debug=False):
 
     if args.verbose:
         var_dict = vars(args)
@@ -48,6 +53,9 @@ def main(args, debug=True):
         with open(args.fpathlist_path, 'r') as fin:
             fpath_list = fin.read().split('\n')
 
+    if args.clustermap_plots:
+        xnamelist, ynamelist, valuegrid = make_clustermaps(fpath_grid, args=args)
+
     if args.solo_plots:
         from single_null_dists import make_solo_plots
         args.fig_size=(6,6)
@@ -58,9 +66,6 @@ def main(args, debug=True):
         from single_null_dists import make_distribution_plots
         args.fig_size=(12,12)
         make_distribution_plots(fpath_list, dist_type="pair", args=args) 
-
-    if args.clustermap_plots:
-        plot_clustermaps(fpath_grid, args=args)
 
     return xnamelist, ynamelist, valuegrid
 
@@ -97,13 +102,17 @@ def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     return g, data_pval
 
 
-def plot_clustermaps(fpath_grid, args=None, debug=False):
+def make_clustermaps(fpath_grid, args=None, debug=False):
     alldata_grid = pull_data(
             fpath_grid,
             args,
             data_only = True,
             check_pval = True
             )
+    if args is None:
+        alpha = None
+    else:
+        alpha = args.alpha
 
     if debug:
         intm_dir = os.path.join(args.output_dir, "alldata_grid")
@@ -121,9 +130,15 @@ def plot_clustermaps(fpath_grid, args=None, debug=False):
             savepath = os.path.join(args.output_dir, f"{name}.csv")
             np.savetxt(savepath, valuegrid[name])
             print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
+
+    if args.alpha is not None:
+        if args.verbose:
+            print("Filtering by AUC significance...")
+        auc_mask = _get_auc_mask(args)
+        xnamelist, ynamelist, valuegrid = _apply_series_mask(auc_mask, xnamelist, ynamelist, valuegrid)
     
-    fig_inches = def_fig_size[0] * np.sqrt(73 / len(xnamelist))   # calibrating label fontsize to number of entries
-    label_fontsize = def_label_fontsize * np.power(73 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
+    fig_inches = def_fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
+    label_fontsize = def_label_fontsize * np.power(70 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
     generate_clustermaps(
             xnamelist, 
@@ -131,12 +146,96 @@ def plot_clustermaps(fpath_grid, args=None, debug=False):
             valuegrid, 
             linkage_var = "Wp_XY",
             cluster_method = "average",
+            alpha = args.alpha,
             log_scale = args.log_scale,
             fig_size = (fig_inches, fig_inches),
             label_fontsize = label_fontsize,
             outdir=args.output_dir,
             write_mode=args.write_mode
             )
+
+    return xnamelist, ynamelist, valuegrid
+
+def _get_auc_mask(args, debug=False):
+    solo_args = copy.deepcopy(args)
+    solo_args.distribution_plots = False
+    solo_args.aggregate_plots = False
+    solo_args.solo_plots = False
+    solo_args.ROC_analysis = True
+
+    solo_args.input_dir = os.path.dirname(args.input_dir)
+    solo_args.search_pattern = None
+    solo_args.dir_pattern = "within_*"
+    solo_args.sample_type = "bstrap"
+
+    solo_args.enforce_match = True
+    solo_args.write_mode = False
+    if debug:
+        ### debugging code ###
+        solo_args.verbose = True
+        print(f"arguments initialized as: \n{solo_args}")
+        ### debugging code ###
+    else:
+        solo_args.verbose = False
+
+    from single_null_dists import main
+    df = main(solo_args)
+
+    if debug:
+        ### debugging code ###
+        print(f"auc_dataframe has values: \n{df}")
+        ### debugging code ###
+
+
+    df = df[ df["permtype"]==args.permtype ]
+
+    masks = [] 
+    for var in df["ROC_variable"].unique():
+        submask = df["ROC_variable"] == var
+        subdf = df.loc[submask].set_index( "X_name" )        # assumes that specifying 'permtype' and 'ROC_variable' values give unique X_name
+        masks.append( subdf["overlap"] < args.alpha )
+
+    series_mask = functools.reduce(lambda x,y: x & y, masks)
+
+    return series_mask
+
+
+def _apply_series_mask(series_mask, xnamelist, ynamelist, valuegrid, debug=False):
+    xbool = [ series_mask[xname] for xname in xnamelist ]
+    ybool = [ series_mask[yname] for yname in ynamelist ]
+
+    if debug:
+        ### debugging code ###
+        print(f"prior to masking:")
+        print(f"\t(|xnamelist|, |ynamelist|) = {(len(xnamelist), len(ynamelist))}")
+        print(f"\t(|xbool|, |ybool|) = {(len(xbool), len(ybool))}")
+        print(f"\tvaluegrid has shapes: {[valuegrid[i].shape for i in valuegrid.keys()]}")
+        ### debugging code ###
+
+    for key in valuegrid.keys():
+        try:
+            values = valuegrid[key]
+            xdrop = values[xbool,:]
+            valuegrid[key] = xdrop[:, ybool]
+        except IndexError as err:
+            print(f"Failed with err: \n{err}")
+            np.savetxt("values.txt",values)
+            np.savetxt("xbool.txt", xbool)
+            np.savetxt("ybool.txt", ybool)
+            print(f"saved out offending data in \n{os.getcwd()}\nExiting.")
+            exit()
+
+    xnamelist = list(itertools.compress(xnamelist, xbool))
+    ynamelist = list(itertools.compress(ynamelist, xbool))
+
+    if debug:
+        ### debugging code ###
+        print(f"after masking:")
+        print(f"\tlen(xnamelist, ynamelist) = {(len(xnamelist), len(ynamelist))}")
+        print(f"\tvaluegrid has shapes: {[(i,valuegrid[i].shape) for i in valuegrid.keys()]}")
+        ### debugging code ###
+
+    return xnamelist, ynamelist, valuegrid
 ########################################################################################################################
 
 # heatmap plotting
@@ -144,7 +243,6 @@ def plot_clustermaps(fpath_grid, args=None, debug=False):
 def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, check_pval=True, debug=False):
     xnamelist = [list(set(i[0]["X_type"]))[0] for i in alldata_grid]
     ynamelist = [list(set(j["Y_type"]))[0] for j in alldata_grid[0]]
-
 
     valuegrid = {}
     if check_pval:
@@ -186,9 +284,10 @@ def generate_clustermaps(
         xnamelist,
         ynamelist,
         valuegrid,
-        onelink = False,
+        onelink = True,
         linkage_var = "Wp_XY",
         cluster_method = "average",
+        alpha = None,
         log_scale = True,
         fig_size = def_fig_size,
         label_fontsize = def_label_fontsize,
@@ -202,30 +301,38 @@ def generate_clustermaps(
         print(f"Using \"{linkage_var}\" as linkage variable while generating clustermaps")
         linkvars = [linkage_var]
     else:
-        print(f"Plotting clustermaps for all (linkage_val, display_var) value pairs (including self-pairs) in {dispvars}")
+        print(f"Plotting clustermaps for all (linkage_var, display_var) value pairs (including self-pairs) in {dispvars}")
         linkvars = dispvars
 
     fig_dict = {}
 
+    if alpha is not None:
+        pval_vars = [var for var in dispvars if "pval" in var]
+    else:
+        pval_vars = None
+
     for linkage_var in linkvars:
         for display_var in dispvars:
-            if ("fwe-" in linkage_var) and ("fwe-" in display_var):
-                print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
-                continue
-            fig_dict[display_var] = plot_clustermap(
-                    xnamelist,
-                    ynamelist,
-                    valuegrid,
-                    cluster_method = cluster_method,
-                    linkage_var = linkage_var,
-                    display_var = display_var,
-                    enf_sym = True,
-                    log_scale = log_scale,
-                    fig_size = fig_size,
-                    label_fontsize = label_fontsize,
-                    outdir = outdir,
-                    write_mode = write_mode
-                    )
+            for pval_var in pval_vars:
+                if ("pval" in linkage_var) and ("pval" in display_var):
+                    print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
+                    continue
+                fig_dict[display_var] = plot_clustermap(
+                        xnamelist,
+                        ynamelist,
+                        valuegrid,
+                        cluster_method = cluster_method,
+                        linkage_var = linkage_var,
+                        display_var = display_var,
+                        alpha = alpha,
+                        pval_var = pval_var,
+                        enf_sym = True,
+                        log_scale = log_scale,
+                        fig_size = fig_size,
+                        label_fontsize = label_fontsize,
+                        outdir = outdir,
+                        write_mode = write_mode
+                        )
 
         # can i turn list figure set into something that shows everything?
 
@@ -238,6 +345,8 @@ def plot_clustermap(
         cluster_method = "average",
         linkage_var = "Wp_XY",
         display_var = "empirical_pval",
+        alpha = None,
+        pval_var = None,
         enf_sym = False,
         log_scale = True,
         label_fontsize = def_label_fontsize,
@@ -251,6 +360,7 @@ def plot_clustermap(
     linkage_vals = _enforce_symmetry(valuegrid[linkage_var], fill_val=0)
     import scipy.cluster.hierarchy as hc
     xlinkage = hc.linkage(squareform(linkage_vals), method=cluster_method, optimal_ordering=True)
+
     if debug:
         print(f"found {np.count_nonzero(xlinkage < 0)} negative linkage values") 
         print(f"found {np.count_nonzero(np.isnan(xlinkage))} NaN linkage values")
@@ -267,7 +377,7 @@ def plot_clustermap(
                 # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
             ynamelist = xnamelist
     else:
-        display_vals = valuegrid[display_var]
+        display_vals = valuegrid[display_var].copy()
 
     assert linkage_vals.shape==display_vals.shape, "linkage and display values must have same dimensions!"
     
@@ -277,6 +387,7 @@ def plot_clustermap(
     yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
     
     cm_title = f"Clustermap plot of {display_var} \n(clustered on {linkage_var})"
+
 
     if log_scale:
         display_var, display_vals, ttl_suffix = _disp_logdata(display_var, display_vals)
@@ -294,9 +405,9 @@ def plot_clustermap(
 #       print(f"xticklabels: {xticklabels[0]}")
 #       print(f"yticklabels: {yticklabels[0]}")
 
-    from compare_topostats import _plot_clustermap
+    from compare_topostats import _plot_clustermap as _pcl
 
-    g = _plot_clustermap(
+    g = _pcl(
         display_vals, 
         cluster=True,
         cluster_method=cluster_method,
@@ -317,8 +428,20 @@ def plot_clustermap(
     ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=label_fontsize)
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=label_fontsize)
 
+    if (alpha is not None) and ("pval" not in display_var):
+        # retains only display grid values corresponding to significant p-values
+        # overlays all others with an opaque gray
+        pvals = valuegrid[pval_var]
+        mask = (pvals < alpha)
+        cmap_list = ["#808080", ("#ffffff", 0.0)]
+        cmap = LinearSegmentedColormap.from_list( 'mask_overlay', cmap_list )
+        sns.heatmap(mask, ax=ax, cbar=False, cmap=cmap)
+        outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pvar}_alpha{alpha}.png".replace(" ","")
+    else:
+        outname = f"cluster-on-{linkage_var}_of-{display_var}.png".replace(" ","")
+
     if write_mode:
-        outpath = os.path.join(outdir, f"cluster-on-{linkage_var}_of-{display_var}.png").replace(" ","")
+        outpath = os.path.join(outdir, outname)
         _write_img(fig, outpath)
         plt.close()
     else:
@@ -357,7 +480,7 @@ def _disp_logdata(varname, values, disp_var=True):
 # Data wrangling functions
 ########################################################################################################################
 def pull_data(
-        fpath_grid, args, check_pval=True, data_only=True, debug=True
+        fpath_grid, args, check_pval=True, data_only=True, debug=False
         ):
 
     if data_only and args.verbose:
@@ -411,6 +534,7 @@ def _load(
 
 
     if check_pval:
+        data_df.drop( columns=["empirical_pval"], inplace=True )
         if not any(["pval" in col for col in data_df.columns]):
             data_df = fstats._add_emp_pval(data_df, permtype=permtype, tail_type=tail_type, corr_type=corr_type, null_hi=null_hi, null_lo=null_lo)
 
@@ -440,15 +564,16 @@ def _get_fpath_sets(args, debug=False):
         args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
         args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*{args.permtype}Perms.csv'
     elif args.permtype is not None:
-        args.dir_pattern=f'X_*'
+        args.dir_pattern='X_*'
         args.f_pattern = f'*_vs_*{args.permtype}Perms.csv'
     else:
-        args.dir_pattern=f'X_*'
-        args.f_pattern = f'*_vs_*.csv'
+        args.dir_pattern='X_*'
+        args.f_pattern = '*_vs_*.csv'
 
     pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
 
-    fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in glob.glob(pdir_pattern) ]
+    dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
+    fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
     fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
     [pathlist.sort() for pathlist in fpath_grid]
     
@@ -538,7 +663,7 @@ if __name__=="__main__":
         "-p",
         "--tail_type",
         type=str,
-        default="all",
+        default="two-tailed",
         help="choose between \'left\', \'right\', or \'two-tailed\' p-value calculation -- or \'all\' to calculate all 3. supports both \'fwe\' and \'fdr\' pval correction types."
     )
     parser.add_argument(
@@ -589,6 +714,13 @@ if __name__=="__main__":
         default=False,
         action="store_true",
         help="flag to visualized grouped distributions"
+    )
+    parser.add_argument(
+        "-a",
+        "--alpha",
+        default=None,
+        type=float,
+        help="significance threshold"
     )
     parser.add_argument(
         "-w",

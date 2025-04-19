@@ -1,10 +1,111 @@
+import os
 import numpy as np
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+from statsmodels.stats.multitest import fdrcorrection
 
 # computes an empirical ROC curve (and AUC) given two data distributions.
 ########################################################################################################################
+def do_ROC_analysis(
+        df_list, 
+        outdir='.', 
+        distvars=["Wp_XY", "PDY_diag"], 
+        dist_type="single",
+        write_mode=True,
+        verbose=False,
+        debug=False
+        ):
+
+    nulls = ["subject", "feature"]
+
+    auc_list = []
+    for distvar in distvars:
+        for null in nulls:
+            auc_sublist = []
+            for df in df_list:
+                df_data = df.loc[df.datatype == "Subsamp", :]
+                df_null = df.loc[df.datatype == f"{null}_Null", :]
+                names = set(df["X_name"].to_numpy())
+                if verbose:
+                    print(f"In {names}, df_data has shape {df_data.shape}, df_null has shape {df_null.shape}")
+                if debug:
+                    ### debugging code ###
+                    if df_null.empty:
+                        print(f"empty df_null for nulltype=\'{null}\' pulled from: \n{df}\n")
+                        print(f"df has datatypes={set(df.datatype)} and permtypes={set(df.permtype)}")
+                        exit()
+                    ### debugging code ###
+                if df_data.empty:
+                    # Will hold if H1 trivial for full data (nothing to bootstrap)
+                    roc = (None, None)
+                    auc = None
+                    overlap = None
+                else:
+                    try:
+                        assert len(names) == 1, "Conflating distributions for more than one brain representation type."
+                    except AssertionError as err:
+                        print(f"More than one name found: {names}")
+                        print(f"Offending dataframe written to: \n{os.getcwd()}/df_err.csv")
+                        df.to_csv('df_err.csv')
+                        exit()
+
+                    if dist_type == "single":
+                        nullnames = set(df_null["X_name"].to_numpy())
+                        try:
+                            assert names == nullnames, f"Comparing unmatched data and null distance distributions: \ndata={set(names)} \nnull={set(nullnames)}"
+                        except ValueError as err:
+                            print(f"failed for {set(names)} with error: \n{err}\n")
+                            df_data.to_csv('df_data_err.csv')
+                            df_null.to_csv('df_null_err.csv')
+                            print(f"offending dataframes saved to \'df_data_err.csv, df_null_err.csv\' in \'{os.getcwd()}\'")
+                            exit()
+
+
+                    datavals = df_data[distvar].to_numpy()
+                    nullvals = df_null[distvar].to_numpy()
+
+                    roc, auc = get_roc(datavals, nullvals)
+                    overlap = (1 - auc)
+
+                auc_dict = {
+                        "X_name": str(list(names)[0]),
+                        "permtype": null,
+                        "ROC_variable": distvar,
+                        "AUC": auc,
+                        "overlap": overlap
+                        }
+                auc_list.append( auc_dict )
+                auc_sublist.append( auc_dict )
+            auc_subdf = pd.DataFrame( data=auc_sublist )
+            if write_mode:
+                outname = f"{distvar}-{dist_type}-distplot_AUC_summary_{null}-nulls.csv"
+                outpath = os.path.join(outdir, outname)
+                auc_subdf.to_csv(outpath)
+                print(f"saved to {outpath}")
+
+    if verbose:
+        ### debugging code ###
+        print(f"auc_list has length {len(auc_list)}")
+        if debug:
+            print(f"and values \n{auc_list}")
+        ### debugging code ###
+    auc_df = pd.DataFrame( data=auc_list )
+
+    if write_mode:
+        outname = f"{'-'.join(distvars)}-{dist_type}-distplot_AUC_summary_all-null.csv"
+        outpath = os.path.join(outdir, outname)
+        auc_df.to_csv(outpath)
+        print(f"saved to {outpath}")
+
+    return auc_df
+
+
 ## set 'flip=True' if pos_dist < dist_null is expected.
-def get_roc(pos_dist, dist_null, n=0, flip=False):
-    if n < 2:
+def get_roc(pos_dist, dist_null, n=None, flip=False):
+    if n is None:
+        n = len(pos_dist) + len(dist_null)
+    elif n < 2:
         n = len(pos_dist) + len(dist_null)
 
     left_thresh = min(min(pos_dist.flatten()), min(dist_null.flatten()))
@@ -34,8 +135,9 @@ def integrate(curve):
     dy = curve[1][:-1] + np.diff(curve[1])/2    # average y-value within dx_i
     auc = (dx * dy).sum()                       # (Riemann) sum of trapezoidal areas dx_i*dy_i
     return np.abs(auc)
-########################################################################################################################
 
+
+########################################################################################################################
 
 
 # compute secondary statistics
@@ -56,7 +158,7 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
         assert all( [ set(datarow[col]) == set(nullrows[col]) for col in check_cols ] ), err_str
 
     err_msg = "extremal family-wise distributions must be provided for family-wise error (\'fwe\') p-value correction"
-    assert null_hi is not None and null_lo is not None, err_msg
+    assert (null_hi is not None) and (null_lo is not None), err_msg
 
     if debug:
         print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")
@@ -85,7 +187,11 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
             else:
                 raise ValueError(f"Unrecognized p-value type {tail}")
 
-            df[f"{corr_type}-{tail}-pval"] = empirical_pval
+            if permtype is None:
+                df[f"{corr_type}-{tail}-pval"] = empirical_pval
+            else:
+                df[f"{corr_type}-{tail}-pval_{permtype}-null"] = empirical_pval
+
     except Exception as err:
         for tail in tails:
             print(f"p-value computation failed for correction type {corr_type} with tail type {tail}: \n{err}")

@@ -1,5 +1,6 @@
 import re
 import os
+import ast
 import glob
 import scipy
 import argparse
@@ -8,9 +9,9 @@ import matplotlib
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import figstats as fstats
 from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
-from statsmodels.stats.multitest import fdrcorrection
 
 # global variables 
 
@@ -23,6 +24,7 @@ def_f_pattern =  '*_vs_*null*'
 
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
 sample_dirnames = {"perm": "permtesting", "bstrap": "subsampling"}
+eps_global = 1e-9
 
 ################################################# MAIN FUNCTION ########################################################
 ########################################################################################################################
@@ -48,6 +50,10 @@ def main(args, debug=False):
     if fpath_list is None and args.input_dir is not None:
         fpath_list = _get_fpath_list(args)
 
+
+    if args.ROC_analysis:
+        auc_df = make_AUC_plots(fpath_list, args, debug=debug)
+
     if args.solo_plots:
         args.fig_size=(8,8)
         make_solo_plots(fpath_list, dist_type="single", args=args)
@@ -60,7 +66,10 @@ def main(args, debug=False):
         args.fig_size=(6,12)
         make_distribution_plots(fpath_list, dist_type="single", args=args, verbose=args.verbose)
 
-    return None
+    if args.ROC_analysis:
+        return auc_df
+    else:
+        return None
 
 ############################################ FIGURE MAKING FUNCTIONS ###################################################
 ########################################################################################################################
@@ -75,7 +84,7 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, debug=False):
     
     aesthetic_renamer, denamer = get_better_names(dist_type)
 
-    for x_var in [ aesthetic_renamer[i] for i in ["Wp_XY", "PDY_diag"] ]:
+    for x_var in [ aesthetic_renamer[var] for var in ["Wp_XY", "PDY_diag"] ]:
         for (df, outdir) in list(zip(merged_df_list, solo_outdirs)):
             if df.empty:
                 continue
@@ -103,6 +112,26 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, debug=False):
     return merged_df_list
 
 
+def make_AUC_plots(fpath_list, args, debug=False):
+
+    df_list = merged_dfs(fpath_list, dist_type="single", verbose=debug, debug=debug)
+
+    if debug:
+        ### debugging code ###
+        print(f"All datatypes in df_list: {set([tuple(set(df.datatype)) for df in df_list])}")
+        ### debugging code ###
+    outdir = os.path.join(args.output_dir, "ROC_analysis")
+    auc_df = fstats.do_ROC_analysis(
+                                    df_list,
+                                    outdir=outdir,
+                                    distvars=["Wp_XY", "PDY_diag"], 
+                                    write_mode=args.write_mode
+                                    )
+    if args.write_mode:
+        AUC_posthoc(auc_df, outdir=outdir, alpha=args.alpha)
+
+    return auc_df
+
 
 def make_agg_plots(fpath_list, args):
     alldata_list = [ _load(fpath, enforce_match=args.enforce_match) for fpath in fpath_list ]
@@ -128,6 +157,7 @@ def make_agg_plots(fpath_list, args):
                 write_mode=args.write_mode, 
                 outdir=args.output_dir
                 )
+    return None
 
 
 def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=False, verbose=True):
@@ -170,9 +200,9 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
                         if dist_type=="pair":
                             df = subselect_pairs(
                                     alldata_df.copy(),
-                                    x_var=x_var,
-                                    row_var=row_var,
-                                    col_var=col_var
+                                    x_var=denamer[x_var],
+                                    row_var=denamer[row_var],
+                                    col_var=denamer[col_var]
                                     )
                         elif dist_type=="single":
                             df = alldata_df.copy()
@@ -186,10 +216,10 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
                             plotvars={"y_var": distvar, "x_var": x_var, "hue_var": hue_var, "row_var": row_var, "col_var": col_var}
                             print(f"plotting distributional category plot with plotvars \n{plotvars} \nof dataframe with columns \n{df.columns.values}")
 
-                        df.rename( mapper=aesthetic_renamer , axis=1, inplace=True )
+                        plot_df = df.rename( mapper=aesthetic_renamer , axis=1 )
 
                         distribution_catplot(
-                                df,
+                                plot_df,
                                 x_var = x_var,
                                 y_var = distvar,
                                 hue_var = hue_var,
@@ -201,6 +231,7 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
                                 write_mode=args.write_mode, 
                                 outdir=args.output_dir
                                 )
+    return None
 
     
 ########################################################################################################################
@@ -214,7 +245,7 @@ def one_displot(
         col_var=None,
         regularize=True,
         log_scale=True,
-        epsilon=1e-8,
+        epsilon=eps_global,
         fig_title=None, 
         fig_size=def_fig_size,
         denamer=None,
@@ -299,7 +330,7 @@ def agg_displot(
         hue_var="metric",
         regularize=True,
         log_scale=True,
-        epsilon=1e-8,
+        epsilon=eps_global,
         fig_title=None, 
         fig_size=def_fig_size,
         write_mode=True,
@@ -355,7 +386,7 @@ def distribution_catplot(
         dist_type="single",
         regularize=True,
         log_scale=True,
-        epsilon=1e-8,
+        epsilon=eps_global,
         fig_title=None, 
         fig_size=def_fig_size,
         spec_string=None,
@@ -426,8 +457,59 @@ def distribution_catplot(
 ########################################################################################################################
     
 
-# compute secondary statistics
+# AUC_plotting functions
 ########################################################################################################################
+# post-hoc analysis of aggregated AUC data
+def AUC_posthoc(df, outdir=None, alpha=0.01, epsilon=eps_global, x_var="reg_overlap", row_var="permtype", col_var="ROC_variable"):
+    if x_var not in df.columns.values:
+        df[x_var] = df["overlap"] + epsilon
+    if outdir is None:
+        outdir = os.getcwd()
+
+    AUC_displot(df, outdir, alpha=alpha, x_var=x_var, row_var=row_var, col_var=col_var)
+    sig_relplot(df, outdir, alpha=alpha, x_var=x_var, hue_var=row_var, style_var=col_var)
+    return None
+
+def AUC_displot(df, outdir, alpha=0.01, x_var="reg_overlap", row_var="permtype", col_var="ROC_variable"):
+    g = sns.displot(
+            data = df, 
+            x=x_var, col=col_var, row=row_var, 
+            log_scale=True)
+
+    g.refline(x=alpha, color='r', linestyle='--')
+    g.fig.suptitle("Distributions of AUC over Brain Reps", fontsize='x-large', y=1)
+    g.fig.subplots_adjust(top=0.95)
+
+    outname = f"AUC_histograms_alpha{alpha}.png".replace("0.","")
+    outpath = os.path.join(outdir, outname)
+    _write_img(g.fig, outpath, fig_size=None)
+    return None
+
+def sig_relplot(df, outdir, alpha=0.01, x_var="reg_overlap", hue_var="permtype", style_var="ROC_variable"):
+    sig_list = []
+    thresh_range = np.logspace(-6, 0, 1000)
+    t_var = "log-alpha(t)"
+    y_var = "N_significant"
+    style_renamer = {"Wp_XY": "dist. to PD(X)", "PDY_diag": "dist. to emtpy dgm"}
+    for i in df[hue_var].unique():
+        for j in df[style_var].unique():
+                submask = (df[hue_var]==i) & (df[style_var]==j)
+                p = [sum(df.loc[submask, x_var] < t) for t in thresh_range]
+                sig_list.append( {"subset": f"{i}-{j}", t_var: np.log10(thresh_range), y_var: p, hue_var: i, style_var: style_renamer[j]} )
+                asig = df.loc[submask, x_var] < alpha
+                print(f"at alpha={alpha}, {sum(asig)} of {len(asig)} {i}-{j} entries are significant.")
+
+    sig_df = pd.concat( [ pd.DataFrame(i) for i in sig_list ], ignore_index=True )
+
+    g = sns.relplot(sig_df, x=t_var, y=y_var, hue=hue_var, style=style_var, kind="line")
+    g.refline(x=np.log10(alpha), color='r', linestyle=':')
+    g.fig.suptitle("Number of signifcantly non-noise brain representations", fontsize='x-large', y=1)
+    g.fig.subplots_adjust(top=0.95)
+
+    outname = f"significance_counts_alpha{alpha}.png".replace("0.","")
+    outpath = os.path.join(outdir, outname)
+    _write_img(g.fig, outpath, fig_size=None)
+    return None
 ########################################################################################################################
 
 
@@ -561,16 +643,32 @@ def _get_fpath_types(fpath, dist_type="single"):
     return (featnullspath, subjnullspath, subsamplepath), outdir, name
 
 
-def merged_dfs(fpath_list, dist_type="single", debug=False):
+def merged_dfs(fpath_list, dist_type="single", debug=False, verbose=False):
     fpath_groups = list(set([ _get_fpath_types(fpath, dist_type=dist_type)[0] for fpath in fpath_list ]))
     merged_df_list = [ get_merge_df(group) for group in fpath_groups ]
-    
+
+    if verbose:
+        if dist_type=="single":
+            print(f"evaluating {len(merged_df_list)} merged dataframes.")
+            for i,df in enumerate(merged_df_list):
+                name = os.path.basename(fpath_groups[i][-1]).replace("bsdists_","").replace(".csv","")
+                if debug:
+                    datamask = (df.datatype=="Subsamp") | (df.datatype=="Data")
+                    df_data = df.loc[datamask,:]
+                    if len(df_data) < 1000:
+                        print(f"found incomplete or empty subsampling/data (shape={df_data.shape}) at path: \n{fpath_groups[i][-1]}")
+                        _ = _get_orig_bars(fpath_groups[i][-1], homdim=1)
+                    else:
+                        print(f"subsampling data (shape={df_data.shape}) passes inspection -- found at path: \n{fpath_groups[i][-1]}")
+                print(f"merged_df from \'{name}\' paths has shape {df.shape}\n")
+
     if debug:
-        merged_df_list[-1].to_csv("df_tmp.csv")
+        ### debugging code ###
+        merged_df_list[-1].to_csv("df_tmp.csv")       
         with open("fpath_group.txt",'w') as fin:
             for fpath in fpath_groups[-1]:
                 fin.write(f"{fpath}\n")
-
+        ### debugging code ###
     return merged_df_list
 
 def get_merge_df(fpath_group):
@@ -593,7 +691,7 @@ def get_merge_df(fpath_group):
     return merge_df
 
 
-def subselect_pairs(df, x_var="modality", row_var=None, col_var=None, debug=False, verbose=False):
+def subselect_pairs(df, x_var="modality", denamer=None, row_var=None, col_var=None, debug=True, verbose=False):
     if verbose:
         inputs = {
                 "x_var": x_var,
@@ -649,6 +747,10 @@ def _unify_df(df, fpath=None):
 
     if df.empty:
         return df
+
+    # I'm never changing a naming convention again, even if it's terrible; this has been so annoying to deal with
+    cols = [ col for col in df.columns.values if ("metric" in col) or ("name" in col) ]
+    df[cols] = df[cols].applymap( lambda x: x.replace("Psim_ztrans", "Psim-ztrans") )
 
     if "X_type" in df.columns.values:
         df.rename( mapper={"X_type":"X_name"}, axis=1, inplace=True )
@@ -708,10 +810,34 @@ def _unify_df(df, fpath=None):
 
     return df
 
+def _get_orig_bars(
+        bsdist_fpath, 
+        homdim=1, 
+        basedir="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/full-scale-expmt"
+        ):
+    xname = os.path.basename(bsdist_fpath).replace("bsdists","phom_data").replace(".csv","_dists")
+    searchdir = os.path.join(basedir, "within*", "*_*", xname)
+    
+    [bars_fpath] = glob.glob(os.path.join(searchdir, "phom_X.txt"))     # should have exactly 1 result
+    barlines = []
+    with open(bars_fpath, 'r') as fin:
+        phom = fin.read().split('\n')
+
+    idx = phom.index("persistent homology intervals in dim 1:")
+    barlines = phom[idx+1:-1]           # assumes all files have \n or EOF char as last line
+    print(f"Found {int(len(barlines)/3)} H1 bars in original data at path: \n{bars_fpath}:")
+    if len(barlines) > 0:
+        print("with values:")
+        for line in barlines:
+            print(line)
+        [b1match_fpath] = glob.glob(os.path.join(searchdir, "B1match_dim1_n1000.txt"))     # should have exactly 1 result
+        b1match_vec = np.loadtxt(b1match_fpath)
+        print(f"Of {len(b1match_vec)} recorded attempted matches, {np.count_nonzero(b1match_vec)} produced matches with nonzero affinity. ref:\n{b1match_fpath}")
+    return None
 
 def _add_data_slice(df):
     df.loc[-1] = df.loc[0].copy()
-    df.loc[-1, "dataype"] = "Data"
+    df.loc[-1, "datatype"] = "Data"
     df.loc[-1, "Wp_XXhat_i"] = 0
     df.loc[-1, "PDXhat_diag_i"] = df.loc[-1, "PDX_diag"]
     return df
@@ -777,11 +903,18 @@ if __name__=="__main__":
         help="flag to perform solo plots"
     )
     parser.add_argument(
+        "-R",
+        "--ROC_analysis",
+        default=False,
+        action="store_true",
+        help="flag to perform ROC analysis"
+    )
+    parser.add_argument(
         "-A",
         "--aggregate_plots",
         default=False,
         action="store_true",
-        help="flag to perform solo plots"
+        help="flag to perform aggregate plots"
     )
     parser.add_argument(
         "-D",
@@ -838,6 +971,13 @@ if __name__=="__main__":
         default=False,
         action="store_true",
         help="apply log10 to display values (collapse difference)"
+    )
+    parser.add_argument(
+        "-a",
+        "--alpha",
+        default=0.01,
+        type=float,
+        help="significance threshold"
     )
     parser.add_argument(
         "-v",
