@@ -21,7 +21,6 @@ from statsmodels.stats.multitest import fdrcorrection
 
 def_fig_size = (24, 24)
 def_label_fontsize = 7 
-
 def_pattern='*X_*_dists'
 
 
@@ -78,8 +77,9 @@ def main(args, debug=False):
 ########################################################################################################################
 def one_pair_plot(fpath, fig_title=None, verbose=True, debug=False):
     full_df = pd.read_csv(fpath, index_col=0)
-    data_df = full_df[ full_df["datatype"]!="Null" ]
-    null_df = full_df[ full_df["datatype"]=="Null" ]
+    null_mask = full_df["datatype"].str.contains("Null")
+    data_df = full_df[ ~null_mask ]
+    null_df = full_df[ null_mask ]
 
     # compute p-value from two-tailed test against empirical CDF (enforcing inf(p)=1/N)
     data_pval = 1 - np.mean(data_df > null_df["Wp_XY"].to_numpy())
@@ -493,14 +493,21 @@ def pull_data(
         null_lo = None
         null_hi = None
     
-    alldata_grid = [ 
-                    [ futils._load(
-        fpath, load_type="pair",
-        data_only=data_only, permtype=args.permtype,
-        check_pval=check_pval, tail_type=args.tail_type, 
-        corr_type=args.corr_type, null_hi=null_hi, null_lo=null_lo,
-        ) for fpath in X_sublist ] 
-                    for X_sublist in fpath_grid ]
+    alldata_grid = [ [ futils._load(
+        fpath, 
+        load_type="pair",
+        data_only=data_only, 
+        permtype=args.permtype,
+        check_pval=check_pval
+        ) for fpath in X_sublist ] for X_sublist in fpath_grid ]
+    alldata_grid = [ [ fstats._add_emp_pval(
+        df, 
+        permtype=args.permtype, 
+        tail_type=args.tail_type, 
+        corr_type=corr_type, 
+        null_hi=null_hi, 
+        null_lo=null_lo
+        ) for df in df_list ] for df_list in alldata_grid ]
 
     if debug:
         ### debugging code ###

@@ -15,7 +15,6 @@ from scipy.spatial.distance import squareform
 
 dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "PDX_diag", "PDY_diag"]
 # dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "permtype"]
-def_fig_size = (24, 24)
 
 def main(args, debug=False):
     if args.pattern_restriction is not None:
@@ -123,7 +122,7 @@ def one_displot(
         col_var=None,
         hue_var=None,
         fig_title=None,
-        fig_size=def_fig_size,
+        fig_size=None,
         extrema_only=False,
         legend=True,
         log_scale=True,

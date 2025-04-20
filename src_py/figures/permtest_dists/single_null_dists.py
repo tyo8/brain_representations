@@ -16,7 +16,6 @@ from scipy.spatial.distance import squareform
 
 # global variables 
 
-def_fig_size = (24, 24)
 def_label_fontsize = 7 
 
 def_dir_pattern = 'within_*'
@@ -24,7 +23,6 @@ def_f_pattern =  '*_vs_*null*'
 # exp_outtype="/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/phom_analysis/stability_distances/exp_results/null_vs_grad/permtesting/X_grad200_Maps_Psim_dists/data_vs_subjectnull_grad100_Maps_Psim_OR_inner.csv"
 
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
-sample_dirnames = {"perm": "permtesting", "bstrap": "subsampling"}
 eps_global = 1e-9
 
 ################################################# MAIN FUNCTION ########################################################
@@ -83,7 +81,7 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, debug=False):
 
     solo_outdirs = [ futils._get_fpath_types(group[0], dist_type=dist_type)[1] for group in fpath_groups ]
     
-    aesthetic_renamer, denamer = get_better_names(dist_type)
+    aesthetic_renamer, denamer = futils.get_better_names(dist_type)
 
     for x_var in [ aesthetic_renamer[var] for var in ["Wp_XY", "PDY_diag"] ]:
         for (df, outdir) in list(zip(merged_df_list, solo_outdirs)):
@@ -169,7 +167,7 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
     if verbose:
         print(f"total collected dataframe (distribution plots): \n{alldata_df}")
 
-    aesthetic_renamer, denamer = get_better_names(dist_type)
+    aesthetic_renamer, denamer = futils.get_better_names(dist_type)
 
     groupings = [None, aesthetic_renamer["modality"], aesthetic_renamer["feature"], aesthetic_renamer["metric"] ]
 #    if "permtype" in alldata_df.columns.values:
@@ -248,7 +246,7 @@ def one_displot(
         log_scale=True,
         epsilon=eps_global,
         fig_title=None, 
-        fig_size=def_fig_size,
+        fig_size=None,
         denamer=None,
         write_mode=True,
         outdir=os.getcwd(),
@@ -333,7 +331,7 @@ def agg_displot(
         log_scale=True,
         epsilon=eps_global,
         fig_title=None, 
-        fig_size=def_fig_size,
+        fig_size=None,
         write_mode=True,
         outdir=os.getcwd(),
         verbose=True, 
@@ -389,7 +387,7 @@ def distribution_catplot(
         log_scale=True,
         epsilon=eps_global,
         fig_title=None, 
-        fig_size=def_fig_size,
+        fig_size=None,
         spec_string=None,
         denamer=None,
         write_mode=True,

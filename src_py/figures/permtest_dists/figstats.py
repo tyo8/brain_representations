@@ -161,14 +161,15 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
 
     Wp_XY = datarow["Wp_XY"].to_numpy()
     if corr_type == "fdr":
-        nullrows = df[df["datatype"] == "Null"]
+        null_mask = df["datatype"].str.contains("Null")
         if permtype is not None:
-            nullrows = nullrows[ nullrows["permtype"] == permtype ]
-        null_lo = nullrows["Wp_XY"].to_numpy()
-        null_hi = nullrows["Wp_XY"].to_numpy()
+            null_mask = null_mask & (df["permtype"] == permtype)
+        null_df = df[ null_mask ]
+        null_lo = null_df["Wp_XY"].to_numpy()
+        null_hi = null_df["Wp_XY"].to_numpy()
         check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
-        err_str =  f"data row and null rows are not of matching type: \n{[[col, set(datarow[col]), set(nullrows[col])] for col in check_cols]}"
-        assert all( [ set(datarow[col]) == set(nullrows[col]) for col in check_cols ] ), err_str
+        err_str =  f"data row and null rows are not of matching type: \n{[[col, set(datarow[col]), set(null_df[col])] for col in check_cols]}"
+        assert all( [ set(datarow[col]) == set(null_df[col]) for col in check_cols ] ), err_str
 
     err_msg = "extremal family-wise distributions must be provided for family-wise error (\'fwe\') p-value correction"
     assert (null_hi is not None) and (null_lo is not None), err_msg
