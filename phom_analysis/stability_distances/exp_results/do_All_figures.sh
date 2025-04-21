@@ -10,23 +10,11 @@ null_solo_srcpath="${srcdir}/single_null_dists.py"
 
 declare -a rstr=("Psim" "geodesic" "Maps" "Amps" "NM" "inner")	# restriction strings 
 declare -a subsmp=("perm" "bstrap")				# sampling types
-declare -a corrs=("fwe" "fdr")					# mulitple-comparision corrections
+declare -a corrs=("fdr" "fwe")					# mulitple-comparision corrections
 declare -a perms=("subject" "feature")				# permutation types
 declare -a alphas=(0.01 0.05)					# significance threshold values
 
 solo_indir="$(dirname ${indir})"
-
-# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
-python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -D -A -S -L -v -w
-printf "\n#################################################################################################\n\n"
-python ${extremals_srcpath} -i ${indir} -o ${outdir} -P "subject" -L -E -v -w
-echo "debugging run completed; exiting."; exit
-
-for alpha in ${alphas[@]}
-do
-	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}" -a ${alpha} -v -w -R 
-	printf "\n#################################################################################################\n\n"
-done
 
 for P in ${perms[@]}
 do
@@ -36,13 +24,21 @@ do
 		do
 			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -w -v
 			printf "\n#################################################################################################\n\n"
-			# echo "debugging run completed; exiting."; exit
 		done
-		python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -L -C -w -v
-		printf "\n#################################################################################################\n\n"
 	done
 	python ${extremals_srcpath} -i ${indir} -o ${outdir} -P ${P} -L -v -w
 	python ${extremals_srcpath} -i ${indir} -o ${outdir} -P ${P} -L -E -v -w
+	printf "\n#################################################################################################\n\n"
+done
+
+# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
+python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -D -A -L -v -w
+printf "\n#################################################################################################\n\n"
+python ${extremals_srcpath} -i ${indir} -o ${outdir} -P "subject" -L -E -v -w
+
+for alpha in ${alphas[@]}
+do
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}" -a ${alpha} -v -w -R 
 	printf "\n#################################################################################################\n\n"
 done
 
@@ -78,5 +74,6 @@ do
 done
 
 # 'solo pair' figures (-S flag): full null+bootstrap paired-distance distributions for every representation pair
-# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -L -S -w -v
+python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -Z -S -v -w
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -L -S -w -v
 printf "\n#################################################################################################\n\n"

@@ -49,9 +49,17 @@ def main(args, debug=False):
     if fpath_list is None and args.input_dir is not None:
         fpath_list = futils._get_fpath_list(args)
 
-
     if args.ROC_analysis:
         auc_df = make_AUC_plots(fpath_list, args, debug=debug)
+        auc_mask = futils._get_auc_mask(auc_df=auc_df, args=args)
+    else:
+        auc_mask = futils._get_auc_mask(fpath_list=fpath_list, args=args)
+
+    if args.AUC_filter:
+        print(f"Filtering by AUC significance (at alpha={args.alpha})")
+        call_mask = lambda x: auc_mask[x]
+        fpath_list = [ fpath for fpath in fpath_list if call_mask("_".join(futils._parse_fpath(fpath, pathtype="solo"))) ]
+        print(f"Retained {len(fpath_list)} filepaths.")
 
     if args.solo_plots:
         args.fig_size=(8,8)
@@ -62,7 +70,7 @@ def main(args, debug=False):
         make_agg_plots(fpath_list, args)
 
     if args.distribution_plots:
-        args.fig_size=(6,12)
+        args.fig_size=None
         make_distribution_plots(fpath_list, dist_type="single", args=args, verbose=args.verbose)
 
     if args.ROC_analysis:
@@ -81,7 +89,7 @@ def make_solo_plots(fpath_list, dist_type="single", args=None, debug=False):
 
     solo_outdirs = [ futils._get_fpath_types(group[0], dist_type=dist_type)[1] for group in fpath_groups ]
     
-    aesthetic_renamer, denamer = futils.get_better_names(dist_type)
+    aesthetic_renamer, denamer = futils.get_aesthetic_names(dist_type)
 
     for x_var in [ aesthetic_renamer[var] for var in ["Wp_XY", "PDY_diag"] ]:
         for (df, outdir) in list(zip(merged_df_list, solo_outdirs)):
@@ -167,12 +175,9 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
     if verbose:
         print(f"total collected dataframe (distribution plots): \n{alldata_df}")
 
-    aesthetic_renamer, denamer = futils.get_better_names(dist_type)
+    aesthetic_renamer, denamer = futils.get_aesthetic_names(dist_type)
 
     groupings = [None, aesthetic_renamer["modality"], aesthetic_renamer["feature"], aesthetic_renamer["metric"] ]
-#    if "permtype" in alldata_df.columns.values:
-#        hue_vars = ["datatype", "permtype"]
-#    else:
     hue_vars = ["datatype"]
     if dist_type=="single":
         distvars = [aesthetic_renamer["Wp_XY"], aesthetic_renamer["PDY_diag"]]
@@ -354,6 +359,8 @@ def agg_displot(
 
     if write_mode:
         outname = "nulldists.png"
+        permtype = '-'.join(list(df["permtype"].unique()))
+        outname = outname.replace(f"nulldists",f"{permtype}-nulldists")
         if log_scale:
             outname = outname.replace("nulldists","nulldists-log")
         for var in ['x', 'y', 'hue', 'row', 'col']:
@@ -651,6 +658,13 @@ if __name__=="__main__":
         help="turn off modality + feature + metric match enforcement between data and null"
     )
     parser.add_argument(
+        "-Z",
+        "--AUC_filter",
+        default=True,
+        action="store_false",
+        help="filter to retain only significantly non-noise brain reps"
+    )
+    parser.add_argument(
         "-F",
         "--fpathlist_path",
         type=str,
@@ -667,7 +681,7 @@ if __name__=="__main__":
     parser.add_argument(
         "-a",
         "--alpha",
-        default=0.01,
+        default=0.05,
         type=float,
         help="significance threshold"
     )

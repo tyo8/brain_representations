@@ -201,16 +201,16 @@ def one_displot(
         g = sns.displot(df, x=x_var, y=y_var, row=row_var, col=col_var, hue=hue_var, log_scale=log_scale, rug=False, legend=legend)
 
     if write_mode:
-        outname = "pairs_nulldists.png"
+        basename = "pairs_nulldists"
+        outname = f"{basename}.png"
+        permtype = '-'.join(list(df["permtype"].unique()))
+        outname = outname.replace(f"{basename}",f"pairs_{permtype}-nulldists-extremal")
         if log_scale:
-            outname = outname.replace("pairs_nulldists","pairs_nulldists-log")
-        if extrema_only:
-            permtype = '-'.join(list(df["permtype"].unique()))
-            outname = outname.replace("pairs_nulldists",f"pairs_{permtype}-nulldists-extremal")
+            outname = outname.replace(f"{basename}","{basename}-log")
         for var in ['x', 'y', 'hue', 'row', 'col']:
             varname = eval(f"{var}_var")
             if varname is not None:
-                outname = outname.replace("pairs_nulldists", f"pairs_nulldists_{var}-{varname}")
+                outname = outname.replace(f"{basename}", f"{basename}_{var}-{varname}")
         outpath = os.path.join(outdir, outname)
         futils._write_img(g.fig, outpath, fig_size=fig_size)
         plt.close()

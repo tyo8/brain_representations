@@ -274,8 +274,8 @@ def _pull_feat_num(rank, feature):
         raise Exception("Unrecognized feature type")
     return int(feat_num)
 
-def _parse_fpath(fpath, pathtype="single", metric=True):
-    if pathtype=="single":
+def _parse_fpath(fpath, pathtype="solo", metric=True):
+    if pathtype=="solo":
         if "subsampling" in fpath:
             longname = os.path.basename(fpath).split('.')[0].replace("bsdists_","")
         else:
@@ -381,16 +381,16 @@ def get_merge_df(fpath_group):
 
     return merge_df
 
-def get_better_names(dist_type):
+def get_aesthetic_names(dist_type):
     if dist_type=="single":
-        better_Wp_name = "Wasserstein distance (full vs. null/subsamp)"
+        aesthetic_Wp_name = "Wasserstein distance (full vs. null/subsamp)"
     elif dist_type=="pair":
-        better_Wp_name = "Wasserstein distance (paired full/null/subsamp BRs)"
+        aesthetic_Wp_name = "Wasserstein distance (paired full/null/subsamp BRs)"
 
     renamer = {
-            "Wp_XY": better_Wp_name, 
+            "Wp_XY": aesthetic_Wp_name, 
             "PDY_diag": "Wasserstein distance from empty diagram",
-            "modality": "Brain parcellation", 
+            "modality": "Reduction algorithm", 
             "feature": "Feature",
             "metric": "Metric"
             }
@@ -415,38 +415,46 @@ def _write_img(fig, outpath, fig_size=def_fig_size):
 
 
 ########################################################################################################################
-def _get_auc_mask(args=None, auc_df=None, alpha=None, debug=False):
+def _get_auc_mask(args=None, auc_df=None, fpath_list=None, alpha=None, debug=False):
     if auc_df is None:
         solo_args = copy.deepcopy(args)
-        solo_args.distribution_plots = False
-        solo_args.aggregate_plots = False
-        solo_args.solo_plots = False
-        solo_args.ROC_analysis = True
-
-        solo_args.input_dir = os.path.dirname(args.input_dir)
-        solo_args.search_pattern = None
-        solo_args.dir_pattern = "within_*"
-        solo_args.sample_type = "bstrap"
-
         solo_args.enforce_match = True
         solo_args.write_mode = False
-        if debug:
-            ### debugging code ###
-            solo_args.verbose = True
-            print(f"arguments initialized as: \n{solo_args}")
-            ### debugging code ###
-        else:
-            solo_args.verbose = False
 
-        from single_null_dists import main
-        df = main(solo_args)
+        if "permtype" not in vars(solo_args).keys():
+            solo_args.permtype = "subject"
+        if fpath_list is None:
+            solo_args.ROC_analysis = True
+            solo_args.AUC_filter = False
+            solo_args.distribution_plots = False
+            solo_args.aggregate_plots = False
+            solo_args.solo_plots = False
+            solo_args.input_dir = os.path.dirname(args.input_dir)
+            solo_args.search_pattern = None
+            solo_args.dir_pattern = "within_*"
+            solo_args.sample_type = "bstrap"
+
+            if debug:
+                ### debugging code ###
+                solo_args.verbose = True
+                print(f"arguments initialized as: \n{solo_args}")
+                ### debugging code ###
+            else:
+                solo_args.verbose = False
+
+            from single_null_dists import main
+            df = main(solo_args)
+        else:
+            from single_null_dists import make_AUC_plots
+            solo_args.outdir = None
+            df = make_AUC_plots(fpath_list, solo_args)
 
         if debug:
             ### debugging code ###
             print(f"auc_dataframe has values: \n{df}")
             ### debugging code ###
         
-        df = df[ df["permtype"]==args.permtype ]
+        df = df[ df["permtype"]==solo_args.permtype ]
     else:
         df = auc_df
 

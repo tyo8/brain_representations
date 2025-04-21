@@ -125,7 +125,11 @@ def make_clustermaps(fpath_grid, args=None, debug=False):
                 fname = f"alldata_col{i}_row{j}.csv"
                 df.to_csv(os.path.join(intm_dir, fname))
 
-    xnamelist, ynamelist, value_set = _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars)
+    xnamelist, ynamelist, value_set = _get_heatmap_inputs(
+            alldata_grid, 
+            clustermap_vars=def_clustermap_vars, 
+            enforce_symmetry=True
+            )
 
     if debug:
         for name in list(value_set.keys()):
@@ -156,7 +160,14 @@ def make_clustermaps(fpath_grid, args=None, debug=False):
 
 # heatmap plotting
 ########################################################################################################################
-def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, check_pval=True, debug=True):
+def _get_heatmap_inputs(
+        alldata_grid, 
+        clustermap_vars=def_clustermap_vars, 
+        enforce_symmetry=True, 
+        check_pval=True, 
+        verbose=True,
+        debug=False
+        ):
     xnamelist = [i[0]["X_name"].unique()[0] for i in alldata_grid]
     ynamelist = [j["Y_name"].unique()[0] for j in alldata_grid[0]]
 
@@ -165,10 +176,15 @@ def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, check
         pval_vars = [ varname for varname in alldata_grid[0][0].columns.values if "pval" in varname ]
         clustermap_vars = clustermap_vars + pval_vars
 
+
     for varname in clustermap_vars:
         try:
             vals = np.squeeze(np.array([[j[varname].to_numpy() for j in i] for i in alldata_grid]))
-            if debug:
+            if "pval" in varname:
+                vals = _sym_pvals(vals, varname=varname)
+            else:
+                vals = _enforce_symmetry(vals, fill_val = 0)
+            if verbose:
                 print(f"variable {varname} has grid of values with shape: {vals.shape}")
         except ValueError:
             new_entry = [[j[varname].to_numpy() for j in i] for i in alldata_grid]
@@ -191,11 +207,24 @@ def _get_heatmap_inputs(alldata_grid, clustermap_vars=def_clustermap_vars, check
         ### debugging code ###
         print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
         print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
+    if verbose:
         print(f"Entries in list of grid values have the following shapes: \n{[value_set[var].shape for var in list(value_set.keys())]}")
         # print("First entry in value_set: ", np.array(value_set[clustermap_vars[0]]))
         print(f"Generating one heatmap for each of the following set of variables: \n{list(value_set.keys())}")
         print("")
         ### debugging code ###
+
+    if enforce_symmetry:
+        print(f"enforced symmetry in variables: \'{clustermap_vars}\'.")
+        for i in ynamelist:
+            ynamelist = [xnamelist[0]].append(i)
+        try:
+            assert xnamelist == ynamelist
+        except AssertionError:
+            if debug:
+                print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
+                # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
+            ynamelist = xnamelist
     return xnamelist, ynamelist, value_set
 
 
@@ -211,6 +240,7 @@ def generate_clustermaps(
         fig_size = def_fig_size,
         label_fontsize = def_label_fontsize,
         outdir = None,
+        verbose = True,
         write_mode = True
         ):
     dispvars = list(value_set.keys())
@@ -231,19 +261,20 @@ def generate_clustermaps(
         left_pval = [var for var in pval_vars if "left" in var][0]
 
         # create logical significance arrays
-        sig_list = [ _enforce_symmetry(value_set[var], fill_val = 1) < alpha for var in pval_vars]
-        
-        # define significance array for sig_list U sig_right
-        pval_vars.append(left_pval.replace("left","left-right"))
-        sig_list.append( sig_list[pval_vars.index(left_pval)] | sig_list[pval_vars.index(left_pval.replace("left","right"))] )
-
+        sig_list = [ value_set[var] < alpha for var in pval_vars ]
         # 'mask' (in sns.heatmap) hides values at coordinate if mask(coord)=True; retain values by setting mask(coord)=False.
         masks = [ ~sig for sig in sig_list ]
+        # show one unmasked plot as well (write it out last)
+        pval_vars.append(None)
+        masks.append(None)
     else:
         pval_vars = [None]
         masks = [None]
 
     dispvars = [var for var in dispvars if var not in pval_vars]
+    if verbose:
+        print(f"display vars: {dispvars}")
+        print(f"p-value vars: {pval_vars}")
 
     for linkage_var in linkvars:
         for display_var in dispvars:
@@ -262,7 +293,6 @@ def generate_clustermaps(
                         alpha = alpha,
                         pval_var = pval_var,
                         mask = mask,
-                        enf_sym = True,
                         log_scale = log_scale,
                         fig_size = fig_size,
                         label_fontsize = label_fontsize,
@@ -284,7 +314,6 @@ def plot_clustermap(
         alpha = None,
         pval_var = None,
         mask = None,
-        enf_sym = False,
         log_scale = True,
         label_fontsize = def_label_fontsize,
         fig_size = def_fig_size,
@@ -293,9 +322,8 @@ def plot_clustermap(
         debug = False
         ):
 
-    print(f"enforcing symmetry in \'{linkage_var}\' linkage values.")
-    linkage_vals = _enforce_symmetry(value_set[linkage_var], fill_val=0)
     import scipy.cluster.hierarchy as hc
+    linkage_vals = value_set[linkage_var]
     xlinkage = hc.linkage(squareform(linkage_vals), method=cluster_method, optimal_ordering=True)
 
     if debug:
@@ -303,39 +331,31 @@ def plot_clustermap(
         print(f"found {np.count_nonzero(np.isnan(xlinkage))} NaN linkage values")
         print(f"found {np.count_nonzero(np.isinf(xlinkage))} infinite linkage values")
 
-    if enf_sym:
-        print(f"enforcing symmetry in \'{display_var}\' display values.")
-        display_vals = _enforce_symmetry(value_set[display_var], fill_val=0)
-        try:
-            assert xnamelist == ynamelist
-        except AssertionError:
-            if debug:
-                print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
-                # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
-            ynamelist = xnamelist
-    else:
-        display_vals = value_set[display_var].copy()
+    display_vals = value_set[display_var].copy()
 
     assert linkage_vals.shape==display_vals.shape, "linkage and display values must have same dimensions!"
     
-    print(f"Plotting grid of '{display_var}' values...")
+    print(f"Plotting '{display_var}' values (clustered on \'{linkage_var}\')...")
 
     xticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in xnamelist]
     yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
     
     cm_title = f"Clustermap plot of {display_var} \n(clustered on {linkage_var})"
 
+    if np.nanmin(mask):
+        # i.e., if all mask values are "True"
+        print("Skipped clustermap. Total masking by pval_var=\'{pval_var}\' at alpha=\'{alpha}\' for: \n\t\t{cm_title}")
+        return None
 
     if log_scale:
-        display_var, display_vals, ttl_suffix = _disp_logdata(display_var, display_vals)
+        display_var, display_vals, ttl_suffix = _disp_logdata(display_var, display_vals, mask=mask)
         cm_title = cm_title + ttl_suffix
 
 
-    if (mask is not None) and ("pval" not in display_var):
+    if ("pval" not in display_var) and (alpha is not None):
         print(f"Masking \'{display_var}\' plot by \'{pval_var}\'...")
         outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
     else:
-        mask = None
         outname = f"cluster-on-{linkage_var}_of-{display_var}.png".replace(" ","")
 
         
@@ -384,12 +404,9 @@ def plot_clustermap(
     return g
 
 # heatmap plot utility
-def _disp_logdata(varname, values, disp_var=True):
+### is 'mask' enters heatmap as heatmap(mask=mask), then filt=~mask (logical inverse) 
+def _disp_logdata(varname, values, disp_var=True, mask=None):
     if disp_var and "pval" in varname:
-        if "fdr" in varname:
-            values = squareform(fstats.correct_pvals(triu_vals(values,k=1), corr_type="fdr"))
-        elif "fwe" in varname:
-            values = squareform(fstats.correct_pvals(triu_vals(values,k=1), corr_type="fwe"))
         np.fill_diagonal(values, np.nan)
         title_suffix = " (-log10(2p))"
         values = -np.log10(2*values)
@@ -399,7 +416,14 @@ def _disp_logdata(varname, values, disp_var=True):
         values[ values==0 ] = np.nan
         title_suffix = " (log10(W_p))"
         values= np.log10(values)
-        nanval = -1.1*np.nanmax(np.abs(values))
+        if mask is None:
+            filt = np.ones(values.shape, dtype='bool')
+        elif np.nanmin(mask):   
+            # i.e., if mask has only True values
+            filt = np.ones(values.shape, dtype='bool')
+        else:
+            filt = ~mask
+        nanval = -1.1*np.nanmax(np.abs(values[filt]))
 
     print(f"replacing NaNs in{title_suffix} for {varname} with {nanval}")
     np.nan_to_num(values, nan=nanval, copy=False)
@@ -534,16 +558,32 @@ def _semiload(fpath):
 # Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
 def _enforce_symmetry(mtx, debug=False, fill_val=np.nan):
     assert len(mtx.shape)==2, "Only valid for matrix inputs"
-    assert (mtx.shape[0]-1)==mtx.shape[1], f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
+    if mtx.shape[0] == mtx.shape[1]:
+        sym_mtx = (mtx + mtx.T)/2
+    else:
+        assert (mtx.shape[0]-1)==mtx.shape[1], f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
 
-    # takes values from upper diagonal
-    sym_mtx = squareform(triu_vals(mtx, k=0))
-    np.fill_diagonal(sym_mtx, fill_val)
+        # takes values from upper diagonal
+        sym_mtx = squareform(triu_vals(mtx, k=0))
+        np.fill_diagonal(sym_mtx, fill_val)
 
-    assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
+        assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
 
     return sym_mtx
 
+def _sym_pvals(pval_mtx, varname=None):
+    if varname is None:
+        fill_val = 0
+    else:
+        fill_val = int("right" in varname)
+
+        sym_pval = _enforce_symmetry(pval_mtx, fill_val=0)
+        if "fdr" in varname:
+            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fdr"))
+        elif "fwe" in varname:
+            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fwe"))
+        np.fill_diagonal( sym_pval, fill_val )
+        return sym_pval
 
 def triu_vals(A, k=1):
     n = min(A.shape)
