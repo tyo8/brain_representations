@@ -96,13 +96,13 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
     
     Wp_XYnull = np.array( [dist["Wp_XY"] for dist in pairdist_summ if dist["datatype"]=="Null"] )
     
-    if len(Wp_XYnull) == 0:
-        empirical_pval = 1
-    else:
-        prop_lower = np.mean(Wp_XY > Wp_XYnull)
-        empirical_pval = max(1/len(Wp_XYnull), 2 * min(prop_lower, 1 - prop_lower))
-
-    pairdist_summ[0]["empirical_pval"] = empirical_pval
+#   if len(Wp_XYnull) == 0:
+#       empirical_pval = 1
+#   else:
+#       prop_lower = np.mean(Wp_XY > Wp_XYnull)
+#       empirical_pval = max(1/len(Wp_XYnull), 2 * min(prop_lower, 1 - prop_lower))
+#
+#   pairdist_summ[0]["empirical_pval"] = empirical_pval
 
 
     if verbose:
@@ -113,7 +113,7 @@ def get_permset_dists(barsX_fpath, barsY_fpath,
         print("Datatype of \'Y\':", data_summ["Y_type"])
         print("Projection cost of sending PD(X) to the empty diagram:", data_summ["PDX_diag"])
         print("Projection cost of sending PD(Y) to the empty diagram:", data_summ["PDY_diag"])
-        print(f"Observed Wasserstein distance between X and Y: {Wp_XY}, p < {empirical_pval}")
+        print(f"Observed Wasserstein distance between X and Y: {Wp_XY}") #, f"p < {empirical_pval}")
         print("Permutation type(s):", ', '.join(list(set([ dist["permtype"] for dist in pairdist_summ if dist["datatype"]=="Null" ]))))
         print(f"Summary of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(Wp_XYnull)}, sigma={np.std(Wp_XYnull)}")
         print(f"Distribution of Wasserstein distances: \n{np.histogram(Wp_XYnull)}")
@@ -130,7 +130,7 @@ def _get_outpath(data_summ, outdir=".", permtype="subject"):
     ylabel = data_summ["Y_type"]
 
     outname = f"{xlabel}_vs_{ylabel}_null-{permtype}Perms.csv"
-    outpath = os.path.join(outdir, outname)
+    outpath = os.path.join(outdir, outname).replace("_ztrans","-ztrans")
 
     return outpath
 

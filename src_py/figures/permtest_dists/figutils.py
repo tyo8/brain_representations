@@ -1,8 +1,12 @@
 import os
 import re
 import glob
+import copy
+import itertools
+import functools
 import numpy as np
 import pandas as pd
+import figstats as fstats
 
 # global default argument values:
 def_fig_size = (24, 24)
@@ -14,15 +18,17 @@ sample_dirnames = {"perm": "permtesting", "bstrap": "subsampling"}
 def _load(
         input_fpath, 
         load_type=None,
-        args=None,
-        data_only=True,
         enforce_match=False,
         permtype=None,
         check_pval=True, 
+        pval_args=None,
         extrema_only=False,
         debug=False
         ):
     df = pd.read_csv(input_fpath, index_col=0)
+
+    if debug:
+        print(f"before _unify_df: \n{df}")
 
     if df.empty:
         print(f"pulled empty dataframe from path: \n{input_fpath}")
@@ -30,38 +36,53 @@ def _load(
     else:
         df = _unify_df(df, fpath=input_fpath, enforce_match=enforce_match)
 
+    if debug:
+        print(f"after _unify_df: \n{df}")
 
     if load_type == "pair":
+
+        if "permtype" not in df.keys():
+            if permtype is None:
+                print(f"No \'permtype\' found or given in {df.keys()}. Loaded from: \n{input_fpath}\n")
+            else:
+                df["permtype"] = permtype
         
         if check_pval:
-            if "empirical_pval" in df.columns.values:
+            if "empirical_pval" in df.keys():
                 df.drop( columns=["empirical_pval"], inplace=True )
+            if pval_args is not None:
+                fstats._add_emp_pval(
+                    df, 
+                    permtype=pval_args.permtype, 
+                    tail_type=pval_args.tail_type, 
+                    corr_type=pval_args.corr_type, 
+                    null_hi=pval_args.null_hi, 
+                    null_lo=pval_args.null_lo
+                    )
+            else:
+                err_msg = f"No p-value type variable in {df.columns.values}. Read from: \n{input_fpath}\n"
+                assert any(["pval" in varname for varname in df.columns.values]), err_msg
 
-        if data_only:
-            null_mask = df["datatype"].str.contains("Null")
-            if (permtype is not None) and ("permtype" in df.columns.values):
-                null_mask = null_mask & (df["permtype"] == permtype)
+        null_mask = df["datatype"].str.contains("Null")
+        if (permtype is not None) and ("permtype" in df.columns.values):
+            null_mask = null_mask & (df["permtype"] == permtype)
 
-            null_df = df[null_mask].copy()
-            data_df = df[~null_mask].copy()
-
-            data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
-            data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
-            data_df["permtype"] = permtype 
-
-            df = data_df
+        df.loc[~null_mask,"Wp_XYNull_mean"] = np.mean(df.loc[null_mask,"Wp_XY"])
+        df.loc[~null_mask,"Wp_XYNull_std"] = np.std(df.loc[null_mask,"Wp_XY"])
+        df.loc[~null_mask,"permtype"] = permtype 
+        df = df[ ~null_mask ]
 
     elif load_type == "ext":
         if "permtype" in df.keys():
-            if args is not None:
-                err_str = f"Specified permtype {args.permtype} not in df.permtype: \'{df.permtype.unique()}\'. From input path: \n{input_fpath}"
-                assert args.permtype in df.permtype.unique(), err_str
-                df = df[ df.permtype == args.permtype ]
-            permtype = df["permtype"].unique()[0]
+            if permtype is None:
+                permtypes = df["permtype"].unique()
+            else:
+                err_str = f"Specified permtype {permtype} not in df.permtype: \'{df.permtype.unique()}\'. From input path: \n{input_fpath}"
+                assert permtype in df.permtype.unique(), err_str
+                permtypes = [permtype]
         else:
-            permtype = "Empty"
-
-        df["permtype"] = permtype
+            assert len(df.datatype.unique())==1, f"column \'permtype\' not found in df.keys() even though multiple datatypes present: \n{df}"
+            return pd.DataFrame([])
 
         if debug:
             if "datatype" not in df.keys():
@@ -70,17 +91,38 @@ def _load(
                 print("dataframe", df)
                 exit()
 
-        null_mask = df["datatype"].str.contains("Null")
-        null_df = df[null_mask].copy()
-        data_df = df[~null_mask].copy()
-        data_df["Wp_XYNull_min"] = np.min(null_df["Wp_XY"])
-        data_df["Wp_XYNull_max"] = np.max(null_df["Wp_XY"])
+        allnull_mask = df["datatype"].str.contains("Null")
 
-        if not extrema_only:
-            data_df["Wp_XYNull_mean"] = np.mean(null_df["Wp_XY"])
-            data_df["Wp_XYNull_std"] = np.std(null_df["Wp_XY"])
+        df_data = pd.DataFrame(
+                data = np.repeat(
+                    df[ ~allnull_mask ].values, 
+                    len(permtypes), 
+                    axis=0),
+                columns = df.columns)
 
-        df = data_df
+        for i, permtype in enumerate(permtypes):
+            perm_mask = df["permtype"] == permtype
+            null_mask = allnull_mask & perm_mask
+
+            df_data.loc[i, "permtype"] = permtype
+
+            if df[null_mask].empty:
+                if debug:
+                    print(f"BAD loaded dataframe: \n{df}")
+                    print(f"from file: \n{input_fpath}")
+                    exit()
+                return df[null_mask]
+            else:
+                if debug:
+                    print(f"GOOD loaded dataframe: \n{df}")
+                    print(f"from file: \n{input_fpath}")
+
+                df_data.loc[i,"Wp_XYNull_min"] = np.min(df.loc[null_mask,"Wp_XY"])
+                df_data.loc[i,"Wp_XYNull_max"] = np.max(df.loc[null_mask,"Wp_XY"])
+                df_data.loc[i,"Wp_XYNull_mean"] = np.mean(df.loc[null_mask,"Wp_XY"])
+                df_data.loc[i,"Wp_XYNull_std"] = np.std(df.loc[null_mask,"Wp_XY"])
+
+        df = df_data
     elif load_type == "solo":
         df = df
     else:
@@ -136,11 +178,14 @@ def _unify_df(df, fpath=None, enforce_match=False):
             null_mask = df["datatype"].str.contains("Null")
             df.loc[null_mask, "datatype"] = df.loc[null_mask,:].apply( lambda x: "_".join([str(x["permtype"]), str(x["datatype"])]), axis=1 )
         except TypeError:
-            print(f"encountered unexpected float values in \'permtype\' field: {list(set(df.permtype))}")
+            print(f"encountered unexpected float values in \'permtype\' field: {df.permtype.unique()}")
             print("attempting to resolve by forcing type to \'str\'.")
 
     if "permlabel" in df.columns.values:
         df.drop( labels = ["permlabel"], axis=1, inplace=True )
+
+    if "empirical_pval" in df.columns.values:
+        df.drop( labels = ["empirical_pval"], axis=1, inplace=True )
 
     if "taglist" in df.columns.values:
         df.drop( labels = ["taglist", "X_path"], axis=1, inplace=True )
@@ -229,17 +274,25 @@ def _pull_feat_num(rank, feature):
         raise Exception("Unrecognized feature type")
     return int(feat_num)
 
-def _parse_fpath(fpath, metric=True):
-    if "subsampling" in fpath:
-        longname = os.path.basename(fpath).split('.')[0].replace("bsdists_","")
-    else:
-        longname = os.path.basename(os.path.dirname(fpath))
-    name = longname.replace("_dists","").replace("X_","")
-    modality, feature, metric = name.split('_', maxsplit=2)
-    if metric:
-        return modality, feature, metric
-    else:
-        return modality, feature
+def _parse_fpath(fpath, pathtype="single", metric=True):
+    if pathtype=="single":
+        if "subsampling" in fpath:
+            longname = os.path.basename(fpath).split('.')[0].replace("bsdists_","")
+        else:
+            longname = os.path.basename(os.path.dirname(fpath))
+        name = longname.replace("_dists","").replace("X_","")
+        modality, feature, metric = name.split('_', maxsplit=2)
+        if metric:
+            return modality, feature, metric
+        else:
+            return modality, feature
+    elif pathtype=="pair":
+        fname = os.path.basename(fpath)
+        dname = os.path.basename( os.path.dirname( fpath ))
+        Y_name = fname.split('.')[0].split('vs')[1][1:]         # removes file extension, takes the right half after "vs", and removes the first character
+        Y_name = Y_name.split('_null-')[0]                      # removes null-type specifications from 'Y_name' if present in filename
+        X_name = dname.replace("_dists","").replace("X_","")    # removes extra text from X_name
+        return X_name, Y_name
 
 def _get_fpath_types(fpath, dist_type="single"):
     if dist_type == "single":
@@ -284,12 +337,20 @@ def merged_dfs(fpath_list, dist_type="single", debug=False, verbose=False):
                 name = os.path.basename(fpath_groups[i][-1]).replace("bsdists_","").replace(".csv","")
                 if debug:
                     datamask = (df.datatype=="Subsamp") | (df.datatype=="Data")
+                    nullmask = df.datatype.str.contains("Null")
                     df_data = df.loc[datamask,:]
+                    df_null = df.loc[nullmask,:]
                     if len(df_data) < 1000:
                         print(f"found incomplete or empty subsampling/data (shape={df_data.shape}) at path: \n{fpath_groups[i][-1]}")
                         _ = _get_orig_bars(fpath_groups[i][-1], homdim=1)
                     else:
                         print(f"subsampling data (shape={df_data.shape}) passes inspection -- found at path: \n{fpath_groups[i][-1]}")
+                    if len(df_null) < 2000:
+                        print(f"found incomplete or empty null data (shape={df_null.shape}) at path: \n{fpath_groups[i][:2]}")
+                        #_ = _get_orig_bars(fpath_groups[i][0], homdim=1)
+                        #_ = _get_orig_bars(fpath_groups[i][1], homdim=1)
+                    else:
+                        print(f"permutation data (shape={df_null.shape}) passes inspection -- found at path: \n{fpath_groups[i][:2]}")
                 print(f"merged_df from \'{name}\' paths has shape {df.shape}\n")
 
     if debug:
@@ -354,6 +415,102 @@ def _write_img(fig, outpath, fig_size=def_fig_size):
 
 
 ########################################################################################################################
+def _get_auc_mask(args=None, auc_df=None, alpha=None, debug=False):
+    if auc_df is None:
+        solo_args = copy.deepcopy(args)
+        solo_args.distribution_plots = False
+        solo_args.aggregate_plots = False
+        solo_args.solo_plots = False
+        solo_args.ROC_analysis = True
+
+        solo_args.input_dir = os.path.dirname(args.input_dir)
+        solo_args.search_pattern = None
+        solo_args.dir_pattern = "within_*"
+        solo_args.sample_type = "bstrap"
+
+        solo_args.enforce_match = True
+        solo_args.write_mode = False
+        if debug:
+            ### debugging code ###
+            solo_args.verbose = True
+            print(f"arguments initialized as: \n{solo_args}")
+            ### debugging code ###
+        else:
+            solo_args.verbose = False
+
+        from single_null_dists import main
+        df = main(solo_args)
+
+        if debug:
+            ### debugging code ###
+            print(f"auc_dataframe has values: \n{df}")
+            ### debugging code ###
+        
+        df = df[ df["permtype"]==args.permtype ]
+    else:
+        df = auc_df
+
+    if args is None:
+        err_msg = "must either specify \'alpha\' invidually or as part of argument suite."
+        assert alpha is not None, err_msg
+    else:
+        alpha = args.alpha
+
+    masks = [] 
+    for var in df["ROC_variable"].unique():
+        submask = df["ROC_variable"] == var
+        subdf = df.loc[submask].set_index( "X_name" )        # assumes that specifying 'permtype' and 'ROC_variable' values give unique X_name
+        masks.append( subdf["overlap"] < alpha )
+
+    series_mask = functools.reduce(lambda x,y: x & y, masks)
+
+    return series_mask
+
+
+def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False):
+    xbool = [ series_mask[xname] for xname in xnamelist ]
+    ybool = [ series_mask[yname] for yname in ynamelist ]
+
+    if debug:
+        ### debugging code ###
+        print(f"prior to masking:")
+        print(f"\t(|xnamelist|, |ynamelist|) = {(len(xnamelist), len(ynamelist))}")
+        print(f"\t(|xbool|, |ybool|) = {(len(xbool), len(ybool))}")
+        print(f"\tvalue_set has shapes: {[value_set[i].shape for i in value_set.keys()]}")
+        ### debugging code ###
+
+    # first, we check if value_set is a dictionary of matrices
+    if isinstance(value_set, dict):
+        for key in value_set.keys():
+            try:
+                values = value_set[key]
+                xdrop = values[xbool,:]
+                value_set[key] = xdrop[:, ybool]
+            except IndexError as err:
+                print(f"Failed with err: \n{err}")
+                np.savetxt("values.txt",values)
+                np.savetxt("xbool.txt", xbool)
+                np.savetxt("ybool.txt", ybool)
+                print(f"saved out offending data in \n{os.getcwd()}\nExiting.")
+                exit()
+
+    # otherwise, we check if value_set is nested list of lists:
+    elif isinstance(value_set, list):
+        if isinstance(value_set[0], list):
+            value_set = list(itertools.compress(value_set, xbool))
+            value_set = [ list(itertools.compress(sublist, ybool)) for sublist in value_set ]
+
+    xnamelist = list(itertools.compress(xnamelist, xbool))
+    ynamelist = list(itertools.compress(ynamelist, xbool))
+
+    if debug:
+        ### debugging code ###
+        print(f"after masking:")
+        print(f"\tlen(xnamelist, ynamelist) = {(len(xnamelist), len(ynamelist))}")
+        print(f"\tvalue_set has shapes: {[(i,value_set[i].shape) for i in value_set.keys()]}")
+        ### debugging code ###
+
+    return xnamelist, ynamelist, value_set
 ########################################################################################################################
 
 

@@ -131,6 +131,7 @@ def _plot_clustermap(
         symmetrize=False, 
         cm_title="Heatmap", 
         cmap="Blues",
+        mask=None,
         xticklabels=None, 
         yticklabels=None,
         xlinkage=None, 
@@ -168,7 +169,8 @@ def _plot_clustermap(
         g = sns.clustermap(
                 values, 
                 row_linkage=xlinkage, 
-                col_linkage=ylinkage, 
+                col_linkage=ylinkage,
+                mask = mask,
                 cmap = cmap,
                 xticklabels=xticklabels, 
                 yticklabels=yticklabels, 

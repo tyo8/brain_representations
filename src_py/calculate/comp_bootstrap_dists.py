@@ -330,7 +330,7 @@ if __name__=="__main__":
 
     ## convert these to dataframe for easier write-out
     res_df = pd.DataFrame(data = results)
-    res_df.to_csv(args.outpath)
+    res_df.to_csv(args.outpath.replace("_ztrans","-ztrans"))
 
     Xres_df = pd.DataFrame(data = Xresults)
-    Xres_df.to_csv(args.outpath2)
+    Xres_df.to_csv(args.outpath2.replace("_ztrans","-ztrans"))

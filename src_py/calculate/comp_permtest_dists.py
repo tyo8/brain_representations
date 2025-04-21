@@ -79,7 +79,7 @@ def _write_out(outdir, df_full, verbose=True):
                                  ]
 
                     outname = f"data_vs_{perm}null_{mod}_{feat}_{dist}.csv"
-                    outpath = os.path.join(outdir, outname)
+                    outpath = os.path.join(outdir, outname).replace("_ztrans","-ztrans")
                     df.to_csv(outpath)
                     print(f"Results written to {outpath}")
 

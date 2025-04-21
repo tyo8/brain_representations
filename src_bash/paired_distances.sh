@@ -90,6 +90,7 @@ do
     	for Xdistname in $(cat $Xdistlist )
     	do
 		Xdata_label=$(basename ${Xdistname} | cut -d. -f 1)
+		$Xdata_label=${Xdata_label//"_ztrans"/"-ztrans"}
 		X_indir=$(dirname ${Xdistname})"/phom_data_${Xdata_label}"
 		
 		barX_fpath="${X_indir}/bars_X.txt"
@@ -103,6 +104,7 @@ do
 			for Ydistname in $(cat $Ydistlist)
 			do
 				Ydata_label=$(basename ${Ydistname} | cut -d. -f 1)
+				$Ydata_label=${Ydata_label//"_ztrans"/"-ztrans"}
 				Y_indir=$(dirname ${Ydistname})"/phom_data_${Ydata_label}"
 				
 				barY_fpath="${Y_indir}/bars_X.txt"

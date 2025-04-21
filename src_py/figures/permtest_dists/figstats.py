@@ -26,7 +26,7 @@ def do_ROC_analysis(
             for df in df_list:
                 df_data = df.loc[df.datatype == "Subsamp", :]
                 df_null = df.loc[df.datatype == f"{null}_Null", :]
-                names = set(df["X_name"].to_numpy())
+                names = df["X_name"].unique()
                 if verbose:
                     print(f"In {names}, df_data has shape {df_data.shape}, df_null has shape {df_null.shape}")
                 if df_null.empty:
@@ -34,16 +34,16 @@ def do_ROC_analysis(
                     if debug:
                         ### debugging code ###
                         print(f"empty df_null for nulltype=\'{null}\' pulled from: \n{df}\n")
-                        print(f"df has datatypes={set(df.datatype)} and permtypes={set(df.permtype)}")
+                        print(f"df has datatypes={df.datatype.unique()} and permtypes={df.permtype.unique()}")
                         exit()
                         ### debugging code ###
                     auc = None
                     overlap = None
-                if df_data.empty:
+                elif df_data.empty:
                     # Will hold if H1 trivial for full data (nothing to bootstrap)
                     auc = None
                     overlap = None
-                if df["PDX_diag"].unique() < 1e-9:
+                elif df["PDX_diag"].unique() < 1e-9:
                     auc = 0
                     overlap = 1
                 else:
@@ -51,19 +51,19 @@ def do_ROC_analysis(
                         assert len(names) == 1, "Conflating distributions for more than one brain representation type."
                     except AssertionError as err:
                         print(f"More than one name found: {names}")
-                        print(f"Offending dataframe written to: \n{os.getcwd()}/df_err.csv")
-                        df.to_csv('df_err.csv')
+                        print(f"Offending dataframe written to: \n{os.getcwd()}/debug/df_err.csv")
+                        df.to_csv('debug/df_err.csv')
                         exit()
 
                     if dist_type == "single":
-                        nullnames = set(df_null["X_name"].to_numpy())
+                        nullnames = df_null["X_name"].unique()
                         try:
-                            assert names == nullnames, f"Comparing unmatched data and null distance distributions: \ndata={set(names)} \nnull={set(nullnames)}"
+                            assert names == nullnames, f"Comparing unmatched data and null distance distributions: \ndata={names} \nnull={nullnames}"
                         except ValueError as err:
-                            print(f"failed for {set(names)} with error: \n{err}\n")
-                            df_data.to_csv('df_data_err.csv')
-                            df_null.to_csv('df_null_err.csv')
-                            print(f"offending dataframes saved to \'df_data_err.csv, df_null_err.csv\' in \'{os.getcwd()}\'")
+                            print(f"failed for {names} with error: \n{err}\n")
+                            df_data.to_csv('debug/df_data_err.csv')
+                            df_null.to_csv('debug/df_null_err.csv')
+                            print(f"offending dataframes saved to \'df_data_err.csv, df_null_err.csv\' in \'{os.getcwd()}/debug\'")
                             exit()
 
 
@@ -157,22 +157,32 @@ def integrate(curve):
 ########################################################################################################################
 # add an empirical p-val to a dataframe containing only a single data-derived distance and its null counterparts
 def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_type="fdr", null_hi=None, null_lo=None, debug=False):
-    datarow = df[df["datatype"] == "Data"]
+    df_data = df[df["datatype"] == "Data"]
 
-    Wp_XY = datarow["Wp_XY"].to_numpy()
+    Wp_XY = df_data["Wp_XY"].to_numpy()
     if corr_type == "fdr":
         null_mask = df["datatype"].str.contains("Null")
         if permtype is not None:
             null_mask = null_mask & (df["permtype"] == permtype)
-        null_df = df[ null_mask ]
-        null_lo = null_df["Wp_XY"].to_numpy()
-        null_hi = null_df["Wp_XY"].to_numpy()
+        df_null = df[ null_mask ]
+        null_lo = df_null["Wp_XY"].to_numpy()
+        null_hi = df_null["Wp_XY"].to_numpy()
         check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
-        err_str =  f"data row and null rows are not of matching type: \n{[[col, set(datarow[col]), set(null_df[col])] for col in check_cols]}"
-        assert all( [ set(datarow[col]) == set(null_df[col]) for col in check_cols ] ), err_str
 
-    err_msg = "extremal family-wise distributions must be provided for family-wise error (\'fwe\') p-value correction"
+        try:
+            err_str =  f"data row and null rows are not of matching type: \n{[[col, df_data[col].unique(), df_null[col].unique()] for col in check_cols]}"
+            assert all( [ df_data[col].unique() == df_null[col].unique() for col in check_cols ] ), err_str
+        except AssertionError as err:
+            print(f"failed with err: \n{err}")
+            df_data.to_csv('debug/df_data_err.csv')
+            df_null.to_csv('debug/df_null_err.csv')
+            df.to_csv('debug/df_err.csv')
+            print(f"offending dataframes saved to \'df_data_err.csv, df_null_err.csv, df_err.csv\' in \'{os.getcwd()}/debug\'")
+            exit()
+
+    err_msg = "extremal family-wise distributions must be provided for (\'fwe\') p-value correction: \nnull_hi={null_hi}\nnull_lo={null_lo}"
     assert (null_hi is not None) and (null_lo is not None), err_msg
+    assert (len(null_hi) > 0) and (len(null_lo) > 0), err_msg
 
     if debug:
         print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")

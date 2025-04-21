@@ -117,7 +117,7 @@ def make_AUC_plots(fpath_list, args, debug=False):
 
     if debug:
         ### debugging code ###
-        print(f"All datatypes in df_list: {set([tuple(set(df.datatype)) for df in df_list])}")
+        print(f"All datatypes in df_list: {set([df.datatype.unique() for df in df_list])}")
         ### debugging code ###
     outdir = os.path.join(args.output_dir, "ROC_analysis")
     auc_df = fstats.do_ROC_analysis(
@@ -140,7 +140,7 @@ def make_agg_plots(fpath_list, args):
         print(f"total collected dataframe (aggregated plots): \n{null_df}")
 
     if "permtype" in null_df.columns.values:
-        if len(set(null_df["permtype"])) > 1:
+        if len(null_df["permtype"].unique()) > 1:
             hue_list = ["modality", "feature", "metric", "permtype"]
     else:
         hue_list = ["modality", "feature", "metric"]

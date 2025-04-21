@@ -41,12 +41,19 @@ def main(args, debug=False):
         var_dict = vars(args)
         for varname in list(var_dict.keys()):
             print(f"The argument \'{varname}\' has initial value: {var_dict[varname]}")
+        print(f"Loading extremal null data from {len(fpath_list)} filepaths.")
 
     if not os.path.isdir(args.output_dir):
         print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)
 
-    df = pd.concat([ futils._load(fpath, load_type="ext", args=args, extrema_only=args.extrema_only) for fpath in fpath_list ], ignore_index=True)
+    df_list = [ futils._load(
+        fpath, 
+        load_type="ext",
+        permtype=args.permtype, 
+        debug=False,
+        extrema_only=args.extrema_only) for fpath in fpath_list ]   # NOTE: MANUAL INDEXING IS ONLY FOR DEBUGGING PURPOSES
+    df = pd.concat(df_list, ignore_index=True)
 
     if debug:
         check_out=os.path.join(os.getcwd(), "tmp_df.csv")
@@ -54,12 +61,12 @@ def main(args, debug=False):
         df.to_csv(check_out)
 
     if args.verbose:
-        print(f"collected summary dataframe: \n{df}")
+        print(f"collected summary dataframe from {len(df_list)} (sub-)dataframes: \n{df}")
 #         for colname in df.columns.values:
-#             print(f"Number of unique values in column \'{colname}\' is {len(set(df[colname].values))}")
+#             print(f"Number of unique values in column \'{colname}\' is {len(df[colname].unique())}")
 
     if args.extrema_only:
-        args.dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max"] 
+        args.dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max"]
 
     return df, args
 
@@ -73,7 +80,7 @@ def plot_dists(df, args):
             outdir=args.output_dir
             )
     if args.extrema_only:
-        for ptype in list(set(df["permtype"])):
+        for ptype in df["permtype"].unique():
             df_perm = df[ df["permtype"]==ptype ]
             one_displot(
                     df_perm,
@@ -131,12 +138,15 @@ def one_displot(
         write_mode=True,
         outdir=os.getcwd(),
         verbose=True, 
-        debug=False
+        debug=True
         ):
 
     if x_var not in df.columns.values and x_var is not None:
-        print(f"distribution variable {x_var} not in filtered dataframe. Skipping.")
+        print(f"distribution variable {x_var} not infiltered dataframe. Skipping.")
         return None
+
+    if debug:
+        print(f"unique values of permtype: {df.permtype.unique()}")
 
     if log_scale and regularize:
         if x_var is not None:
@@ -147,16 +157,16 @@ def one_displot(
                 log_scale = [10, 10]
                 df[y_var] = df[y_var] + epsilon
             else:
-                y_num = len(set(df[y_var]))
+                y_num = len(df[y_var].unique())
                 legend = y_num <= 100
                 log_scale = [10, None]
 
     if hue_var is not None:
-        hue_num = len(set(df[hue_var]))
+        hue_num = len(df[hue_var].unique())
         legend = hue_num <= 20
         if debug:
             ### debugging code ###
-            unq_vals = set(df[hue_var])
+            unq_vals = df[hue_var].unique()
             if any(['e-12' in name for name in unq_vals]):
                 print(f"unique set of values in dataframe column \'{hue_var}\': \n{unq_vals}")
                 err_out = os.path.join(os.getcwd(), "ERR_df.csv")
@@ -169,10 +179,11 @@ def one_displot(
 
     if y_var is None:
         if x_var is None:
-            plot_df = df.filter(dist_vars, axis=1)
+            plot_df = df.filter(dist_vars, axis=1).copy()
+            plot_df.dropna( how="all" )
             if log_scale and regularize:
-                for name in plot_df.columns.values:
-                    if isinstance(df[name].values, np.ndarray) and not name=="permtype":
+                for name in dist_vars:
+                    if name in df.columns.values:
                         plot_df[name] = plot_df[name] + epsilon 
             if extrema_only:
                 element = 'bars'; multiple = 'dodge'
@@ -194,7 +205,7 @@ def one_displot(
         if log_scale:
             outname = outname.replace("pairs_nulldists","pairs_nulldists-log")
         if extrema_only:
-            permtype = '-'.join(list(set(df["permtype"])))
+            permtype = '-'.join(list(df["permtype"].unique()))
             outname = outname.replace("pairs_nulldists",f"pairs_{permtype}-nulldists-extremal")
         for var in ['x', 'y', 'hue', 'row', 'col']:
             varname = eval(f"{var}_var")
@@ -246,7 +257,7 @@ if __name__=="__main__":
         "-P",
         "--permtype",
         type=str,
-        default="subject",
+        default=None,
         help="permutation type to restrict to: 'feature' or 'subject' -- forbids combining both nulltypes into single distribution."
     )
     parser.add_argument(
