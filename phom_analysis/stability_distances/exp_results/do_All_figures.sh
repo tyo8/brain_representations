@@ -16,6 +16,14 @@ declare -a alphas=(0.01 0.05)					# significance threshold values
 
 solo_indir="$(dirname ${indir})"
 
+for alpha in ${alphas[@]}
+do
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}" -a ${alpha} -v -w -R 
+	printf "\n#################################################################################################\n\n"
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -a ${alpha} -D -A -L -v -w
+	printf "\n#################################################################################################\n\n"
+done
+
 for P in ${perms[@]}
 do
 	for C in ${corrs[@]}
@@ -31,16 +39,7 @@ do
 	printf "\n#################################################################################################\n\n"
 done
 
-# 'solo' figures (-S flag): full null+bootstrap distance distributions for every brain representation
-python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/figs_null" -D -A -L -v -w
-printf "\n#################################################################################################\n\n"
 python ${extremals_srcpath} -i ${indir} -o ${outdir} -P "subject" -L -E -v -w
-
-for alpha in ${alphas[@]}
-do
-	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}" -a ${alpha} -v -w -R 
-	printf "\n#################################################################################################\n\n"
-done
 
 for R in "${rstr[@]}"
 do

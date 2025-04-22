@@ -344,7 +344,7 @@ def plot_clustermap(
 
     if np.nanmin(mask):
         # i.e., if all mask values are "True"
-        print("Skipped clustermap. Total masking by pval_var=\'{pval_var}\' at alpha=\'{alpha}\' for: \n\t\t{cm_title}")
+        print(f"Skipped clustermap. Total masking by pval_var=\'{pval_var}\' at alpha=\'{alpha}\' for: \n\t\t{cm_title}")
         return None
 
     if log_scale:

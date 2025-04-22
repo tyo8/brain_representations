@@ -222,6 +222,9 @@ def make_distribution_plots(fpath_list, dist_type="single", args=None, debug=Fal
 
                         plot_df = df.rename( mapper=aesthetic_renamer , axis=1 )
 
+                        if denamer[distvar] == "Wp_XY":
+                            plot_df.drop( index=plot_df[plot_df["datatype"] == "Data"].index, inplace=True )
+
                         distribution_catplot(
                                 plot_df,
                                 x_var = x_var,
