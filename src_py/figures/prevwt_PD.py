@@ -7,11 +7,8 @@ import matplotlib.pyplot as plt
 
 def weighted_PD(
         bars, weights, outpath=None, showfig=True, color_weighted=True,
-        minsz=5, maxsz=50, alpha=0.66, title=None):
+        minsz=5, maxsz=200, alpha=0.66, title=None):
     assert minsz <= maxsz, "Maximum point size of scatter points cannot be smaller than minimum point size"
-    
-    t = np.linspace(0,1,100)
-    plt.plot(t, t, 'k--')
 
     bars_uz = list(zip(*bars))
     births = bars_uz[0]
@@ -19,11 +16,16 @@ def weighted_PD(
     nbars = len(bars)
     xlims = [min(births)*0.95, max(births)*1.05]
     ylims = [min(deaths)*0.95, max(deaths)*1.05]
+    tmin = min(min(xlims), min(ylims))
+    tmax = max(max(xlims), max(ylims))
+    t = np.linspace(tmin,tmax,100)
+    plt.plot(t, t, 'k--')
+
 
     if color_weighted:
         print(f"num bars: {nbars}")
         print(f"num weights: {weights.size}")
-        sizeval = int(100/(1 + np.log(nbars)))
+        sizeval = int(2*maxsz/(1 + np.log(nbars)))
         plt.scatter(births, deaths, alpha=alpha, c=weights, cmap='viridis', s=sizeval, edgecolors='none')
         cb = plt.colorbar()
         cb.set_label("prevalence")
@@ -78,16 +80,19 @@ if __name__=="__main__":
         "-b", "--barsX_fname", type=str, help="input filepath to X phom bars"
     )
     parser.add_argument(
-        "-p", "--prevscores_fname", type=str, help="input filepath to prevalence scores corresponding to barsX"
+        "-p", "--prevscores_fname", default=None, type=str, help="input filepath to prevalence scores corresponding to barsX"
     )
     parser.add_argument(
         "-f", "--figure_fpath", default=None, type=str, help="output filepath to persistence diagram image"
     )
     parser.add_argument(
-        "-l", "--label", default=None, type=str, help="data label for weighted persistence diagram figure"
+        "-l", "--label", default="", type=str, help="data label for weighted persistence diagram figure"
     )
     parser.add_argument(
         "-s", "--showfig", default=False, action="store_true", help="Show figure"
+    )
+    parser.add_argument(
+        "-D", "--dummy", default=False, action="store_true", help="use dummy prevalence values"
     )
     args = parser.parse_args()
 
@@ -95,7 +100,12 @@ if __name__=="__main__":
         barsX = ast.literal_eval(fin.read())
 
     title = "Prevalence-weighted Persistence in H1\n" + args.label
-    prevscores = np.loadtxt(args.prevscores_fname)
+    if args.prevscores_fname is not None:
+        prevscores = np.loadtxt(args.prevscores_fname)
+    elif args.dummy:
+        prevscores = np.random.rand(len(barsX[1]))
+    else:
+        prevscores = np.ones(len(barsX[1]))
     weighted_PD(barsX[1], prevscores, outpath = args.figure_fpath, showfig=args.showfig, title=title)
 
     if args.figure_fpath:
