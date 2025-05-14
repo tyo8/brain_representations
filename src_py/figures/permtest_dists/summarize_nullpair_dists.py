@@ -20,7 +20,7 @@ from statsmodels.stats.multitest import fdrcorrection
 # global variables 
 
 def_fig_size = (24, 24)
-def_label_fontsize = 7 
+def_label_fontsize = 12
 def_pattern='*X_*_dists'
 
 # cmap_list = ["#808080", ("#ffffff", 0.0)]         # color values to match to False/True
@@ -140,19 +140,20 @@ def make_clustermaps(fpath_grid, args=None, debug=False):
     fig_inches = def_fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
     label_fontsize = def_label_fontsize * np.power(70 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
-    generate_clustermaps(
-            xnamelist, 
-            ynamelist, 
-            value_set, 
-            linkage_var = "Wp_XY",
-            cluster_method = "average",
-            alpha = args.alpha,
-            log_scale = args.log_scale,
-            fig_size = (fig_inches, fig_inches),
-            label_fontsize = label_fontsize,
-            outdir=args.output_dir,
-            write_mode=args.write_mode
-            )
+    for linkage_var in [None, "Wp_XY"]:
+        generate_clustermaps(
+                xnamelist, 
+                ynamelist, 
+                value_set, 
+                linkage_var = linkage_var,
+                cluster_method = "average",
+                alpha = args.alpha,
+                log_scale = args.log_scale,
+                fig_size = (fig_inches, fig_inches),
+                label_fontsize = label_fontsize,
+                outdir=args.output_dir,
+                write_mode=args.write_mode
+                )
 
     return xnamelist, ynamelist, value_set
 
@@ -245,10 +246,12 @@ def generate_clustermaps(
         ):
     dispvars = list(value_set.keys())
 
-    if onelink:
+    if onelink and (linkage_var is not None):
         assert linkage_var in dispvars, f"Value does not include variable \"{linkage_var}\", the specified common linkage operator"
         print(f"Using \"{linkage_var}\" as linkage variable while generating clustermaps")
         linkvars = [linkage_var]
+    elif linkage_var is None:
+        linkvars = [None]
     else:
         print(f"Plotting clustermaps for all (linkage_var, display_var) value pairs (including self-pairs) in {dispvars}")
         linkvars = dispvars
@@ -280,9 +283,10 @@ def generate_clustermaps(
         for display_var in dispvars:
             for pval_var in pval_vars:
                 mask = masks[pval_vars.index(pval_var)]
-                if ("pval" in linkage_var) and ("pval" in display_var):
-                    print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
-                    continue
+                if linkage_var is not None:
+                    if ("pval" in linkage_var) and ("pval" in display_var):
+                        print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
+                        continue
                 fig_dict[display_var] = plot_clustermap(
                         xnamelist,
                         ynamelist,
@@ -322,23 +326,30 @@ def plot_clustermap(
         debug = False
         ):
 
-    import scipy.cluster.hierarchy as hc
-    linkage_vals = value_set[linkage_var]
-    xlinkage = hc.linkage(squareform(linkage_vals), method=cluster_method, optimal_ordering=True)
+    display_vals = value_set[display_var].copy()
+
+    
+    if linkage_var is None:
+        xlinkage = None
+        cluster = False
+    else:
+        cluster = True
+        import scipy.cluster.hierarchy as hc
+        linkage_vals = value_set[linkage_var]
+        xlinkage = hc.linkage(squareform(linkage_vals), method=cluster_method, optimal_ordering=True)
+        assert linkage_vals.shape==display_vals.shape, "linkage and display values must have same dimensions!"
 
     if debug:
         print(f"found {np.count_nonzero(xlinkage < 0)} negative linkage values") 
         print(f"found {np.count_nonzero(np.isnan(xlinkage))} NaN linkage values")
         print(f"found {np.count_nonzero(np.isinf(xlinkage))} infinite linkage values")
 
-    display_vals = value_set[display_var].copy()
-
-    assert linkage_vals.shape==display_vals.shape, "linkage and display values must have same dimensions!"
-    
     print(f"Plotting '{display_var}' values (clustered on \'{linkage_var}\')...")
 
-    xticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in xnamelist]
-    yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
+    xticklabels = [" ".join(i.split('_',maxsplit=1)) for i in xnamelist]
+    # xticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in xnamelist]
+    yticklabels = [" ".join(i.split('_',maxsplit=1)) for i in ynamelist]
+    # yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
     
     cm_title = f"Clustermap plot of {display_var} \n(clustered on {linkage_var})"
 
@@ -373,7 +384,7 @@ def plot_clustermap(
 
     g = _pcl(
         display_vals, 
-        cluster=True,
+        cluster=cluster,
         cluster_method=cluster_method,
         cm_title = cm_title,
         xticklabels=xticklabels, 
@@ -390,7 +401,7 @@ def plot_clustermap(
     fig = g.fig
     ax = g.ax_heatmap
     ax.xaxis.tick_top()
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=90, fontsize=label_fontsize)
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=60, fontsize=label_fontsize)
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=label_fontsize)
 
     if write_mode:

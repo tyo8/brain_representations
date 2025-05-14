@@ -162,42 +162,43 @@ def _plot_clustermap(
             link = hc.linkage(sp.distance.squareform(linkage_vals, checks=False), method=cluster_method, optimal_ordering=True)
             xlinkage=link
             ylinkage=link
-
-        kws = dict(cbar_kws=dict(orientation='vertical'), figsize=fig_size)
-        dgram_ratio = 0.1618
-
-        g = sns.clustermap(
-                values, 
-                row_linkage=xlinkage, 
-                col_linkage=ylinkage,
-                mask = mask,
-                cmap = cmap,
-                xticklabels=xticklabels, 
-                yticklabels=yticklabels, 
-                dendrogram_ratio=dgram_ratio, 
-                **kws
-                )
-
-        g.fig.suptitle(cm_title, fontsize="xx-large")
-        g.fig.set_size_inches(fig_size, forward=False)
-        # g.ax_cbar.set_position([g.cbar_pos[0], 1-dgram_ratio/10, dgram_ratio/10, g.ax_row_dendrogram.get_position().width])
-        # g.ax_cbar.tick_params(labelrotation=0)
-        g.ax_col_dendrogram.set_visible(False)          #suppress column dendrogram
+        if xlinkage is not None:
+            xcluster=True
+        else:
+            xcluster=False
+        if ylinkage is not None:
+            ycluster=True
+        else:
+            ycluster=False
     else:
-        g, ax = plt.subplots()
-        sns.heatmap(
-                values, 
-                square = True, 
-                cbar = True, 
-                ax=ax, 
-                cmap = "Blues",
-                xticklabels=xticklabels, 
-                yticklabels=yticklabels
-                )
-        ax.xaxis.tick_top()
-        plt.title(cm_title)
-        plt.tight_layout()  # neccessary to get the x-axis labels to fit
-        g.set_size_inches(fig_size, forward=False)
+        xlinkage=None
+        ylinkage=None
+        xcluster=False
+        ycluster=False
+
+
+    kws = dict(cbar_kws=dict(orientation='vertical'), figsize=fig_size)
+    dgram_ratio = 0.1618
+
+    g = sns.clustermap(
+            values, 
+            row_linkage=xlinkage, 
+            row_cluster=xcluster,
+            col_linkage=ylinkage,
+            col_cluster=ycluster,
+            mask = mask,
+            cmap = cmap,
+            xticklabels=xticklabels, 
+            yticklabels=yticklabels, 
+            dendrogram_ratio=dgram_ratio, 
+            **kws
+            )
+
+    g.fig.suptitle(cm_title, fontsize="xx-large")
+    g.fig.set_size_inches(fig_size, forward=False)
+    # g.ax_cbar.set_position([g.cbar_pos[0], 1-dgram_ratio/10, dgram_ratio/10, g.ax_row_dendrogram.get_position().width])
+    # g.ax_cbar.tick_params(labelrotation=0)
+    g.ax_col_dendrogram.set_visible(False)          #suppress column dendrogram
 
     if write_mode:
         g.savefig(outpath, dpi=600)
