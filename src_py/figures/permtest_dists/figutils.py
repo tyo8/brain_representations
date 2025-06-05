@@ -11,6 +11,7 @@ import figstats as fstats
 # global default argument values:
 def_fig_size = (24, 24)
 sample_dirnames = {"perm": "permtesting", "bstrap": "subsampling"}
+order_fpath = "/home/tyo/Documents/Personomics_Lab/Experiments/brain_representations/src_py/figures/permtest_dists/xnames_order.csv"
 
 ############################################# DATA LOADING FUNCTIONS ###################################################
 ########################################################################################################################
@@ -210,40 +211,87 @@ def _add_data_slice(df):
 ########################################################################################################################
 # Data-wrangling helper functions
 ########################################################################################################################
-def _get_fpath_list(args, debug=False):
-    if args.pattern_restriction is None:
-        args.pattern_restriction = ""
 
-    basedir_pattern = os.path.join(
-            args.input_dir,
-            args.dir_pattern, 
-            sample_dirnames[args.sample_type]
-            )
+# may want to change logic/implementation of searches to allow for some kind of "or" | syntax processing -- convert to regex?
+def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
+    if dist_type == "single":
+        if args.pattern_restriction is None:
+            args.pattern_restriction = ""
 
-    if args.sample_type=="perm":
-        path_ext = os.path.join(f"X_*{args.pattern_restriction}*_dists", f"{args.f_pattern}.csv")
-    elif args.sample_type == "bstrap":
-        path_ext = f"bsdists_*{args.pattern_restriction}*.csv"
+        basedir_pattern = os.path.join(
+                args.input_dir,
+                args.dir_pattern, 
+                sample_dirnames[args.sample_type]
+                )
 
-    match_pattern = os.path.join(
-            basedir_pattern,
-            path_ext
-            )
+        if args.sample_type=="perm":
+            path_ext = os.path.join(f"X_*{args.pattern_restriction}*_dists", f"{args.f_pattern}.csv")
+        elif args.sample_type == "bstrap":
+            path_ext = f"bsdists_*{args.pattern_restriction}*.csv"
 
-    fpath_list = glob.glob(match_pattern)
-    fpath_list.sort()
+        match_pattern = os.path.join(
+                basedir_pattern,
+                path_ext
+                )
 
-    if args.verbose:
-        print(f"general match pattern is: \n\'{match_pattern}\'")
+        fpath_list = glob.glob(match_pattern)
+        fpath_list.sort()
 
-    if args.enforce_match and args.verbose:
-        print("enforcing modality, feature, and metric matching between data and null")
-        if debug:
-            print(f"fpath_list has {len(fpath_list)} entries prior to match enforcement.")
-        fpath_list = [fpath for fpath in fpath_list if '_'.join(_parse_fpath(fpath, metric=False)) in os.path.basename(fpath)]
-        if debug or args.verbose:
-            print(f"fpath_list has {len(fpath_list)} entries after match enforcement.")
-    return fpath_list
+        if args.verbose:
+            print(f"general match pattern is: \n\'{match_pattern}\'")
+
+        if args.enforce_match and args.verbose:
+            print("enforcing modality, feature, and metric matching between data and null")
+            if debug:
+                print(f"fpath_list has {len(fpath_list)} entries prior to match enforcement.")
+            fpath_list = [fpath for fpath in fpath_list if '_'.join(_parse_fpath(fpath, metric=False)) in os.path.basename(fpath)]
+            if debug or args.verbose:
+                print(f"fpath_list has {len(fpath_list)} entries after match enforcement.")
+
+        fpath_set = fpath_list
+
+    elif dist_type=="pair":
+
+        args.dir_pattern='X_*_dists'
+        args.f_pattern = '*_vs_*.csv'
+
+        if args.pattern_restriction is not None and args.permtype is not None:
+            if not args.output_dir.endswith(args.pattern_restriction):
+                args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+
+            args.dir_pattern = args.dir_pattern.replace('_dists', f'*{args.pattern_restriction}*_dists')
+            args.f_pattern = args.f_pattern.replace('_vs_', f'{args.pattern_restriction}*_vs_*{args.pattern_restriction}')
+
+        if args.permtype is not None:
+            args.f_pattern = args.f_pattern.replace(".csv",f"{args.permtype}Perms.csv")
+
+        if set_type=="list":
+            if args.fpathlist_path is None: 
+                args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
+                fpath_list = glob.glob(args.search_pattern)
+            else:
+                with open(args.fpathlist_path, 'r') as fin:
+                    fpath_list = fin.read().split('\n')
+
+            fpath_set = fpath_list
+
+        if set_type=="grid":
+
+            if args.fpathlist_fpath is None:
+                pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
+                dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
+                fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
+            else:
+                with open(args.fpathlist_path, 'r') as fin:
+                    fpath_list = fin.read().split('\n')
+                dpath_list = list(set(list([ os.path.dirname( fpath ) for fpath in fpath_list ]))); dpath_list.sort()
+                fpath_grid = [ [fpath for fpath in glob.glob(os.path.join(dpath, '*' )) if fpath in fpath_list ] for dpath in dpath_list ]
+
+            fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
+            [pathlist.sort() for pathlist in fpath_grid]
+            fpath_set = fpath_grid
+
+    return fpath_set
 
 def _pull_rank(long_method, debug=False):
     if 'PROFUMO' in long_method:
@@ -397,6 +445,13 @@ def get_aesthetic_names(dist_type):
     denamer = {v: k for k, v in renamer.items()}      # inverse dictionary of 'renamer'
     return renamer, denamer
 
+def _nice_feats(featname):
+    featname.replace("spNM","spatial NetMat")
+    featname.replace("pNM","partial NetMat")
+    featname.replace("NM","full NetMat")
+    featname.replace("Amps","Amplitudes")
+    return featname
+
 
 def _write_list(outpath, list_out):
     with open(outpath, 'w') as fout:
@@ -521,6 +576,61 @@ def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False
     return xnamelist, ynamelist, value_set
 ########################################################################################################################
 
+# variable "order" is either a list, a filepath, or None
+def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
+    if isinstance(order,str):
+        order_df = pd.read_csv(order, header=None)
+        order_df.rename(columns = {0:"name"}, inplace=True)
+    elif isinstance(order,list):
+        order_df = pd.DataFrame(colunns = ["name"], data=order)
+    elif order is None:
+        order_df = pd.DataFrame(colunns = ["name"], data=sorted(xlist))
+
+    err_msg = f"Found {len(namelists)} namelists but arrays have shapes {[len(arr.shape) for arr in array_list]}; match failed"
+    assert len(namelists)==np.unique([len(arr.shape) for arr in array_list])[0], err_msg
+
+    if verbose:
+        print(f"re-ordering labels and arrays from ordering: \n{order}")
+
+    newidx_list = [_reindex_list(namelist, order_df) for namelist in namelists]
+
+    rename_idx_list = zip(namelists, newidx_list)
+
+    namelists = [_reorder_list(ord_pair[0], ord_pair[1]) for ord_pair in rename_idx_list]
+    array_list = [_reorder_array(arr, newidx_list) for arr in array_list]
+    return namelists, array_list
+
+def _reindex_list(namelist, order_df):
+    list_df = order_df[ order_df.name.apply( lambda x: x in namelist ) ]
+    list_df.reset_index(drop=True, inplace=True)
+    new_idx = [list_df[ list_df.name == name ].index.values[0] for name in namelist ]
+    return new_idx
+
+def _reorder_list(inlist, new_idx, debug=False):
+    ordlist = [None]*len(inlist)
+    if debug:
+        print(inlist)
+        print(new_idx)
+    for count, reidx in enumerate(new_idx):
+        ordlist[reidx] = inlist[count]
+
+    return ordlist
+
+def _reorder_array(arr, idx_lists):
+    ndims = len(arr.shape)
+    for n in range(ndims):
+        arr = np.rollaxis(arr, n)
+        for count, reidx in enumerate(idx_lists[n]):
+            arr[reidx,:] = arr[count,:]
+
+
+    arr = np.rollaxis(arr,0)
+    return arr
+########################################################################################################################
+
+
+
+########################################################################################################################
 
 ############################################### DEBUGGING FUNCTIONS ####################################################
 ########################################################################################################################

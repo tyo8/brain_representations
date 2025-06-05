@@ -346,11 +346,6 @@ def plot_clustermap(
 
     print(f"Plotting '{display_var}' values (clustered on \'{linkage_var}\')...")
 
-    xticklabels = [" ".join(i.split('_',maxsplit=1)) for i in xnamelist]
-    # xticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in xnamelist]
-    yticklabels = [" ".join(i.split('_',maxsplit=1)) for i in ynamelist]
-    # yticklabels = ["\n".join(i.split('_',maxsplit=1)) for i in ynamelist]
-    
     cm_title = f"Clustermap plot of {display_var} \n(clustered on {linkage_var})"
 
     if np.nanmin(mask):
@@ -365,7 +360,10 @@ def plot_clustermap(
 
     if ("pval" not in display_var) and (alpha is not None):
         print(f"Masking \'{display_var}\' plot by \'{pval_var}\'...")
-        outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
+        if linkage_var is None:
+            outname = f"no-cluster_{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
+        else:
+            outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
     else:
         outname = f"cluster-on-{linkage_var}_of-{display_var}.png".replace(" ","")
 
@@ -375,10 +373,37 @@ def plot_clustermap(
             print(f"{np.count_nonzero(np.isnan(display_vals))} NaNs removed removed from \'display_vals\' for var \"{display_var}\"")
         np.nan_to_num(display_vals, nan=-1, copy=False)
 
+    if not cluster:
+        if mask is None:
+            [xnamelist, ynamelist], [display_vals] = futils._reorder_arrays(
+                    [xnamelist, ynamelist],
+                    [display_vals]
+                    )
+        else:
+            [xnamelist, ynamelist], [display_vals, mask] = futils._reorder_arrays(
+                    [xnamelist, ynamelist],
+                    [display_vals, mask]
+                    )
+        xticklabels = [futils._nice_feats(i.split('_')[0]) for i in xnamelist]
+        yticklabels = [futils._nice_feats(i.split('_')[1]) for i in ynamelist]
+    else:
+        split_char = "\n"   # or, e.g., " "
+        xticklabels = [split_char.join(i.split('_',maxsplit=1)) for i in xnamelist]
+        yticklabels = [split_char.join(i.split('_',maxsplit=1)) for i in ynamelist]
 #   if debug:
 #       ### debugging code ###
 #       print(f"xticklabels: {xticklabels[0]}")
 #       print(f"yticklabels: {yticklabels[0]}")
+
+    if pval_var is not None:
+        if "left-pval" in pval_var:
+            cmap = sns.color_palette("crest", as_cmap=True)
+        elif "right-pval"in pval_var:
+            cmap = sns.color_palette("magma", as_cmap=True)
+        else:
+            cmap = sns.color_palette("seismic", as_cmap=True)
+    else:
+        cmap = sns.color_palette("seismic", as_cmap=True)
 
     from compare_topostats import _plot_clustermap as _pcl
 
@@ -392,7 +417,7 @@ def plot_clustermap(
         xlinkage=xlinkage,
         ylinkage=xlinkage,
         mask = mask,
-        cmap = sns.color_palette("Spectral", as_cmap=True),
+        cmap = cmap,
         fig_size=fig_size,
         write_mode=False,
         debug=debug
@@ -401,6 +426,8 @@ def plot_clustermap(
     fig = g.fig
     ax = g.ax_heatmap
     ax.xaxis.tick_top()
+    if not cluster:
+        ax.yaxis.tick_left()
     ax.set_xticklabels(ax.get_xticklabels(), rotation=60, fontsize=label_fontsize)
     ax.set_yticklabels(ax.get_yticklabels(), rotation=0, fontsize=label_fontsize)
 
@@ -491,26 +518,25 @@ def pull_data(
 
 
 def _get_fpath_sets(args, debug=False):
-    if args.pattern_restriction is not None and args.permtype is not None:
-        if not args.output_dir.endswith(args.pattern_restriction):
-            args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+#   args.dir_pattern='X_*_dists'
+#   args.f_pattern = '*_vs_*.csv'
+#   if args.pattern_restriction is not None and args.permtype is not None:
+#       if not args.output_dir.endswith(args.pattern_restriction):
+#           args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+#
+#       args.dir_pattern = args.dir_pattern.replace('_dists', f'*{args.pattern_restriction}*_dists')
+#       args.f_pattern = args.f_pattern.replace('_vs_', f'{args.pattern_restriction}*_vs_*{args.pattern_restriction}')
+#   if args.permtype is not None:
+#       args.f_pattern = args.f_pattern.replace(".csv",f"{args.permtype}Perms.csv")
+#
+#   pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
+#
+#   dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
+#   fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
+#   fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
+#   [pathlist.sort() for pathlist in fpath_grid]
 
-        args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
-        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*{args.permtype}Perms.csv'
-    elif args.permtype is not None:
-        args.dir_pattern='X_*'
-        args.f_pattern = f'*_vs_*{args.permtype}Perms.csv'
-    else:
-        args.dir_pattern='X_*'
-        args.f_pattern = '*_vs_*.csv'
-
-    pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
-
-    dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
-    fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
-    fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
-    [pathlist.sort() for pathlist in fpath_grid]
-    
+    fpath_grid = futils._get_fpath_set(args, dist_type="pair", set_type="grid")
     fpath_list = list(itertools.chain(*fpath_grid))
 
     if args.verbose:
@@ -523,8 +549,8 @@ def _get_fpath_sets(args, debug=False):
         with open("fpath_grid_tmp.txt", 'w') as fout:
             json.dump(fpath_grid, fout, indent=4)
 
-    xnamelist = [_semiload(i[0])["X_name"].unique()[0] for i in fpath_grid]
-    ynamelist = [_semiload(j)["Y_name"].unique()[0] for j in fpath_grid[0]]
+    # xnamelist = [_semiload(i[0])["X_name"].unique()[0] for i in fpath_grid]
+    # ynamelist = [_semiload(j)["Y_name"].unique()[0] for j in fpath_grid[0]]
 
     if (args.alpha is not None) and any( [args.clustermap_plots, args.solo_plots, args.distribution_plots] ):
         fpath_grid = _filter_fpath_grid(args, fpath_grid)
@@ -534,8 +560,8 @@ def _get_fpath_sets(args, debug=False):
             print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
             print(f"\tfound {len(fpath_list)} total matches.")
 
-
     return fpath_list, fpath_grid
+
 
 def _filter_fpath_grid(args, fpath_grid, backend="text"):
     if args.verbose:

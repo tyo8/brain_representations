@@ -47,7 +47,7 @@ def main(args, debug=False):
     # sample subsample fpath: "bsdists_grad15_Maps_Psim.csv"
 
     if fpath_list is None and args.input_dir is not None:
-        fpath_list = futils._get_fpath_list(args)
+        fpath_list = futils._get_fpath_set(args)
 
     if args.ROC_analysis:
         auc_df = make_AUC_plots(fpath_list, args, debug=debug)

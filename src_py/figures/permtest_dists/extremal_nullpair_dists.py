@@ -17,24 +17,26 @@ dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std"
 # dist_vars = ["Wp_XYNull_min", "Wp_XYNull_max", "Wp_XYNull_mean", "Wp_XYNull_std", "permtype"]
 
 def main(args, debug=False):
-    if args.pattern_restriction is not None:
-        if not args.output_dir.endswith(args.pattern_restriction):
-            args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
-        args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
-        args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*.csv'
-    else:
-        args.dir_pattern=f'X_*_dists'
-        args.f_pattern = f'*_vs_*.csv'
+#   if args.pattern_restriction is not None:
+#       if not args.output_dir.endswith(args.pattern_restriction):
+#           args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+#       args.dir_pattern=f'*X_*{args.pattern_restriction}*_dists'
+#       args.f_pattern = f'*{args.pattern_restriction}*_vs_*{args.pattern_restriction}*.csv'
+#   else:
+#       args.dir_pattern=f'X_*_dists'
+#       args.f_pattern = f'*_vs_*.csv'
+#
+#   if args.permtype is not None:
+#       args.f_pattern = args.f_pattern.replace(".csv",f"{args.permtype}Perms.csv")
+#
+#   if args.fpathlist_path is None: 
+#       args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
+#       fpath_list = glob.glob(args.search_pattern)
+#   else:
+#       with open(args.fpathlist_path, 'r') as fin:
+#           fpath_list = fin.read().split('\n')
 
-    if args.permtype is not None:
-        args.f_pattern = args.f_pattern.replace(".csv",f"{args.permtype}Perms.csv")
-
-    if args.fpathlist_path is None: 
-        args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
-        fpath_list = glob.glob(args.search_pattern)
-    else:
-        with open(args.fpathlist_path, 'r') as fin:
-            fpath_list = fin.read().split('\n')
+    fpath_list = futils._get_fpath_set(args, dist_type="pair", set_type="list")
 
     if args.verbose:
         print(f"argument initializations for: \n{__name__}\n***")
