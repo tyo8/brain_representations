@@ -148,7 +148,14 @@ def _unify_df(df, fpath=None, enforce_match=False):
             df[["X_modality","X_feature","X_metric"]] = df["X_name"].str.split('_', n=2, expand=True)
             df[["Y_modality","Y_feature","Y_metric"]] = df["Y_name"].str.split('_', n=2, expand=True)
 
-    if not "Y_name" in df.columns.values:
+    if "Y_name" in df.columns.values:
+        df[["X_modality","X_feature","X_metric"]] = df["X_name"].str.split('_', n=2, expand=True)
+        df[["Y_modality","Y_feature","Y_metric"]] = df["Y_name"].str.split('_', n=2, expand=True)
+        df[["X_modality","X_rank"]] = df.apply( lambda x: _pull_rank(x["X_modality"]), result_type="expand", axis=1 )
+        df[["Y_modality","Y_rank"]] = df.apply( lambda x: _pull_rank(x["Y_modality"]), result_type="expand", axis=1 )
+        df["X_feat_num"] = df.apply( lambda x: _pull_feat_num(x["X_rank"], x["X_feature"]), axis=1 )
+        df["Y_feat_num"] = df.apply( lambda x: _pull_feat_num(x["Y_rank"], x["Y_feature"]), axis=1 )
+    else:
         if "X_name" in df.columns.values:
             df[["modality","feature","metric"]] = df["X_name"].str.split('_', n=2, expand=True)
         else:
@@ -169,10 +176,6 @@ def _unify_df(df, fpath=None, enforce_match=False):
 
         df[["modality","rank"]] = df.apply( lambda x: _pull_rank(x["modality"]), result_type="expand", axis=1 )
         df["feat_num"] = df.apply( lambda x: _pull_feat_num(x["rank"], x["feature"]), axis=1 )
-    else:
-        df[["X_modality","X_feature","X_metric"]] = df["X_name"].str.split('_', n=2, expand=True)
-        df[["Y_modality","Y_feature","Y_metric"]] = df["Y_name"].str.split('_', n=2, expand=True)
-
 
     if "permtype" in df.columns.values:
         try:
@@ -277,9 +280,9 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
 
         if set_type=="grid":
 
-            if args.fpathlist_fpath is None:
-                pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
-                dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
+            if args.fpathlist_path is None:
+                args.pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
+                dpath_list = glob.glob(args.pdir_pattern); dpath_list.sort()
                 fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
             else:
                 with open(args.fpathlist_path, 'r') as fin:
@@ -574,6 +577,36 @@ def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False
         ### debugging code ###
 
     return xnamelist, ynamelist, value_set
+
+
+def get_pval_masks(value_set, alpha=None):
+    dispvars = list(value_set.keys())
+    if alpha is not None:
+        # retains only display grid values corresponding to significant p-values
+        pval_vars = [var for var in dispvars if "pval" in var]
+
+        # create logical significance arrays
+        sig_list = [ value_set[var] < alpha for var in pval_vars ]
+        # 'mask' (in sns.heatmap) hides values at coordinate if mask(coord)=True; retain values by setting mask(coord)=False.
+        masks = [ ~sig for sig in sig_list ]
+        # show one unmasked plot as well (write it out last)
+        pval_vars.append(None)
+        masks.append(None)
+    else:
+        pval_vars = [None]
+        masks = [None]
+
+    for pval_var in pval_vars:
+        if pval_var is not None:
+            if 'two-tail' in pval_var:
+                mask_var = pval_var + f"_INVmask{alpha}".replace("0.","")
+                value_set[mask_var] = ~ masks[pval_vars.index(pval_var)]
+            else:
+                mask_var = pval_var + f"_mask{alpha}".replace("0.","")
+                value_set[mask_var] = masks[pval_vars.index(pval_var)]
+
+    return value_set
+
 ########################################################################################################################
 
 # variable "order" is either a list, a filepath, or None

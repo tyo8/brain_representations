@@ -13,7 +13,7 @@ import seaborn as sns
 import figstats as fstats
 import figutils as futils
 from matplotlib import pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
+from matplotlib.colors import LinearSegmentedColormap, hsv_to_rgb
 from scipy.spatial.distance import squareform
 from statsmodels.stats.multitest import fdrcorrection
 
@@ -56,7 +56,12 @@ def main(args, debug=False):
             fpath_list = fin.read().split('\n')
 
     if args.clustermap_plots:
-        xnamelist, ynamelist, value_set = make_clustermaps(fpath_grid, args=args)
+        xnamelist, ynamelist, value_set, alldata_grid = make_clustermaps(fpath_grid, args=args)
+
+        if args.scatter_plots:
+            make_scatterplots(alldata_grid=alldata_grid, args=args)
+    elif args.scatter_plots:
+        make_scatterplots(fpath_grid=fpath_grid, args=args)
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
@@ -140,6 +145,8 @@ def make_clustermaps(fpath_grid, args=None, debug=False):
     fig_inches = def_fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
     label_fontsize = def_label_fontsize * np.power(70 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
+    value_set = futils.get_pval_masks(value_set, alpha = args.alpha)
+
     for linkage_var in [None, "Wp_XY"]:
         generate_clustermaps(
                 xnamelist, 
@@ -155,7 +162,73 @@ def make_clustermaps(fpath_grid, args=None, debug=False):
                 write_mode=args.write_mode
                 )
 
-    return xnamelist, ynamelist, value_set
+    return xnamelist, ynamelist, value_set, alldata_grid
+
+def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=None, verbose=True, debug=False):
+    if fpath_grid is not None:
+        assert args is not None, "if 'fpath_grid' is not None, then 'args' cannot be None either."
+        alpha = args.alpha
+        alldata_grid = pull_data(fpath_grid, args)
+    else:
+        assert alldata_grid is not None, "if 'fpath_grid' is None, then 'alldata_grid' must not be None."
+        if args is None:
+            alpha = None
+        else:
+            alpha = args.alpha
+
+    allvars = list(alldata_grid[0][0].keys())
+    # allvars = [varname for varname in list(alldata_grid[0][0].keys()) if 'two-tail' not in varname]
+    _, _, value_set = _get_heatmap_inputs(
+            alldata_grid, 
+            clustermap_vars=allvars,
+            enforce_symmetry=True,
+            check_pval=False,
+            debug=debug
+            )
+
+    if debug:
+        print(f"data loaded into 'value_set' has keys: \n{value_set.keys()}")
+
+    value_set = futils.get_pval_masks(value_set, alpha=alpha)
+    varlist = list(value_set.keys())
+    pval_vars = [var for var in varlist if (('pval' in var) and ('mask' not in var))]
+    mask_vars = [var for var in varlist if (('pval' in var) and ('mask' in var))]
+    mask_vars = [[var for var in mask_vars if pval_var in var][0] for pval_var in pval_vars]    # forces 'mask_vars' to have same order as 'pval_vars'
+
+    print(varlist)
+    dummy_set = {}
+    for var in varlist:
+        if condensed:
+            dummy_set[var] = triu_vals(value_set[var])
+        else:
+            dummy_set[var] = value_set[var].flatten()
+
+    # if debug:
+    #     _debug_value_set(value_set)
+
+    alldata_df = pd.DataFrame(data=dummy_set)
+    alldata_df.drop( index = np.where(alldata_df.X_feat_num==0)[0], inplace=True )
+    
+    if verbose:
+        print(f"data shaped into 'alldata_df': \n{alldata_df}")
+        print(f"which has keys: \n{alldata_df.columns.values}")
+        # alldata_df.to_csv('value_set/alldata_df.csv')
+        # np.save('value_set/value_set.npy', value_set, allow_pickle=True)
+        print(f"wrote dataframe to: \n{os.path.join(os.getcwd(),'value_set/alldata_df.csv')}")
+
+    fig, outname = do_scatterplot(alldata_df, pval_vars, label_vars=mask_vars, mask_vars=mask_vars, jitter=args.jitter)
+    outname.replace('.png', f'alpha{alpha}.png')
+    outpath = os.path.join(args.output_dir, outname)
+    futils._write_img(fig, outpath, fig_size=(12,12))
+    # futils._write_img(fig, outpath, fig_size=None)
+
+    wp_vars = [var for var in varlist if "Wp" in var]
+    fig, outname = do_scatterplot(alldata_df, wp_vars, zlabel="Wasserstein Distance", label_vars=wp_vars, jitter=args.jitter)
+    outname.replace('.png', f'alpha{alpha}.png')
+    outpath = os.path.join(args.output_dir, outname)
+    futils._write_img(fig, outpath, fig_size=(12,12))
+    # futils._write_img(fig, outpath, fig_size=None)
+    return None
 
 ########################################################################################################################
 
@@ -217,8 +290,7 @@ def _get_heatmap_inputs(
 
     if enforce_symmetry:
         print(f"enforced symmetry in variables: \'{clustermap_vars}\'.")
-        for i in ynamelist:
-            ynamelist = [xnamelist[0]].append(i)
+        ynamelist = [xnamelist[0], *ynamelist]
         try:
             assert xnamelist == ynamelist
         except AssertionError:
@@ -245,6 +317,9 @@ def generate_clustermaps(
         write_mode = True
         ):
     dispvars = list(value_set.keys())
+    pval_vars = [var for var in dispvars if (('pval' in var) and ('mask' not in var))]
+    mask_vars = [var for var in dispvars if (('pval' in var) and ('mask' in var))]
+    dispvars = [var for var in dispvars if 'pval' not in var]
 
     if onelink and (linkage_var is not None):
         assert linkage_var in dispvars, f"Value does not include variable \"{linkage_var}\", the specified common linkage operator"
@@ -258,23 +333,6 @@ def generate_clustermaps(
 
     fig_dict = {}
 
-    if alpha is not None:
-        # retains only display grid values corresponding to significant p-values
-        pval_vars = [var for var in dispvars if "pval" in var]
-        left_pval = [var for var in pval_vars if "left" in var][0]
-
-        # create logical significance arrays
-        sig_list = [ value_set[var] < alpha for var in pval_vars ]
-        # 'mask' (in sns.heatmap) hides values at coordinate if mask(coord)=True; retain values by setting mask(coord)=False.
-        masks = [ ~sig for sig in sig_list ]
-        # show one unmasked plot as well (write it out last)
-        pval_vars.append(None)
-        masks.append(None)
-    else:
-        pval_vars = [None]
-        masks = [None]
-
-    dispvars = [var for var in dispvars if var not in pval_vars]
     if verbose:
         print(f"display vars: {dispvars}")
         print(f"p-value vars: {pval_vars}")
@@ -282,7 +340,8 @@ def generate_clustermaps(
     for linkage_var in linkvars:
         for display_var in dispvars:
             for pval_var in pval_vars:
-                mask = masks[pval_vars.index(pval_var)]
+                mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
+                mask = value_set[mask_var]
                 if linkage_var is not None:
                     if ("pval" in linkage_var) and ("pval" in display_var):
                         print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
@@ -304,8 +363,8 @@ def generate_clustermaps(
                         write_mode = write_mode
                         )
 
-        # can i turn list figure set into something that shows everything?
-
+    # can i turn list figure set into something that shows everything?
+    return None
 
 
 def plot_clustermap(
@@ -396,12 +455,23 @@ def plot_clustermap(
 #       print(f"yticklabels: {yticklabels[0]}")
 
     if pval_var is not None:
+        Lhue=145    # minty light green (in degrees)
+        Rhue=300    # lavender-lilac (in degrees)
+        Lrot = -Lhue/360
+        Rrot = 1 - Rhue/360
+        light=0.75
+        dark=0.25
+        #   Lcol = hsv_to_rgb(( Lhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
+        #   Rcol = hsv_to_rgb(( Rhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
         if "left-pval" in pval_var:
-            cmap = sns.color_palette("crest", as_cmap=True)
+            # cmap = sns.color_palette("crest", as_cmap=True)
+            cmap = sns.cubehelix_palette(rot=Lrot, light=light, dark=dark, reverse=True, as_cmap=True)
         elif "right-pval"in pval_var:
-            cmap = sns.color_palette("magma", as_cmap=True)
+            # cmap = sns.color_palette("magma", as_cmap=True)
+            cmap = sns.cubehelix_palette(rot=Rrot, light=1-light, dark=1-dark, as_cmap=True)
         else:
-            cmap = sns.color_palette("seismic", as_cmap=True)
+            # cmap = sns.color_palette("seismic", as_cmap=True)
+            cmap = sns.diverging_palette(Lhue, Rhue, s=60, as_cmap=True)
     else:
         cmap = sns.color_palette("seismic", as_cmap=True)
 
@@ -440,6 +510,178 @@ def plot_clustermap(
         plt.show()
 
     return g
+
+
+# actually make the scatterplot
+def do_scatterplot(
+        df, 
+        color_vars, 
+        mask_vars=None, 
+        label_vars=None, 
+        xlabel="X_feat_num", 
+        ylabel="Y_feat_num",
+        zlabel=None,
+        size=75,
+        jitter=0.05,
+        opacity=0.5,
+        log_scale=True,
+        verbose=True
+        ):
+    if zlabel is None:
+        fig, ax = plt.subplots()
+    else:
+        fig = plt.figure()
+        ax = fig.add_subplot(projection='3d')
+
+    base_colors = sns.color_palette(n_colors = len(color_vars), as_cmap=False)
+    # base_colors = sns.color_palette("husl", n_colors = len(color_vars), as_cmap=False)
+    color_name = _get_minimal_name(color_vars)
+
+    title = f"{xlabel} vs {ylabel}\ncolored by {color_name}"
+
+    if mask_vars is None:
+        mask_vars = [None]*len(color_vars)
+        mask_name = None
+    else:
+        mask_name = _get_minimal_name(mask_vars)
+        title += f"\n{mask_name}"
+    if label_vars is None:
+        label_vars = [None]*len(color_vars)
+        label_name = None
+    else:
+        label_vars = [_clean_scatter_label(var) for var in label_vars]
+        label_name = _get_minimal_name(label_vars)
+        title += f"\n{label_name}"
+
+    for i, color_var in enumerate(color_vars):
+        label_var = label_vars[i]
+        mask_var = mask_vars[i]
+
+        if verbose:
+            print(f"plotting subset from {mask_var} with coloring from {color_var}")
+
+        if mask_var is None:
+            subdf = df
+        else:
+            subdf = df[ ~df[mask_var] ]
+
+        if 'two-tailed' in color_var:
+            cmap = sns.light_palette(base_colors[i], reverse=False, as_cmap=True)
+        else:
+            cmap = sns.dark_palette(base_colors[i], reverse=True, as_cmap=True)
+
+        color = subdf[color_var].to_numpy().astype(float)
+        x = subdf[xlabel].to_numpy().astype(float)
+        y = subdf[ylabel].to_numpy().astype(float)
+
+        if log_scale:
+            if 'pval' in color_var:
+                color = np.log(color)
+            x = np.log10(x)
+            y = np.log10(y)
+
+        min_cval = np.nanmin(color)
+        max_cval = np.nanmax(color)
+        np.nan_to_num(color, copy=False, neginf=min_cval, posinf=max_cval)
+
+        x *= 1+(1/2 - np.random.rand(*x.shape))*jitter*2
+        y *= 1+(1/2 - np.random.rand(*y.shape))*jitter*2
+
+        if zlabel is None:
+            ax.scatter(
+                    x=x,
+                    #x=np.log(y/x),
+                    y=y,
+                    #y=color,
+                    s=size,
+                    c=color, 
+                    cmap=cmap,
+                    alpha=opacity,
+                    linewidths=0,
+                    label=label_var
+                    )
+        else:
+            if 'std' in color_var:
+                zmean = subdf[color_vars[i-1]].to_numpy()
+                ax.errorbar(
+                        x,      # xs
+                        y,      # ys
+                        zmean,  # zs
+                        zerr=color,
+                        color=base_colors[i], 
+                        alpha=opacity,
+                        fmt='none'      # plots errorbars only, no datapoints
+                        )
+            else:
+                ax.scatter(
+                        x,      # xs
+                        y,      # ys
+                        color,  # zs
+                        s=size/3,
+                        color=base_colors[i], 
+                        alpha=opacity,
+                        linewidths=0,
+                        label=label_var
+                        )
+
+    leg = ax.legend(loc="best")
+    # face_colors = ['blue', 'orange', 'green']
+    for i,handle in enumerate(leg.legend_handles):
+        print(f"{i}-th pre-update legend marker face color:", handle.get_facecolor())
+        handle.set_facecolor(base_colors[i])
+        handle.set_alpha(1)
+        print(f"{i}-th post-update legend marker face color:", handle.get_facecolor())
+        # handle.set_facecolor(face_colors[i])
+    ax.set_xlabel(_clean_scatter_label(xlabel))
+    ax.set_ylabel(_clean_scatter_label(ylabel))
+    if zlabel is not None:
+        ax.set_zlabel(_clean_scatter_label(zlabel))
+
+
+    outname = f"x-{xlabel}_y-{ylabel}_c-{color_name}.png"
+    if log_scale:
+        outname.replace('.png', '_log.png')
+    if mask_name is not None:
+        outname.replace('.png', '_m-{mask_name}.png')
+    if label_name is not None:
+        outname.replace('.png', '_label-{label_name}.png')
+    return fig, outname
+
+# scatterplot title utility
+def _get_minimal_name(namelist):
+    nameset = [set(i) for i in namelist]
+    minlist = list(nameset[0].intersection(*nameset))
+    minlist.sort()
+    min_name = ''.join(minlist)
+    return min_name
+
+# scatterplot labelling utility
+def _clean_scatter_label(label):
+    clean_label = label
+    if 'left-pval' in label:
+        clean_label = "Convergent"
+    elif 'right-pval' in label:
+        clean_label = "Divergent"
+    elif 'two-tailed' in label:
+        clean_label = "Incomparable"
+
+    if 'fdr' in label:
+        clean_label += " (FDR)"
+    elif 'fwe' in label:
+        clean_label += " (FWE)"
+
+    if 'subject' in label:
+        clean_label = clean_label.replace("(F", "(subject-null F")
+    elif 'feature' in label:
+        clean_label = clean_label.replace("(F", "(feature-null F")
+
+    if 'Wp_XY' in label:
+        clean_label = label.replace('_XY', '(X,Y) ').replace('_',' ')
+
+    if '_feat_num' in label:
+        clean_label = label.replace('_feat_num',' feature number')
+    return clean_label 
+
 
 # heatmap plot utility
 ### is 'mask' enters heatmap as heatmap(mask=mask), then filt=~mask (logical inverse) 
@@ -540,7 +782,7 @@ def _get_fpath_sets(args, debug=False):
     fpath_list = list(itertools.chain(*fpath_grid))
 
     if args.verbose:
-        print(f"Matching patterns of general form: \n{(pdir_pattern, args.f_pattern)}:")
+        print(f"Matching patterns of general form: \n{(args.pdir_pattern, args.f_pattern)}:")
         print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
         print(f"\tfound {len(fpath_list)} total matches.")
 
@@ -552,7 +794,7 @@ def _get_fpath_sets(args, debug=False):
     # xnamelist = [_semiload(i[0])["X_name"].unique()[0] for i in fpath_grid]
     # ynamelist = [_semiload(j)["Y_name"].unique()[0] for j in fpath_grid[0]]
 
-    if (args.alpha is not None) and any( [args.clustermap_plots, args.solo_plots, args.distribution_plots] ):
+    if (args.alpha is not None) and any( [args.clustermap_plots, args.scatter_plots, args.solo_plots, args.distribution_plots] ):
         fpath_grid = _filter_fpath_grid(args, fpath_grid)
         fpath_list = list(itertools.chain(*fpath_grid))
         if args.verbose:
@@ -604,7 +846,8 @@ def _enforce_symmetry(mtx, debug=False, fill_val=np.nan):
         sym_mtx = squareform(triu_vals(mtx, k=0))
         np.fill_diagonal(sym_mtx, fill_val)
 
-        assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
+        if isinstance(sym_mtx[0][1], float):
+            assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
 
     return sym_mtx
 
@@ -626,6 +869,25 @@ def triu_vals(A, k=1):
     n = min(A.shape)
     vals = A[np.triu_indices(n, k)]
     return vals
+########################################################################################################################
+
+
+## Debugging functions
+########################################################################################################################
+def _debug_value_set(value_set):
+    # del value_set['datatype']
+    varlist = list(value_set.keys())
+    print(f"data loaded into 'value_set' has (upper-triangular) shapes: \n{[(var, value_set[var].shape) for var in varlist]}")
+    # print(f"data loaded into 'value_set' has first values: \n{[(var, value_set[var][0]) for var in varlist]}")
+    outdir = "value_set"
+    with open('value_set/value_set.npy','wb') as fout:
+        np.save(fout, value_set)
+    for var in varlist:
+        fpath = os.path.join(outdir, f"{var}.txt")
+        val = triu_vals(value_set[var])
+        np.savetxt(fpath, val)
+        print(f'{var} written to file:', os.path.join(os.getcwd(), fpath))
+        value_set[var] = val
 ########################################################################################################################
 
 
@@ -693,6 +955,20 @@ if __name__=="__main__":
         help="apply log10 to display values (collapse difference)"
     )
     parser.add_argument(
+        "-C",
+        "--clustermap_plots",
+        default=False,
+        action="store_true",
+        help="flag to visualized grouped distributions"
+    )
+    parser.add_argument(
+        "-V",
+        "--scatter_plots",
+        default=False,
+        action="store_true",
+        help="flag to perform solo plots"
+    )
+    parser.add_argument(
         "-S",
         "--solo_plots",
         default=False,
@@ -707,18 +983,18 @@ if __name__=="__main__":
         help="flag to visualized grouped distributions"
     )
     parser.add_argument(
-        "-C",
-        "--clustermap_plots",
-        default=False,
-        action="store_true",
-        help="flag to visualized grouped distributions"
-    )
-    parser.add_argument(
         "-a",
         "--alpha",
         default=None,
         type=float,
         help="significance threshold"
+    )
+    parser.add_argument(
+        "-j",
+        "--jitter",
+        default=0.02,
+        type=float,
+        help="plot jitter (scatter points uniformly at random to avoid overplotting) -- maximum absolute value of (1-jitter_multiplier)"
     )
     parser.add_argument(
         "-w",
