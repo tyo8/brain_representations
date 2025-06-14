@@ -215,6 +215,118 @@ def _add_data_slice(df):
 # Data-wrangling helper functions
 ########################################################################################################################
 
+########################################################################################################################
+def _get_symmetrized_data(
+        alldata_grid, 
+        symmetrized_vars=["Wp_XY"], 
+        enforce_symmetry=True, 
+        check_pval=True, 
+        verbose=True,
+        debug=False
+        ):
+    xnamelist = [i[0]["X_name"].unique()[0] for i in alldata_grid]
+    ynamelist = [j["Y_name"].unique()[0] for j in alldata_grid[0]]
+
+    value_set = {}
+    if check_pval:
+        pval_vars = [ varname for varname in alldata_grid[0][0].columns.values if "pval" in varname ]
+        symmetrized_vars = symmetrized_vars + pval_vars
+
+
+    for varname in symmetrized_vars:
+        try:
+            vals = np.squeeze(np.array([[j[varname].to_numpy() for j in i] for i in alldata_grid]))
+            if "pval" in varname:
+                vals = _sym_pvals(vals, varname=varname)
+            else:
+                if all([ isinstance(entry, Number) for entry in vals.flatten() ]):
+                    vals = _enforce_symmetry(vals, fill_val = 0)
+                else:
+                    vals = _enforce_symmetry(vals, fill_val = np.nan)
+            if verbose:
+                print(f"variable {varname} has grid of values with shape: {vals.shape}")
+        except ValueError:
+            new_entry = [[j[varname].to_numpy() for j in i] for i in alldata_grid]
+            if debug:
+                ### debugging code ###
+                shape_vec = [ [ (len(var), i.shape) for i in var ] for var in new_entry ]
+                name_grid = np.array([[(j["X_name"].unique().astype(str), j["Y_name"].unique().astype(str)) for j in i] for i in alldata_grid])
+                futils._write_list("debug/shape_vec.txt", shape_vec)
+                futils._write_list("debug/name_grid.txt", name_grid)
+                print(f"found data inhomogeneity in {varname} readin. Saved grid of shapes and pair names to (resp.) paths:")
+                print("debug/shape_vec.txt")
+                print("debug/name_grid.txt")
+                exit()
+                ### debugging code ###
+
+        value_set[varname] = vals
+        print(f"\'{varname}\' gridded.")
+
+    if debug:
+        ### debugging code ###
+        print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
+        print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
+    if verbose:
+        print(f"Entries in list of grid values have the following shapes: \n{[value_set[var].shape for var in list(value_set.keys())]}")
+        # print("First entry in value_set: ", np.array(value_set[symmetrized_vars[0]]))
+        print(f"Generating one heatmap for each of the following set of variables: \n{list(value_set.keys())}")
+        print("")
+        ### debugging code ###
+
+    if enforce_symmetry:
+        print(f"enforced symmetry in variables: \'{symmetrized_vars}\'.")
+        ynamelist = [xnamelist[0], *ynamelist]
+        try:
+            assert xnamelist == ynamelist
+        except AssertionError:
+            if debug:
+                print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
+                # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
+            ynamelist = xnamelist
+    return xnamelist, ynamelist, value_set
+
+## symmetrization helper functions
+########################################################################################################################
+# Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
+def _enforce_symmetry(mtx, debug=False, fill_val=np.nan):
+    assert len(mtx.shape)==2, "Only valid for matrix inputs"
+    if mtx.shape[0] == mtx.shape[1]:
+        sym_mtx = (mtx + mtx.T)/2
+    else:
+        assert (mtx.shape[0]-1)==mtx.shape[1], f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
+
+        # takes values from upper diagonal
+        sym_mtx = squareform(triu_vals(mtx, k=0))
+        np.fill_diagonal(sym_mtx, fill_val)
+
+        if isinstance(sym_mtx[0][1], float):
+            assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
+
+    return sym_mtx
+
+def _sym_pvals(pval_mtx, varname=None):
+    if varname is None:
+        fill_val = 0
+    else:
+        fill_val = int("right" in varname)
+
+        sym_pval = _enforce_symmetry(pval_mtx, fill_val=0)
+        if "fdr" in varname:
+            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fdr"))
+        elif "fwe" in varname:
+            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fwe"))
+        np.fill_diagonal( sym_pval, fill_val )
+        return sym_pval
+
+def triu_vals(A, k=1):
+    n = min(A.shape)
+    vals = A[np.triu_indices(n, k)]
+    return vals
+########################################################################################################################
+
+
+
+# Data wrangling functions
 # may want to change logic/implementation of searches to allow for some kind of "or" | syntax processing -- convert to regex?
 def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
     if dist_type == "single":

@@ -1,3 +1,4 @@
+import os
 import copy
 import numpy as np
 import pandas as pd
@@ -19,7 +20,7 @@ def do_stackplot(
         debug=True
         ):
 
-    if alpha = None:
+    if alpha is None:
         alpha = epsilon
 
     Names = copy.copy(value_set["Y_name"][0])
