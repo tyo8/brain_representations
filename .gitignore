@@ -45,6 +45,7 @@ skpalm
 
 # raw results data
 *.json
+*.npy
 *.pkl
 
 # writeup and publishing data

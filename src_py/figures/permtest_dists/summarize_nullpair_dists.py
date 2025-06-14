@@ -6,16 +6,18 @@ import scipy
 import argparse
 import itertools
 import functools
-import matplotlib
+import stackplots
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import figstats as fstats
 import figutils as futils
+from numbers import Number
 from matplotlib import pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap, hsv_to_rgb
+# from matplotlib.colors import LinearSegmentedColormap, hsv_to_rgb
 from scipy.spatial.distance import squareform
 from statsmodels.stats.multitest import fdrcorrection
+
 
 # global variables 
 
@@ -59,9 +61,12 @@ def main(args, debug=False):
         xnamelist, ynamelist, value_set, alldata_grid = make_clustermaps(fpath_grid, args=args)
 
         if args.scatter_plots:
-            make_scatterplots(alldata_grid=alldata_grid, args=args)
+            _, _, value_set = make_scatterplots(alldata_grid=alldata_grid, args=args)
     elif args.scatter_plots:
-        make_scatterplots(fpath_grid=fpath_grid, args=args)
+        xnamelist, ynamelist, value_set = make_scatterplots(fpath_grid=fpath_grid, args=args)
+
+    if args.scatter_plots:
+        stackplots.make(value_set, args=args)
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
@@ -178,7 +183,7 @@ def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=
 
     allvars = list(alldata_grid[0][0].keys())
     # allvars = [varname for varname in list(alldata_grid[0][0].keys()) if 'two-tail' not in varname]
-    _, _, value_set = _get_heatmap_inputs(
+    xnamelist, ynamelist, value_set = _get_heatmap_inputs(
             alldata_grid, 
             clustermap_vars=allvars,
             enforce_symmetry=True,
@@ -190,6 +195,7 @@ def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=
         print(f"data loaded into 'value_set' has keys: \n{value_set.keys()}")
 
     value_set = futils.get_pval_masks(value_set, alpha=alpha)
+
     varlist = list(value_set.keys())
     pval_vars = [var for var in varlist if (('pval' in var) and ('mask' not in var))]
     mask_vars = [var for var in varlist if (('pval' in var) and ('mask' in var))]
@@ -207,13 +213,13 @@ def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=
     #     _debug_value_set(value_set)
 
     alldata_df = pd.DataFrame(data=dummy_set)
-    alldata_df.drop( index = np.where(alldata_df.X_feat_num==0)[0], inplace=True )
+    alldata_df.dropna(axis='index', inplace=True) 
     
     if verbose:
         print(f"data shaped into 'alldata_df': \n{alldata_df}")
         print(f"which has keys: \n{alldata_df.columns.values}")
-        # alldata_df.to_csv('value_set/alldata_df.csv')
-        # np.save('value_set/value_set.npy', value_set, allow_pickle=True)
+        alldata_df.to_csv('value_set/alldata_df.csv')
+        np.save('value_set/value_set.npy', value_set, allow_pickle=True)
         print(f"wrote dataframe to: \n{os.path.join(os.getcwd(),'value_set/alldata_df.csv')}")
 
     fig, outname = do_scatterplot(alldata_df, pval_vars, label_vars=mask_vars, mask_vars=mask_vars, jitter=args.jitter)
@@ -228,7 +234,7 @@ def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=
     outpath = os.path.join(args.output_dir, outname)
     futils._write_img(fig, outpath, fig_size=(12,12))
     # futils._write_img(fig, outpath, fig_size=None)
-    return None
+    return xnamelist, ynamelist, value_set
 
 ########################################################################################################################
 
@@ -257,7 +263,10 @@ def _get_heatmap_inputs(
             if "pval" in varname:
                 vals = _sym_pvals(vals, varname=varname)
             else:
-                vals = _enforce_symmetry(vals, fill_val = 0)
+                if all([ isinstance(entry, Number) for entry in vals.flatten() ]):
+                    vals = _enforce_symmetry(vals, fill_val = 0)
+                else:
+                    vals = _enforce_symmetry(vals, fill_val = np.nan)
             if verbose:
                 print(f"variable {varname} has grid of values with shape: {vals.shape}")
         except ValueError:
@@ -339,8 +348,13 @@ def generate_clustermaps(
 
     for linkage_var in linkvars:
         for display_var in dispvars:
-            for pval_var in pval_vars:
-                mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
+            for i,pval_var in enumerate(pval_vars):
+                try:
+                    mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
+                except:
+                    print(f"mask_var lookup failed for pval var \'{pval_var}\'")
+                    mask_var = mask_vars[i]
+                    print(f"selected mask_var={mask_var}")
                 mask = value_set[mask_var]
                 if linkage_var is not None:
                     if ("pval" in linkage_var) and ("pval" in display_var):
@@ -511,7 +525,6 @@ def plot_clustermap(
 
     return g
 
-
 # actually make the scatterplot
 def do_scatterplot(
         df, 
@@ -577,12 +590,10 @@ def do_scatterplot(
         if log_scale:
             if 'pval' in color_var:
                 color = np.log(color)
+            if zlabel is not None:
+                color = np.log10(color)
             x = np.log10(x)
             y = np.log10(y)
-
-        min_cval = np.nanmin(color)
-        max_cval = np.nanmax(color)
-        np.nan_to_num(color, copy=False, neginf=min_cval, posinf=max_cval)
 
         x *= 1+(1/2 - np.random.rand(*x.shape))*jitter*2
         y *= 1+(1/2 - np.random.rand(*y.shape))*jitter*2
@@ -603,12 +614,15 @@ def do_scatterplot(
         else:
             if 'std' in color_var:
                 zmean = subdf[color_vars[i-1]].to_numpy()
+                zerr = color
+                if log_scale:
+                    zmean, zerr = _get_log_errorbars(zmean, log_err=color)
                 ax.errorbar(
                         x,      # xs
                         y,      # ys
                         zmean,  # zs
-                        zerr=color,
-                        color=base_colors[i], 
+                        zerr=zerr,
+                        ecolor=base_colors[i-1], 
                         alpha=opacity,
                         fmt='none'      # plots errorbars only, no datapoints
                         )
@@ -654,6 +668,15 @@ def _get_minimal_name(namelist):
     minlist.sort()
     min_name = ''.join(minlist)
     return min_name
+
+def _get_log_errorbars(meanvals, log_err=-np.inf, base=10):
+    err = np.power(base, log_err)
+    vals_range = np.array( [meanvals - err, meanvals + err] )
+    log_range = np.log(vals_range) / np.log(base)
+    log_mean = np.log(meanvals) / np.log(base)
+    log_err = np.abs(log_range - log_mean)
+    return log_mean, log_err
+
 
 # scatterplot labelling utility
 def _clean_scatter_label(label):
