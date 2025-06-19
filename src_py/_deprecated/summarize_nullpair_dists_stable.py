@@ -23,7 +23,6 @@ from statsmodels.stats.multitest import fdrcorrection
 
 def_fig_size = (24, 24)
 def_label_fontsize = 12
-def_pattern='*X_*_dists'
 
 # cmap_list = ["#808080", ("#ffffff", 0.0)]         # color values to match to False/True
 # cmap_in = LinearSegmentedColormap.from_list( 'mask_overlay', cmap_list )
@@ -66,7 +65,7 @@ def main(args, debug=False):
         xnamelist, ynamelist, value_set = make_scatterplots(fpath_grid=fpath_grid, args=args)
 
     if args.scatter_plots:
-        stackplots.make(value_set, args=args)
+        stackplot_df = stackplots.make(value_set, args=args)
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
@@ -218,8 +217,8 @@ def make_scatterplots(fpath_grid=None, alldata_grid=None, condensed=False, args=
     if verbose:
         print(f"data shaped into 'alldata_df': \n{alldata_df}")
         print(f"which has keys: \n{alldata_df.columns.values}")
-        alldata_df.to_csv('value_set/alldata_df.csv')
-        np.save('value_set/value_set.npy', value_set, allow_pickle=True)
+        # alldata_df.to_csv('value_set/alldata_df.csv')
+        # np.save('value_set/value_set.npy', value_set, allow_pickle=True)
         print(f"wrote dataframe to: \n{os.path.join(os.getcwd(),'value_set/alldata_df.csv')}")
 
     fig, outname = do_scatterplot(alldata_df, pval_vars, label_vars=mask_vars, mask_vars=mask_vars, jitter=args.jitter)

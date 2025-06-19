@@ -1,7 +1,10 @@
 import os
+import copy
+import itertools
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from scipy import stats
 from matplotlib import pyplot as plt
 from statsmodels.stats.multitest import fdrcorrection
 
@@ -249,3 +252,210 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, cor
 
     return pval_vec
 ########################################################################################################################
+
+
+########################################################################################################################
+default_pdiv_kwargs = {"axis":0, "lambda_":1, "sum_check":False, "ddof":-1}     # default initialization of _power_divergence kwargs
+
+def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=True, args=None, debug=False ):
+    if args is not None:
+        if args.verbose:
+            print("Running alldata_df chi-squared.")
+        alpha = args.alpha
+    else:
+        alpha = None
+
+    alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
+    alldata_df.dropna(axis='index', inplace=True)
+
+    # if True, do not distinigush between different types (partial, spatial, full) of network matrices when aggregating over feature type
+    if conflate_netmats:
+        alldata_df.X_feature = alldata_df.X_feature.apply( lambda x: "NetMat" if "NMs" in x else x)
+        alldata_df.Y_feature = alldata_df.Y_feature.apply( lambda x: "NetMat" if "NMs" in x else x)
+
+    alldata_df["sym_XY_featpair"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feature, alldata_df.Y_feature))]
+    alldata_df["sym_XY_featnums"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feat_num, alldata_df.Y_feat_num))]
+    alldata_df["sym_XY_brainrep"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_modality, alldata_df.Y_modality))]
+
+    mask_vars = [var for var in value_set.keys() if ("mask" in var) and ("two-tailed" not in var)]
+    for var in mask_vars:
+        alldata_df[var] = ~ alldata_df[var]
+    newmask_names = {var: 
+                     var.replace('left','Convergent').replace('right','Divergent').replace('-pval','').replace('_mask','') 
+                     for var in mask_vars}
+    alldata_df.rename( columns=newmask_names, inplace=True )
+    mask_vars = list(newmask_names.values())
+    alldata_df["Incomparable"] = alldata_df[mask_vars].apply(lambda x: not any(x), axis=1) 
+    mask_vars.append("Incomparable")
+
+    agg_vars = [var for var in alldata_df.columns.values if "sym" in var]
+
+    if debug:
+        print(f"Aggregation variables: \n{agg_vars}")
+        print(f"Significance count variables: \n{mask_vars}")
+        print(f"input dataframe: \n{alldata_df.filter(agg_vars + mask_vars, axis=1)}")
+
+    chisq_results = general_chisquare_df( 
+                                         alldata_df.filter(agg_vars + mask_vars, axis=1), 
+                                         agg_vars, 
+                                         mask_vars,
+                                         gen_f_exp=gen_f_exp
+                                         )
+    if args is None:
+        outdir = ''
+    else:
+        outdir = args.output_dir
+    outpath = os.path.join( outdir, f'chisq_results_alpha{alpha}.npy'.replace('0.','') )
+    np.save( outpath, chisq_results, allow_pickle=True )
+
+    return None
+
+
+
+def stackplot_chisq( stackplot_df, gen_f_exp="by_rowsum", args=None ):
+    if args is not None:
+        if args.verbose:
+            print("Running stackplot_df chi-squared.")
+        alpha = args.alpha
+    else:
+        alpha = None
+
+    agg_vars = ["Brain_Representation", "Parcellation", "Feature"]
+    count_vars = ["Convergent", "Divergent", "Incomparable"]
+
+    chisq_results = general_chisquare_df( 
+                                         stackplot_df, 
+                                         agg_vars=agg_vars, 
+                                         count_vars=count_vars,
+                                         gen_f_exp=gen_f_exp
+                                         )
+
+    if args is None:
+        outdir = ''
+    else:
+        outdir = args.output_dir
+    outpath = os.path.join( outdir, f'stackplot_chisq_results_alpha{alpha}.npy'.replace('0.','') )
+    np.save( outpath, chisq_results, allow_pickle=True )
+
+    return None
+
+
+def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug=False, **pdiv_kwargs ):
+
+    pdiv_kwargs = default_pdiv_kwargs | pdiv_kwargs
+
+    chisq_results = []
+
+    if debug:
+        print("\ndebugging generalized chi-squared implmentation (for dataframes).")
+
+    for i,var in enumerate(agg_vars):
+        dropvars = copy.copy(agg_vars)
+        dropvars.remove(var)
+
+        if gen_f_exp is None:
+            null_type= None
+            null_df = None
+        elif gen_f_exp == "by_rowsum":
+            null_type="homogeneous Poisson"
+            null_df = _generate_null_counts( df.filter(count_vars, axis=1) )
+            null_df[agg_vars] = df[agg_vars]
+            # enforce Poisson <-> chi-square approximation
+            pdiv_kwargs["ddof"]=-1
+            pdiv_kwargs["sum_check"]=False
+        
+        dropvars = copy.copy(agg_vars)
+        dropvars.remove(var)
+        agg_df = _contract_df(df.drop(columns=dropvars), agg_col=var)
+
+        if any( np.mean( agg_df[count_vars], axis=0) < 5 ):
+            pdiv_kwargs["lambda_"] = 2/3
+
+        if gen_f_exp == "by_col":
+            sub_reslist = []
+            
+            countvar_pairs = list(itertools.permutations(count_vars, 2))
+            for obs_col, null_col in countvar_pairs:
+                f_obs = agg_df[obs_col].to_numpy(float)
+                f_exp = agg_df[null_col].to_numpy(float)
+                sub_reslist.append(
+                        stats._stats_py._power_divergence(
+                            f_obs=f_obs,
+                            f_exp=f_exp,
+                            **pdiv_kwargs
+                            ))
+            if debug:
+                print(sub_reslist)
+            chisq_stats = stats._stats_py.Power_divergenceResult(*list(zip(*sub_reslist)))
+            obs_cols, null_cols = list(zip(*countvar_pairs))
+            null_agg_df = (var, np.stack( (obs_cols, null_cols) ))
+            obs_type = var
+            null_type = "null hypothesis given by other distributions (see \'null_agg_df\' for order of observed-null column pairs)"
+        else:
+            obs_type = var
+            if null_df is None:
+                f_exp=None
+            elif gen_f_exp == "by_rowsum":
+                null_agg_df = _contract_df(null_df.drop(columns=dropvars), agg_col=var)
+                f_exp=null_agg_df[count_vars].to_numpy(float)
+
+                chisq_stats = stats._stats_py._power_divergence(
+                        f_obs=agg_df[count_vars].to_numpy(float), 
+                        f_exp=f_exp,
+                        **pdiv_kwargs
+                        )
+        chisq_results.append({
+            "obs_type": obs_type,
+            "null_type": null_type,
+            "observed": agg_df,
+            "expected_null": null_agg_df,
+            "test_params": pdiv_kwargs,
+            "results": chisq_stats
+            })
+
+    if debug:
+        for res in chisq_results:
+            for k,v in res.items():
+                print(f"\tchi-squared results key \"{k}\" has value:\n{v}")
+
+    return chisq_results
+
+
+# computes null counts under the assumptions that the columns of df represent the counts of a column-wise homogeneous Poisson variable
+def _generate_null_counts( df ):
+    null_df = df.copy().astype(float)
+    for i in range(len(df)):
+        n = len(df.iloc[i])
+        null_df.iloc[i] = [np.mean(df.iloc[i])]*n
+
+    return null_df
+
+
+# assumes that all non-sum columns are numeric/valid summation operands!
+def _contract_df( df, agg_col="Feature", contraction=np.sum, debug=False):
+    if debug:
+        print(f"\ndebugging dataframe contraction (along repeated values).")
+        print(f"input dataframe: \n{df}")
+        print(f"summation column: {agg_col})")
+    
+    agg_vals = [str(i) for i in sorted(df[agg_col].unique().tolist())]
+
+    if debug:
+        print(f"unique values of the summation column: \n{agg_vals}")
+
+    # initialize dictionary/labeled set of aggregated values
+    agg_set = {}
+    for val in agg_vals:
+        agg_set[val] = np.sum( df[ 
+                              df[agg_col].apply( lambda x: val==str(x) ) 
+                              ].drop( columns=[agg_col] ), 
+                          axis=0 )
+
+    agg_df = pd.DataFrame(agg_set).T
+    agg_df[agg_col] = agg_vals
+    
+    if debug:
+        # print(f"aggregated dictionary: \n{agg}")
+        print(f"aggregated dataframe: \n{agg_df}")
+
+    return agg_df

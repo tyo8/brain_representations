@@ -1,8 +1,11 @@
 import os
 import numpy as np
+import pandas as pd
+import seaborn as sns
 import figutils as futils
 from matplotlib import pyplot as plt
 
+markerlist = ["<", ">", "^", "v", "P", "D", "s", "P", "d", "."]
 
 def make(alldata_grid, args=None, verbose=True, debug=False):
     assert alldata_grid is not None, "if 'fpath_grid' is None, then 'alldata_grid' must not be None."
@@ -28,21 +31,19 @@ def make(alldata_grid, args=None, verbose=True, debug=False):
 
     varlist = list(value_set.keys())
     pval_vars = [var for var in varlist if (('pval' in var) and ('mask' not in var))]
-    mask_vars = [var for var in varlist if (('pval' in var) and ('mask' in var))]
-    mask_vars = [[var for var in mask_vars if pval_var in var][0] for pval_var in pval_vars]    # forces 'mask_vars' to have same order as 'pval_vars'
+    if alpha is None:
+        mask_vars = None
+    else:
+        mask_vars = [var for var in varlist if (('pval' in var) and ('mask' in var))]
+        mask_vars = [[var for var in mask_vars if pval_var in var][0] for pval_var in pval_vars]    # forces 'mask_vars' to have same order as 'pval_vars'
 
-    print(varlist)
-    dummy_set = {}
-    for var in varlist:
-        dummy_set[var] = value_set[var].flatten()
+    if debug:
+        print(varlist)
 
-    # if debug:
-    #     _debug_value_set(value_set)
-
-    alldata_df = pd.DataFrame(data=dummy_set)
+    alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
     alldata_df.dropna(axis='index', inplace=True) 
     
-    if verbose:
+    if debug:
         print(f"data shaped into 'alldata_df': \n{alldata_df}")
         print(f"which has keys: \n{alldata_df.columns.values}")
         alldata_df.to_csv('value_set/alldata_df.csv')
@@ -50,16 +51,16 @@ def make(alldata_grid, args=None, verbose=True, debug=False):
         print(f"wrote dataframe to: \n{os.path.join(os.getcwd(),'value_set/alldata_df.csv')}")
 
     fig, outname = do_scatterplot(alldata_df, pval_vars, label_vars=mask_vars, mask_vars=mask_vars, jitter=args.jitter)
-    outname.replace('.png', f'alpha{alpha}.png')
+    outname = outname.replace('.png', f'_alpha{alpha}.png').replace('0.','')
     outpath = os.path.join(args.output_dir, outname)
-    futils._write_img(fig, outpath, fig_size=(12,12))
+    futils._write_img(fig, outpath, fig_size=args.fig_size)
     # futils._write_img(fig, outpath, fig_size=None)
 
     wp_vars = [var for var in varlist if "Wp" in var]
     fig, outname = do_scatterplot(alldata_df, wp_vars, zlabel="Wasserstein Distance", label_vars=wp_vars, jitter=args.jitter)
-    outname.replace('.png', f'alpha{alpha}.png')
+    outname = outname.replace('.png', f'_alpha{alpha}.png').replace('0.','')
     outpath = os.path.join(args.output_dir, outname)
-    futils._write_img(fig, outpath, fig_size=(12,12))
+    futils._write_img(fig, outpath, fig_size=args.fig_size)
     # futils._write_img(fig, outpath, fig_size=None)
     return xnamelist, ynamelist, value_set
 
@@ -110,7 +111,7 @@ def do_scatterplot(
         mask_var = mask_vars[i]
 
         if verbose:
-            print(f"plotting subset from {mask_var} with coloring from {color_var}")
+            print(f"scatter-plotting subset from {mask_var} with coloring from {color_var}")
 
         if mask_var is None:
             subdf = df
@@ -145,6 +146,7 @@ def do_scatterplot(
                     #y=color,
                     s=size,
                     c=color, 
+                    marker = markerlist[i],
                     cmap=cmap,
                     alpha=opacity,
                     linewidths=0,
@@ -172,6 +174,7 @@ def do_scatterplot(
                         color,  # zs
                         s=size/3,
                         color=base_colors[i], 
+                        marker = markerlist[i],
                         alpha=opacity,
                         linewidths=0,
                         label=label_var
@@ -180,10 +183,10 @@ def do_scatterplot(
     leg = ax.legend(loc="best")
     # face_colors = ['blue', 'orange', 'green']
     for i,handle in enumerate(leg.legend_handles):
-        print(f"{i}-th pre-update legend marker face color:", handle.get_facecolor())
+        # print(f"{i}-th pre-update legend marker face color:", handle.get_facecolor())
         handle.set_facecolor(base_colors[i])
         handle.set_alpha(1)
-        print(f"{i}-th post-update legend marker face color:", handle.get_facecolor())
+        # print(f"{i}-th post-update legend marker face color:", handle.get_facecolor())
         # handle.set_facecolor(face_colors[i])
     ax.set_xlabel(_clean_scatter_label(xlabel))
     ax.set_ylabel(_clean_scatter_label(ylabel))

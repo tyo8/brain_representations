@@ -7,6 +7,8 @@ import functools
 import numpy as np
 import pandas as pd
 import figstats as fstats
+from numbers import Number
+from scipy.spatial.distance import squareform
 
 # global default argument values:
 def_fig_size = (24, 24)
@@ -139,7 +141,7 @@ def _unify_df(df, fpath=None, enforce_match=False):
 
     # I'm never changing a naming convention again, even if it's terrible; this has been so annoying to deal with
     cols = [ col for col in df.columns.values if ("metric" in col) or ("name" in col) ]
-    df[cols] = df[cols].applymap( lambda x: x.replace("Psim_ztrans", "Psim-ztrans") )
+    df[cols] = df[cols].map( lambda x: x.replace("Psim_ztrans", "Psim-ztrans") )
 
     if "X_type" in df.columns.values:
         df.rename( mapper={"X_type":"X_name"}, axis=1, inplace=True )
@@ -212,9 +214,24 @@ def _add_data_slice(df):
     df.loc[-1, "PDXhat_diag_i"] = df.loc[-1, "PDX_diag"]
     return df
 ########################################################################################################################
+
+# specialized glob function to allow equivalence classes of search terms
+########################################################################################################################
+def equiv_glob(search_pattern, equiv_terms=["inner", "geodesic"]):
+    found = [term in search_pattern for term in equiv_terms]
+    if any(found):
+        seen_term = list(itertools.compress(equiv_terms, found))[0]
+        search_results = []
+        for term in equiv_terms:
+            search_results += glob.glob(search_pattern.replace(seen_term, term))
+    else:
+        search_results = glob.glob(search_pattern)
+
+    return search_results
+
+########################################################################################################################
 # Data-wrangling helper functions
 ########################################################################################################################
-
 ########################################################################################################################
 def _get_symmetrized_data(
         alldata_grid, 
@@ -227,7 +244,7 @@ def _get_symmetrized_data(
     xnamelist = [i[0]["X_name"].unique()[0] for i in alldata_grid]
     ynamelist = [j["Y_name"].unique()[0] for j in alldata_grid[0]]
 
-    value_set = {}
+    symmetric_dict = {}
     if check_pval:
         pval_vars = [ varname for varname in alldata_grid[0][0].columns.values if "pval" in varname ]
         symmetrized_vars = symmetrized_vars + pval_vars
@@ -259,7 +276,7 @@ def _get_symmetrized_data(
                 exit()
                 ### debugging code ###
 
-        value_set[varname] = vals
+        symmetric_dict[varname] = vals
         print(f"\'{varname}\' gridded.")
 
     if debug:
@@ -267,14 +284,13 @@ def _get_symmetrized_data(
         print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
         print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
     if verbose:
-        print(f"Entries in list of grid values have the following shapes: \n{[value_set[var].shape for var in list(value_set.keys())]}")
-        # print("First entry in value_set: ", np.array(value_set[symmetrized_vars[0]]))
-        print(f"Generating one heatmap for each of the following set of variables: \n{list(value_set.keys())}")
+        print(f"Entries in list of grid values have the following shapes: \n{{var: symmetric_dict[var].shape for var in list(symmetric_dict.keys())}}")
+        # print("First entry in symmetric_dict: ", np.array(symmetric_dict[symmetrized_vars[0]]))
         print("")
         ### debugging code ###
 
     if enforce_symmetry:
-        print(f"enforced symmetry in variables: \'{symmetrized_vars}\'.")
+        print(f"enforced symmetry in variables: \n{symmetrized_vars}\n")
         ynamelist = [xnamelist[0], *ynamelist]
         try:
             assert xnamelist == ynamelist
@@ -283,7 +299,7 @@ def _get_symmetrized_data(
                 print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
                 # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
             ynamelist = xnamelist
-    return xnamelist, ynamelist, value_set
+    return xnamelist, ynamelist, symmetric_dict
 
 ## symmetrization helper functions
 ########################################################################################################################
@@ -349,7 +365,7 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
                 path_ext
                 )
 
-        fpath_list = glob.glob(match_pattern)
+        fpath_list = equiv_glob(match_pattern)
         fpath_list.sort()
 
         if args.verbose:
@@ -383,7 +399,7 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
         if set_type=="list":
             if args.fpathlist_path is None: 
                 args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
-                fpath_list = glob.glob(args.search_pattern)
+                fpath_list = equiv_glob(args.search_pattern)
             else:
                 with open(args.fpathlist_path, 'r') as fin:
                     fpath_list = fin.read().split('\n')
@@ -394,13 +410,13 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
 
             if args.fpathlist_path is None:
                 args.pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
-                dpath_list = glob.glob(args.pdir_pattern); dpath_list.sort()
-                fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
+                dpath_list = equiv_glob(args.pdir_pattern); dpath_list.sort()
+                fpath_grid = [ equiv_glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
             else:
                 with open(args.fpathlist_path, 'r') as fin:
                     fpath_list = fin.read().split('\n')
                 dpath_list = list(set(list([ os.path.dirname( fpath ) for fpath in fpath_list ]))); dpath_list.sort()
-                fpath_grid = [ [fpath for fpath in glob.glob(os.path.join(dpath, '*' )) if fpath in fpath_list ] for dpath in dpath_list ]
+                fpath_grid = [ [fpath for fpath in equiv_glob(os.path.join(dpath, '*' )) if fpath in fpath_list ] for dpath in dpath_list ]
 
             fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
             [pathlist.sort() for pathlist in fpath_grid]
@@ -645,7 +661,7 @@ def _get_auc_mask(args=None, auc_df=None, fpath_list=None, alpha=None, debug=Fal
     return series_mask
 
 
-def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False):
+def _apply_series_mask(series_mask, xnamelist, ynamelist, symmetric_dict, debug=False):
     xbool = [ series_mask[xname] for xname in xnamelist ]
     ybool = [ series_mask[yname] for yname in ynamelist ]
 
@@ -654,16 +670,16 @@ def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False
         print(f"prior to masking:")
         print(f"\t(|xnamelist|, |ynamelist|) = {(len(xnamelist), len(ynamelist))}")
         print(f"\t(|xbool|, |ybool|) = {(len(xbool), len(ybool))}")
-        print(f"\tvalue_set has shapes: {[value_set[i].shape for i in value_set.keys()]}")
+        print(f"\tsymmetric_dict has shapes: {[symmetric_dict[i].shape for i in symmetric_dict.keys()]}")
         ### debugging code ###
 
-    # first, we check if value_set is a dictionary of matrices
-    if isinstance(value_set, dict):
-        for key in value_set.keys():
+    # first, we check if symmetric_dict is a dictionary of matrices
+    if isinstance(symmetric_dict, dict):
+        for key in symmetric_dict.keys():
             try:
-                values = value_set[key]
+                values = symmetric_dict[key]
                 xdrop = values[xbool,:]
-                value_set[key] = xdrop[:, ybool]
+                symmetric_dict[key] = xdrop[:, ybool]
             except IndexError as err:
                 print(f"Failed with err: \n{err}")
                 np.savetxt("values.txt",values)
@@ -672,11 +688,11 @@ def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False
                 print(f"saved out offending data in \n{os.getcwd()}\nExiting.")
                 exit()
 
-    # otherwise, we check if value_set is nested list of lists:
-    elif isinstance(value_set, list):
-        if isinstance(value_set[0], list):
-            value_set = list(itertools.compress(value_set, xbool))
-            value_set = [ list(itertools.compress(sublist, ybool)) for sublist in value_set ]
+    # otherwise, we check if symmetric_dict is nested list of lists:
+    elif isinstance(symmetric_dict, list):
+        if isinstance(symmetric_dict[0], list):
+            symmetric_dict = list(itertools.compress(symmetric_dict, xbool))
+            symmetric_dict = [ list(itertools.compress(sublist, ybool)) for sublist in symmetric_dict ]
 
     xnamelist = list(itertools.compress(xnamelist, xbool))
     ynamelist = list(itertools.compress(ynamelist, xbool))
@@ -685,39 +701,39 @@ def _apply_series_mask(series_mask, xnamelist, ynamelist, value_set, debug=False
         ### debugging code ###
         print(f"after masking:")
         print(f"\tlen(xnamelist, ynamelist) = {(len(xnamelist), len(ynamelist))}")
-        print(f"\tvalue_set has shapes: {[(i,value_set[i].shape) for i in value_set.keys()]}")
+        print(f"\tsymmetric_dict has shapes: {[(i,symmetric_dict[i].shape) for i in symmetric_dict.keys()]}")
         ### debugging code ###
 
-    return xnamelist, ynamelist, value_set
+    return xnamelist, ynamelist, symmetric_dict
 
 
-def get_pval_masks(value_set, alpha=None):
-    dispvars = list(value_set.keys())
+def get_pval_masks(symmetric_dict, alpha=None):
+    dispvars = list(symmetric_dict.keys())
     if alpha is not None:
         # retains only display grid values corresponding to significant p-values
         pval_vars = [var for var in dispvars if "pval" in var]
 
         # create logical significance arrays
-        sig_list = [ value_set[var] < alpha for var in pval_vars ]
+        sig_list = [ symmetric_dict[var] < alpha for var in pval_vars ]
         # 'mask' (in sns.heatmap) hides values at coordinate if mask(coord)=True; retain values by setting mask(coord)=False.
         masks = [ ~sig for sig in sig_list ]
         # show one unmasked plot as well (write it out last)
         pval_vars.append(None)
         masks.append(None)
     else:
-        pval_vars = [None]
-        masks = [None]
+        pval_vars = []
+        masks = []
 
     for pval_var in pval_vars:
         if pval_var is not None:
             if 'two-tail' in pval_var:
                 mask_var = pval_var + f"_INVmask{alpha}".replace("0.","")
-                value_set[mask_var] = ~ masks[pval_vars.index(pval_var)]
+                symmetric_dict[mask_var] = ~ masks[pval_vars.index(pval_var)]
             else:
                 mask_var = pval_var + f"_mask{alpha}".replace("0.","")
-                value_set[mask_var] = masks[pval_vars.index(pval_var)]
+                symmetric_dict[mask_var] = masks[pval_vars.index(pval_var)]
 
-    return value_set
+    return symmetric_dict
 
 ########################################################################################################################
 
@@ -778,6 +794,7 @@ def _reorder_array(arr, idx_lists):
 ########################################################################################################################
 
 ############################################### DEBUGGING FUNCTIONS ####################################################
+## Debug bar-read/-extraction functions by pulling corresponding persistent homology raw output
 ########################################################################################################################
 def _get_orig_bars(
         bsdist_fpath, 
@@ -806,5 +823,23 @@ def _get_orig_bars(
         else:
             print("-----No corresponding B1match file found!-----")
     return None
+
+## Debug dictionary of symmetric values 'symmetric_dict'
+########################################################################################################################
+def _debug_symmetric_dict(symmetric_dict):
+    # del symmetric_dict['datatype']
+    varlist = list(symmetric_dict.keys())
+    print(f"data loaded into 'symmetric_dict' has (upper-triangular) shapes: \n{[(var, symmetric_dict[var].shape) for var in varlist]}")
+    # print(f"data loaded into 'symmetric_dict' has first values: \n{[(var, symmetric_dict[var][0]) for var in varlist]}")
+    outdir = "symmetric_dict"
+    with open('symmetric_dict/symmetric_dict.npy','wb') as fout:
+        np.save(fout, symmetric_dict)
+    for var in varlist:
+        fpath = os.path.join(outdir, f"{var}.txt")
+        val = triu_vals(symmetric_dict[var])
+        np.savetxt(fpath, val)
+        print(f'{var} written to file:', os.path.join(os.getcwd(), fpath))
+        symmetric_dict[var] = val
+########################################################################################################################
 ########################################################################################################################
 

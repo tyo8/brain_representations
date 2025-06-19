@@ -1,10 +1,13 @@
 import os
 import numpy as np
+import seaborn as sns
 import figutils as futils
 from matplotlib import pyplot as plt
+from scipy.spatial.distance import squareform
 
 # global variables
 def_clustermap_vars = ["Wp_XY"]
+def_label_fontsize = 12
 
 def make(alldata_grid, args=None, debug=False):
 
@@ -34,7 +37,7 @@ def make(alldata_grid, args=None, debug=False):
             np.savetxt(savepath, value_set[name])
             print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
     
-    fig_inches = def_fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
+    fig_inches = args.fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
     label_fontsize = def_label_fontsize * np.power(70 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
     value_set = futils.get_pval_masks(value_set, alpha = args.alpha)
@@ -66,7 +69,7 @@ def generate_clustermaps(
         cluster_method = "average",
         alpha = None,
         log_scale = True,
-        fig_size = def_fig_size,
+        fig_size = None,
         label_fontsize = def_label_fontsize,
         outdir = None,
         verbose = True,
@@ -96,13 +99,11 @@ def generate_clustermaps(
     for linkage_var in linkvars:
         for display_var in dispvars:
             for i,pval_var in enumerate(pval_vars):
-                try:
+                if alpha is not None:
                     mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
-                except:
-                    print(f"mask_var lookup failed for pval var \'{pval_var}\'")
-                    mask_var = mask_vars[i]
-                    print(f"selected mask_var={mask_var}")
-                mask = value_set[mask_var]
+                    mask = value_set[mask_var]
+                else:
+                    mask = None
                 if linkage_var is not None:
                     if ("pval" in linkage_var) and ("pval" in display_var):
                         print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
@@ -113,7 +114,7 @@ def generate_clustermaps(
                         value_set,
                         cluster_method = cluster_method,
                         linkage_var = linkage_var,
-                        display_var = display_var,
+                        display_var = pval_var,     # display_var = display_var,
                         alpha = alpha,
                         pval_var = pval_var,
                         mask = mask,
@@ -140,7 +141,7 @@ def plot_clustermap(
         mask = None,
         log_scale = True,
         label_fontsize = def_label_fontsize,
-        fig_size = def_fig_size,
+        fig_size = None,
         outdir = None,
         write_mode = True,
         debug = False
@@ -178,7 +179,8 @@ def plot_clustermap(
         cm_title = cm_title + ttl_suffix
 
 
-    if ("pval" not in display_var) and (alpha is not None):
+    # if ("pval" not in display_var) and (alpha is not None):
+    if alpha is not None:
         print(f"Masking \'{display_var}\' plot by \'{pval_var}\'...")
         if linkage_var is None:
             outname = f"no-cluster_{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
@@ -216,23 +218,27 @@ def plot_clustermap(
 #       print(f"yticklabels: {yticklabels[0]}")
 
     if pval_var is not None:
-        Lhue=145    # minty light green (in degrees)
-        Rhue=300    # lavender-lilac (in degrees)
-        Lrot = -Lhue/360
-        Rrot = 1 - Rhue/360
-        light=0.75
-        dark=0.25
+        base_colors = sns.color_palette(n_colors = 3, as_cmap=False)
+        #   Lhue=145    # minty light green (in degrees)
+        #   Rhue=300    # lavender-lilac (in degrees)
+        #   Lrot = -Lhue/360
+        #   Rrot = 1 - Rhue/360
+        #   light=0.75
+        #   dark=0.25
         #   Lcol = hsv_to_rgb(( Lhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
         #   Rcol = hsv_to_rgb(( Rhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
         if "left-pval" in pval_var:
+            cmap = sns.dark_palette(base_colors[0], reverse=True, as_cmap=True)
             # cmap = sns.color_palette("crest", as_cmap=True)
-            cmap = sns.cubehelix_palette(rot=Lrot, light=light, dark=dark, reverse=True, as_cmap=True)
+            # cmap = sns.cubehelix_palette(rot=Lrot, light=light, dark=dark, as_cmap=True)
         elif "right-pval"in pval_var:
+            cmap = sns.dark_palette(base_colors[1], reverse=True, as_cmap=True)
             # cmap = sns.color_palette("magma", as_cmap=True)
-            cmap = sns.cubehelix_palette(rot=Rrot, light=1-light, dark=1-dark, as_cmap=True)
+            # cmap = sns.cubehelix_palette(rot=Rrot, light=1-light, dark=1-dark, as_cmap=True)
         else:
+            cmap = sns.light_palette(base_colors[2], reverse=False, as_cmap=True)
             # cmap = sns.color_palette("seismic", as_cmap=True)
-            cmap = sns.diverging_palette(Lhue, Rhue, s=60, as_cmap=True)
+            # cmap = sns.diverging_palette(Lhue, Rhue, s=60, as_cmap=True)
     else:
         cmap = sns.color_palette("seismic", as_cmap=True)
 
@@ -300,5 +306,3 @@ def _disp_logdata(varname, values, disp_var=True, mask=None):
     np.nan_to_num(values, nan=nanval, copy=False)
     varname = f"log-{varname}"
     return varname, values, title_suffix
-
-

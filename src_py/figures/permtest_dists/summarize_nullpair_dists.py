@@ -5,28 +5,18 @@ import copy
 import scipy
 import argparse
 import itertools
-import functools
 import numpy as np
 import pandas as pd
 import seaborn as sns
 import figstats as fstats
 import figutils as futils
 from numbers import Number
-from matplotlib import pyplot as plt
 # from matplotlib.colors import LinearSegmentedColormap, hsv_to_rgb
-from scipy.spatial.distance import squareform
-from statsmodels.stats.multitest import fdrcorrection
 
 # submodules for different plot types
 import clustermaps
 import scatterplots
 import stackplots
-
-# global variables 
-
-def_fig_size = (24, 24)
-def_label_fontsize = 12
-def_pattern='*X_*_dists'
 
 # cmap_list = ["#808080", ("#ffffff", 0.0)]         # color values to match to False/True
 # cmap_in = LinearSegmentedColormap.from_list( 'mask_overlay', cmap_list )
@@ -61,11 +51,21 @@ def main(args, debug=False):
             )
 
     if args.clustermap_plots:
-        xnamelist, ynamelist, value_set, alldata_grid = clustermaps.make(alldata_grid, args=args)
+        args.fig_size=(24,24)
+        xnamelist, ynamelist, value_set, alldata_grid = clustermaps.make(alldata_grid=alldata_grid, args=args)
+
+        if args.scatter_plots:
+            args.fig_size=(12,12)
+            _, _, value_set = scatterplots.make(alldata_grid=alldata_grid, args=args)
+    elif args.scatter_plots:
+        args.fig_size=(12,12)
+        xnamelist, ynamelist, value_set = scatterplots.make(alldata_grid=alldata_grid, args=args)
 
     if args.scatter_plots:
-        xnamelist, ynamelist, value_set = scatterplots.make(alldata_grid, args=args)
-        stackplots.make(value_set, args=args)
+        args.fig_size=(12,6)
+        fstats.make_chisq_summaries(value_set, args=args)
+        stackplot_df = stackplots.make(value_set, args=args)
+        # fstats.stackplot_chisq(stackplot_df, args=args)
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
@@ -159,24 +159,6 @@ def pull_data(
 
 
 def _get_fpath_sets(args, debug=False):
-#   args.dir_pattern='X_*_dists'
-#   args.f_pattern = '*_vs_*.csv'
-#   if args.pattern_restriction is not None and args.permtype is not None:
-#       if not args.output_dir.endswith(args.pattern_restriction):
-#           args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
-#
-#       args.dir_pattern = args.dir_pattern.replace('_dists', f'*{args.pattern_restriction}*_dists')
-#       args.f_pattern = args.f_pattern.replace('_vs_', f'{args.pattern_restriction}*_vs_*{args.pattern_restriction}')
-#   if args.permtype is not None:
-#       args.f_pattern = args.f_pattern.replace(".csv",f"{args.permtype}Perms.csv")
-#
-#   pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
-#
-#   dpath_list = glob.glob(pdir_pattern); dpath_list.sort()
-#   fpath_grid = [ glob.glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
-#   fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
-#   [pathlist.sort() for pathlist in fpath_grid]
-
     fpath_grid = futils._get_fpath_set(args, dist_type="pair", set_type="grid")
     fpath_list = list(itertools.chain(*fpath_grid))
 
@@ -200,6 +182,9 @@ def _get_fpath_sets(args, debug=False):
             print(f"After apply AUC filtering at significance threshold alpha={args.alpha}:")
             print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
             print(f"\tfound {len(fpath_list)} total matches.")
+        if not len(fpath_grid):
+            print(f"No data pass AUC significance criteria under the given specifications. Exiting.")
+            exit()
 
     return fpath_list, fpath_grid
 
@@ -234,26 +219,6 @@ def _semiload(fpath):
     return df
 
 ########################################################################################################################
-
-
-## Debugging functions
-########################################################################################################################
-def _debug_value_set(value_set):
-    # del value_set['datatype']
-    varlist = list(value_set.keys())
-    print(f"data loaded into 'value_set' has (upper-triangular) shapes: \n{[(var, value_set[var].shape) for var in varlist]}")
-    # print(f"data loaded into 'value_set' has first values: \n{[(var, value_set[var][0]) for var in varlist]}")
-    outdir = "value_set"
-    with open('value_set/value_set.npy','wb') as fout:
-        np.save(fout, value_set)
-    for var in varlist:
-        fpath = os.path.join(outdir, f"{var}.txt")
-        val = triu_vals(value_set[var])
-        np.savetxt(fpath, val)
-        print(f'{var} written to file:', os.path.join(os.getcwd(), fpath))
-        value_set[var] = val
-########################################################################################################################
-
 
 
 ########################################################################################################################

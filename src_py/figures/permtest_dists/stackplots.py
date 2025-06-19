@@ -4,13 +4,15 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import figutils as futils
+import figstats as fstats
 from matplotlib import pyplot as plt
 
 def make(value_set, args):
-    fig, outname = do_stackplot(value_set, alpha=args.alpha)
+    fig, outname, summary_stackplot_df = do_stackplot(value_set, alpha=args.alpha)
+    # summary_stackplot_df.to_csv('value_set/summary_stackplot_df.csv')
     outpath = os.path.join(args.output_dir, outname)
-    futils._write_img(fig, outpath, fig_size=(12,6))
-    return None
+    futils._write_img(fig, outpath, fig_size=args.fig_size)
+    return summary_stackplot_df
 
 def do_stackplot(
         value_set,
@@ -23,47 +25,59 @@ def do_stackplot(
     if alpha is None:
         alpha = epsilon
 
-    Names = copy.copy(value_set["Y_name"][0])
-    Names[0] = copy.copy(value_set["X_name"][0][1])
+    Brain_Representation = copy.copy(value_set["Y_name"][0])
+    Brain_Representation[0] = copy.copy(value_set["X_name"][0][1])
 
-    left_pvalvar = [var for var in list(value_set.keys()) if 'fdr-left-pval' in var][0]
-    right_pvalvar = [var for var in list(value_set.keys()) if 'fdr-right-pval' in var][0]
+    left_pvalvar = [var for var in list(value_set.keys()) if 'left-pval' in var][0]
+    right_pvalvar = [var for var in list(value_set.keys()) if 'right-pval' in var][0]
 
     convergent_count = np.sum(value_set[left_pvalvar] < alpha, axis=0) - 1      # '- 1' to remove self-comparison from convergence count
     divergent_count = np.sum(value_set[right_pvalvar] < alpha, axis=0)
-    incomparable_count = len(Names) - 1 - convergent_count - divergent_count    # '- 1' to remove self-comparison from total count
+    incomparable_count = len(Brain_Representation) - 1 - convergent_count - divergent_count    # '- 1' to remove self-comparison from total count
 
-    df = pd.DataFrame( {
-        "Names":Names, 
+    stackplot_df = pd.DataFrame( {
+        "Brain_Representation":Brain_Representation, 
         "Convergent":convergent_count, 
         "Divergent":divergent_count, 
         "Incomparable":incomparable_count} )
-    df[["Modality","Feature","Metric"]] = df["Names"].str.split('_', n=2, expand=True)
-    df.sort_values("Feature", inplace=True)
-    df.Names = df.Modality + "_" + df.Feature
-    df.drop( columns = ["Modality", "Feature", "Metric"], inplace=True )
+    stackplot_df[["Parcellation","Feature","Metric"]] = stackplot_df["Brain_Representation"].str.split('_', n=2, expand=True)
+    stackplot_df.sort_values("Feature", inplace=True)
+    stackplot_df.Brain_Representation = stackplot_df.Parcellation + "_" + stackplot_df.Feature
+    stackplot_df.drop( columns = ["Metric"], inplace=True )
+    stackplot_df["Feature"] = [ 'NM' if 'NM' in var else var for var in stackplot_df["Feature"].to_list() ] 
 
-    category_names = df.columns.values[1:]
-    X = df["Names"].to_list()
-    Y = df[category_names].to_numpy()
-    counts_by_name = {}
-    for i,name in enumerate(X):
-        counts_by_name[name] = Y[i]
+    varnames = ["Brain_Representation", "Parcellation", "Feature"]
 
+    fig, axes = plt.subplots(len(varnames))
     sns.set_theme()
+    for i,var in enumerate(varnames):
+        ax = axes[i]
+        dropvars = copy.copy(varnames)
+        dropvars.remove(var)
 
-    fig,ax = vert_stackplot(counts_by_name, category_names)
+        var_df = fstats._contract_df( stackplot_df.drop(columns=dropvars), agg_col=var )
 
-    ax.set_title("Cumulative Comparsion Types by Brain Representation")
-    ax.tick_params(axis='y', labelrotation=30)
+        fig,ax = vert_stackplot(
+                stackplot_df= var_df,
+                count_colname=var,
+                fig=fig, ax=ax
+                )
+
+        ax.set_title(f"Cumulative Comparsion Types by {var}\n(significance = {alpha})")
+        ax.tick_params(axis='y', labelrotation=30)
+
     fig.tight_layout
 
-    outname = f"per-BR_cumulative-sig-counts_alpha{alpha}.png"
+    outname = f"cumulative-sig-counts_alpha{alpha}.png".replace('0.','')
 
-    return fig, outname
+    return fig, outname, stackplot_df
 
 
-def vert_stackplot(counts_by_name, category_names):
+def vert_stackplot(
+        stackplot_df=None, count_colname=None, 
+        counts_by_name=None, category_names=None,
+        fig=None, ax=None
+        ):
     """
     Parameters
     ----------
@@ -74,14 +88,27 @@ def vert_stackplot(counts_by_name, category_names):
     category_names : list of str
         The category labels.
     """
-    labels = list(counts_by_name.keys())
-    data = np.array(list(counts_by_name.values()))
+    if stackplot_df is None:
+        assert counts_by_name is not None, "varible 'counts_by_name' must be nontrivial if input dataframe is not given"
+        assert category_names is not None, "varible 'category_names' must be nontrivial if input dataframe is not given"
+        labels = list(counts_by_name.keys())
+        data = np.array(list(counts_by_name.values()))
+    else:
+        category_names = stackplot_df.columns.values.tolist()
+        if count_colname is None:
+            labels = stackplot_df.index.tolist()
+        else:
+            labels = stackplot_df[count_colname].values.tolist()
+            category_names.remove(count_colname)
+        data = stackplot_df[category_names].values.astype(float)
+
 
     data_cum = data.cumsum(axis=1)
     
     colors = sns.color_palette(as_cmap=True)
 
-    fig, ax = plt.subplots()
+    if (ax is None) or (fig is None):
+        fig, ax = plt.subplots()
 
     ax.invert_yaxis()
     ax.xaxis.set_visible(False)
@@ -99,3 +126,5 @@ def vert_stackplot(counts_by_name, category_names):
     ax.legend(ncols=len(category_names), bbox_to_anchor=(0, 1),
               loc='lower left', fontsize='small')
     return fig, ax
+
+
