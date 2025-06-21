@@ -31,6 +31,12 @@ def make(alldata_grid, args=None, verbose=True, debug=False):
 
     varlist = list(value_set.keys())
     pval_vars = [var for var in varlist if (('pval' in var) and ('mask' not in var))]
+    if any( ["subject" in var for var in pval_vars] ):
+        null_type = "subject"
+    elif any( ["feature" in var for var in pval_vars] ):
+        null_type = "subject"
+    else:
+        null_type = None
     if alpha is None:
         mask_vars = None
     else:
@@ -58,7 +64,7 @@ def make(alldata_grid, args=None, verbose=True, debug=False):
 
     wp_vars = [var for var in varlist if "Wp" in var]
     fig, outname = do_scatterplot(alldata_df, wp_vars, zlabel="Wasserstein Distance", label_vars=wp_vars, jitter=args.jitter)
-    outname = outname.replace('.png', f'_alpha{alpha}.png').replace('0.','')
+    outname = outname.replace('.png', f'_{null_type}-alpha{alpha}.png').replace('0.','')
     outpath = os.path.join(args.output_dir, outname)
     futils._write_img(fig, outpath, fig_size=args.fig_size)
     # futils._write_img(fig, outpath, fig_size=None)

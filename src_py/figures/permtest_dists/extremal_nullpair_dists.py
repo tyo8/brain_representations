@@ -45,6 +45,7 @@ def main(args, debug=False):
             print(f"The argument \'{varname}\' has initial value: {var_dict[varname]}")
         print(f"Loading extremal null data from {len(fpath_list)} filepaths.")
 
+    args.output_dir = args.output_dir.replace('^', 'not-').replace('*', '-and-')
     if not os.path.isdir(args.output_dir):
         print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)

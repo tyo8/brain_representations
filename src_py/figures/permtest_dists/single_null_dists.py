@@ -37,8 +37,9 @@ def main(args, debug=False):
     if args.output_dir is None: 
         args.output_dir = os.getcwd()
 
-    if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction):
+    if args.pattern_restriction is not None and not args.output_dir.endswith(args.pattern_restriction.replace('^', 'not-').replace('*', '-and-')):
         args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+        args.output_dir = args.output_dir.replace('^', 'not-').replace('*', '-and-')
         if not os.path.isdir(args.output_dir):
             os.mkdir(args.output_dir)
             print(f"Warning: created new output directory \'{args.output_dir}\'")

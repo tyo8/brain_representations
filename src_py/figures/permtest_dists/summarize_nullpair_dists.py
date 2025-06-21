@@ -14,9 +14,10 @@ from numbers import Number
 # from matplotlib.colors import LinearSegmentedColormap, hsv_to_rgb
 
 # submodules for different plot types
+import barplots
+import stackplots
 import clustermaps
 import scatterplots
-import stackplots
 
 # cmap_list = ["#808080", ("#ffffff", 0.0)]         # color values to match to False/True
 # cmap_in = LinearSegmentedColormap.from_list( 'mask_overlay', cmap_list )
@@ -37,12 +38,12 @@ def main(args, debug=False):
         for varname in list(var_dict.keys()):
             print(f"\tThe argument \'{varname}\' has been initialized with value: {var_dict[varname]}")
 
+
+    fpath_list, fpath_grid = _get_fpath_sets(args)
+
     if not os.path.isdir(args.output_dir):
         print(f"Warning: making new directory {args.output_dir}")
         os.mkdir(args.output_dir)
-
-
-    fpath_list, fpath_grid = _get_fpath_sets(args)
 
     alldata_grid = pull_data(
             fpath_grid,
@@ -61,11 +62,13 @@ def main(args, debug=False):
         args.fig_size=(12,12)
         xnamelist, ynamelist, value_set = scatterplots.make(alldata_grid=alldata_grid, args=args)
 
-    if args.scatter_plots:
+    if args.chi2_statistics:
         args.fig_size=(12,6)
-        fstats.make_chisq_summaries(value_set, args=args)
         stackplot_df = stackplots.make(value_set, args=args)
-        # fstats.stackplot_chisq(stackplot_df, args=args)
+        fstats.stackplot_chisq(stackplot_df, args=args)
+        args.fig_size=(12,12)
+        chisq_results = fstats.make_chisq_summaries(value_set, args=args)
+        barplots.make( chisq_results, args=args )
 
     if args.solo_plots:
         from single_null_dists import make_solo_plots
@@ -167,6 +170,10 @@ def _get_fpath_sets(args, debug=False):
         print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
         print(f"\tfound {len(fpath_list)} total matches.")
 
+    if not len(fpath_list):
+        print(f"No filepaths matched search criteria. Exiting.")
+        exit()
+
     if debug:
         import json
         with open("fpath_grid_tmp.txt", 'w') as fout:
@@ -182,7 +189,7 @@ def _get_fpath_sets(args, debug=False):
             print(f"After apply AUC filtering at significance threshold alpha={args.alpha}:")
             print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
             print(f"\tfound {len(fpath_list)} total matches.")
-        if not len(fpath_grid):
+        if not len(fpath_list):
             print(f"No data pass AUC significance criteria under the given specifications. Exiting.")
             exit()
 
@@ -296,6 +303,13 @@ if __name__=="__main__":
         default=False,
         action="store_true",
         help="flag to perform solo plots"
+    )
+    parser.add_argument(
+        "-X",
+        "--chi2_statistics",
+        default=False,
+        action="store_true",
+        help="flag to perform and visualize post-hoc chi2 testing"
     )
     parser.add_argument(
         "-S",

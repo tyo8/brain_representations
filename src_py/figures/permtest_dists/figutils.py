@@ -6,8 +6,10 @@ import itertools
 import functools
 import numpy as np
 import pandas as pd
+import seaborn as sns
 import figstats as fstats
 from numbers import Number
+from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 
 # global default argument values:
@@ -215,17 +217,29 @@ def _add_data_slice(df):
     return df
 ########################################################################################################################
 
-# specialized glob function to allow equivalence classes of search terms
+# specialized glob function to allow equivalence classes of search terms and ^ ('not') logical operator
 ########################################################################################################################
-def equiv_glob(search_pattern, equiv_terms=["inner", "geodesic"]):
-    found = [term in search_pattern for term in equiv_terms]
-    if any(found):
-        seen_term = list(itertools.compress(equiv_terms, found))[0]
-        search_results = []
-        for term in equiv_terms:
-            search_results += glob.glob(search_pattern.replace(seen_term, term))
+def logical_glob(
+        search_pattern, 
+        exclude=False, exclude_terms=None, 
+        verbose=False, debug=False):
+
+    if debug:
+        print("search parameters at outset", f"\nsearch_pattern = {search_pattern}", f"\nexclude = {exclude}", f"\nexclude_terms = {exclude_terms}")
+
+    if exclude and (exclude_terms is not None):
+        all_search = search_pattern
+        for term in exclude_terms:
+            all_search = all_search.replace(term,'*')
+        all_results = glob.glob(all_search.replace('^',''))
+        search_results = [ res for res in all_results if not any([x in res for x in exclude_terms ]) ]
     else:
         search_results = glob.glob(search_pattern)
+
+    if verbose:
+        print(f"Found {len(search_results)} matches to pattern: \n{search_pattern}")
+        if exclude:
+            print(f"(excluding {len(all_results) - len(search_results)} search results with exclude_terms={exclude_terms})")
 
     return search_results
 
@@ -284,7 +298,7 @@ def _get_symmetrized_data(
         print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
         print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
     if verbose:
-        print(f"Entries in list of grid values have the following shapes: \n{{var: symmetric_dict[var].shape for var in list(symmetric_dict.keys())}}")
+        print(f"Entries in list of grid values have the following shapes: \n{[(var, symmetric_dict[var].shape) for var in list(symmetric_dict.keys())]}")
         # print("First entry in symmetric_dict: ", np.array(symmetric_dict[symmetrized_vars[0]]))
         print("")
         ### debugging code ###
@@ -342,9 +356,21 @@ def triu_vals(A, k=1):
 
 
 
+
 # Data wrangling functions
 # may want to change logic/implementation of searches to allow for some kind of "or" | syntax processing -- convert to regex?
 def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
+    if args.pattern_restriction is None:
+        exclude = False
+        exclude_terms = ''
+    else:
+        exclude = ('^' in args.pattern_restriction)
+        if exclude:
+            exclude_terms = args.pattern_restriction.split('^')[1:]
+            print(f"excluding terms using \'{exclude_terms}\'")
+        else:
+            exclude_terms = ''
+
     if dist_type == "single":
         if args.pattern_restriction is None:
             args.pattern_restriction = ""
@@ -365,7 +391,7 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
                 path_ext
                 )
 
-        fpath_list = equiv_glob(match_pattern)
+        fpath_list = logical_glob(match_pattern, exclude=exclude, exclude_terms=exclude_terms)
         fpath_list.sort()
 
         if args.verbose:
@@ -387,8 +413,9 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
         args.f_pattern = '*_vs_*.csv'
 
         if args.pattern_restriction is not None and args.permtype is not None:
-            if not args.output_dir.endswith(args.pattern_restriction):
+            if not args.output_dir.endswith(args.pattern_restriction.replace('^', 'not-').replace('*', '-and-')):
                 args.output_dir = os.path.join(args.output_dir, args.pattern_restriction)
+                args.output_dir = args.output_dir.replace('^', 'not-').replace('*', '-and-')
 
             args.dir_pattern = args.dir_pattern.replace('_dists', f'*{args.pattern_restriction}*_dists')
             args.f_pattern = args.f_pattern.replace('_vs_', f'{args.pattern_restriction}*_vs_*{args.pattern_restriction}')
@@ -399,7 +426,7 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
         if set_type=="list":
             if args.fpathlist_path is None: 
                 args.search_pattern = os.path.join(args.input_dir, args.dir_pattern, args.f_pattern)
-                fpath_list = equiv_glob(args.search_pattern)
+                fpath_list = logical_glob(args.search_pattern, exclude=exclude, exclude_terms=exclude_terms)
             else:
                 with open(args.fpathlist_path, 'r') as fin:
                     fpath_list = fin.read().split('\n')
@@ -410,13 +437,14 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
 
             if args.fpathlist_path is None:
                 args.pdir_pattern = os.path.join( args.input_dir, args.dir_pattern )
-                dpath_list = equiv_glob(args.pdir_pattern); dpath_list.sort()
-                fpath_grid = [ equiv_glob(os.path.join(dpath, args.f_pattern)) for dpath in dpath_list ]
+                dpath_list = logical_glob(args.pdir_pattern, exclude=exclude, exclude_terms=exclude_terms); dpath_list.sort()
+                fpath_grid = [ logical_glob(os.path.join(dpath, args.f_pattern), exclude=exclude, exclude_terms=exclude_terms) for dpath in dpath_list ]
             else:
                 with open(args.fpathlist_path, 'r') as fin:
                     fpath_list = fin.read().split('\n')
                 dpath_list = list(set(list([ os.path.dirname( fpath ) for fpath in fpath_list ]))); dpath_list.sort()
-                fpath_grid = [ [fpath for fpath in equiv_glob(os.path.join(dpath, '*' )) if fpath in fpath_list ] for dpath in dpath_list ]
+                fpath_grid = [ [fpath for fpath in logical_glob(os.path.join(dpath, '*' ), exclude=exclude, exclude_terms=exclude_terms) if fpath in fpath_list ] 
+                              for dpath in dpath_list ]
 
             fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
             [pathlist.sort() for pathlist in fpath_grid]
@@ -589,6 +617,9 @@ def _write_list(outpath, list_out):
         fout.write(list_out.__str__())
 
 def _write_img(fig, outpath, fig_size=def_fig_size):
+
+    outpath = outpath.replace('^','not-').replace('*','-and-')      # replace search operators with logical text
+
     if fig_size is not None:
         fig.set_size_inches(fig_size, forward=False)
     if not os.path.isdir(os.path.dirname(outpath)):
@@ -843,3 +874,13 @@ def _debug_symmetric_dict(symmetric_dict):
 ########################################################################################################################
 ########################################################################################################################
 
+
+def proxy_legend(labels, palette=None):
+
+    colorset = sns.color_palette(
+            palette=palette, 
+            n_colors = len(labels),
+            as_cmap=False
+            )
+    handles = [plt.Rectangle((0,0), 1, 1, color=colorset[i]) for i,label in enumerate(labels)]
+    return handles, labels

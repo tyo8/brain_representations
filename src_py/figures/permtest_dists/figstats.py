@@ -1,9 +1,11 @@
 import os
+import ast
 import copy
 import itertools
 import numpy as np
 import pandas as pd
 import seaborn as sns
+import figutils as futils
 from scipy import stats
 from matplotlib import pyplot as plt
 from statsmodels.stats.multitest import fdrcorrection
@@ -265,17 +267,21 @@ def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=Tru
     else:
         alpha = None
 
-    alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
+    # alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
+    alldata_df = pd.DataFrame(data={k: futils.triu_vals(v) for k,v in value_set.items()})
     alldata_df.dropna(axis='index', inplace=True)
+
+    corr_type, perm_type = _parse_statvars(alldata_df.columns.values)
 
     # if True, do not distinigush between different types (partial, spatial, full) of network matrices when aggregating over feature type
     if conflate_netmats:
-        alldata_df.X_feature = alldata_df.X_feature.apply( lambda x: "NetMat" if "NMs" in x else x)
-        alldata_df.Y_feature = alldata_df.Y_feature.apply( lambda x: "NetMat" if "NMs" in x else x)
-
-    alldata_df["sym_XY_featpair"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feature, alldata_df.Y_feature))]
+        alldata_df[["X_feature", "Y_feature"]]  = alldata_df[["X_feature", "Y_feature"]].map( lambda x: "NetMat" if "NMs" in x else x)
+    
+    alldata_df["sym_XY_ranks"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_rank, alldata_df.Y_rank))]
+    alldata_df["sym_XY_metrics"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_metric, alldata_df.Y_metric))]
+    alldata_df["sym_XY_features"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feature, alldata_df.Y_feature))]
     alldata_df["sym_XY_featnums"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feat_num, alldata_df.Y_feat_num))]
-    alldata_df["sym_XY_brainrep"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_modality, alldata_df.Y_modality))]
+    alldata_df["sym_XY_parcellations"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_modality, alldata_df.Y_modality))]
 
     mask_vars = [var for var in value_set.keys() if ("mask" in var) and ("two-tailed" not in var)]
     for var in mask_vars:
@@ -302,13 +308,13 @@ def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=Tru
                                          gen_f_exp=gen_f_exp
                                          )
     if args is None:
-        outdir = ''
+        outdir = '.'
     else:
         outdir = args.output_dir
-    outpath = os.path.join( outdir, f'chisq_results_alpha{alpha}.npy'.replace('0.','') )
+    outpath = os.path.join( outdir, f'chisq_results_{corr_type}-{perm_type}-alpha{alpha}.npy'.replace('0.','') )
     np.save( outpath, chisq_results, allow_pickle=True )
 
-    return None
+    return chisq_results
 
 
 
@@ -329,9 +335,8 @@ def stackplot_chisq( stackplot_df, gen_f_exp="by_rowsum", args=None ):
                                          count_vars=count_vars,
                                          gen_f_exp=gen_f_exp
                                          )
-
     if args is None:
-        outdir = ''
+        outdir = '.'
     else:
         outdir = args.output_dir
     outpath = os.path.join( outdir, f'stackplot_chisq_results_alpha{alpha}.npy'.replace('0.','') )
@@ -370,6 +375,8 @@ def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug
 
         if any( np.mean( agg_df[count_vars], axis=0) < 5 ):
             pdiv_kwargs["lambda_"] = 2/3
+        else:
+            pdiv_kwargs["lambda_"] = 1
 
         if gen_f_exp == "by_col":
             sub_reslist = []
@@ -393,24 +400,36 @@ def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug
             null_type = "null hypothesis given by other distributions (see \'null_agg_df\' for order of observed-null column pairs)"
         else:
             obs_type = var
+            f_obs=agg_df[count_vars].to_numpy(float)
             if null_df is None:
                 f_exp=None
             elif gen_f_exp == "by_rowsum":
                 null_agg_df = _contract_df(null_df.drop(columns=dropvars), agg_col=var)
                 f_exp=null_agg_df[count_vars].to_numpy(float)
 
-                chisq_stats = stats._stats_py._power_divergence(
-                        f_obs=agg_df[count_vars].to_numpy(float), 
+            ndims = len(np.squeeze(f_obs).shape)
+            dimlist = [None] + list(range(ndims))
+
+            sub_reslist = []
+            for d in dimlist:
+                pdiv_kwargs["axis"] = d
+                sub_reslist.append(
+                        stats._stats_py._power_divergence(
+                        f_obs=f_obs,
                         f_exp=f_exp,
                         **pdiv_kwargs
-                        )
+                        ))
+            chisq_stats = stats._stats_py.Power_divergenceResult(*list(zip(*sub_reslist)))
+            pdiv_kwargs["axis"] = tuple(dimlist)
+
+
         chisq_results.append({
             "obs_type": obs_type,
             "null_type": null_type,
             "observed": agg_df,
             "expected_null": null_agg_df,
             "test_params": pdiv_kwargs,
-            "results": chisq_stats
+            "statistics": chisq_stats
             })
 
     if debug:
@@ -437,7 +456,8 @@ def _contract_df( df, agg_col="Feature", contraction=np.sum, debug=False):
         print(f"\ndebugging dataframe contraction (along repeated values).")
         print(f"input dataframe: \n{df}")
         print(f"summation column: {agg_col})")
-    
+
+    # variables forcetyped to 'str' to interact nicely with downstream text-search/plotting operators
     agg_vals = [str(i) for i in sorted(df[agg_col].unique().tolist())]
 
     if debug:
@@ -452,10 +472,31 @@ def _contract_df( df, agg_col="Feature", contraction=np.sum, debug=False):
                           axis=0 )
 
     agg_df = pd.DataFrame(agg_set).T
-    agg_df[agg_col] = agg_vals
+    try:
+        # numeric/quantitative/callable datatypes are restored if applicable
+        agg_df[agg_col] = list(map(ast.literal_eval, agg_vals))
+    except ValueError:
+        agg_df[agg_col] = agg_vals
     
     if debug:
         # print(f"aggregated dictionary: \n{agg}")
         print(f"aggregated dataframe: \n{agg_df}")
 
     return agg_df
+
+def _parse_statvars( varnames ):
+    if any( [ 'fdr-left-pval' in var for var in varnames ] ):
+        corr_type = 'fdr'
+    elif any( [ 'fwe-left-pval' in var for var in varnames ] ):
+        corr_type = 'fwe'
+    else:
+        corr_type = None
+
+    if any( [ "subject" in var for var in varnames ] ):
+        perm_type = "subject"
+    elif any( [ "feature" in var for var in varnames ] ):
+        perm_type = "feature"
+    else:
+        perm_type = None
+
+    return corr_type, perm_type
