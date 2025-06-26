@@ -367,7 +367,7 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
         exclude = ('^' in args.pattern_restriction)
         if exclude:
             exclude_terms = args.pattern_restriction.split('^')[1:]
-            print(f"excluding terms using \'{exclude_terms}\'")
+            print(f"excluding terms containing any of: \'{exclude_terms}\'")
         else:
             exclude_terms = ''
 

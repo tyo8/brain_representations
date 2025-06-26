@@ -282,6 +282,8 @@ def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=Tru
     alldata_df["sym_XY_features"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feature, alldata_df.Y_feature))]
     alldata_df["sym_XY_featnums"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_feat_num, alldata_df.Y_feat_num))]
     alldata_df["sym_XY_parcellations"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_modality, alldata_df.Y_modality))]
+    alldata_df["sym_XY_parcel_ranks"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_modality + alldata_df.X_rank.map(str), alldata_df.Y_modality + alldata_df.Y_rank.map(str)))]
+    alldata_df["sym_XY_metric_ranks"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_metric + alldata_df.X_rank.map(str), alldata_df.Y_metric + alldata_df.Y_rank.map(str)))]
 
     mask_vars = [var for var in value_set.keys() if ("mask" in var) and ("two-tailed" not in var)]
     for var in mask_vars:

@@ -35,6 +35,9 @@ def make( results_list, args=None ):
         if len(df) > unq_pair_limit:
             print(f"Too many {varname} results to visualize: {len(df)}. Skipping.")
             continue
+        elif len(df) == 1:
+            print(f"Trivial case: {varname} has only 1 entry. Skipping visualization.")
+            continue
         elif 2*len(df) > name_limit**2 - name_limit:
             axtitle_fontsize = def_label_fontsize * name_limit / np.sqrt(2*len(df))
         else:
@@ -43,6 +46,11 @@ def make( results_list, args=None ):
         stats_tag = df.columns.values[0].replace("Convergent_",'').replace('-null','')
 
         suptitle, axtitles = _get_titles( chi2_result )
+
+        if not len(axtitles) == len(df):
+            Warning("axis titles have a different length ({len(axtitles)}) than dataframe ({len(df)}) for \'{varname}\'.")
+            print(f"\taxis titles: \n{axtitles}")
+            print(f"\tdataframe: \n{df}")
 
         fig, axgrid = sym_subradplots(
                 df.drop( columns=[varname] ), 
@@ -74,9 +82,13 @@ def sym_subradplots(
         tangential_labels = True
         make_legend = True
         # make_legend = False
+        rotation = None
+        both_axes = True
     else:
         tangential_labels = False
         make_legend = True
+        rotation = 90
+        both_axes = False
 
     if debug:
         print(f"pair labels: \n{pair_labels}")
@@ -118,8 +130,8 @@ def sym_subradplots(
                                ax=ax
                                )
             if i==len(names)-1:
-                ax.set_xlabel(names[j], fontsize=def_label_fontsize*2)
-            if j==0:
+                ax.set_xlabel(names[j], fontsize=def_label_fontsize*2, rotation=rotation)
+            if j==0 and both_axes:
                 ax.set_ylabel(names[i], fontsize=def_label_fontsize*2)
 
             ax.set_title(title, fontsize=title_fontsize)
@@ -192,7 +204,7 @@ def radial_barplot(df,
         fig,ax = plt.subplots(figsize=fig_size, subplot_kw={"projection": "polar"})
 
     ax.set_theta_offset(phase)
-    ax.set_ylim(-max(values)/3, max(values)*4/3)
+    ax.set_ylim(-max(values)/3, max(values)*1.05)
     ax.set_frame_on(False)
     ax.xaxis.grid(False)
     ax.yaxis.grid(False)
@@ -325,9 +337,9 @@ def _get_label_df( series, label_name="label" ):
     return label_df
 
 
-def _get_titles( chi2_results, short=True ):
-    pair_name = chi2_results["obs_type"].replace("_XY_"," ").replace("sym","Symmetric Grid of ")[:-1] + " pairs"
-    suptitle_stats, axtitle_stats = _get_title_stats( chi2_results )
+def _get_titles( chi2_result, short=True ):
+    pair_name = chi2_result["obs_type"].replace("_XY_"," ").replace("sym","Symmetric Grid of ")[:-1] + " pairs"
+    suptitle_stats, axtitle_stats = _get_title_stats( chi2_result )
 
     suptitle = f"{pair_name}\nIndependence test: {suptitle_stats}"
     if short:
@@ -337,10 +349,18 @@ def _get_titles( chi2_results, short=True ):
     return suptitle, axtitles
 
 
-def _get_title_stats( chi2_results ):
-    statistics = list(zip(*chi2_results["statistics"]))
+def _get_title_stats( chi2_result, debug=False ):
+    statistics = list(zip(*chi2_result["statistics"]))
     chi2_indpt, pval_indpt = statistics[0]
-    stat_pairs = list(zip(*statistics[2]))
+    try:
+        stat_pairs = list(zip(*statistics[2]))
+    except IndexError as err:
+        stat_pairs = list(zip(*statistics[-1]))
+        if debug:
+            print(f"(zipped) chi2 statstics output: \n{statistics}")
+            print(f"Encountered error accessing 'statistics': \n{err}")
+            print(f"Full results context: \n{chi2_result}")
+            print("Exiting."); exit()
 
     suptitle_stats = _get_chi2_str(chi2_indpt, pval_indpt)
     axtitle_stats = [ _get_chi2_str(pair[0], pair[1]) for pair in stat_pairs ]
