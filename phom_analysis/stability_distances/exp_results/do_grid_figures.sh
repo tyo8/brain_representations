@@ -20,10 +20,10 @@ declare -a alphas=(0.05 0.01 0.001)			# significance threshold values
 solo_indir="$(dirname ${indir})"
 
 
-python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "^Psim" -c "fdr" -P "subject" -a 0.05 -L -C -V -X -w -v
-# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "ICA*Psim" -c "fdr" -P "subject" -a 0.05 -L -C -V -X -w -v
+# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -a 0.05 -L -C -X -w -v
+python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "ICA*Psim" -c "fdr" -P "subject" -a 0.05 -L -X -w -v
 printf "\n#################################################################################################\n\n"
-# echo "debugging run complete. exiting."; exit
+echo "debugging run complete. exiting."; exit
 
 
 printf "## now looping through parameters arrays (in order): \n\${alphas} \n\${perms} \n\${corrs} \n\${rstr} \n\n"
@@ -34,20 +34,20 @@ do
 	do
 		for C in "${corrs[@]}"
 		do
-			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "${C}" -P "${P}" -a ${alpha} -L -V -X -w -v
+			# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "${C}" -P "${P}" -a ${alpha} -L -V -X -w -v
 			printf "\n#################################################################################################\n\n"
 			# echo "debugging run complete. exiting."; exit
 
-			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -V -X -w -v
+			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -X -w -v
 			printf "\n#################################################################################################\n\n"
 
 			for R in "${rstr[@]}"
 			do
-				python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -a ${alpha} -L -C -V -X -w -v
+				python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -a ${alpha} -L -C -X -w -v
 				printf "\n#################################################################################################\n\n"
 				if [[ "${alpha}" == "0.001" ]]
 				then
-					python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -L -C -V -X -w -v
+					python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -L -C -X -w -v
 					printf "\n#################################################################################################\n\n"
 				fi
 			done

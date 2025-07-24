@@ -6,7 +6,8 @@ from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 
 # global variables
-def_clustermap_vars = ["Wp_XY"]
+# def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std", "Wp_XYNull_mean"]
+def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std"]
 def_label_fontsize = 12
 
 def make(alldata_grid, args=None, debug=False):
@@ -28,7 +29,8 @@ def make(alldata_grid, args=None, debug=False):
     xnamelist, ynamelist, value_set = futils._get_symmetrized_data(
             alldata_grid, 
             symmetrized_vars=def_clustermap_vars, 
-            enforce_symmetry=True
+            enforce_symmetry=True,
+            set_order=False
             )
 
     if debug:
@@ -42,12 +44,14 @@ def make(alldata_grid, args=None, debug=False):
 
     value_set = futils.get_pval_masks(value_set, alpha = args.alpha)
 
-    for linkage_var in [None, "Wp_XY"]:
+    # for linkage_var in [None, "Wp_XY"]:
+    for linkage_var in [None]:
         generate_clustermaps(
                 xnamelist, 
                 ynamelist, 
                 value_set, 
                 linkage_var = linkage_var,
+                onelink = True,
                 cluster_method = "average",
                 alpha = args.alpha,
                 log_scale = args.log_scale,
@@ -99,31 +103,33 @@ def generate_clustermaps(
     for linkage_var in linkvars:
         for display_var in dispvars:
             for i,pval_var in enumerate(pval_vars):
-                if alpha is not None:
-                    mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
-                    mask = value_set[mask_var]
-                else:
-                    mask = None
-                if linkage_var is not None:
-                    if ("pval" in linkage_var) and ("pval" in display_var):
-                        print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
-                        continue
-                fig_dict[display_var] = plot_clustermap(
-                        xnamelist,
-                        ynamelist,
-                        value_set,
-                        cluster_method = cluster_method,
-                        linkage_var = linkage_var,
-                        display_var = pval_var,     # display_var = display_var,
-                        alpha = alpha,
-                        pval_var = pval_var,
-                        mask = mask,
-                        log_scale = log_scale,
-                        fig_size = fig_size,
-                        label_fontsize = label_fontsize,
-                        outdir = outdir,
-                        write_mode = write_mode
-                        )
+                for show_var in [display_var, pval_var]:
+                    if alpha is not None:
+                        mask_var = [var for var in mask_vars if pval_var in var][0]     # there should exist a unique entry!
+                        mask = value_set[mask_var].copy()
+                    else:
+                        mask = None
+                    if linkage_var is not None:
+                        if ("pval" in linkage_var) and ("pval" in display_var):
+                            print(f"Skipping \"cluster {display_var} on {linkage_var}\" plot.")
+                            continue
+
+                    fig_dict[display_var] = plot_clustermap(
+                            xnamelist.copy(),
+                            ynamelist.copy(),
+                            value_set.copy(),
+                            cluster_method = cluster_method,
+                            linkage_var = linkage_var,
+                            display_var = show_var,
+                            alpha = alpha,
+                            pval_var = pval_var,
+                            mask = mask,
+                            log_scale = log_scale,
+                            fig_size = fig_size,
+                            label_fontsize = label_fontsize,
+                            outdir = outdir,
+                            write_mode = write_mode
+                            )
 
     # can i turn list figure set into something that shows everything?
     return None
@@ -187,27 +193,32 @@ def plot_clustermap(
         else:
             outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
     else:
-        outname = f"cluster-on-{linkage_var}_of-{display_var}.png".replace(" ","")
+        if linkage_var is None:
+            outname = f"no-cluster_{display_var}.png".replace(" ","")
+        else:
+            outname = f"cluster-on-{linkage_var}_of-{display_var}.png".replace(" ","")
 
         
     if np.count_nonzero(np.isnan(display_vals)) > 0:
-        if debug:
-            print(f"{np.count_nonzero(np.isnan(display_vals))} NaNs removed removed from \'display_vals\' for var \"{display_var}\"")
+        print(f"{np.count_nonzero(np.isnan(display_vals))} NaNs removed removed from \'display_vals\' for var \"{display_var}\"")
         np.nan_to_num(display_vals, nan=-1, copy=False)
 
     if not cluster:
         if mask is None:
             [xnamelist, ynamelist], [display_vals] = futils._reorder_arrays(
-                    [xnamelist, ynamelist],
-                    [display_vals]
+                    [xnamelist.copy(), ynamelist.copy()],
+                    [display_vals.copy()]
                     )
         else:
             [xnamelist, ynamelist], [display_vals, mask] = futils._reorder_arrays(
-                    [xnamelist, ynamelist],
-                    [display_vals, mask]
+                    [xnamelist.copy(), ynamelist.copy()],
+                    [display_vals.copy(), mask.copy()]
                     )
         xticklabels = [futils._nice_feats(i.split('_')[0]) for i in xnamelist]
-        yticklabels = [futils._nice_feats(i.split('_')[1]) for i in ynamelist]
+        if all(["Psim" in i for i in ynamelist]):
+            yticklabels = [futils._nice_feats(i.split('_')[1]) for i in ynamelist]
+        else:
+            yticklabels = [futils._nice_feats(' '.join(i.split('_')[1:])) for i in ynamelist]
     else:
         split_char = "\n"   # or, e.g., " "
         xticklabels = [split_char.join(i.split('_',maxsplit=1)) for i in xnamelist]
@@ -228,12 +239,12 @@ def plot_clustermap(
         #   Lcol = hsv_to_rgb(( Lhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
         #   Rcol = hsv_to_rgb(( Rhue/360, 0.5, 0.6 ))   # corresponds to s=60 and l=50 w.r.t. 'diverging_palette' options
         if "left-pval" in pval_var:
-            cmap = sns.dark_palette(base_colors[0], reverse=True, as_cmap=True)
-            # cmap = sns.color_palette("crest", as_cmap=True)
+            # cmap = sns.dark_palette(base_colors[0], reverse=True, as_cmap=True)
+            cmap = sns.color_palette("crest", as_cmap=True)
             # cmap = sns.cubehelix_palette(rot=Lrot, light=light, dark=dark, as_cmap=True)
         elif "right-pval"in pval_var:
-            cmap = sns.dark_palette(base_colors[1], reverse=True, as_cmap=True)
-            # cmap = sns.color_palette("magma", as_cmap=True)
+            # cmap = sns.dark_palette(base_colors[1], reverse=True, as_cmap=True)
+            cmap = sns.color_palette("flare", as_cmap=True)
             # cmap = sns.cubehelix_palette(rot=Rrot, light=1-light, dark=1-dark, as_cmap=True)
         else:
             cmap = sns.light_palette(base_colors[2], reverse=False, as_cmap=True)
@@ -282,9 +293,10 @@ def plot_clustermap(
 
 # heatmap plot utility
 ### is 'mask' enters heatmap as heatmap(mask=mask), then filt=~mask (logical inverse) 
-def _disp_logdata(varname, values, disp_var=True, mask=None):
+def _disp_logdata(varname, values, diag_val=1e-3, disp_var=True, mask=None):
     if disp_var and "pval" in varname:
-        np.fill_diagonal(values, np.nan)
+        np.fill_diagonal(values, diag_val)
+        # np.fill_diagonal(values, np.nan)
         title_suffix = " (-log10(2p))"
         values = -np.log10(2*values)
         nanval = -1

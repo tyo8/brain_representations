@@ -63,11 +63,11 @@ def main(args, debug=False):
         xnamelist, ynamelist, value_set = scatterplots.make(alldata_grid=alldata_grid, args=args)
 
     if args.chi2_statistics:
-        args.fig_size=(12,6)
-        stackplot_df = stackplots.make(value_set, args=args)
-        fstats.stackplot_chisq(stackplot_df, args=args)
+        # args.fig_size=(12,6)
+        # stackplot_df = stackplots.make(value_set, args=args)
+        # fstats.stackplot_chisq(stackplot_df, args=args)
         args.fig_size=(12,12)
-        chisq_results = fstats.make_chisq_summaries(value_set, args=args)
+        chisq_results = fstats.make_chisq_summaries(alldata_grid=alldata_grid, args=args)
         barplots.make( chisq_results, args=args )
 
     if args.solo_plots:
@@ -182,7 +182,7 @@ def _get_fpath_sets(args, debug=False):
     # xnamelist = [_semiload(i[0])["X_name"].unique()[0] for i in fpath_grid]
     # ynamelist = [_semiload(j)["Y_name"].unique()[0] for j in fpath_grid[0]]
 
-    if (args.alpha is not None) and any( [args.clustermap_plots, args.scatter_plots, args.solo_plots, args.distribution_plots] ):
+    if (args.alpha is not None) and any( [args.clustermap_plots, args.scatter_plots, args.solo_plots, args.distribution_plots, args.chi2_statistics] ):
         fpath_grid = _filter_fpath_grid(args, fpath_grid)
         fpath_list = list(itertools.chain(*fpath_grid))
         if args.verbose:

@@ -71,6 +71,7 @@ This repo leverages several Python packages beyond built-ins. These dependencies
 - [pandas](https://pandas.pydata.org/)
 - [seaborn](https://seaborn.pydata.org/)
 - [matplotlib](https://matplotlib.org/stable/index.html)
+- [statsmodels](https://www.statsmodels.org/stable/index.html)
 	
 #### Regularized Canonical Correlation Analysis: `src_py/lindecomp`
 - [rcca](https://github.com/gallantlab/pyrcca)

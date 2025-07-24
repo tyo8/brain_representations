@@ -193,7 +193,8 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
         print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")
 
     if tail_type == "all":
-        tails = ["left", "right", "two-tailed"]
+        tails = ["left", "right"]
+        # tails = ["left", "right", "two-tailed"]
     else:
         tails = [tail_type]
 
@@ -259,13 +260,35 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, cor
 ########################################################################################################################
 default_pdiv_kwargs = {"axis":0, "lambda_":1, "sum_check":False, "ddof":-1}     # default initialization of _power_divergence kwargs
 
-def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=True, args=None, debug=False ):
+def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsum", conflate_netmats=True, args=None, debug=True ):
+    assert not ((value_set is None) and (alldata_grid is None)), "At least one of 'value_set' and 'alldata_df' must be given as input"
+
+    if alldata_grid is not None:
+        # allvars = list(alldata_grid[0][0].keys())
+        allvars = ["X_rank"]
+        # allvars = [varname for varname in list(alldata_grid[0][0].keys()) if 'two-tail' not in varname]
+        xnamelist, ynamelist, value_set = futils._get_symmetrized_data(
+                alldata_grid, 
+                symmetrized_vars=allvars,
+                enforce_symmetry=True,
+                check_pval=False,
+                set_order=True,
+                debug=debug
+                )
+
     if args is not None:
         if args.verbose:
             print("Running alldata_df chi-squared.")
         alpha = args.alpha
     else:
         alpha = None
+
+    value_set = futils.get_pval_masks(value_set, alpha=alpha)
+
+    if debug:
+        savepath = os.path.join( os.getcwd(), "value_set", "value_set.npy")
+        print(f"\nsaving \'value_set\' to: \n{savepath}\n")
+        np.save( savepath, value_set, allow_pickle=True )
 
     # alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
     alldata_df = pd.DataFrame(data={k: futils.triu_vals(v) for k,v in value_set.items()})
@@ -286,12 +309,12 @@ def make_chisq_summaries( value_set, gen_f_exp="by_rowsum", conflate_netmats=Tru
     alldata_df["sym_XY_metric_ranks"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_metric + alldata_df.X_rank.map(str), alldata_df.Y_metric + alldata_df.Y_rank.map(str)))]
 
     mask_vars = [var for var in value_set.keys() if ("mask" in var) and ("two-tailed" not in var)]
-    for var in mask_vars:
-        alldata_df[var] = ~ alldata_df[var]
     newmask_names = {var: 
                      var.replace('left','Convergent').replace('right','Divergent').replace('-pval','').replace('_mask','') 
                      for var in mask_vars}
-    alldata_df.rename( columns=newmask_names, inplace=True )
+    for var in mask_vars:
+        alldata_df[newmask_names[var]] = ~ alldata_df[var]
+    alldata_df.drop( columns=mask_vars, inplace=True )
     mask_vars = list(newmask_names.values())
     alldata_df["Incomparable"] = alldata_df[mask_vars].apply(lambda x: not any(x), axis=1) 
     mask_vars.append("Incomparable")
@@ -347,7 +370,7 @@ def stackplot_chisq( stackplot_df, gen_f_exp="by_rowsum", args=None ):
     return None
 
 
-def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug=False, **pdiv_kwargs ):
+def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug=True, **pdiv_kwargs ):
 
     pdiv_kwargs = default_pdiv_kwargs | pdiv_kwargs
 

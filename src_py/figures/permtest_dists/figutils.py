@@ -251,7 +251,9 @@ def _get_symmetrized_data(
         alldata_grid, 
         symmetrized_vars=["Wp_XY"], 
         enforce_symmetry=True, 
-        check_pval=True, 
+        check_pval=True,
+        set_order=False,
+        order = order_fpath,
         verbose=True,
         debug=False
         ):
@@ -313,6 +315,14 @@ def _get_symmetrized_data(
                 print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
                 # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
             ynamelist = xnamelist
+
+    if set_order:
+        if debug:
+            print(f"xnamelist: \n{xnamelist}")
+            print(f"ynamelist: \n{xnamelist}")
+            print(f"symmetric_dict: \n{symmetric_dict}")
+        [xnamelist, ynamelist], symmetric_dict = _reorder_arrdict([xnamelist.copy(), ynamelist.copy()], symmetric_dict.copy(), order=order)
+
     return xnamelist, ynamelist, symmetric_dict
 
 ## symmetrization helper functions
@@ -748,6 +758,7 @@ def get_pval_masks(symmetric_dict, alpha=None):
         sig_list = [ symmetric_dict[var] < alpha for var in pval_vars ]
         # 'mask' (in sns.heatmap) hides values at coordinate if mask(coord)=True; retain values by setting mask(coord)=False.
         masks = [ ~sig for sig in sig_list ]
+        # masks = sig_list
         # show one unmasked plot as well (write it out last)
         pval_vars.append(None)
         masks.append(None)
@@ -767,6 +778,17 @@ def get_pval_masks(symmetric_dict, alpha=None):
     return symmetric_dict
 
 ########################################################################################################################
+def _reorder_arrdict(namelists, arrdict, order=order_fpath, verbose=True):
+    keylist, arrlist = map(list, list(zip(*list(arrdict.items()))))
+
+    if verbose:
+        print(f"Reordering dictionary. Input dict has keys: \n{keylist}")
+
+    namelists_ord, arrlist_ord = _reorder_arrays( namelists.copy(), arrlist.copy(), order=order, verbose=verbose )
+
+    ord_dict = { keylist[i]: arrlist_ord[i] for i in range(len(keylist)) }
+
+    return namelists_ord, ord_dict
 
 # variable "order" is either a list, a filepath, or None
 def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
@@ -783,6 +805,7 @@ def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
 
     if verbose:
         print(f"re-ordering labels and arrays from ordering: \n{order}")
+        print(f"original order: \n{namelists[0]}")
 
     newidx_list = [_reindex_list(namelist, order_df) for namelist in namelists]
 
@@ -790,12 +813,23 @@ def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
 
     namelists = [_reorder_list(ord_pair[0], ord_pair[1]) for ord_pair in rename_idx_list]
     array_list = [_reorder_array(arr, newidx_list) for arr in array_list]
+
+    if verbose:
+        print(f"new order: \n{namelists[0]}")
     return namelists, array_list
 
-def _reindex_list(namelist, order_df):
+def _reindex_list(namelist, order_df, debug=True):
+    if debug:
+        print("namelist:", namelist)
+        print(order_df)
+
     list_df = order_df[ order_df.name.apply( lambda x: x in namelist ) ]
     list_df.reset_index(drop=True, inplace=True)
-    new_idx = [list_df[ list_df.name == name ].index.values[0] for name in namelist ]
+    new_idx = [ list_df[ list_df.name == name ].index.values[0] for name in namelist ]
+
+    if debug:
+        print("new index:", new_idx)
+        print("new name list:", [ namelist[i] for i in new_idx)
     return new_idx
 
 def _reorder_list(inlist, new_idx, debug=False):
@@ -808,15 +842,31 @@ def _reorder_list(inlist, new_idx, debug=False):
 
     return ordlist
 
-def _reorder_array(arr, idx_lists):
+def _reorder_array(arr, idx_lists, debug=True):
+
+    if arr.dtype == 'O':
+        print(f"force-casting object-type array to string.")
+        arr = arr.astype(str)
+
+    if debug:
+        print(f"reordering array: \n{arr}")
+
     ndims = len(arr.shape)
     for n in range(ndims):
         arr = np.rollaxis(arr, n)
         for count, reidx in enumerate(idx_lists[n]):
             arr[reidx,:] = arr[count,:]
 
-
     arr = np.rollaxis(arr,0)
+
+    if isinstance(arr.dtype, str):
+        print(f"filling diagnoal of force-casted array with NaNs.")
+        np.fill_diagonal(arr, np.nan)
+
+    if debug:
+        print(f"reordered array: \n{arr}")
+        print(f"with datatype: {arr.dtype}, or '{str(arr.dtype)}'")
+
     return arr
 ########################################################################################################################
 

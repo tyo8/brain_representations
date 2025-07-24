@@ -8,7 +8,7 @@ from matplotlib import patches as pch
 from matplotlib import pyplot as plt
 
 ################
-# adapted from the "Circular barplot with gorups in Matplotlib" post
+# adapted from the "Circular barplot with groups in Matplotlib" post
 # from the Python graph gallery:
 # 
 #       <https://python-graph-gallery.com/circular-barplot-with-groups/>
@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 
 def_fig_size=(12,12)
 def_label_fontsize=8
-name_limit = 5
+name_limit = 3 
 unq_pair_limit = 200
 # unq_pair_limit = 332
 
@@ -105,6 +105,13 @@ def sym_subradplots(
             figsize=fig_size, 
             subplot_kw={"projection": "polar"}
             )
+
+    if len(axgrid) == 1:
+        print(f"\nAxes grid (from subplots) is not 2-dimensional, but input df did pass earlier triviality check. Names: {names}")
+        print(f"Input df: \n{df}\n")
+        return fig, axgrid
+
+
 
     for i in range(len(names)):
         for j in range(len(names)):
