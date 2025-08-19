@@ -82,8 +82,8 @@ def _load(
             if permtype is None:
                 permtypes = df["permtype"].unique()
             else:
-                err_str = f"Specified permtype {permtype} not in df.permtype: \'{df.permtype.unique()}\'. From input path: \n{input_fpath}"
-                assert permtype in df.permtype.unique(), err_str
+                err_msg = f"Specified permtype {permtype} not in df.permtype: \'{df.permtype.unique()}\'. From input path: \n{input_fpath}"
+                assert permtype in df.permtype.unique(), err_msg
                 permtypes = [permtype]
         else:
             assert len(df.datatype.unique())==1, f"column \'permtype\' not found in df.keys() even though multiple datatypes present: \n{df}"
@@ -269,15 +269,10 @@ def _get_symmetrized_data(
     for varname in symmetrized_vars:
         try:
             vals = np.squeeze(np.array([[j[varname].to_numpy() for j in i] for i in alldata_grid]))
-            if "pval" in varname:
-                vals = _sym_pvals(vals, varname=varname)
-            else:
-                if all([ isinstance(entry, Number) for entry in vals.flatten() ]):
-                    vals = _enforce_symmetry(vals, fill_val = 0)
-                else:
-                    vals = _enforce_symmetry(vals, fill_val = np.nan)
             if verbose:
                 print(f"variable {varname} has grid of values with shape: {vals.shape}")
+            if enforce_symmetry:
+                vals = _enforce_symmetry(vals, varname=varname)
         except ValueError:
             new_entry = [[j[varname].to_numpy() for j in i] for i in alldata_grid]
             if debug:
@@ -293,7 +288,7 @@ def _get_symmetrized_data(
                 ### debugging code ###
 
         symmetric_dict[varname] = vals
-        print(f"\'{varname}\' gridded.")
+        print(f"\'{varname}\' gridded to shape {vals.shape}.")
 
     if debug:
         ### debugging code ###
@@ -309,12 +304,11 @@ def _get_symmetrized_data(
         print(f"enforced symmetry in variables: \n{symmetrized_vars}\n")
         ynamelist = [xnamelist[0], *ynamelist]
         try:
-            assert xnamelist == ynamelist
+            err_msg = f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries"
+            assert xnamelist == ynamelist, err_msg
         except AssertionError:
-            if debug:
-                print(f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries")
-                # print(f"namelists are unequal in forced symmetric case! \nxnamelist: {len(xnamelist)} entries\nynamelist: {len(ynamelist)} entries")
-            ynamelist = xnamelist
+            Warning(err_msg)
+            ynamelist = xnamelist.copy()
 
     if set_order:
         if debug:
@@ -328,39 +322,111 @@ def _get_symmetrized_data(
 ## symmetrization helper functions
 ########################################################################################################################
 # Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
-def _enforce_symmetry(mtx, debug=False, fill_val=np.nan):
-    assert len(mtx.shape)==2, "Only valid for matrix inputs"
-    if mtx.shape[0] == mtx.shape[1]:
-        sym_mtx = (mtx + mtx.T)/2
-    else:
-        assert (mtx.shape[0]-1)==mtx.shape[1], f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
+def _enforce_symmetry(vals, varname, enforce=True, fill_val=np.nan, debug=False):
 
-        # takes values from upper diagonal
-        sym_mtx = squareform(triu_vals(mtx, k=0))
-        np.fill_diagonal(sym_mtx, fill_val)
+    if debug:
+        print(f"symmetrizing variable {varname}.")
+        print(f"input array: \n{vals}")
 
-        if isinstance(sym_mtx[0][1], float):
-            assert np.allclose(sym_mtx, sym_mtx.T, equal_nan=True), f"Symmetrization failed: \"sym_mtx\" is \n{sym_mtx}"
+    if "pval" in varname:
+        vals = _sym_pvals(vals, varname=varname)
+    elif all([ isinstance(entry, Number) for entry in vals.flatten() ]):
+        fill_val = 0
 
-    return sym_mtx
+    if (("X_" in varname) or ("Y_" in varname)) and ("XY" not in varname):
+        enforce = False
 
-def _sym_pvals(pval_mtx, varname=None):
+    vals = _place_diag(vals, fill_val=fill_val, enforce=enforce)
+
+    if debug:
+        print(f"symmetrized array: \n{vals}")
+
+    return vals
+
+
+def _sym_pvals(pval_mtx, enforce=True, varname=None, debug=False):
     if varname is None:
         fill_val = 0
     else:
-        fill_val = int("right" in varname)
+        if debug:
+            print(f"symmetrizing pvalue: {varname} \n{pval_mtx}")
 
-        sym_pval = _enforce_symmetry(pval_mtx, fill_val=0)
+        sym_pvals = _place_diag(pval_mtx, fill_val=0)
+        if debug:
+            print(f"post-diag pvalue: {varname} \n{pval_mtx}")
+
         if "fdr" in varname:
-            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fdr"))
+            corr_type="fdr"
         elif "fwe" in varname:
-            sym_pval = squareform(fstats.correct_pvals(squareform(sym_pval), corr_type="fwe"))
-        np.fill_diagonal( sym_pval, fill_val )
-        return sym_pval
+            corr_type="fwe"
+            
+        if np.allclose(sym_pvals, sym_pvals.T) or force_sym:
+            pvals = triu_vals(sym_pvals)
+            sym_pvals = squareform(fstats.correct_pvals(pvals, corr_type=corr_type))
+        else:
+            pvals = pval_mtx.ravel()
+            sym_pvals = _place_diag(np.reshape(
+                fstats.correct_pvals(pvals, corr_type=corr_type), pval_mtx.shape))
 
-def triu_vals(A, k=1):
+        if debug:
+            print(f"symmetrized pvalue: {varname} \n{sym_pvals}")
+
+        np.fill_diagonal( sym_pvals, int("right" in varname) )
+
+        return sym_pvals
+
+
+def _place_diag(arr, fill_val=np.nan, enforce=True, debug=False):
+    assert len(arr.shape)==2, "Only valid for matrix inputs"
+    nx, ny = arr.shape
+    if nx == ny:
+        return arr
+    else:
+        assert (nx-1)==ny, f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {arr.shape}"
+    if debug:
+        print(f"pre-diag input array: \n{arr}")
+    new_arr = np.empty((nx,ny+1)).astype(arr.dtype); new_arr[:] = fill_val
+    for i in range(nx):
+        for j in range(ny):
+            if j < i:
+                k=j
+            else:
+                k=j+1
+            new_arr[i,k] = arr[i,j]
+    if debug:
+        print(f"post-diag input array: \n{new_arr}")
+
+    if enforce:
+        sym_arr = squareform( triu_vals(new_arr) )
+        new_arr = sym_arr
+    return new_arr
+
+
+def _get_names(fpath_grid):
+    nx, ny = len(fpath_grid), min([len(fpathlist) for fpathlist in fpath_grid])
+    assert (nx-1)==ny, f"Input matrix assumed to have shape (n,n-1): instead, given matrix has shape {mtx.shape}"
+    xyname_grid = [[ fpath.split(os.sep)[-1].split('_null')[0] for fpath in fpathlist ] for fpathlist in fpath_grid ]
+    xname_grid = np.empty((nx,ny+1)).astype(str)
+    yname_grid = np.empty((nx,ny+1)).astype(str)
+    xname_grid[:] = np.nan
+    yname_grid[:] = np.nan
+    for i in range(nx):
+        for j in range(ny):
+            if j < i:
+                k=j
+            else:
+                k=j+1
+            xname_grid[i,k] = xyname_grid[i][j].split('_vs_')[0]
+            yname_grid[i,k] = xyname_grid[i][j].split('_vs_')[1]
+    return xname_grid, yname_grid
+
+
+def triu_vals(A, k=1, debug=False):
     n = min(A.shape)
     vals = A[np.triu_indices(n, k)]
+    if debug:
+        print(f"original shape: {A.shape}")
+        print(f"flattened upper triangle: {vals.shape}")
     return vals
 ########################################################################################################################
 
@@ -453,7 +519,8 @@ def _get_fpath_set(args, dist_type="single", set_type="list", debug=False):
                 with open(args.fpathlist_path, 'r') as fin:
                     fpath_list = fin.read().split('\n')
                 dpath_list = list(set(list([ os.path.dirname( fpath ) for fpath in fpath_list ]))); dpath_list.sort()
-                fpath_grid = [ [fpath for fpath in logical_glob(os.path.join(dpath, '*' ), exclude=exclude, exclude_terms=exclude_terms) if fpath in fpath_list ] 
+                fpath_grid = [ sorted(
+                    [fpath for fpath in logical_glob(os.path.join(dpath, '*' ), exclude=exclude, exclude_terms=exclude_terms) if fpath in fpath_list ])
                               for dpath in dpath_list ]
 
             fpath_grid = [ pathlist for pathlist in fpath_grid if pathlist ]    # removes empty lists (corresponding to directories with no successful search hits)
@@ -470,7 +537,7 @@ def _pull_rank(long_method, debug=False):
         rank=360
         method="Glasser"
     else:
-        rank_pattern = re.compile('\d{1,4}')
+        rank_pattern = re.compile(r'\d{1,4}')
         rank = re.search(r'\d{1,4}', long_method).group()
         method = long_method.replace(rank,'')
         if debug:
@@ -778,7 +845,7 @@ def get_pval_masks(symmetric_dict, alpha=None):
     return symmetric_dict
 
 ########################################################################################################################
-def _reorder_arrdict(namelists, arrdict, order=order_fpath, verbose=True):
+def _reorder_arrdict(namelists, arrdict, order=order_fpath, verbose=False, debug=False ):
     keylist, arrlist = map(list, list(zip(*list(arrdict.items()))))
 
     if verbose:
@@ -788,10 +855,13 @@ def _reorder_arrdict(namelists, arrdict, order=order_fpath, verbose=True):
 
     ord_dict = { keylist[i]: arrlist_ord[i] for i in range(len(keylist)) }
 
+    if debug:
+        exit()
+
     return namelists_ord, ord_dict
 
 # variable "order" is either a list, a filepath, or None
-def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
+def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=False, debug=False):
     if isinstance(order,str):
         order_df = pd.read_csv(order, header=None)
         order_df.rename(columns = {0:"name"}, inplace=True)
@@ -818,54 +888,53 @@ def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=True):
         print(f"new order: \n{namelists[0]}")
     return namelists, array_list
 
-def _reindex_list(namelist, order_df, debug=True):
-    if debug:
-        print("namelist:", namelist)
-        print(order_df)
+def _reindex_list(namelist, order_df, debug=False):
 
     list_df = order_df[ order_df.name.apply( lambda x: x in namelist ) ]
+
+    if debug:
+        print(f"order_df of names in list: \n{list_df}")
+
     list_df.reset_index(drop=True, inplace=True)
     new_idx = [ list_df[ list_df.name == name ].index.values[0] for name in namelist ]
 
     if debug:
-        print("new index:", new_idx)
-        print("new name list:", [ namelist[i] for i in new_idx)
+        print("ordered names by new_idx:", [list_df.name.iloc[i] for i in new_idx] )
     return new_idx
 
 def _reorder_list(inlist, new_idx, debug=False):
     ordlist = [None]*len(inlist)
+
     if debug:
         print(inlist)
         print(new_idx)
+
     for count, reidx in enumerate(new_idx):
         ordlist[reidx] = inlist[count]
 
+    if debug:
+        print(ordlist)
+
     return ordlist
 
-def _reorder_array(arr, idx_lists, debug=True):
 
-    if arr.dtype == 'O':
-        print(f"force-casting object-type array to string.")
-        arr = arr.astype(str)
+def _reorder_array(arr, idx_lists, debug=False):
 
     if debug:
         print(f"reordering array: \n{arr}")
 
     ndims = len(arr.shape)
     for n in range(ndims):
-        arr = np.rollaxis(arr, n)
-        for count, reidx in enumerate(idx_lists[n]):
-            arr[reidx,:] = arr[count,:]
+        new_idx = idx_lists[n]
+        counts = list(range(len(new_idx)))
+        arr[new_idx,:] = arr[counts,:]
+        arr = np.rollaxis(arr, 1)
 
-    arr = np.rollaxis(arr,0)
-
-    if isinstance(arr.dtype, str):
-        print(f"filling diagnoal of force-casted array with NaNs.")
-        np.fill_diagonal(arr, np.nan)
+    # arr = np.rollaxis(arr,1)
 
     if debug:
         print(f"reordered array: \n{arr}")
-        print(f"with datatype: {arr.dtype}, or '{str(arr.dtype)}'")
+
 
     return arr
 ########################################################################################################################

@@ -6,8 +6,8 @@ from matplotlib import pyplot as plt
 from scipy.spatial.distance import squareform
 
 # global variables
-# def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std", "Wp_XYNull_mean"]
-def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std"]
+def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std", "Wp_XYNull_mean"]
+# def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std"]
 def_label_fontsize = 12
 
 def make(alldata_grid, args=None, debug=False):

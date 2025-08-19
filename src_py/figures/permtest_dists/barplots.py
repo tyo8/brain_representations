@@ -14,13 +14,18 @@ from matplotlib import pyplot as plt
 #       <https://python-graph-gallery.com/circular-barplot-with-groups/>
 ################
 
-def_fig_size=(12,12)
+def_fig_size=(6,6)
 def_label_fontsize=8
 name_limit = 3 
 unq_pair_limit = 200
 # unq_pair_limit = 332
 
-def make( results_list, args=None ):
+def make( results_list, args=None, debug=True ):
+    if debug:
+        print(f"\nchi-squared results returned; generating summary barplots.\n")
+        print("input options to 'barplots.make':")
+        for key,val in vars(args).items():
+            print(f"\toptional argument \'{key}\': {val}")
     if args is None:
         output_dir = '.'
         fig_size = def_fig_size
@@ -31,6 +36,9 @@ def make( results_list, args=None ):
     for chi2_result in results_list:
         varname = chi2_result["obs_type"]
         df = chi2_result["observed"]
+
+        if debug:
+            print(f"sub-dataframe for input \'{varname}\' is \n{df}")
 
         if len(df) > unq_pair_limit:
             print(f"Too many {varname} results to visualize: {len(df)}. Skipping.")
@@ -56,7 +64,8 @@ def make( results_list, args=None ):
                 df.drop( columns=[varname] ), 
                 titles=axtitles,
                 title_fontsize=axtitle_fontsize,
-                fig_size=fig_size
+                fig_size=fig_size,
+                debug=debug
                 )
         fig.suptitle(suptitle)
 
@@ -99,6 +108,10 @@ def sym_subradplots(
             [ x in var for x in ["Convergent", "Divergent", "Incomparable"] ]
             ) ]
 
+    if debug:
+        print(f"counting variables: \n{count_vars}\n")
+        print(f"Making {len(names)}x{len(names)} polar subplots grid of dimension {fig_size} inches^2.\n")
+
     fig, axgrid = plt.subplots(
             nrows = len(names),
             ncols = len(names),
@@ -110,6 +123,8 @@ def sym_subradplots(
         print(f"\nAxes grid (from subplots) is not 2-dimensional, but input df did pass earlier triviality check. Names: {names}")
         print(f"Input df: \n{df}\n")
         return fig, axgrid
+    elif debug:
+        print(f"subplots intialized: {axgrid[0][0]} of shape {axgrid.shape}")
 
 
 
@@ -120,6 +135,9 @@ def sym_subradplots(
             if pair_key not in df.index:
                 ax.set_visible(False)
                 continue
+
+            if debug:
+                print(f"Adding barplot for pair of keys: \'{pair_key}\'")
 
             if titles is None:
                 title=None

@@ -66,7 +66,7 @@ def main(args, debug=False):
         # args.fig_size=(12,6)
         # stackplot_df = stackplots.make(value_set, args=args)
         # fstats.stackplot_chisq(stackplot_df, args=args)
-        args.fig_size=(12,12)
+        args.fig_size=(6,6)
         chisq_results = fstats.make_chisq_summaries(alldata_grid=alldata_grid, args=args)
         barplots.make( chisq_results, args=args )
 
@@ -174,11 +174,6 @@ def _get_fpath_sets(args, debug=False):
         print(f"No filepaths matched search criteria. Exiting.")
         exit()
 
-    if debug:
-        import json
-        with open("fpath_grid_tmp.txt", 'w') as fout:
-            json.dump(fpath_grid, fout, indent=4)
-
     # xnamelist = [_semiload(i[0])["X_name"].unique()[0] for i in fpath_grid]
     # ynamelist = [_semiload(j)["Y_name"].unique()[0] for j in fpath_grid[0]]
 
@@ -192,6 +187,15 @@ def _get_fpath_sets(args, debug=False):
         if not len(fpath_list):
             print(f"No data pass AUC significance criteria under the given specifications. Exiting.")
             exit()
+    
+    if debug:
+        import json
+        with open("debug/fpath_grid_tmp.txt", 'w') as fout:
+            json.dump(fpath_grid, fout, indent=4)
+        print("\'fpath_grid\' written to 'debug/fpath_grid_tmp.txt'")
+        xname_grid, yname_grid = futils._get_names(fpath_grid)
+        print("Names of X brainreps:"); print(xname_grid)
+        print("Names of Y brainreps:"); print(yname_grid)
 
     return fpath_list, fpath_grid
 
@@ -206,7 +210,8 @@ def _filter_fpath_grid(args, fpath_grid, backend="text"):
         fpath_grid = [ [ fpath for fpath in fpathlist 
                         if all(map(call_mask, futils._parse_fpath(fpath, pathtype="pair")))
                         ] for fpathlist in fpath_grid ]                         # removes filepath if either the X_name or Y_name fail significance
-        fpath_grid = [ fpathlist for fpathlist in fpath_grid if fpathlist ]     # removes empty filepath sublists
+        fpath_grid = [ sorted(fpathlist) for fpathlist in fpath_grid if fpathlist ]     # removes empty filepath sublists
+
     elif backend=="grid":
         _, _, fpath_grid = futils._apply_series_mask(auc_mask, xnamelist, ynamelist, fpath_grid)
 

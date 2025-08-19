@@ -171,7 +171,7 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
             null_mask = null_mask & (df["permtype"] == permtype)
         df_null = df[ null_mask ]
         null_lo = df_null["Wp_XY"].to_numpy()
-        null_hi = df_null["Wp_XY"].to_numpy()
+        null_hi = null_lo.copy()
         check_cols = [col for col in df.columns if col.startswith("X") or col.startswith("Y")]
 
         try:
@@ -190,11 +190,12 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
     assert (len(null_hi) > 0) and (len(null_lo) > 0), err_msg
 
     if debug:
-        print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")
+        # print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")
+        print(f"{df_data.X_name.iloc[0]} and {df_data.Y_name.iloc[0]} have null standard dev. {np.std(null_hi)}")
 
     if tail_type == "all":
-        tails = ["left", "right"]
-        # tails = ["left", "right", "two-tailed"]
+        # tails = ["left", "right"]
+        tails = ["left", "right", "two-tailed"]
     else:
         tails = [tail_type]
 
@@ -260,20 +261,19 @@ def correct_pvals(pval_vec, verbose=True, low_thresh=0.01, high_thresh=0.05, cor
 ########################################################################################################################
 default_pdiv_kwargs = {"axis":0, "lambda_":1, "sum_check":False, "ddof":-1}     # default initialization of _power_divergence kwargs
 
-def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsum", conflate_netmats=True, args=None, debug=True ):
+def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsum", conflate_netmats=True, args=None, debug=False):
     assert not ((value_set is None) and (alldata_grid is None)), "At least one of 'value_set' and 'alldata_df' must be given as input"
 
     if alldata_grid is not None:
-        # allvars = list(alldata_grid[0][0].keys())
-        allvars = ["X_rank"]
+        allvars = list(alldata_grid[0][0].keys())
+        # allvars = ["X_rank", "Y_rank", "Wp_XY"]
         # allvars = [varname for varname in list(alldata_grid[0][0].keys()) if 'two-tail' not in varname]
-        xnamelist, ynamelist, value_set = futils._get_symmetrized_data(
+        _, _, value_set = futils._get_symmetrized_data(
                 alldata_grid, 
                 symmetrized_vars=allvars,
                 enforce_symmetry=True,
                 check_pval=False,
-                set_order=True,
-                debug=debug
+                set_order=True
                 )
 
     if args is not None:
@@ -283,22 +283,34 @@ def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsu
     else:
         alpha = None
 
-    value_set = futils.get_pval_masks(value_set, alpha=alpha)
+    value_set = futils.get_pval_masks(value_set.copy(), alpha=alpha)
 
     if debug:
-        savepath = os.path.join( os.getcwd(), "value_set", "value_set.npy")
+        keys, vals = list(zip(*value_set.items()))
+        print(f"variable 'value_set' has fields \n{keys} \nwith shape set \n{[v.shape for v in vals]}\n")
+        savepath = os.path.join( os.getcwd(), "debug", "value_set.npy")
         print(f"\nsaving \'value_set\' to: \n{savepath}\n")
         np.save( savepath, value_set, allow_pickle=True )
+        savepath = os.path.join( os.getcwd(), "debug", "alldata_grid.npy")
+        print(f"\nsaving \'alldata_grid\' to: \n{savepath}\n")
+        np.save( savepath, alldata_grid, allow_pickle=True )
 
-    # alldata_df = pd.DataFrame(data={k: v.flatten() for k,v in value_set.items()})
-    alldata_df = pd.DataFrame(data={k: futils.triu_vals(v) for k,v in value_set.items()})
+    # inp_data = {k: v.flatten() for k,v in value_set.items()}
+    inp_data = {k: futils.triu_vals(v, debug=debug) for k,v in value_set.items()}
+    alldata_df = pd.DataFrame(data=inp_data)
     alldata_df.dropna(axis='index', inplace=True)
+    if debug:
+        print(f"Created 'alldata_df': \n{alldata_df}")
 
     corr_type, perm_type = _parse_statvars(alldata_df.columns.values)
+    if debug:
+        print("Statvars parsed.")
 
     # if True, do not distinigush between different types (partial, spatial, full) of network matrices when aggregating over feature type
     if conflate_netmats:
         alldata_df[["X_feature", "Y_feature"]]  = alldata_df[["X_feature", "Y_feature"]].map( lambda x: "NetMat" if "NMs" in x else x)
+        if debug:
+            print("netmat features conflated.")
     
     alldata_df["sym_XY_ranks"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_rank, alldata_df.Y_rank))]
     alldata_df["sym_XY_metrics"] = [tuple(sorted(i)) for i in list(zip(alldata_df.X_metric, alldata_df.Y_metric))]
@@ -312,6 +324,8 @@ def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsu
     newmask_names = {var: 
                      var.replace('left','Convergent').replace('right','Divergent').replace('-pval','').replace('_mask','') 
                      for var in mask_vars}
+    if debug:
+        print(f"substituting \n{newmask_names} \nfor \n{mask_vars}")
     for var in mask_vars:
         alldata_df[newmask_names[var]] = ~ alldata_df[var]
     alldata_df.drop( columns=mask_vars, inplace=True )
@@ -338,6 +352,7 @@ def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsu
         outdir = args.output_dir
     outpath = os.path.join( outdir, f'chisq_results_{corr_type}-{perm_type}-alpha{alpha}.npy'.replace('0.','') )
     np.save( outpath, chisq_results, allow_pickle=True )
+    print(f"chi-squared results saved to: \n{outpath}")
 
     return chisq_results
 
@@ -370,7 +385,7 @@ def stackplot_chisq( stackplot_df, gen_f_exp="by_rowsum", args=None ):
     return None
 
 
-def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug=True, **pdiv_kwargs ):
+def general_chisquare_df( df, agg_vars, count_vars, gen_f_exp="by_rowsum", debug=False, **pdiv_kwargs ):
 
     pdiv_kwargs = default_pdiv_kwargs | pdiv_kwargs
 

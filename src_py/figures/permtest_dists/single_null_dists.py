@@ -59,7 +59,7 @@ def main(args, debug=False):
     if args.AUC_filter:
         print(f"Filtering by AUC significance (at alpha={args.alpha})")
         call_mask = lambda x: auc_mask[x]
-        fpath_list = [ fpath for fpath in fpath_list if call_mask("_".join(futils._parse_fpath(fpath, pathtype="solo"))) ]
+        fpath_list = [ fpath for fpath in fpath_list if any(call_mask("_".join(futils._parse_fpath(fpath, pathtype="solo")))) ]
         print(f"Retained {len(fpath_list)} filepaths.")
 
     if args.solo_plots:
@@ -128,7 +128,8 @@ def make_AUC_plots(fpath_list, args, debug=False):
         ### debugging code ###
         print(f"All datatypes in df_list: {set([df.datatype.unique() for df in df_list])}")
         ### debugging code ###
-    outdir = os.path.join(args.output_dir, "ROC_analysis")
+    # outdir = os.path.join(args.output_dir, "ROC_analysis")
+    outdir = args.output_dir
     auc_df = fstats.do_ROC_analysis(
                                     df_list,
                                     outdir=outdir,

@@ -19,9 +19,18 @@ declare -a alphas=(0.05 0.01 0.001)			# significance threshold values
 
 solo_indir="$(dirname ${indir})"
 
+python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -a 0.05 -L -X -w -v
 
+for alpha in ${alphas[@]}
+do
+	# python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/ROC_analysis" -r "Psim" -a ${alpha} -v -w -R 
+	printf "\n#################################################################################################\n\n"
+done
+
+# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -L -C -X -w -v
+# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -a 0.05 -L -X -w -v
 # python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -a 0.05 -L -C -X -w -v
-python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "ICA*Psim" -c "fdr" -P "subject" -a 0.05 -L -X -w -v
+# python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "ICA*Psim" -c "fdr" -P "subject" -a 0.05 -L -C -X -w -v
 printf "\n#################################################################################################\n\n"
 echo "debugging run complete. exiting."; exit
 
