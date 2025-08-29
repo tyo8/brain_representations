@@ -254,7 +254,7 @@ def _get_symmetrized_data(
         check_pval=True,
         set_order=False,
         order = order_fpath,
-        verbose=True,
+        verbose=False,
         debug=False
         ):
     xnamelist = [i[0]["X_name"].unique()[0] for i in alldata_grid]
@@ -269,10 +269,10 @@ def _get_symmetrized_data(
     for varname in symmetrized_vars:
         try:
             vals = np.squeeze(np.array([[j[varname].to_numpy() for j in i] for i in alldata_grid]))
-            if verbose:
+            if debug:
                 print(f"variable {varname} has grid of values with shape: {vals.shape}")
             if enforce_symmetry:
-                vals = _enforce_symmetry(vals, varname=varname)
+                vals = _enforce_symmetry(vals, varname=varname, verbose=verbose)
         except ValueError:
             new_entry = [[j[varname].to_numpy() for j in i] for i in alldata_grid]
             if debug:
@@ -288,20 +288,22 @@ def _get_symmetrized_data(
                 ### debugging code ###
 
         symmetric_dict[varname] = vals
-        print(f"\'{varname}\' gridded to shape {vals.shape}.")
+        if verbose or debug:
+            print(f"\'{varname}\' gridded to shape {vals.shape}.")
 
     if debug:
         ### debugging code ###
         print(f"Names of {len(xnamelist)} 'X' spaces: \n{xnamelist}")
         print(f"Names of {len(ynamelist)} 'Y' spaces: \n{ynamelist}")
-    if verbose:
+    if verbose or debug:
         print(f"Entries in list of grid values have the following shapes: \n{[(var, symmetric_dict[var].shape) for var in list(symmetric_dict.keys())]}")
         # print("First entry in symmetric_dict: ", np.array(symmetric_dict[symmetrized_vars[0]]))
         print("")
         ### debugging code ###
 
     if enforce_symmetry:
-        print(f"enforced symmetry in variables: \n{symmetrized_vars}\n")
+        if verbose or debug:
+            print(f"enforced symmetry in variables: \n{symmetrized_vars}\n")
         ynamelist = [xnamelist[0], *ynamelist]
         try:
             err_msg = f"namelists are unequal in forced symmetric case! xnamelist: {len(xnamelist)} entries, ynamelist: {len(ynamelist)} entries"
@@ -322,14 +324,15 @@ def _get_symmetrized_data(
 ## symmetrization helper functions
 ########################################################################################################################
 # Enforces symmetry under assumption 'gridlist' produced by a pairwise process skipping its first trivial pairing
-def _enforce_symmetry(vals, varname, enforce=True, fill_val=np.nan, debug=False):
+def _enforce_symmetry(vals, varname, enforce=True, fill_val=np.nan, verbose=False, debug=False):
 
-    if debug:
+    if debug or verbose:
         print(f"symmetrizing variable {varname}.")
+    if debug:
         print(f"input array: \n{vals}")
 
     if "pval" in varname:
-        vals = _sym_pvals(vals, varname=varname)
+        vals = _sym_pvals(vals, verbose=verbose, varname=varname)
     elif all([ isinstance(entry, Number) for entry in vals.flatten() ]):
         fill_val = 0
 
@@ -344,7 +347,7 @@ def _enforce_symmetry(vals, varname, enforce=True, fill_val=np.nan, debug=False)
     return vals
 
 
-def _sym_pvals(pval_mtx, enforce=True, varname=None, debug=False):
+def _sym_pvals(pval_mtx, enforce=True, varname=None, verbose=False, debug=False):
     if varname is None:
         fill_val = 0
     else:
@@ -362,11 +365,11 @@ def _sym_pvals(pval_mtx, enforce=True, varname=None, debug=False):
             
         if np.allclose(sym_pvals, sym_pvals.T) or force_sym:
             pvals = triu_vals(sym_pvals)
-            sym_pvals = squareform(fstats.correct_pvals(pvals, corr_type=corr_type))
+            sym_pvals = squareform(fstats.correct_pvals(pvals, corr_type=corr_type, verbose=verbose))
         else:
             pvals = pval_mtx.ravel()
             sym_pvals = _place_diag(np.reshape(
-                fstats.correct_pvals(pvals, corr_type=corr_type), pval_mtx.shape))
+                fstats.correct_pvals(pvals, corr_type=corr_type, verbose=verbose), pval_mtx.shape))
 
         if debug:
             print(f"symmetrized pvalue: {varname} \n{sym_pvals}")

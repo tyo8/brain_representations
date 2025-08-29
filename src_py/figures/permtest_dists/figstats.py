@@ -352,7 +352,9 @@ def make_chisq_summaries( alldata_grid=None, value_set=None, gen_f_exp="by_rowsu
         outdir = args.output_dir
     outpath = os.path.join( outdir, f'chisq_results_{corr_type}-{perm_type}-alpha{alpha}.npy'.replace('0.','') )
     np.save( outpath, chisq_results, allow_pickle=True )
-    print(f"chi-squared results saved to: \n{outpath}")
+    if args is not None:
+        if args.verbose:
+            print(f"chi-squared results saved to: \n{outpath}")
 
     return chisq_results
 

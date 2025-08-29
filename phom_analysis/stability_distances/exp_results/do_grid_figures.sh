@@ -23,7 +23,8 @@ python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -
 
 for alpha in ${alphas[@]}
 do
-	# python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/ROC_analysis" -r "Psim" -a ${alpha} -v -w -R 
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/ROC_analysis" -r "Psim" -a ${alpha} -w -v -R 
+	python ${null_solo_srcpath} -i ${solo_indir} -o "${solo_indir}/ROC_analysis" -a ${alpha} -w -v -R 
 	printf "\n#################################################################################################\n\n"
 done
 
@@ -32,7 +33,7 @@ done
 # python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "Psim" -c "fdr" -P "subject" -a 0.05 -L -C -X -w -v
 # python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r "ICA*Psim" -c "fdr" -P "subject" -a 0.05 -L -C -X -w -v
 printf "\n#################################################################################################\n\n"
-echo "debugging run complete. exiting."; exit
+# echo "debugging run complete. exiting."; exit
 
 
 printf "## now looping through parameters arrays (in order): \n\${alphas} \n\${perms} \n\${corrs} \n\${rstr} \n\n"
@@ -47,19 +48,21 @@ do
 			printf "\n#################################################################################################\n\n"
 			# echo "debugging run complete. exiting."; exit
 
-			python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -X -w -v
+			python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -C -X -w -v
 			printf "\n#################################################################################################\n\n"
 
 			for R in "${rstr[@]}"
 			do
-				python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -a ${alpha} -L -C -X -w -v
+				python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -a ${alpha} -L -C -X -w -v
 				printf "\n#################################################################################################\n\n"
 				if [[ "${alpha}" == "0.001" ]]
 				then
-					python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -L -C -X -w -v
+					python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -r ${R} -c ${C} -P ${P} -L -C -X -w -v
 					printf "\n#################################################################################################\n\n"
 				fi
 			done
 		done
 	done
 done
+
+printf "\n\n Grid figures computed. Exiting."

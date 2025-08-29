@@ -26,6 +26,7 @@ def make( results_list, args=None, debug=True ):
         print("input options to 'barplots.make':")
         for key,val in vars(args).items():
             print(f"\toptional argument \'{key}\': {val}")
+        print(f"\nAnalyzing {len(results_list)} results. First result: \n{results_list[0]}\n")
     if args is None:
         output_dir = '.'
         fig_size = def_fig_size
@@ -100,7 +101,7 @@ def sym_subradplots(
         both_axes = False
 
     if debug:
-        print(f"pair labels: \n{pair_labels}")
+        print(f"\npair labels: \n{pair_labels}")
         print(f"unique nameset: \n{names}")
 
     if count_vars is None:
@@ -110,7 +111,9 @@ def sym_subradplots(
 
     if debug:
         print(f"counting variables: \n{count_vars}\n")
-        print(f"Making {len(names)}x{len(names)} polar subplots grid of dimension {fig_size} inches^2.\n")
+        print(f"Making {len(names)}x{len(names)} polar subplots grid of dimension {fig_size} inches.\n")
+
+    plt.close('all')
 
     fig, axgrid = plt.subplots(
             nrows = len(names),
@@ -125,8 +128,6 @@ def sym_subradplots(
         return fig, axgrid
     elif debug:
         print(f"subplots intialized: {axgrid[0][0]} of shape {axgrid.shape}")
-
-
 
     for i in range(len(names)):
         for j in range(len(names)):
