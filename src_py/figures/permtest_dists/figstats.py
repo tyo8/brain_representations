@@ -184,10 +184,19 @@ def _add_emp_pval(df, check_match=True, permtype=None, tail_type="all", corr_typ
             df.to_csv('debug/df_err.csv')
             print(f"offending dataframes saved to \'df_data_err.csv, df_null_err.csv, df_err.csv\' in \'{os.getcwd()}/debug\'")
             exit()
+#       except ValueError as err:
+#           print(f"failed with err: \n{err}")
+#           print(f"Checking columns: \n{check_cols}")
+#           print(f"Data dataframe of columns (unq values): \n{[df_data[col].unique() for col in check_cols]}")
+#           print(f"Null dataframe of columns (unq values): \n{[df_null[col].unique() for col in check_cols]}")
+#           df.to_csv('debug/df_err.csv')
+#           print(f"offending dataframe saved to \'df_err.csv\' in \'{os.getcwd()}/debug\'")
+#           exit()
 
-    err_msg = "extremal family-wise distributions must be provided for (\'fwe\') p-value correction: \nnull_hi={null_hi}\nnull_lo={null_lo}"
-    assert (null_hi is not None) and (null_lo is not None), err_msg
-    assert (len(null_hi) > 0) and (len(null_lo) > 0), err_msg
+    else:
+        err_msg = "extremal family-wise distributions must be provided for (\'fwe\') p-value correction: \nnull_hi={null_hi}\nnull_lo={null_lo}"
+        assert (null_hi is not None) and (null_lo is not None), err_msg
+        assert (len(null_hi) > 0) and (len(null_lo) > 0), err_msg
 
     if debug:
         # print(f"Adding p-value of type {tail_type} with multiple comparison correction method {corr_type}")

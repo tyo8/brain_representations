@@ -25,7 +25,7 @@ import scatterplots
 # def_clustermap_vars = ["Wp_XY", "empirical_pval"]
 # def_scatter_vars = ["Wp_XY", "Y_name"] 
 
-# def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
+def_clustermap_vars = ["Wp_XY", "Wp_XYNull_mean", "Wp_XYNull_std"]
 
 # exp_outtype="All_vs_AllNull/X_ICA15_Amps_Psim_dists/ICA15_Amps_Psim_vs_Schaefer100_Amps_Psim_null-subjectPerms.csv"
 modalities = ["Glasser", "ICA", "grad", "Schaefer", "PROFUMO", "Yeo"]
@@ -62,7 +62,7 @@ def main(args, debug=False):
         args.fig_size=(12,12)
         xnamelist, ynamelist, value_set = scatterplots.make(alldata_grid=alldata_grid, args=args)
 
-    if args.chi2_statistics:
+    if args.chi2_statistics and args.alpha is not None:
         # args.fig_size=(12,6)
         # stackplot_df = stackplots.make(value_set, args=args)
         # fstats.stackplot_chisq(stackplot_df, args=args)

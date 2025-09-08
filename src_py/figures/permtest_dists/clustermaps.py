@@ -10,12 +10,15 @@ def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std", "Wp_XYNull_mean"]
 # def_clustermap_vars = ["Wp_XY", "Wp_XYNull_std"]
 def_label_fontsize = 12
 
-def make(alldata_grid, args=None, debug=False):
+def make(alldata_grid, args=None, debug=True):
 
     if args is None:
         alpha = None
+        verbose = False
     else:
         alpha = args.alpha
+        verbose = args.verbose
+
 
     if debug:
         intm_dir = os.path.join(args.output_dir, "alldata_grid")
@@ -26,23 +29,31 @@ def make(alldata_grid, args=None, debug=False):
                 fname = f"alldata_col{i}_row{j}.csv"
                 df.to_csv(os.path.join(intm_dir, fname))
 
+    renamed_clustermap_vars = [ var for var in alldata_grid[0][0].columns.values if any(
+        [ def_var in var for def_var in def_clustermap_vars]
+        ) ]
+    if debug:
+        print(f"original clustermap vars = {def_clustermap_vars}")
+        print(f"renamed clustermap vars = {renamed_clustermap_vars}")
+
     xnamelist, ynamelist, value_set = futils._get_symmetrized_data(
             alldata_grid, 
-            symmetrized_vars=def_clustermap_vars, 
+            symmetrized_vars=renamed_clustermap_vars, 
             enforce_symmetry=True,
+            verbose=verbose,
             set_order=False
             )
 
     if debug:
         for name in list(value_set.keys()):
-            savepath = os.path.join(args.output_dir, f"{name}.csv")
+            savepath = os.path.join("debug", f"{name}.csv")
             np.savetxt(savepath, value_set[name])
             print(f"wrote value grid for value \"{name}\" to \"{savepath}\"")
     
     fig_inches = args.fig_size[0] * np.sqrt(70 / len(xnamelist))   # calibrating label fontsize to number of entries
     label_fontsize = def_label_fontsize * np.power(70 / len(xnamelist), 3/4)   # calibrating label fontsize to number of entries
 
-    value_set = futils.get_pval_masks(value_set, alpha = args.alpha)
+    value_set = futils.get_pval_masks(value_set, alpha = alpha)
 
     # for linkage_var in [None, "Wp_XY"]:
     for linkage_var in [None]:
@@ -53,7 +64,7 @@ def make(alldata_grid, args=None, debug=False):
                 linkage_var = linkage_var,
                 onelink = True,
                 cluster_method = "average",
-                alpha = args.alpha,
+                alpha = alpha,
                 log_scale = args.log_scale,
                 fig_size = (fig_inches, fig_inches),
                 label_fontsize = label_fontsize,

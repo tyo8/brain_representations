@@ -32,6 +32,9 @@ def _load(
         ):
     df = pd.read_csv(input_fpath, index_col=0)
 
+    if not any(df["datatype"].str.contains("Null")):
+        debug = True
+
     if debug:
         print(f"before _unify_df: \n{df}")
 
@@ -56,6 +59,9 @@ def _load(
             if "empirical_pval" in df.keys():
                 df.drop( columns=["empirical_pval"], inplace=True )
             if pval_args is not None:
+                if debug:
+                    for k,v in vars(pval_args).items():
+                        print(f"pval_args: {k} = {v}")
                 fstats._add_emp_pval(
                     df, 
                     permtype=pval_args.permtype, 
@@ -72,8 +78,8 @@ def _load(
         if (permtype is not None) and ("permtype" in df.columns.values):
             null_mask = null_mask & (df["permtype"] == permtype)
 
-        df.loc[~null_mask,"Wp_XYNull_mean"] = np.mean(df.loc[null_mask,"Wp_XY"])
-        df.loc[~null_mask,"Wp_XYNull_std"] = np.std(df.loc[null_mask,"Wp_XY"])
+        df.loc[~null_mask,f"Wp_XYNull_mean-{permtype}"] = np.mean(df.loc[null_mask,"Wp_XY"])
+        df.loc[~null_mask,f"Wp_XYNull_std-{permtype}"] = np.std(df.loc[null_mask,"Wp_XY"])
         df.loc[~null_mask,"permtype"] = permtype 
         df = df[ ~null_mask ]
 
@@ -235,6 +241,10 @@ def logical_glob(
         search_results = [ res for res in all_results if not any([x in res for x in exclude_terms ]) ]
     else:
         search_results = glob.glob(search_pattern)
+
+    # permuted high-dimensional (200/300) gradient distances were prohibitively expensive to compute under 'inner' metric; exclude from all results.
+    search_results = [ res for res in search_results if not ("00_Maps_inner" in res) ] 
+    # search_results = [ res for res in search_results if not ("00_Maps_inner" in res and "100" not in res) ] 
 
     if verbose:
         print(f"Found {len(search_results)} matches to pattern: \n{search_pattern}")
@@ -832,18 +842,22 @@ def get_pval_masks(symmetric_dict, alpha=None):
         # show one unmasked plot as well (write it out last)
         pval_vars.append(None)
         masks.append(None)
-    else:
-        pval_vars = []
-        masks = []
 
-    for pval_var in pval_vars:
-        if pval_var is not None:
-            if 'two-tail' in pval_var:
-                mask_var = pval_var + f"_INVmask{alpha}".replace("0.","")
-                symmetric_dict[mask_var] = ~ masks[pval_vars.index(pval_var)]
-            else:
-                mask_var = pval_var + f"_mask{alpha}".replace("0.","")
-                symmetric_dict[mask_var] = masks[pval_vars.index(pval_var)]
+        for pval_var in pval_vars:
+            if pval_var is not None:
+                if 'two-tail' in pval_var:
+                    mask_var = pval_var + f"_INVmask{alpha}".replace("0.","")
+                    symmetric_dict[mask_var] = ~ masks[pval_vars.index(pval_var)]
+                else:
+                    mask_var = pval_var + f"_mask{alpha}".replace("0.","")
+                    symmetric_dict[mask_var] = masks[pval_vars.index(pval_var)]
+
+    else:
+        # pval_vars = []
+        pval_vars = None
+        # masks = []
+        masks = None
+
 
     return symmetric_dict
 

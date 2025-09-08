@@ -80,9 +80,11 @@ def sym_subradplots(
                     df, count_vars=None, 
                     titles=None, title_fontsize=def_label_fontsize,
                     fig_size=def_fig_size, 
-                    debug=False
+                    debug=True
                     ):
-
+    if debug:
+        print(f"dataframe index: \n{df.index}")
+        print(f"eval'd dataframe index: \n{df.index.map(ast.literal_eval)}")
     df.index = df.index.map(ast.literal_eval)
     pair_labels = df.index.to_list()
     names = sorted(np.unique( list(zip(*pair_labels))[0] ).tolist())
