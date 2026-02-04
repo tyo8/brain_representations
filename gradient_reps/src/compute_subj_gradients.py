@@ -103,8 +103,8 @@ def comp_dconn(data_list, use_tanproj=True, subsample_flag=True, subsample_facto
         geodist_startime = datetime.datetime.now()
         print("Finding approximate geodesic average of dense connectomes (regularizing if necessary)...")
         sys.path.append('/scratch/tyoeasley/brain_representations/src_py')
-        import tanproj_avg
-        dconn = tanproj_avg.reg_mean_ale(corr_data_list)
+        import pyriemann_addons
+        dconn = pyriemann_addons.reg_mean_ale(corr_data_list)
 
         lapsetime = datetime.datetime.now() - geodist_startime
         print('Done.')
