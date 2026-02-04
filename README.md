@@ -83,9 +83,9 @@ This code is available and is fully adaptable for individual user customization.
 
 ```tex
 @misc{easley2023comparingrepresentationshighdimensionaldata,
-      title={Comparing representations of high-dimensional data with persistent homology: a case study in neuroimaging}, 
+      title={Using topological data analysis to compare inter-subject variability across resting state functional MRI brain representations},
       author={Ty Easley and Kevin Freese and Elizabeth Munch and Janine Bijsterbosch},
-      year={2023},
+      year={2025},
       eprint={2306.13802},
       archivePrefix={arXiv},
       primaryClass={cs.CG},
