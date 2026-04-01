@@ -13,7 +13,7 @@ p=2
 q=2
 verbose=true
 
-mem_gb=1
+mem_gb=5
 partition="tier2_cpu"
 maxtime_str="23:55:00"
 
@@ -59,6 +59,7 @@ permdist_script="${base_dir}/src_py/calculate/comp_permtest_dists.py"
 Permname="$( basename $( dirname $( dirname ${listPerm_fpath} )))_$( basename ${listPerm_fpath} | cut -d'.' -f 1)"
 Permname=${Permname/"distlist_"/}
 data_label="X_vs_${Permname}"
+# data_label=${data_label//"_ztrans"/"-ztrans"}
 
 echo "Permutation location: ${listPerm_fpath}"
 echo "Name of permutation set: ${Permname}"
@@ -93,7 +94,8 @@ outdir=${outdir}
 echo \"barsX_fpath: \\\"\${barsX_fpath}\\\"\"
 echo \"listPerm_fpath: \\\"\${listPerm_fpath}\\\"\"
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
+conda activate stats
+# source /export/anaconda/anaconda3/anaconda3-2023.03/bin/activate stats
 echo \"saving results in \${outdir}\"
 
 python3 \${permdist_script} -x \${barsX_fpath} -y \${listPerm_fpath} --dim \${dim} -p ${p} -q ${q} -o \${outdir} -m ${run_suffix}

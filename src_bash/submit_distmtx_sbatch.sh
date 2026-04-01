@@ -149,7 +149,8 @@ printf \"pulling subject data from: \\n\${subj_list}\\n\"
 printf \"sample data paths:\\n\$(cat \${subj_list} | head -3)\\n...\\n\\n\"
 printf \"saving dissimilarity matrix to: \\n\${subj_dist}\\n\"
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate neuro
+# source /export/anaconda/anaconda3/anaconda3-2023.03/bin/activate neuro
+conda activate neuro
 
 \
 		" > "${sbatch_fpath}"  # Overwrite submission script

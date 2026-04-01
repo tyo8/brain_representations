@@ -107,7 +107,8 @@ outpath=${outpath}
 echo \"barX_fpath: \\\"\${barX_fpath}\\\"\"
 echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
+# source /export/anaconda/anaconda3/anaconda3-2023.03/bin/activate stats
+conda activate stats
 echo \"saving results to \${outpath}\"
 
 python3 \${bsdist_script} -x \${barX_fpath} -y \${barY_fpath} -t \${tagfile} -n \${count} --dim \${dim} -p ${p} -q ${q} -o \${outpath} ${run_suffix}

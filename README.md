@@ -118,4 +118,4 @@ If your clone or fork includes the [interval-matching_bootstrap](https://github.
 
 [4] I. García-Redondo, A. Monod, and A. Song, “Fast Topological Signal Identification and Persistent Cohomological Cycle Matching.” arXiv, Sep. 30, 2022. doi: [10.48550/arXiv.2209.15446](https://arxiv.org/abs/2209.15446).
 
-[5] T. Easley, K. Freese, E. Munch, and J. Bijsterbosch, “Comparing representations of high-dimensional data with persistent homology: a case study in neuroimaging,” Nov. 23, 2023, arXiv: arXiv:2306.13802. doi: [10.48550/arXiv.2306.13802](https://arxiv.org/abs/2306.13802).
+[5] T. Easley, K. Freese, E. Munch, and J. Bijsterbosch, “Using topological data analysis to compare inter-subject variability across resting state functional MRI brain representations” 9 Sep 2025, arXiv: arXiv:2306.13802. doi: [10.48550/arXiv.2306.13802](https://arxiv.org/abs/2306.13802).

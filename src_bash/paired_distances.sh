@@ -90,13 +90,13 @@ do
     	for Xdistname in $(cat $Xdistlist )
     	do
 		Xdata_label=$(basename ${Xdistname} | cut -d. -f 1)
-		$Xdata_label=${Xdata_label//"_ztrans"/"-ztrans"}
+		# $Xdata_label=${Xdata_label//"_ztrans"/"-ztrans"}
 		X_indir=$(dirname ${Xdistname})"/phom_data_${Xdata_label}"
 		
 		barX_fpath="${X_indir}/bars_X.txt"
 		printf "\nbarX_fpath: \n$(ls $barX_fpath)\n\n"
 
-		X_outdir="${parent_outdir}/X_${Xdata_label}"
+		X_outdir="${parent_outdir}/X_H${bsdist_homdim}_${Xdata_label}"
 		mkdir -p "${X_outdir}/logs"
 
 		for Ydistlist in ${Ydistlists}
@@ -104,7 +104,7 @@ do
 			for Ydistname in $(cat $Ydistlist)
 			do
 				Ydata_label=$(basename ${Ydistname} | cut -d. -f 1)
-				$Ydata_label=${Ydata_label//"_ztrans"/"-ztrans"}
+				# Ydata_label=${Ydata_label//"_ztrans"/"-ztrans"}
 				Y_indir=$(dirname ${Ydistname})"/phom_data_${Ydata_label}"
 				
 				barY_fpath="${Y_indir}/bars_X.txt"

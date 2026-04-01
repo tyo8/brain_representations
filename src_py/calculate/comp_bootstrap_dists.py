@@ -108,7 +108,7 @@ def bootstrap_distance(barsX_fpath, nametype="X",
 
 def pairstrap_distance(barsX_fpath, barsY_fpath, 
         tagfile=default_tagfile, count=1000, homdim=1, do_prev=True, do_dIM=True,
-        use_affinity=False, persistence_type="diff", q=2, p=2, 
+        match_only=True, use_affinity=False, persistence_type="diff", q=2, p=2, 
         verbose=True, debug=False):
 
     barsX = dgmD._get_bars(barsX_fpath, homdim=homdim)
@@ -120,7 +120,8 @@ def pairstrap_distance(barsX_fpath, barsY_fpath,
     bsdict_X, [prevX, dIM_XXhat_i, barsXhat_list] = bootstrap_distance(barsX_fpath, nametype="X",
                                                                 tagfile=tagfile, 
                                                                 count=count, 
-                                                                homdim=homdim, 
+                                                                homdim=homdim,
+                                                                match_only=match_only,
                                                                 do_prev=do_prev, 
                                                                 do_dIM=do_dIM,
                                                                 use_affinity=use_affinity, 
@@ -132,6 +133,7 @@ def pairstrap_distance(barsX_fpath, barsY_fpath,
                                                                 tagfile=tagfile, 
                                                                 count=count, 
                                                                 homdim=homdim, 
+                                                                match_only=match_only,
                                                                 do_prev=do_prev, 
                                                                 do_dIM=do_dIM,
                                                                 use_affinity=use_affinity, 
@@ -255,7 +257,7 @@ if __name__=="__main__":
     parser.add_argument(
         "-M", "--match_only", 
         default=False, 
-        action="store_True",
+        action="store_true",
         help="disable 'free Wasserstein' computation (we are not allowed to use bars in bootstrapped Y with no match in X)"
     )
     parser.add_argument(

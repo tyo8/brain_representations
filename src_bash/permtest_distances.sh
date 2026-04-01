@@ -72,7 +72,8 @@ do
 		barX_fpath="${X_indir}/bars_X.txt"
 		printf "\nbarX_fpath: \n$(ls $barX_fpath)\n\n"
 
-		X_outdir="${parent_outdir}/X_${Xdata_label}"
+		X_outdir="${parent_outdir}/X_H${perdist_homdim}_${Xdata_label}"
+		# X_outdir=${X_outdir//"_ztrans"/"-ztrans"}
 		mkdir -p "${X_outdir}/logs"
 
 		for Perm_distlist in ${Perm_distlists}

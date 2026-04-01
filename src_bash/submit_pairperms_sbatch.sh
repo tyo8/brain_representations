@@ -97,7 +97,8 @@ outdir=${outdir}
 echo \"barX_fpath: \\\"\${barX_fpath}\\\"\"
 echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
+conda activate stats
+# source /export/anaconda/anaconda3/anaconda3-2023.03/bin/activate stats
 echo \"saving results to \${outdir}\"
 
 python3 \${pairperms_script} -x \${barX_fpath} -y \${barY_fpath} -t \${permtype} --dim \${dim} -p ${p} -q ${q} -o \${outdir} -v

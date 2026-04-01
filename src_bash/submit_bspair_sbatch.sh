@@ -75,12 +75,13 @@ Yname=$(basename $(dirname $(ls ${barY_fpath})))
 Yname=${Yname/phom_data_/}
 Yname=${Yname/_dists/}
 data_label="${Xname}-vs-${Yname}"
+# data_label=${data_label//"_ztrans"/"-ztrans"}
 
 sbatch_fpath="${outdir}/do_bspairdists_${data_label}"
 
 outpath="${outdir}/bspairdists_${data_label}.csv"
 
-outpath2="${subbase_dir}/within_${Xmod}/subsampling/bsdists_${Xname}.csv"
+outpath2="${subbase_dir}/within_${Xmod}/subsampling/bsdists_H${pairperms_homdim}_${Xname}.csv"
 
 echo "\
 \
@@ -106,7 +107,8 @@ outpath2=${outpath2}
 echo \"barX_fpath: \\\"\${barX_fpath}\\\"\"
 echo \"barY_fpath: \\\"\${barY_fpath}\\\"\"
 
-source /export/anaconda/anaconda3/anaconda3-2020.07/bin/activate stats
+# source /export/anaconda/anaconda3/anaconda3-2023.03/bin/activate stats
+conda activate stats
 echo \"saving pair results to \${outpath}\"
 echo \"saving individual results to \${outpath2}\"
 
