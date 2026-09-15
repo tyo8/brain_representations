@@ -165,6 +165,7 @@ def plot_clustermap(
         ):
 
     display_vals = value_set[display_var].copy()
+    value_save = False      # save out a copy of numerical values
 
     
     if linkage_var is None:
@@ -200,6 +201,7 @@ def plot_clustermap(
     if alpha is not None:
         print(f"Masking \'{display_var}\' plot by \'{pval_var}\'...")
         if linkage_var is None:
+            value_save = True
             outname = f"no-cluster_{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
         else:
             outname = f"cluster-on-{linkage_var}_of-{display_var}_mask-{pval_var}_alpha{alpha}.png".replace(" ","").replace("0.","")
@@ -274,7 +276,7 @@ def plot_clustermap(
         xticklabels=xticklabels, 
         yticklabels=yticklabels,
         xlinkage=xlinkage,
-        ylinkage=xlinkage,
+        ylinkage=xlinkage,      # symmetric case, so reinforce ylinkage=xlinkage
         mask = mask,
         cmap = cmap,
         fig_size=fig_size,
@@ -293,6 +295,8 @@ def plot_clustermap(
     if write_mode:
         outpath = os.path.join(outdir, outname)
         futils._write_img(fig, outpath)
+        if value_save:
+            figutils._write_mtxlist([display_vals, mask], outpath.replace('.png','.txt'), namelist=["display_vals", "pval-alphathresh_mask"])
         plt.close()
     else:
         fig.set_size_inches(fig_size, forward=True)

@@ -181,7 +181,7 @@ def _get_fpath_sets(args, debug=False):
         fpath_grid = _filter_fpath_grid(args, fpath_grid)
         fpath_list = list(itertools.chain(*fpath_grid))
         if args.verbose:
-            print(f"After apply AUC filtering at significance threshold alpha={args.alpha}:")
+            print(f"After applying AUC filtering at significance threshold alpha={args.alpha}:")
             print(f"\tshaping matches into a \'filepath grid\' array results in shape(s): { ( len(fpath_grid), list(set( [ len(i) for i in fpath_grid ] )) ) }")
             print(f"\tfound {len(fpath_list)} total matches.")
         if not len(fpath_list):

@@ -15,8 +15,7 @@ def_nulldir = "/ceph/chpc/shared/janine_bijsterbosch_group/tyoeasley/brain_repre
 ################################################################################################################
 def get_permset_distcorrs(dX_fpath, dY_fpath, 
         nulldir=def_nulldir, permtype="subject",
-        persistence_type="diff", homdim=1, q=2, p=2,
-        match_perms=True, verbose=True, debug=True):
+        verbose=True, debug=True):
 
 
     dX = np.loadtxt(dX_fpath)
@@ -30,14 +29,12 @@ def get_permset_distcorrs(dX_fpath, dY_fpath,
 
 
     #################################### REPLACE BY DISTANCE CORRELATION COMPUTATION ####################################
-    data_summ = data_summ | putils.simple_distance(
+    data_summ = data_summ | dist_stats(
             dX, 
             dY, 
-            persistence_type=persistence_type,
-            q=q, p=p,
             verbose=False
             )
-    Wp_XY = data_summ["Wp_XY"]
+    dist_corr = data_summ["dist_corr"]
 
     nulldX_pathlist = putils._permpaths_from_datapath(os.path.dirname(dX_fpath), nulldir=nulldir, permtype=permtype, verbose=verbose, debug=debug)
     nulldX = [np.loadtxt(fpath.replace("bars_X.txt","dist_mtxs/dX.ldm")) for fpath in nulldX_pathlist]
@@ -79,11 +76,9 @@ def get_permset_distcorrs(dX_fpath, dY_fpath,
 
     for i, pair in enumerate(paired_nulldmtx):
         #################################### REPLACE BY DISTANCE CORRELATION COMPUTATION ####################################
-        perm_dist = putils.simple_distance(
+        perm_dist = dist_stats(
                 pair[0], 
                 pair[1],
-                persistence_type=persistence_type,
-                q=q, p=p,
                 verbose=False
                 )
         perm_dist["permlabel"] = permlabels[i]["permlabel"]
@@ -97,16 +92,8 @@ def get_permset_distcorrs(dX_fpath, dY_fpath,
             print(entry)
         ### debugging code ###
     
-    Wp_XYnull = np.array( [dist["Wp_XY"] for dist in pairdist_summ if dist["datatype"]=="Null"] )
+    dist_nullcorr = np.array( [dist["dist_corr"] for dist in pairdist_summ if dist["datatype"]=="Null"] )
     
-#   if len(Wp_XYnull) == 0:
-#       empirical_pval = 1
-#   else:
-#       prop_lower = np.mean(Wp_XY > Wp_XYnull)
-#       empirical_pval = max(1/len(Wp_XYnull), 2 * min(prop_lower, 1 - prop_lower))
-#
-#   pairdist_summ[0]["empirical_pval"] = empirical_pval
-
 
     if verbose:
         print("\n")
@@ -114,20 +101,20 @@ def get_permset_distcorrs(dX_fpath, dY_fpath,
         print("")
         print("Datatype of \'X\':", data_summ["X_type"])
         print("Datatype of \'Y\':", data_summ["Y_type"])
-        print("Projection cost of sending PD(X) to the empty diagram:", data_summ["PDX_diag"])
-        print("Projection cost of sending PD(Y) to the empty diagram:", data_summ["PDY_diag"])
-        print(f"Observed Wasserstein distance between X and Y: {Wp_XY}") #, f"p < {empirical_pval}")
+        print(f"Observed distance correlation between X and Y: {dist_corr}") #, f"p < {empirical_pval}")
         print("Permutation type(s):", ', '.join(list(set([ dist["permtype"] for dist in pairdist_summ if dist["datatype"]=="Null" ]))))
-        print(f"Summary of Wasserstein distance from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(Wp_XYnull)}, sigma={np.std(Wp_XYnull)}")
-        print(f"Distribution of Wasserstein distances: \n{np.histogram(Wp_XYnull)}")
+        print(f"Summary of distance correlation from data persistence diagrams to permuted-null persistence modules: \nmu={np.mean(dist_nullcorr)}, sigma={np.std(dist_nullcorr)}")
+        print(f"Distribution of distance correlations: \n{np.histogram(dist_nullcorr)}")
         print("\n")
 
 
 
     return pairdist_summ
 
-def comp_dist_stats(dX, dY):
+def dist_stats(dX, dY, verbose=False):
     n = dX.shape[0]
+
+    stats_summ = {}
 
     assert dX.shape == dY.shape, f"Input pairwise distance matrices must have same shape. \ndX={dX.shape}, \ndY={dY.shape}"
 
@@ -149,14 +136,14 @@ def comp_dist_stats(dX, dY):
 
     test_statistic = n * dcov**2
 
-    return DistDependStat(
-        test_statistic=test_statistic,
-        distance_correlation=dcor,
-        distance_covariance=dcov,
-        dvar_x=dvar_x,
-        dvar_y=dvar_y,
-        S=S,
-    )
+    stats_summ["test_statistic"] = test_statistic   
+    stats_summ["dist_corr"] = dcor
+    stats_summ["dist_cov"] = dcov
+    stats_summ["dvar_x"] = dvar_x
+    stats_summ["dvar_y"] = dvar_y
+    stats_summ["S"]=S
+    
+    return stats_summ
 
 def _get_outpath(data_summ, outdir=".", permtype="subject"):
 
@@ -179,14 +166,6 @@ def _summarize_data(dX_fpath, dY_fpath, debug=True):
     data_summ["X_type"] = xlabels["modality"] + "_" + xlabels["feature"] + "_" + xlabels["metric"]
     data_summ["Y_type"] = ylabels["modality"] + "_" + ylabels["feature"] + "_" + ylabels["metric"]
     return data_summ
-
-class DistDependStat(NamedTuple):
-    test_statistic: float
-    distance_correlation: float
-    distance_covariance: float
-    dvar_x: float
-    dvar_y: float
-    S: float
 ################################################################################################################
 
 
@@ -224,34 +203,10 @@ if __name__=="__main__":
         help="directory containing null-permuted data"
     )
     parser.add_argument(
-        "-d", "--dim", 
-        default=1, 
-        type=int, 
-        help="homology dimension"
-    )
-    parser.add_argument(
         "-t", "--permtype", 
         default="subject", 
         type=str, 
         help="axis along which data is permuted (accepts either \'subject\' or \'feature\')"
-    )
-    parser.add_argument(
-        "-p", "--p", 
-        default=2, 
-        type=int, 
-        help="norm power of Wasserstein distance (positive integer)"
-    )
-    parser.add_argument(
-        "-q", "--q", 
-        default=2, 
-        type=int, 
-        help="norm power of diagram (i.e., Euclidean) distance (np.inf or positive integer)"
-    )
-    parser.add_argument(
-        "-P", "--persistence_type", 
-        default="diff", 
-        type=str, 
-        help="Either 'difference' or 'quotient' type measuremnt of persistence from birth/death values"
     )
     parser.add_argument(
         "-v", "--verbose", 
@@ -275,10 +230,6 @@ if __name__=="__main__":
             args.dY_fpath,
             nulldir=args.nulldir,
             permtype=args.permtype,
-            persistence_type=args.persistence_type, 
-            homdim=args.dim, 
-            q=args.q, 
-            p=args.p,
             verbose=args.verbose,
             debug=True
             )

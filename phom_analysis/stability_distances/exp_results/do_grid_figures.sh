@@ -20,7 +20,8 @@ declare -a alphas=(0.05)				# significance threshold values
 
 solo_indir="$(dirname ${indir})"
 
-python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "fdr" -P "subject" -a 0.05 -L -X -w -v
+# python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "fdr" -P "subject" -a 0.05 -C -L -X -w -v
+python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "fdr" -P "subject" -a 0.05 -r "Psim" -C -L -X -w -v
 # python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -P "subject" -L -C -w -v
 # python ${nullpairs_srcpath} -i ${indir} -o ${outdir} -P "feature" -L -C -w -v
 # echo "debugging run complete. exiting."; exit
@@ -40,7 +41,7 @@ done
 
 printf "## now looping through parameters arrays (in order): \n\${alphas} \n\${perms} \n\${corrs} \n\${rstr} \n\n"
 
-## note: can run -X (chi-squared testing) or -X (clustermap plotting) options separately or together
+## note: can run -X (chi-squared testing) or -C (clustermap plotting) options separately or together
 
 for alpha in ${alphas[@]}
 do
@@ -52,8 +53,9 @@ do
 			printf "\n#################################################################################################\n\n"
 			# echo "debugging run complete. exiting."; exit
 
-			python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -X -w -v
-			python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -L -X -w -v
+			python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -X -C -w -v
+			# python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -a ${alpha} -L -X -w -v
+			# python -X faulthandler ${nullpairs_srcpath} -i ${indir} -o ${outdir} -c "${C}" -P "${P}" -L -X -w -v
 			printf "\n#################################################################################################\n\n"
 
 			for R in "${rstr[@]}"

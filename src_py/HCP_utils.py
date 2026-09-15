@@ -143,11 +143,11 @@ def svd_reduce(X):
     else:
         U,s,Vh = np.linalg.svd(X,full_matrices = False)
         R = U @ np.diag(s)
-        V = np.matrix.getH(Vh)
+        # V = np.matrix.getH(Vh)    ## uses deprecated numpy paradigm
         ## debugging code:
         # print("Using SVD reduction. Maximum singular value = " + str(s[0]))
 
-    return R,V
+    return R,Vh.getH()
 ########################################################################################################################################
 
 

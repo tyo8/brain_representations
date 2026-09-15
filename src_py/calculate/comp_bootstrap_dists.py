@@ -68,6 +68,10 @@ def bootstrap_distance(barsX_fpath, nametype="X",
     if do_dIM:
         # cycle-registered distance (Omer & Bobrowski) between original diagram and its bootstrap (between matched cycles) 
         # compute registered distance between all subset-generated persistence modules
+        if match_only:
+            Xmatch_fpaths = barsXhat_flist
+        else:
+            Xmatch_fpaths = [os.path.join(os.path.dirname(barsX_fpath), 'matching', f"verbose_match_dim{homdim}_{tag}.txt") for tag in taglist]
         dIM_XXhat_i = get_registered_distances(Xmatch_fpaths, use_affinity=use_affinity, persistence_type=persistence_type, q=q, p=p)
     else:
         dIM_XXhat_i = None

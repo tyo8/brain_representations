@@ -1,5 +1,7 @@
+import io
 import os
 import re
+import PIL
 import glob
 import copy
 import itertools
@@ -257,6 +259,10 @@ def logical_glob(
 # Data-wrangling helper functions
 ########################################################################################################################
 ########################################################################################################################
+def _all_equal(iterable):
+    g = itertools.groupby(iterable)
+    return next(g, True) and not next(g, False)
+
 def _get_symmetrized_data(
         alldata_grid, 
         symmetrized_vars=["Wp_XY"], 
@@ -571,7 +577,7 @@ def _pull_feat_num(rank, feature):
         raise Exception("Unrecognized feature type")
     return int(feat_num)
 
-def _parse_fpath(fpath, pathtype="solo", metric=True):
+def _parse_fpath(fpath, pathtype="solo", metric=True, debug=False):
     if pathtype=="solo":
         if "subsampling" in fpath:
             longname = os.path.basename(fpath).split('.')[0].replace("bsdists_","")
@@ -579,6 +585,8 @@ def _parse_fpath(fpath, pathtype="solo", metric=True):
             longname = os.path.basename(os.path.dirname(fpath))
         name = longname.replace("_dists","").replace("X_","")
         modality, feature, metric = name.split('_', maxsplit=2)
+        if debug:
+            print(f"fpath = {fpath} \nfname = {longname} \nmodality = {modality} \nfeature = {feature} \n metric = {metric}\n")
         if metric:
             return modality, feature, metric
         else:
@@ -589,6 +597,8 @@ def _parse_fpath(fpath, pathtype="solo", metric=True):
         Y_name = fname.split('.')[0].split('vs')[1][1:]         # removes file extension, takes the right half after "vs", and removes the first character
         Y_name = Y_name.split('_null-')[0]                      # removes null-type specifications from 'Y_name' if present in filename
         X_name = dname.replace("_dists","").replace("X_","")    # removes extra text from X_name
+        if debug:
+            print(f"fpath = {fpath} \nfname = {fname} \nX_name (return 1) = {X_name} \nY_name (return 2) = {Y_name}\n")
         return X_name, Y_name
 
 def _get_fpath_types(fpath, dist_type="single"):
@@ -701,10 +711,33 @@ def _nice_feats(featname):
     featname.replace("Amps","Amplitudes")
     return featname
 
+def _write_mtxlist(mtxlist, outpath, namelist=None):
+    outpath = outpath.replace('^','not-').replace('*','-and-')      # replace search operators with logical text
+    shapelist = [mtx.shape for mtx in mtxlist]
+    if namelist is not None:
+        assert len(namelist) == len(mtxlist), "List of input names and list of input values have different lengths!"
+
+    if not os.path.isdir(os.path.dirname(outpath)):
+        os.mkdir(os.path.dirname(outpath))
+        Warning(f"Created new output directory: \n{os.path.basename(outpath)}")
+    
+    with open(outpath,'w') as fout:
+        fout.wrtie(f"# List of matrix shapes: {shapelist}\n")
+        if _all_equal(shapelist):
+            fout.write(f"# reshapes into array of shape: {np.append(shapelist[0],len(shapelist))}")
+        for i,mtx in enumerate(mtxlist):
+            if namelist is None:
+                fout.write(f"# New matrix\n")
+            else:
+                fout.write(f"# Array name: \'{namelist[i]}\'\n")
+            np.savetxt(fout, mtx)
+    print(f"saved to {outpath}")
+    return None
 
 def _write_list(outpath, list_out):
     with open(outpath, 'w') as fout:
         fout.write(list_out.__str__())
+    return None
 
 def _write_img(fig, outpath, fig_size=def_fig_size):
 
@@ -717,6 +750,50 @@ def _write_img(fig, outpath, fig_size=def_fig_size):
         Warning(f"Created new output directory: \n{os.path.basename(outpath)}")
     fig.savefig(outpath, dpi=600)
     print(f"saved to {outpath}")
+    return None
+
+
+def _write_html(fig, outpath, frame_duration=10):
+    anim_dict = {"frame": {"duration": frame_duration }} 
+
+    fig.write_html(outpath, animation_opts=anim_dict)
+    print(f"interactive plot saved to {outpath}")
+
+
+# convert plotly animated figure to gif
+## pulled from FFengIll post at 4 Jul 2023 on 'https://github.com/plotly/plotly.py/issues/664'
+def _write_gif(fig, outpath, end_pause=True):
+    frames = []
+
+    for s, frame in enumerate(fig.frames):
+        # set main traces to appropriate traces within plotly frame
+        fig.update( data=frame.data )
+        # move slider to correct place
+        fig.layout.sliders[0].update(active=s)
+
+        # generate image of current state
+        fig_bytes = fig.to_image(format="png")
+        frame_img = PIL.Image.open(io.BytesIO(fig_bytes))
+        frames.append(frame_img)
+
+    if end_pause:
+        for i in range(10):
+            frames.append(frames[-1])
+
+    outpath = outpath.replace('^','not-').replace('*','-and-')      # replace search operators with logical text
+
+    # create animated GIF
+    frames[0].save(
+            outpath,
+            save_all=True,
+            append_images=frames[1:],
+            optimize=False,
+            duration=500,
+            loop=0,
+        )
+
+    print(f"saved to {outpath}")
+    return None
 ########################################################################################################################
 
 
@@ -878,7 +955,7 @@ def _reorder_arrdict(namelists, arrdict, order=order_fpath, verbose=False, debug
     return namelists_ord, ord_dict
 
 # variable "order" is either a list, a filepath, or None
-def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=False, debug=False):
+def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=False, debug=True):
     if isinstance(order,str):
         order_df = pd.read_csv(order, header=None)
         order_df.rename(columns = {0:"name"}, inplace=True)
@@ -905,7 +982,7 @@ def _reorder_arrays(namelists, array_list, order=order_fpath, verbose=False, deb
         print(f"new order: \n{namelists[0]}")
     return namelists, array_list
 
-def _reindex_list(namelist, order_df, debug=False):
+def _reindex_list(namelist, order_df, debug=True):
 
     list_df = order_df[ order_df.name.apply( lambda x: x in namelist ) ]
 
